@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title": "Cerrajería",
+        "thumbnail": "assets/img/categories/llaves.jpg"
+    },
+    {
+        "id": 2,
+        "title": "Construcción",
+        "thumbnail": "assets/img/categories/construction.jpg"
+    },
+    {
+        "id": 3,
+        "title": "Ferretería",
+        "thumbnail": "assets/img/categories/tools.jpg"
+    },
+    {
+        "id": 4,
+        "title": "Herramientas",
+        "thumbnail": "assets/img/categories/herramientas.jpg"
+    },
+    {
+        "id": 5,
+        "title": "Iluminación",
+        "thumbnail": "assets/img/categories/iluminacion.jpg"
+    },
+    {
+        "id": 6,
+        "title": "Pinturas",
+        "thumbnail": "assets/img/categories/pintura.png"
+    },
+    {
+        "id": 7,
+        "title": "Plomería",
+        "thumbnail": "assets/img/categories/plomeria.jpg"
+    },
+    {
+        "id": 8,
+        "title": "Jardín",
+        "thumbnail": "assets/img/categories/jardin.jpg"
+    }
+]

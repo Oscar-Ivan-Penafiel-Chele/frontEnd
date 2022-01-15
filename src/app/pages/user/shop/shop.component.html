@@ -1,0 +1,147 @@
+<section>
+    <nav>
+        <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
+           <div class="nav__container">
+                <div class="nav__logo">
+                    <a href="/shop"><img src="assets/img/logo_app.svg" alt="" width="60px">El Descanso</a>
+                </div>
+                <div class="nav__options">
+                    <div class="nav__options__content">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText placeholder="Search" [(ngModel)]="searchValue" />
+                        </span>
+                    </div>
+                </div>
+                <div class="nav__menu">
+                    <div class="nav__menu__content">
+                        <a href="/login"><i class="pi pi-sign-in"> </i>Iniciar Sesión</a>
+                        <a href="/signup"><i class="pi pi-user-plus"> </i>Registrar</a>
+
+                        <div class="nav__menu__content_social">
+                            <div class="nav__menu__content_social__icons">
+                                <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
+                                <a href="https://facebook.com" target="_blank" class="facebook" pTooltip="Facebook" tooltipPosition="top"><i class="pi pi-facebook" ></i></a>
+                                <a href="https://instagram.com" target="_blank" class="instagram" pTooltip="Instagram" tooltipPosition="top"><i class="pi pi-instagram" ></i></a>
+                                <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <button class="hamburger" (click)="isActive()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+           </div>
+
+        </ng-template>
+
+        <ng-template #logged>
+            <div class="nav__container">
+                <div class="nav__logo">
+                    <a href="/shop"><img src="assets/img/logo_app.svg" alt="" width="60px">El Descanso</a>
+                </div>
+                <div class="nav__options">
+                    <div class="nav__options__content">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText placeholder="Search" [(ngModel)]="searchValue" />
+                        </span>
+                    </div>
+                </div>
+                <div class="nav__menu">
+                    <div class="nav__menu__content">
+                        <div class="nav__menu__cart">
+                            <button pRipple><i class="pi pi-shopping-cart"></i></button>
+                        </div>
+                        <div class="nav__menu__option">
+                            <div class="nav__user" pRipple (click)="displayOptions()">
+                                <p><i class="pi pi-user"></i> Oscar Peñafiel <i class="pi pi-angle-down"> </i></p>
+                            </div>
+                            <div class="nav__user__option isActiveNavOption">
+                                <p>Opciones</p>
+                                <a href=""><i class="pi pi-user"></i> Perfil</a>
+                                <a href=""><i class="pi pi-shopping-bag"></i> Pedidos</a>
+                                <a href=""><i class="pi pi-th-large"></i> Configuración</a>
+                                <p>Sesión</p>
+                                <a href="/"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
+                            </div>
+                        </div>
+                        
+                        <div class="nav__menu__content__date">
+                            <div class="menu__social__date">
+                                <p>{{fechaYHora}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <button class="hamburger" (click)="isActive()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+           </div>
+        </ng-template>
+    </nav>
+
+    <main>
+        <app-scroll-to-up></app-scroll-to-up>
+        <div class="content-main">
+            <p></p>
+        </div>
+        <!-- <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name"
+            [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+            <ng-template pTemplate="header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Ordenar por Precio" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </ng-template>
+            
+            <ng-template let-product pTemplate="listItem">
+                <div class="product-list-item">
+                    <img [src]="product.image" [alt]="product.name"/>
+                    <div class="product-list-detail">
+                        <div class="product-name">{{product.name}}</div>
+                        <div class="product-description">{{product.description}}</div>
+                        <p-rating [ngModel]="product.rating" [iconOnClass]="'pi pi-star-fill'" [iconOffClass]="'pi pi-star'" [readonly]="true" [cancel]="false"></p-rating>
+                        <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category}}</span>
+                    </div>
+                    <div class="product-list-action">
+                        <span class="product-price">${{product.price}}</span>
+                        <p-button icon="pi pi-shopping-cart" label="Añadir al carro" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template let-product pTemplate="gridItem">
+                    <div class="product-grid-item card">
+                        <div class="product-grid-item-top">
+                            <div>
+                                <i class="pi pi-tag product-category-icon"></i>
+                                <span class="product-category">{{product.category}}</span>
+                            </div>
+                        </div>
+                        <img [src]="product.image" [alt]="product.name"/>
+                        <div class="product-grid-item-content">
+                            <div class="product-name">{{product.name}}</div>
+                            <div class="product-description">{{product.description}}</div>
+                            <p-rating [ngModel]="product.rating" [iconOnClass]="'pi pi-star-fill'" [iconOffClass]="'pi pi-star'" [readonly]="true" [cancel]="false"></p-rating>
+                        </div>
+                        <div class="product-grid-item-bottom">
+                            <span class="product-price">${{product.price}}</span>
+                            <p-button icon="pi pi-shopping-cart" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                        </div>
+                    </div>
+            </ng-template>
+        </p-dataView> -->
+    </main>
+
+    <footer>
+
+    </footer>
+    
+</section>

@@ -1,0 +1,136 @@
+<section>
+    <nav>
+        <input type="checkbox" id="nav-toggle">
+        <div class="logo">
+            <a href="/"><img loading="lazy" src="assets/img/logo_transparent.png" alt="Logo" width="40px"><p>El Descanso</p></a>  
+        </div>
+        <ul class="links">
+            <li *ngFor="let item of itemNavigation">
+                <a href="{{item.url}}"><i class="{{item.icon}}"></i> {{item.description}}</a>
+            </li>
+        </ul>
+
+        <label for="nav-toggle" class="icon-burger" pRipple (click)="isActive()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </label>
+    </nav>
+   
+    <app-scroll-to-up></app-scroll-to-up>
+
+    <main class="content">
+        <div id="home" class="shop-link header" >
+            <div class="content-shop">
+                <p>¡TODO LO QUE BUSCAS EN UN SOLO LUGAR!</p>
+                <p>Infórmate de todos nuestros productos, ofertas y más. Adicionalmente podrás comprar de forma online y segura.</p>
+                <div class="button-shop">
+                    <button class="button-tienda" [routerLink]="['/shop']" pRipple>Comprar<i class="pi pi-shopping-cart"></i></button>
+                </div>
+            </div>
+            <div class="img-shop" data-aos="zoom-in-left" data-aos-duration="3000"  data-aos-once="false">
+                <figure>
+                    <img loading="lazy" src="assets/img/img_tools.svg" alt="">
+                </figure>
+            </div>
+        </div>
+
+        <div id="products" class="stock-products header">
+            <h1>Contamos con un amplio stock de:</h1>
+            <div class="stock-content">
+                <div class="card-stock" data-aos="fade-up" *ngFor="let category of categories">
+                    <figure>
+                        <img src="{{category?.thumbnail}}" alt="producto" width="100px">
+                    </figure>
+
+                    <div class="overlay">
+                        <p>{{category?.title}}</p>
+                        <button class="overlay-button" pRipple>Ver más<i class="pi pi-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="services" class="header">
+            <div class="card-contact">
+               <figure data-aos="fade-up" data-aos-duration="2000">
+                   <img loading="lazy" src="assets/img/Contact-us.svg" alt="Foto-contact">
+               </figure>
+               <section>
+                   <h3 class="title-card-contact">Servicios Qué Ofrecemos!</h3>
+                  <div class="card-service-content">
+                    <ul class="list-service">
+                        <li><i class="pi pi-check"></i> Pedidos online</li>
+                        <li><i class="pi pi-check"></i> Copia de llaves</li>
+                        <li><i class="pi pi-check"></i> Banco de herramientas</li>
+                        <li><i class="pi pi-check"></i> Instrucciones online</li>
+                        <li><i class="pi pi-check"></i> Entrega a domicilio</li>
+                    </ul>
+                  </div>
+                   <button class="button-contact" [routerLink]="['/contact']" pRipple>Contáctanos <i class="pi pi-chevron-right"></i></button>
+               </section>
+           </div>
+        </div>
+
+        <div class="carousel header" id="brands">
+            <p>DISTRIBUIMOS Y REPRESENTAMOS MARCAS DE LA MEJOR CALIDAD</p>
+            <p-carousel styleClass="custom-carousel" [value]="brands" [numVisible]="3" [autoplayInterval]="2000" [circular]="true" [numScroll]="2" [page]="0" [responsiveOptions]="responsiveOptions">
+                <ng-template let-brands pTemplate="item">
+                    <div class="img-brands">
+                        <img loading="lazy" src="{{brands?.thumbnail}}" alt="Logo">
+                    </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    </main>
+
+    <footer>
+        <div class="box-content-main">
+            <div class="box-content">
+                <figure>
+                    <img loading="lazy" id="logo-img" src="assets/img/logo_transparent.png" alt="Logo" width="65px">
+                    <p>Ferretería | El Descanso</p>
+                </figure>
+                <div class="box-content-social">
+                    <a href="#" class="facebook"><i class="pi pi-facebook " ></i></a>
+                    <a href="#" class="instagram"><i class="pi pi-instagram" ></i></a>
+                    <a href="#" class="twitter"><i class="pi pi-twitter" ></i></a>
+                    <a href="#" class="whatsapp"><i class="pi pi-whatsapp" ></i></a>
+                </div>
+            </div>
+            <div class="box-content shop">
+                <h3>Tienda</h3>
+                <div class="box-content-links">
+                    <a href="#">- Herramientas</a>
+                    <a href="#">- Pinturas</a>
+                    <a href="#">- Otros</a>
+                </div>
+            </div>
+            <div class="box-content company">
+                <h3>Compañia</h3>
+                <div class="box-content-links">
+                    <a href="/login">- Login</a>
+                    <a href="/signup">- Registro</a>
+                    <a href="/contact">- Contacto</a>
+                </div>
+            </div>
+          
+            <div class="box-content">
+                <h3>Subscripción</h3>
+                <div class="box-content-email">
+                    <p>Subscribete para estar al día con nuestras actualizaciones!</p>
+                        <div class="p-inputgroup"  style="height: 45px">
+                            <input type="email" pInputText placeholder="Email">   
+                            <button type="button" pButton pRipple icon="pi pi-send" style="background-color: #4F46E5;" styleClass="p-button-warn"></button>      
+                        </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="company">
+            <p class="copyright">© 2021 Ferretería | El Descanso . All right reserved</p>
+        </div>
+    </footer>
+
+
+</section>

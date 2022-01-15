@@ -1,0 +1,62 @@
+<section>
+    <div class="content-login">
+        <div class="content-login-header">
+            <figure>
+                <img class="img-log" src="assets/img/logo_app.svg" alt="Logo de la Ferreteria">
+            </figure>
+            <p>Ferretería | El Descanso</p>
+        </div>
+        <br>    
+        
+        <div class="content-login-main">
+            <p-card>
+                <span class="p-float-label">
+                    <input id="float-input" type="text" pInputText style="width: 100%;"> 
+                    <label for="float-input"><i class="pi pi-user"></i> Usuario o Correo Electrónico</label>
+                </span>
+                <br>
+
+                <div class="input-password">
+                    <span class="p-float-label">
+                        <p-password [(ngModel)]="value4" [toggleMask]="true" [feedback]="false" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
+                        <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
+                    </span>
+                </div>
+
+                <div class="link-forgot">
+                    <div class="still-session">
+                        <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                        <label for="binary">Mantener Sesión</label>
+                    </div>
+                    <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+                <br>
+                <div class="btn-login">
+                    <button class="button-login" pButton pRipple type="button" label="INGRESAR" [routerLink]="['/shop']"></button>   
+                </div>
+            </p-card>
+            <br>
+            <div class="text-register">
+                <p>Aún no tienes cuenta, <a [routerLink]="['/signup']" class="link-signup">¡Registrate!</a></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <div class="area" >
+        <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+        </ul>
+    </div >
+</section>
