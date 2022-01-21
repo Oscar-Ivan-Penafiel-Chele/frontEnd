@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './pages/about/about.component';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
@@ -17,6 +19,8 @@ const routes: Routes = [
   {path: 'about', component : AboutComponent, pathMatch : 'full', }, 
   {path: 'shop', component : ShopComponent, pathMatch : 'full', }, 
   {path: 'terminos-y-condiciones', component : TermsComponent, pathMatch : 'full', }, 
+  {path: 'dashboard', component : DashboardComponent, pathMatch : 'full', }, 
+  {path: 'dashboard-employee', component : DashboardEmployeeComponent, pathMatch : 'full', }, 
   {path: '**', redirectTo: '', pathMatch : 'full'}, 
 ];
 

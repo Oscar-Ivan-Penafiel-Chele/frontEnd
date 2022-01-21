@@ -43,6 +43,7 @@ import {MessageModule} from 'primeng/message';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
+import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { HttpClientModule } from '@angular/common/http';
     TermsComponent,
     DashboardComponent,
     ShopComponent,
-    ScrollToUpComponent
+    ScrollToUpComponent,
+    DashboardEmployeeComponent
   ],
   imports: [
     BrowserModule,

@@ -8,7 +8,7 @@ import { PrimeNGConfig} from 'primeng/api';
   styleUrls: ['./shop.component.css']
 })
 export class ShopComponent implements OnInit {
-  isLogged?: boolean = false;
+  isLogged?: boolean = true;
   searchValue : string = "";
   user? : User ;
   isHidden?: boolean;
