@@ -24,11 +24,11 @@ export class DashboardEmployeeComponent implements OnInit {
       icon?.classList.replace('pi-bars','pi-times');
       nav?.classList.remove('hide');
       nav?.classList.add('show');
-      this.isHidden = false;
-    }else{
       setTimeout(() => {
-        this.isHidden = true;
-      }, 300);
+        this.isHidden = false;
+      }, 200);
+    }else{
+      this.isHidden = true;
       nav?.classList.remove('show');
       nav?.classList.add('hide');
       icon?.classList.replace('pi-times','pi-bars');

@@ -44,6 +44,10 @@ import {MessageModule} from 'primeng/message';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
+import { IndicatorsComponent } from './pages/employee/indicators/indicators.component';
+import { UsersComponent } from './pages/employee/users/users.component';
+import { ProductsComponent } from './pages/employee/products/products.component';
+import { OrdersComponent } from './pages/employee/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/
     DashboardComponent,
     ShopComponent,
     ScrollToUpComponent,
-    DashboardEmployeeComponent
+    DashboardEmployeeComponent,
+    IndicatorsComponent,
+    UsersComponent,
+    ProductsComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
