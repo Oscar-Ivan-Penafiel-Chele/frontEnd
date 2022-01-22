@@ -24,9 +24,9 @@ const routes: Routes = [
   {path: 'shop', component : ShopComponent, pathMatch : 'full', }, 
   {path: 'terminos-y-condiciones', component : TermsComponent, pathMatch : 'full', }, 
   {path: 'dashboard', component : DashboardComponent, pathMatch : 'full', }, 
-  {path: 'dashboard-employee', component : DashboardEmployeeComponent, pathMatch : 'full', 
+  {path: 'dashboard-employee', component : DashboardEmployeeComponent, 
     children : [
-      // {path: '', redirectTo: 'indicators', pathMatch : 'full'},
+      {path: '', redirectTo: 'indicators', pathMatch : 'full'},
       {path: 'indicators', component : IndicatorsComponent, pathMatch : 'full',},
       {path: 'users', component : UsersComponent, pathMatch : 'full',},
       {path: 'products', component : ProductsComponent, pathMatch : 'full',},

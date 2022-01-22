@@ -1,6 +1,6 @@
 <section>
     <div class="nav__header">
-        <div class="nav__aside">
+        <div class="nav__aside" id="nav__aside">
             <div class="nav__aside__header">
                 <div class="nav__header__content">
                     <i class="pi pi-slack"></i>
@@ -8,27 +8,28 @@
                 </div>
             </div>
             <div class="nav__aside__content">
-                <div class="nav__aside__item active" pRipple pTooltip="Dashboard" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'indicators'" pRipple pTooltip="Dashboard" tooltipPosition="right">
                     <i class="pi pi-th-large"></i>
                     <p [hidden]="isHidden">Dashboard</p>
                 </div>
-                <div class="nav__aside__item" pRipple pTooltip="Usuarios" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'users'" pRipple pTooltip="Usuarios" tooltipPosition="right">
                     <i class="pi pi-user"></i>
                     <p [hidden]="isHidden">Usuarios</p>
                 </div>
-                <div class="nav__aside__item" pRipple pTooltip="Productos" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Productos</p>
                 </div>
-                <div class="nav__aside__item" pRipple pTooltip="Pedidos" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="Pedidos" tooltipPosition="right">
                     <i class="pi pi-comments"></i>
                     <p [hidden]="isHidden">Pedidos</p>
                 </div>
-                <div class="nav__aside__item" pRipple pTooltip="No se xd" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="No se xd" tooltipPosition="right">
                     <i class="pi pi-chart-bar"></i>
                     <p [hidden]="isHidden">No se xd</p>
-                </div>
-                <div class="nav__aside__footer" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
+                </div> 
+
+                <div class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
                     <i class="pi pi-power-off"></i>
                     <p [hidden]="isHidden">Cerrar Sesión</p>
                 </div>
@@ -40,12 +41,13 @@
                 <div class="header__icon" pRipple (click)="showNavbar()">
                     <i class="pi pi-bars icon-toggle"></i>
                 </div>
+                
                 <div class="header__profile" pRipple>
-                    <p>Oscar Peñafiel <i class="pi pi-angle-down"></i></p>
+                    <p><i class="pi pi-user"></i> Oscar Peñafiel <i class="pi pi-angle-down"></i></p>
                 </div>
             </div>
             <div class="main__content">
-                <!-- <router-outlet></router-outlet> -->
+                <router-outlet></router-outlet>
             </div>
         </div>
     </div>
