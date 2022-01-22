@@ -17,6 +17,7 @@ export class DashboardEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.primengConfig.ripple = true;
     this.activeFirstLink();
+    this.activeLink();
   }
 
   showNavbar (){
@@ -47,15 +48,9 @@ export class DashboardEmployeeComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
 
-    console.log("Primer click");
     links.forEach( l => l.addEventListener('click', () =>{
-      // if(l == links[0] && this.i == 0){
-      //   return ;
-      // }else{
-        this.i = 1;
         links.forEach(j => j.classList.remove('active'));
         l.classList.add('active');
-      // }
       }),
     );
   }
