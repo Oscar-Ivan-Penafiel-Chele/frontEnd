@@ -44,10 +44,18 @@ import {MessageModule} from 'primeng/message';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
-import { IndicatorsComponent } from './pages/employee/indicators/indicators.component';
-import { UsersComponent } from './pages/employee/users/users.component';
 import { ProductsComponent } from './pages/employee/products/products.component';
 import { OrdersComponent } from './pages/employee/orders/orders.component';
+import { PromoComponent } from './pages/employee/promo/promo.component';
+import { CategoryComponent } from './pages/employee/category/category.component';
+import { ReportComponent } from './pages/employee/report/report.component';
+import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
+import { ProductsAdminComponent } from './pages/admin/products-admin/products-admin.component';
+import { PromoAdminComponent } from './pages/admin/promo-admin/promo-admin.component';
+import { CategoryAdminComponent } from './pages/admin/category-admin/category-admin.component';
+import { IndicatorsAdminComponent } from './pages/admin/indicators-admin/indicators-admin.component';
+import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
+import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.component';
 
 @NgModule({
   declarations: [
@@ -62,10 +70,18 @@ import { OrdersComponent } from './pages/employee/orders/orders.component';
     ShopComponent,
     ScrollToUpComponent,
     DashboardEmployeeComponent,
-    IndicatorsComponent,
-    UsersComponent,
     ProductsComponent,
-    OrdersComponent
+    OrdersComponent,
+    PromoComponent,
+    CategoryComponent,
+    ReportComponent,
+    UsersAdminComponent,
+    ProductsAdminComponent,
+    PromoAdminComponent,
+    CategoryAdminComponent,
+    IndicatorsAdminComponent,
+    ReportAdminComponent,
+    OrdersAdminComponent,
   ],
   imports: [
     BrowserModule,

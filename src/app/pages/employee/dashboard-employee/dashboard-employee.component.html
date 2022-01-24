@@ -3,30 +3,34 @@
         <div class="nav__aside" id="nav__aside">
             <div class="nav__aside__header">
                 <div class="nav__header__content">
-                    <i class="pi pi-slack"></i>
+                    <img src="assets/img/logo_app.svg" alt="" >
                     <p [hidden]="isHidden">El Descanso</p>
                 </div>
             </div>
             <div class="nav__aside__content">
-                <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'indicators'" pRipple pTooltip="Dashboard" tooltipPosition="right">
-                    <i class="pi pi-th-large"></i>
-                    <p [hidden]="isHidden">Dashboard</p>
-                </div>
-                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'users'" pRipple pTooltip="Usuarios" tooltipPosition="right">
-                    <i class="pi pi-user"></i>
-                    <p [hidden]="isHidden">Usuarios</p>
-                </div>
+                <!-- <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'indicators'" pRipple pTooltip="Dashboard" tooltipPosition="right">
+                    <i class="pi pi-chart-bar"></i>
+                    <p [hidden]="isHidden">Gráficas</p>
+                </div> -->
                 <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Productos</p>
                 </div>
+                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'promotions'" pRipple pTooltip="Promociones" tooltipPosition="right">
+                    <i class="pi pi-tag"></i>
+                    <p [hidden]="isHidden">Promociones</p>
+                </div>
+                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Categorías" tooltipPosition="right">
+                    <i class="pi pi-th-large"></i>
+                    <p [hidden]="isHidden">Categorías</p>
+                </div>
                 <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="Pedidos" tooltipPosition="right">
-                    <i class="pi pi-comments"></i>
+                    <i class="pi pi-cloud"></i>
                     <p [hidden]="isHidden">Pedidos</p>
                 </div>
-                <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="No se xd" tooltipPosition="right">
-                    <i class="pi pi-chart-bar"></i>
-                    <p [hidden]="isHidden">No se xd</p>
+                <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'report'" pRipple pTooltip="Reportes" tooltipPosition="right">
+                    <i class="pi pi-file-pdf"></i>
+                    <p [hidden]="isHidden">Reportes</p>
                 </div> 
 
                 <div class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
@@ -38,13 +42,24 @@
 
         <div class="header__main">
             <div class="header__main__content">
-                <div class="header__icon" pRipple (click)="showNavbar()">
+                <div class="header__icon" pRipple (click)="showNavbar()" pTooltip="{{msgButton}}" tooltipPosition="right">
                     <i class="pi pi-bars icon-toggle"></i>
                 </div>
                 
-                <div class="header__profile" pRipple>
-                    <p><i class="pi pi-user"></i> Oscar Peñafiel <i class="pi pi-angle-down"></i></p>
+                <div class="header__profile__content" >
+                    <div class="header_profile_time">
+                        <p>{{fechaYHora}}</p>
+                        <div class="header__profile" pRipple (click)="displayOptions()">
+                            <p><i class="pi pi-user"></i> Oscar Peñafiel <i class="pi pi-angle-down"></i></p>
+                        </div>
+                    </div>
+                    <div class="profile__options isActiveNavOption">
+                        <p>Opciones</p>
+                        <a href=""><i class="pi pi-user"></i> Perfil</a>
+                        <a href=""><i class="pi pi-cog"></i> Configuración</a>
+                    </div>
                 </div>
+
             </div>
             <div class="main__content">
                 <router-outlet></router-outlet>

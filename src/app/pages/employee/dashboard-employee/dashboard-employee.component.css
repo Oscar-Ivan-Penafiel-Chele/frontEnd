@@ -29,15 +29,13 @@
     top: 0px;
     left: 0;
     right: 0;
-    padding: 0px 0px 0px 25px;
+    padding: 0px 0px 0px 0px;
     gap: 1em;
     transition: all 0.4 ease-in-out;
 }
 
-.nav__header__content > i{
-    color: white;
-    font-size: 1rem;
-    padding: 15px 0px;
+.nav__header__content > img{
+    width: 70px;
 }
 
 .nav__header__content p{
@@ -45,6 +43,14 @@
     color: white;
     font-weight: 700;
     
+}
+
+.header__profile__content{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .nav__aside__content{
@@ -175,13 +181,21 @@
 
 .header__icon > i:hover{
     cursor: pointer;
-    /* background-color: #8f94fb; */
+}
+
+.header_profile_time{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
 }
 
 .header__profile{
     background-color: #4723D9;
     padding: 7px;
     border-radius: 5px;
+    position: relative;
 }
 
 .header__profile > p{
@@ -191,6 +205,53 @@
 .header__profile:hover{
     cursor: pointer;
 }
+
+.profile__options{
+    position: absolute;
+    right: 0;
+    top: 45px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.profile__options > p{
+    padding: 15px 0px 5px 15px;
+    font-weight: 600;
+    font-size: 15px;
+ }
+ 
+ .profile__options > a{
+    color: black;
+    width: 100%;
+    text-decoration: none;
+    padding: 10px 25px;
+    transition: all 0.3s;
+    font-size: 14px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5em;
+ }
+ 
+.profile__options > a:last-of-type{
+margin-bottom: 10px;
+}
+
+.profile__options > a:hover{
+background-color: rgb(238, 238, 238);
+}
+
+.isActiveNavOption{
+    display: none !important;
+}
+
 
 /* Content*/
 .main__content{

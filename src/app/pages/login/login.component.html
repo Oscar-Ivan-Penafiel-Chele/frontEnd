@@ -6,35 +6,63 @@
             </figure>
             <p>Ferretería | El Descanso</p>
         </div>
-        <br>    
-        
+      
         <div class="content-login-main">
-            <p-card>
+            <div class="card-login">
+                <p>Inicio de Sesión</p>
+                <p-messages [(value)]="msgs1" [enableService]="false" [style]="{'margin' : '0px 0 2em'}"></p-messages>
                 <span class="p-float-label">
-                    <input id="float-input" type="text" pInputText style="width: 100%;"> 
+                    <input required id="float-input" [(ngModel)]="email" type="text" pInputText style="width: 100%;"> 
                     <label for="float-input"><i class="pi pi-user"></i> Usuario o Correo Electrónico</label>
                 </span>
                 <br>
 
                 <div class="input-password">
                     <span class="p-float-label">
-                        <p-password [(ngModel)]="value4" [toggleMask]="true" [feedback]="false" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
+                        <p-password required [(ngModel)]="password" [toggleMask]="true" [feedback]="false" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
                         <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
                     </span>
                 </div>
 
                 <div class="link-forgot">
                     <div class="still-session">
-                        <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                        <p-checkbox [(ngModel)]="keepSession" [binary]="true" inputId="binary"></p-checkbox>
                         <label for="binary">Mantener Sesión</label>
                     </div>
                     <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
                 </div>
                 <br>
                 <div class="btn-login">
-                    <button class="button-login" pButton pRipple type="button" label="INGRESAR" [routerLink]="['/shop']"></button>   
+                    <button class="button-login" (click)="login()" pButton pRipple type="button" label="INGRESAR"></button>   
                 </div>
-            </p-card>
+            </div>
+            <!-- <p-card>    
+                <p-messages [(value)]="msgs1" [enableService]="false" ></p-messages>
+                <span class="p-float-label">
+                    <input id="float-input" [(ngModel)]="email" type="text" pInputText style="width: 100%;"> 
+                    <label for="float-input"><i class="pi pi-user"></i> Usuario o Correo Electrónico</label>
+                </span>
+                <br>
+
+                <div class="input-password">
+                    <span class="p-float-label">
+                        <p-password [(ngModel)]="password" [toggleMask]="true" [feedback]="false" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
+                        <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
+                    </span>
+                </div>
+
+                <div class="link-forgot">
+                    <div class="still-session">
+                        <p-checkbox [(ngModel)]="keepSession" [binary]="true" inputId="binary"></p-checkbox>
+                        <label for="binary">Mantener Sesión</label>
+                    </div>
+                    <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+                <br>
+                <div class="btn-login">
+                    <button class="button-login" (click)="login()" pButton pRipple type="button" label="INGRESAR"></button>   
+                </div>
+            </p-card> -->
             <br>
             <div class="text-register">
                 <p>Aún no tienes cuenta, <a [routerLink]="['/signup']" class="link-signup">¡Registrate!</a></p>

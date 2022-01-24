@@ -11,6 +11,8 @@ export class DashboardEmployeeComponent implements OnInit {
 
   isHidden : boolean = true;
   i : number = 0;
+  msgButton : string = "";
+  fechaYHora : any ;
  
   constructor(private primengConfig: PrimeNGConfig, private _routerNavigation : Router) { }
 
@@ -18,7 +20,23 @@ export class DashboardEmployeeComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.activeFirstLink();
     this.activeLink();
+    this.msgButton = "Desplegar";
+    setInterval(()=>{
+      this.getDateToday();
+    },100); 
   }
+
+  displayOptions(){
+    const menu = document.querySelector('.header__profile');
+    const menuOptions = document.querySelector('.profile__options');
+
+    if(menuOptions?.classList.contains('isActiveNavOption')){
+      menuOptions.classList.remove('isActiveNavOption');
+    }else{
+      menuOptions?.classList.add('isActiveNavOption');
+    }
+  }
+
 
   showNavbar (){
     const nav = document.querySelector('.nav__aside');
@@ -28,6 +46,7 @@ export class DashboardEmployeeComponent implements OnInit {
       icon?.classList.replace('pi-bars','pi-times');
       nav?.classList.remove('hide');
       nav?.classList.add('show');
+      this.msgButton = "Encoger";
       setTimeout(() => {
         this.isHidden = false;
       }, 200);
@@ -36,6 +55,7 @@ export class DashboardEmployeeComponent implements OnInit {
       nav?.classList.remove('show');
       nav?.classList.add('hide');
       icon?.classList.replace('pi-times','pi-bars');
+      this.msgButton = "Desplegar";
     }
   }
 
@@ -57,5 +77,15 @@ export class DashboardEmployeeComponent implements OnInit {
 
   logOut(){
     this._routerNavigation.navigate(['login']);
+  }
+
+  getDateToday(){
+    let hoy = new Date();
+
+    let fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
+    let hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+
+    this.fechaYHora = fecha + ' ' + hora;
+
   }
 }
