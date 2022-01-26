@@ -257,4 +257,5 @@ background-color: rgb(238, 238, 238);
 .main__content{
     width: 100%;
     height: calc(100vh - 60px);
+    padding: 15px;
 }

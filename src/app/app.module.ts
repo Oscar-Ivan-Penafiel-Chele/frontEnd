@@ -40,6 +40,11 @@ import {MenubarModule} from 'primeng/menubar';
 import {MenuModule} from 'primeng/menu';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
+import {TableModule} from 'primeng/table';
+import {ToolbarModule} from 'primeng/toolbar';
+import {FileUploadModule} from 'primeng/fileupload';
+import {ToastModule} from 'primeng/toast';
+
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
@@ -56,6 +61,9 @@ import { CategoryAdminComponent } from './pages/admin/category-admin/category-ad
 import { IndicatorsAdminComponent } from './pages/admin/indicators-admin/indicators-admin.component';
 import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
 import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {RadioButtonModule} from 'primeng/radiobutton';
+
 
 @NgModule({
   declarations: [
@@ -115,7 +123,13 @@ import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.co
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableModule,
+    ToolbarModule,
+    FileUploadModule,
+    ToastModule,
+    ConfirmDialogModule,
+    RadioButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
