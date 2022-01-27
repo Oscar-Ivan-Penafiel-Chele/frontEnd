@@ -70,21 +70,32 @@
         <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">
         <div class="field">
             <label for="name">Imagen</label><br>
+            
             <div class="imageSelect" (click)="photoInput.click()">
-                <input class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
+                <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
-                    <img src="#" alt="No hay" >
+                    <div class="imgSelected">
+                        <img src="{{photoSelected}}" alt="Image" height="250px">
+                    </div>
                 </ng-template>
                 <ng-template #desingImage>
                     <div class="designeImagen">
                         <i class="pi pi-images"></i>
-                        <p>Browse files or <span>Attach you files here</span></p>
+                        <p>Browse files <span>or Attach you files here</span></p>
                         <p>Accept File Type: (.png, .jpeg, .jpg)</p>
                     </div>
                 </ng-template>
             </div>
-            <div>
-                aqui va  el doc con la x
+            <div *ngIf="isPhoto" class="infoPhoto">
+                <div class="imgInfoPhoto">
+                    <i class="pi pi-image"></i>
+                    <div class="infoDescriptionImage">
+                        <p>{{file?.name}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
+                    </div>
+                </div>
+                <div class="infoButtonImage">
+                    <i class="pi pi-times" (click)="clearImage()" pRipple></i>
+                </div>
             </div>
         </div>
         <div class="field">
@@ -127,24 +138,29 @@
             </p-dropdown>
             </div>
         </div>
-        <div class="formgrid grid">
-            <div class="field col">
-                <label for="inventoryStatus">Categoría</label>
-                <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
-                    <ng-template let-option pTemplate="item">
-                        <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <div class="field col">
-                <label for="inventoryStatus">Estado</label>
-                <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
-                    <ng-template let-option pTemplate="item">
-                        <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                    </ng-template>
-                </p-dropdown>
-            </div>
+        <div class="field col">
+            <label for="inventoryStatus">Estado</label>
+            <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+                <ng-template let-option pTemplate="item">
+                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                </ng-template>
+            </p-dropdown>
         </div>
+        <div class="field col">    
+            <label for="inventoryStatus">Categoría</label>
+            <div class="flex flex-row justify-content-evenly align-items-center flex-wrap">
+                <div class="field-checkbox mr-3">
+                    <p-checkbox name="group1" value="New York" [(ngModel)]="selectedCities" inputId="ny"></p-checkbox>
+                    <label for="ny">New York</label>
+                </div>
+            </div>
+            <!-- <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+                <ng-template let-option pTemplate="item">
+                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                </ng-template>
+            </p-dropdown> -->
+        </div>
+       
         <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
             <label for="rating">Rating</label>
             <p-rating [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>

@@ -44,7 +44,7 @@ import {TableModule} from 'primeng/table';
 import {ToolbarModule} from 'primeng/toolbar';
 import {FileUploadModule} from 'primeng/fileupload';
 import {ToastModule} from 'primeng/toast';
-
+import {ImageModule} from 'primeng/image';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
@@ -129,7 +129,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     FileUploadModule,
     ToastModule,
     ConfirmDialogModule,
-    RadioButtonModule
+    RadioButtonModule,
+    ImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

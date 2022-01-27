@@ -23,6 +23,12 @@ export class ProductsComponent implements OnInit {
     exportColumns: any[] = [];
     val : number = 0;
     isPhoto : boolean = false;
+    file : File | undefined;
+    photoSelected? : string | ArrayBuffer | null;
+    inputFile :boolean = false;
+    fileSize : string = "";
+    descriptionSize : string = "";
+    selectedCities: string[] = [];
 
   constructor(private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -43,7 +49,35 @@ export class ProductsComponent implements OnInit {
     }
 
     getPhotoSelected(event : any){
+        if(event.target.files && event.target.files[0]){
+            this.file = <File>event.target.files[0];
+            this.getSizeImage(this.file.size);
 
+            const reader = new FileReader;
+            reader.onload = e => this.photoSelected = reader.result;
+            reader.readAsDataURL(this.file);
+            this.isPhoto = true;
+            this.inputFile = true;
+            
+        }
+    }
+
+    getSizeImage(size : number){
+        if(size < 1048576){
+            this.fileSize = (size/1000).toFixed(0);
+            this.descriptionSize = "kb";
+        }else if(size >= 1048576){
+            this.fileSize = (size/1000000).toFixed(0);
+            this.descriptionSize = "mb";
+        }
+    }
+
+    clearImage(){
+        this.isPhoto = false;
+        this.inputFile = false;
+        this.file = undefined;
+        this.photoSelected = "";
+        console.log(this.photoSelected);
     }
 
     exportPdf() {
