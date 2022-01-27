@@ -218,6 +218,7 @@
     border: 1px solid #ccc;
     background-color: white;
     border-radius: 5px;
+    z-index: 9;
 }
 
 .profile__options > p{

@@ -8,10 +8,6 @@
                 </div>
             </div>
             <div class="nav__aside__content">
-                <!-- <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'indicators'" pRipple pTooltip="Dashboard" tooltipPosition="right">
-                    <i class="pi pi-chart-bar"></i>
-                    <p [hidden]="isHidden">Gráficas</p>
-                </div> -->
                 <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Productos</p>
@@ -23,6 +19,14 @@
                 <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Categorías" tooltipPosition="right">
                     <i class="pi pi-th-large"></i>
                     <p [hidden]="isHidden">Categorías</p>
+                </div>
+                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Marcas" tooltipPosition="right">
+                    <i class="pi pi-bookmark"></i>
+                    <p [hidden]="isHidden">Marcas</p>
+                </div>
+                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Proveedor" tooltipPosition="right">
+                    <i class="pi pi-users"></i>
+                    <p [hidden]="isHidden">Proveedor</p>
                 </div>
                 <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="Pedidos" tooltipPosition="right">
                     <i class="pi pi-cloud"></i>

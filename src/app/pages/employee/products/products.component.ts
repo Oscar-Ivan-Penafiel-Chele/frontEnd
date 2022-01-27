@@ -3,6 +3,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { Products } from 'src/app/models/products';
 import { ProductService } from 'src/app/services/product-service.service';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +19,9 @@ export class ProductsComponent implements OnInit {
   selectedProducts: Products[] = [];
   submitted: boolean = false;
   statuses: any[] = [];
+   cols: any[] = [];
+   exportColumns: any[] = [];
+   val : number = 0;
 
   constructor(private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -36,6 +40,15 @@ export class ProductsComponent implements OnInit {
       this.submitted = false;
       this.productDialog = true;
   }
+  exportPdf() {
+        // import("jspdf").then(jsPDF => {
+        //     import("jspdf-autotable").then(x => {
+        //         const doc = new jsPDF.default(0,0);
+        //         doc.autoTable(this.exportColumns, this.products);
+        //         doc.save('products.pdf');
+        //     })
+        // })
+    }
 
   deleteSelectedProducts() {
       this.confirmationService.confirm({
@@ -63,7 +76,7 @@ export class ProductsComponent implements OnInit {
           accept: () => {
               this.products = this.products.filter(val => val.id !== product.id);
               this.product = {};
-              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
+              this.messageService.add({severity:'error', summary: 'Successful', detail: 'Product Deleted', life: 3000});
           }
       });
   }
