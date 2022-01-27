@@ -69,10 +69,23 @@
     <ng-template pTemplate="content">
         <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">
         <div class="field">
-            <label for="name">Imagen</label>
-            <input class="file-input" type="file" name="file" hidden>
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>Browse File to Upload</p>
+            <label for="name">Imagen</label><br>
+            <div class="imageSelect" (click)="photoInput.click()">
+                <input class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
+                <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
+                    <img src="#" alt="No hay" >
+                </ng-template>
+                <ng-template #desingImage>
+                    <div class="designeImagen">
+                        <i class="pi pi-images"></i>
+                        <p>Browse files or <span>Attach you files here</span></p>
+                        <p>Accept File Type: (.png, .jpeg, .jpg)</p>
+                    </div>
+                </ng-template>
+            </div>
+            <div>
+                aqui va  el doc con la x
+            </div>
         </div>
         <div class="field">
             <label for="name">Nombre</label>

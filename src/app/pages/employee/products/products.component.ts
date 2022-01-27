@@ -13,15 +13,16 @@ import * as FileSaver from 'file-saver';
 })
 export class ProductsComponent implements OnInit {
 
-  productDialog: boolean = false;
-  products: Products[] = [];
-  product: Products = {};
-  selectedProducts: Products[] = [];
-  submitted: boolean = false;
-  statuses: any[] = [];
-   cols: any[] = [];
-   exportColumns: any[] = [];
-   val : number = 0;
+    productDialog: boolean = false;
+    products: Products[] = [];
+    product: Products = {};
+    selectedProducts: Products[] = [];
+    submitted: boolean = false;
+    statuses: any[] = [];
+    cols: any[] = [];
+    exportColumns: any[] = [];
+    val : number = 0;
+    isPhoto : boolean = false;
 
   constructor(private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -39,8 +40,13 @@ export class ProductsComponent implements OnInit {
       this.product = {};
       this.submitted = false;
       this.productDialog = true;
-  }
-  exportPdf() {
+    }
+
+    getPhotoSelected(event : any){
+
+    }
+
+    exportPdf() {
         // import("jspdf").then(jsPDF => {
         //     import("jspdf-autotable").then(x => {
         //         const doc = new jsPDF.default(0,0);
