@@ -1,5 +1,8 @@
 export interface Category {
     id : number ;
-    title : string;
+    name : string ;
     thumbnail : string;
+    status : string;
+    createDate : Date;
+    uploadDate : Date;
 }

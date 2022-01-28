@@ -14,7 +14,7 @@
 
     <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll"
         [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Poductos</h5>
@@ -34,7 +34,8 @@
                 <th><i class="pi pi-image"></i> Imagen</th>
                 <th pSortableColumn="price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="price"></p-sortIcon></th>
                 <th pSortableColumn="category"><i class="pi pi-tag"></i> Categoría <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="rating"><i class="pi pi-star"></i> Rating <p-sortIcon field="rating"></p-sortIcon></th>
+                <th pSortableColumn="state"><i class="pi pi-star"></i> Estado <p-sortIcon field="state"></p-sortIcon></th>
+                <th pSortableColumn="acciones"><i class="pi pi-star"></i> Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product let-columns="columns" let-index="rowIndex">
@@ -46,14 +47,13 @@
                     <p-tableCheckbox [value]="product"></p-tableCheckbox>
                 </td>
                 <td>{{product.name}}</td>
-                <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
+                <td><img [src]="product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
                 <td>{{product.price | currency:'USD'}}</td>
                 <td>{{product.category}}</td>
-                <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
-                <td><span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td>
+                <td><span [class]="'product-badge status-' + (product.status ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -67,7 +67,6 @@
 
 <p-dialog [(visible)]="productDialog" [draggable]="false" [style]="{width: '800px'}" header="Detalles del Producto" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
-        <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">
         <div class="field">
             <label for="name">Imagen</label><br>
             
@@ -75,7 +74,8 @@
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img src="{{photoSelected}}" alt="Image" height="250px">
+                        <img [src]="product.image" [alt]="product.image" height="250px" class="product-image" *ngIf="product.image">
+                        <img src="{{photoSelected}}" alt="" height="250px" *ngIf="!product.image">
                     </div>
                 </ng-template>
                 <ng-template #desingImage>
@@ -99,39 +99,39 @@
             </div>
         </div>
         <div class="field">
-            <label for="name">Nombre</label>
+            <label for="name">Nombre del Producto</label>
             <input type="text" required pInputText id="name" [(ngModel)]="product.name" required autofocus />
             <small class="p-error" *ngIf="submitted && !product.name">Nombre es requerido</small>
         </div>
         <div class="field">
-            <label for="description">Descripción</label>
+            <label for="description">Descripción del Producto</label>
             <textarea id="description" required pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20"></textarea>
             <small class="p-error" *ngIf="submitted && !product.name">Descripción es requerido</small>
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="price">Precio</label>
+                <label for="price">Precio del Producto</label>
                 <p-inputNumber [required]="true" id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && !product.name">Precio es requerido</small>
             </div>
             <div class="field col">
-                <label for="quantity">Cantidad</label>
+                <label for="quantity">Cantidad del Producto</label>
                 <p-inputNumber [required]="true" id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && !product.name">Cantidad es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="inventoryStatus">Proveedor</label>
-                <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+                <label for="inventoryStatus">Proveedor del Producto</label>
+                <p-dropdown [(ngModel)]="product.status" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
                     </ng-template>
                 </p-dropdown>
             </div>
             <div class="field col">
-                <label for="inventoryStatus">Marca</label>
-            <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+                <label for="inventoryStatus">Marca del Producto</label>
+            <p-dropdown [(ngModel)]="product.status" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
                 </ng-template>
@@ -139,30 +139,25 @@
             </div>
         </div>
         <div class="field col">
-            <label for="inventoryStatus">Estado</label>
-            <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+            <label for="categoryStatus">Estado del Producto</label>
+            <p-dropdown [(ngModel)]="product.status" inputId="categoryStatus" [options]="states" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
                 </ng-template>
             </p-dropdown>
         </div>
         <div class="field col">    
-            <label for="inventoryStatus">Categoría</label>
-            <div class="flex flex-row justify-content-evenly align-items-center flex-wrap">
-                <div class="field-checkbox mr-3">
-                    <p-checkbox name="group1" value="New York" [(ngModel)]="selectedCities" inputId="ny"></p-checkbox>
-                    <label for="ny">New York</label>
+            <label for="inventoryStatus">Categorías del Producto</label>
+            <div class="flex flex-row justify-content-evenly align-items-center flex-wrap mt-3">
+                <div class="field-checkbox mr-3" *ngFor="let category of categories">
+                    <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="selectedCategories" inputId="{{category.id}}"></p-checkbox>
+                    <label for="{{category.id}}">{{category.name}}</label>
                 </div>
             </div>
-            <!-- <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
-                <ng-template let-option pTemplate="item">
-                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                </ng-template>
-            </p-dropdown> -->
         </div>
        
         <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
-            <label for="rating">Rating</label>
+            <label for="rating">Rating del Producto</label>
             <p-rating [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
         </div>    
     </ng-template>

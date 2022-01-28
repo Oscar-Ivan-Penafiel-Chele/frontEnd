@@ -45,6 +45,8 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {FileUploadModule} from 'primeng/fileupload';
 import {ToastModule} from 'primeng/toast';
 import {ImageModule} from 'primeng/image';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
@@ -130,7 +132,9 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     ToastModule,
     ConfirmDialogModule,
     RadioButtonModule,
-    ImageModule
+    ImageModule,
+    ProgressSpinnerModule,
+    ProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

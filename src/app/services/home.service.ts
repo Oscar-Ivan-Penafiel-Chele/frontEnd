@@ -15,6 +15,7 @@ export class HomeService {
 
   API_URL : string = "https://localhost:3800/";
   pathBrand : string = "assets/data/brands.json";
+  pathProducts : string = "assets/data/products.json";
   pathCategories : string = "assets/data/categories.json";
   pathItemNavigation : string = "assets/data/itemNavigation.json";
   pathItemNFooter : string = "assets/data/footer_items.json";
@@ -31,14 +32,8 @@ export class HomeService {
     return this._http.get<Brand[]>(this.pathBrand);
   }
 
+  getAllProducts() : Observable<Product[]>{
+    return this._http.get<Product[]>(this.pathProducts);
+  }
 
-  // getProducts() : Observable<Product[]>{
-  //   return this._http.get<Product[]>('assets/data/products.json')
-  // }
-  getProducts() {
-    return this._http.get<any>('assets/data/products.json')
-    .toPromise()
-    .then(res => <Product[]>res.data)
-    .then(data => { return data; });
-}
 }

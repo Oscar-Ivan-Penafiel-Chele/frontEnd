@@ -1,42 +1,50 @@
 [
     {
         "id": 1,
-        "title": "Cerrajería",
-        "thumbnail": "assets/img/categories/llaves.jpg"
+        "name": "Cerrajería",
+        "thumbnail": "assets/img/categories/llaves.jpg",
+        "status": "Activo"
     },
     {
         "id": 2,
-        "title": "Construcción",
-        "thumbnail": "assets/img/categories/construction.jpg"
+        "name": "Construcción",
+        "thumbnail": "assets/img/categories/construction.jpg",
+        "status": "Activo"
     },
     {
         "id": 3,
-        "title": "Ferretería",
-        "thumbnail": "assets/img/categories/tools.jpg"
+        "name": "Ferretería",
+        "thumbnail": "assets/img/categories/tools.jpg",
+        "status": "Activo"
     },
     {
         "id": 4,
-        "title": "Herramientas",
-        "thumbnail": "assets/img/categories/herramientas.jpg"
+        "name": "Herramientas",
+        "thumbnail": "assets/img/categories/herramientas.jpg",
+        "status": "Activo"
     },
     {
         "id": 5,
-        "title": "Iluminación",
-        "thumbnail": "assets/img/categories/iluminacion.jpg"
+        "name": "Iluminación",
+        "thumbnail": "assets/img/categories/iluminacion.jpg",
+        "status": "Activo"
     },
     {
         "id": 6,
-        "title": "Pinturas",
-        "thumbnail": "assets/img/categories/pintura.png"
+        "name": "Pinturas",
+        "thumbnail": "assets/img/categories/pintura.png",
+        "status": "Activo"
     },
     {
         "id": 7,
-        "title": "Plomería",
-        "thumbnail": "assets/img/categories/plomeria.jpg"
+        "name": "Plomería",
+        "thumbnail": "assets/img/categories/plomeria.jpg",
+        "status": "Activo"
     },
     {
         "id": 8,
-        "title": "Jardín",
-        "thumbnail": "assets/img/categories/jardin.jpg"
+        "name": "Jardín",
+        "thumbnail": "assets/img/categories/jardin.jpg",
+        "status": "Activo"
     }
 ]

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { Products } from 'src/app/models/products';
+import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product-service.service';
 import * as FileSaver from 'file-saver';
+import { HomeService } from 'src/app/services/home.service';
+import { Category } from 'src/app/models/category';
 
 @Component({
   selector: 'app-products',
@@ -14,9 +16,9 @@ import * as FileSaver from 'file-saver';
 export class ProductsComponent implements OnInit {
 
     productDialog: boolean = false;
-    products: Products[] = [];
-    product: Products = {};
-    selectedProducts: Products[] = [];
+    products : Product[] = [];
+    product : Product = {} as Product;
+    selectedProducts: Product[] = [];
     submitted: boolean = false;
     statuses: any[] = [];
     cols: any[] = [];
@@ -28,24 +30,39 @@ export class ProductsComponent implements OnInit {
     inputFile :boolean = false;
     fileSize : string = "";
     descriptionSize : string = "";
-    selectedCities: string[] = [];
+    selectedCategories: Category[] = [];
+    categories : Category[] = [];
+    states : any[] = [];
 
-  constructor(private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+    constructor(
+        private productService: ProductService, 
+        private messageService: MessageService, 
+        private confirmationService: ConfirmationService,
+        private _homeService : HomeService) { }
 
-  ngOnInit(): void {
-    this.productService.getProducts().then((data : any) => this.products = data);
+    ngOnInit(): void {
+        this.states = [
+            {label: 'Activo', value: '0'},
+            {label: 'Inactivo', value: '1'},
+        ]
+        this.getAllProducts();
+        this.getAllCategories();
+    }
 
-        this.statuses = [
-            {label: 'INSTOCK', value: 'instock'},
-            {label: 'LOWSTOCK', value: 'lowstock'},
-            {label: 'OUTOFSTOCK', value: 'outofstock'}
-        ];
-  }
+    getAllProducts() {
+    this._homeService.getAllProducts()
+    .subscribe((response) =>{
+        this.products = <Product[]>response;
+        console.log(this.products);
+    });
+    }
 
     openNew() {
-      this.product = {};
-      this.submitted = false;
-      this.productDialog = true;
+        this.isPhoto = false;  
+        this.inputFile = false;
+        this.product = {} as Product;
+        this.submitted = false;
+        this.productDialog = true;
     }
 
     getPhotoSelected(event : any){
@@ -72,6 +89,13 @@ export class ProductsComponent implements OnInit {
         }
     }
 
+    getAllCategories() {
+        this._homeService.getAllCategories()
+        .subscribe((response) =>{
+          this.categories = response;
+        });
+      }
+
     clearImage(){
         this.isPhoto = false;
         this.inputFile = false;
@@ -90,82 +114,87 @@ export class ProductsComponent implements OnInit {
         // })
     }
 
-  deleteSelectedProducts() {
-      this.confirmationService.confirm({
-          message: 'Are you sure you want to delete the selected products?',
-          header: 'Confirm',
-          icon: 'pi pi-exclamation-triangle',
-          accept: () => {
-              this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-              this.selectedProducts = [];
-              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
-          }
-      });
-  }
+    deleteSelectedProducts() {
+    //   this.confirmationService.confirm({
+    //       message: 'Are you sure you want to delete the selected products?',
+    //       header: 'Confirm',
+    //       icon: 'pi pi-exclamation-triangle',
+    //       accept: () => {
+    //           this.products = this.products.filter(val => !this.selectedProducts.includes(val));
+    //           this.selectedProducts = [];
+    //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
+    //       }
+    //   });
+    }
 
-  editProduct(product: Products) {
+    editProduct(product: Product) {
+      this.isPhoto = true;  
+      this.inputFile = true;
       this.product = {...product};
       this.productDialog = true;
-  }
+    }
 
-  deleteProduct(product: Products) {
-      this.confirmationService.confirm({
-          message: 'Are you sure you want to delete ' + product.name + '?',
-          header: 'Confirm',
-          icon: 'pi pi-exclamation-triangle',
-          accept: () => {
-              this.products = this.products.filter(val => val.id !== product.id);
-              this.product = {};
-              this.messageService.add({severity:'error', summary: 'Successful', detail: 'Product Deleted', life: 3000});
-          }
-      });
-  }
+    deleteProduct(product: Product) {
+    //   this.confirmationService.confirm({
+    //       message: 'Are you sure you want to delete ' + product.name + '?',
+    //       header: 'Confirm',
+    //       icon: 'pi pi-exclamation-triangle',
+    //       accept: () => {
+    //           this.products = this.products.filter(val => val.id !== this.products.id);
+    //           this.product = {};
+    //           this.messageService.add({severity:'error', summary: 'Successful', detail: 'Product Deleted', life: 3000});
+    //       }
+    //   });
+    }
 
-  hideDialog() {
-      this.productDialog = false;
-      this.submitted = false;
-  }
+    hideDialog() {
+        this.productDialog = false;
+        this.submitted = false;
+    }
 
-  saveProduct() {
-      this.submitted = true;
+    saveProduct() {
+    // console.log(this.product.inventoryStatus);
+    console.log(this.selectedCategories);
+    //   this.submitted = true;
 
-      if (this.product.name?.trim()) {
-          if (this.product.id) {
-              this.products[this.findIndexById(this.product.id)] = this.product;
-              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
-          }
-          else {
-              this.product.id = this.createId();
-              this.product.image = 'product-placeholder.svg';
-              this.products.push(this.product);
-              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
-          }
+    //   if (this.product.name?.trim()) {
+    //       if (this.product.id) {
+    //           this.products[this.findIndexById(this.product.id)] = this.product;
+    //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
+    //       }
+    //       else {
+    //           this.product.id = this.createId();
+    //           this.product.image = 'product-placeholder.svg';
+    //           this.products.push(this.product);
+    //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
+    //       }
 
-          this.products = [...this.products];
-          this.productDialog = false;
-          this.product = {};
-      }
-  }
+    //       this.products = [...this.products];
+    //       this.productDialog = false;
+    //       this.product = {};
+    //   }
+    }
 
-  findIndexById(id: string): number {
-      let index = -1;
-      for (let i = 0; i < this.products.length; i++) {
-          if (this.products[i].id === id) {
-              index = i;
-              break;
-          }
-      }
+    findIndexById(id: string): number {
+    //   let index = -1;
+    //   for (let i = 0; i < this.products.length; i++) {
+    //       if (this.products[i].id === id) {
+    //           index = i;
+    //           break;
+    //       }
+    //   }
 
-      return index;
-  }
+    //   return index;
+    return 0;
+    }
 
-  createId(): string {
-      let id = '';
-      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for ( var i = 0; i < 5; i++ ) {
-          id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-  }
+    // createId(): string {
+    //     let id = '';
+    //     var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //     for ( var i = 0; i < 5; i++ ) {
+    //         id += chars.charAt(Math.floor(Math.random() * chars.length));
+    //     }
+    //     return id;
+    // }
 
 }
