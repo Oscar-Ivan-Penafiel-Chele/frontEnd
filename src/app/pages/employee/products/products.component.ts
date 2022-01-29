@@ -6,6 +6,7 @@ import { ProductService } from 'src/app/services/product-service.service';
 import * as FileSaver from 'file-saver';
 import { HomeService } from 'src/app/services/home.service';
 import { Category } from 'src/app/models/category';
+import { Brand } from 'src/app/models/brand';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +19,8 @@ export class ProductsComponent implements OnInit {
     productDialog: boolean = false;
     products : Product[] = [];
     product : Product = {} as Product;
+    brands : Brand[] = [];
+    brand : Brand = {} as Brand;
     selectedProducts: Product[] = [];
     submitted: boolean = false;
     statuses: any[] = [];
@@ -42,18 +45,18 @@ export class ProductsComponent implements OnInit {
 
     ngOnInit(): void {
         this.states = [
-            {label: 'Activo', value: '0'},
-            {label: 'Inactivo', value: '1'},
+            {name: 'Activo', id: '0', icon : 'pi pi-thumbs-up'},
+            {name: 'Inactivo', id: '1', icon : 'pi pi-thumbs-down'},
         ]
         this.getAllProducts();
         this.getAllCategories();
+        this.getAllBrands();
     }
 
     getAllProducts() {
     this._homeService.getAllProducts()
     .subscribe((response) =>{
         this.products = <Product[]>response;
-        console.log(this.products);
     });
     }
 
@@ -94,7 +97,14 @@ export class ProductsComponent implements OnInit {
         .subscribe((response) =>{
           this.categories = response;
         });
-      }
+    }
+
+    getAllBrands(){
+        this._homeService.getAllBrands()
+        .subscribe((response) => {
+          this.brands = <Brand[]>response;
+        })
+    }
 
     clearImage(){
         this.isPhoto = false;
@@ -103,6 +113,30 @@ export class ProductsComponent implements OnInit {
         this.photoSelected = "";
         console.log(this.photoSelected);
     }
+
+    saveProduct() {
+        // console.log(this.product.inventoryStatus);
+        console.log(this.product.id_brand);
+        //   this.submitted = true;
+    
+        //   if (this.product.name?.trim()) {
+        //       if (this.product.id) {
+        //           this.products[this.findIndexById(this.product.id)] = this.product;
+        //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
+        //       }
+        //       else {
+        //           this.product.id = this.createId();
+        //           this.product.image = 'product-placeholder.svg';
+        //           this.products.push(this.product);
+        //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
+        //       }
+    
+        //       this.products = [...this.products];
+        //       this.productDialog = false;
+        //       this.product = {};
+        //   }
+    }
+
 
     exportPdf() {
         // import("jspdf").then(jsPDF => {
@@ -135,66 +169,21 @@ export class ProductsComponent implements OnInit {
     }
 
     deleteProduct(product: Product) {
-    //   this.confirmationService.confirm({
-    //       message: 'Are you sure you want to delete ' + product.name + '?',
-    //       header: 'Confirm',
-    //       icon: 'pi pi-exclamation-triangle',
-    //       accept: () => {
-    //           this.products = this.products.filter(val => val.id !== this.products.id);
-    //           this.product = {};
-    //           this.messageService.add({severity:'error', summary: 'Successful', detail: 'Product Deleted', life: 3000});
-    //       }
-    //   });
+      this.confirmationService.confirm({
+          message: '¿Estás seguro de eliminar el producto: ' + product.name + '?',
+          header: 'Eliminar Producto',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => {
+            //   this.products = this.products.filter(val => val.id_product !== this.products.id_product);
+            //   this.product = {};
+              this.messageService.add({severity:'error', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
+          }
+      });
     }
 
     hideDialog() {
         this.productDialog = false;
         this.submitted = false;
     }
-
-    saveProduct() {
-    // console.log(this.product.inventoryStatus);
-    console.log(this.selectedCategories);
-    //   this.submitted = true;
-
-    //   if (this.product.name?.trim()) {
-    //       if (this.product.id) {
-    //           this.products[this.findIndexById(this.product.id)] = this.product;
-    //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
-    //       }
-    //       else {
-    //           this.product.id = this.createId();
-    //           this.product.image = 'product-placeholder.svg';
-    //           this.products.push(this.product);
-    //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
-    //       }
-
-    //       this.products = [...this.products];
-    //       this.productDialog = false;
-    //       this.product = {};
-    //   }
-    }
-
-    findIndexById(id: string): number {
-    //   let index = -1;
-    //   for (let i = 0; i < this.products.length; i++) {
-    //       if (this.products[i].id === id) {
-    //           index = i;
-    //           break;
-    //       }
-    //   }
-
-    //   return index;
-    return 0;
-    }
-
-    // createId(): string {
-    //     let id = '';
-    //     var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    //     for ( var i = 0; i < 5; i++ ) {
-    //         id += chars.charAt(Math.floor(Math.random() * chars.length));
-    //     }
-    //     return id;
-    // }
 
 }

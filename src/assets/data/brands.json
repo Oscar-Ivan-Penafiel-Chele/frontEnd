@@ -1,34 +1,42 @@
 [
     {
         "id": "1",
+        "brand_name" : "3M",
         "thumbnail": "assets/img/brands/3M.jpg"
     },
     {
         "id": "2",
+        "brand_name" : "Abro",
         "thumbnail": "assets/img/brands/Abro.jpg"
     },
     {
         "id": "3",
+        "brand_name" : "Dewalt",
         "thumbnail": "assets/img/brands/dewalt.jpg"
     },
     {
         "id": "4",
+        "brand_name" : "Edesa",
         "thumbnail": "assets/img/brands/Edesa.png"
     },
     {
         "id": "5",
+        "brand_name" : "FV",
         "thumbnail": "assets/img/brands/FV.jpg"
     },
     {
         "id": "6",
+        "brand_name" : "Latina",
         "thumbnail": "assets/img/brands/latina.png"
     },
     {
         "id": "7",
+        "brand_name" : "Pinturas Unidas",
         "thumbnail": "assets/img/brands/PINTURAS-UNIDAS.jpg"
     },
     {
         "id": "8",
+        "brand_name" : "Stanley",
         "thumbnail": "assets/img/brands/stanley.jpg"
     }
 ]

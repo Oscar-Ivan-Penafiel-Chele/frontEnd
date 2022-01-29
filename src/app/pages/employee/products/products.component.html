@@ -122,27 +122,36 @@
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="inventoryStatus">Proveedor del Producto</label>
-                <p-dropdown [(ngModel)]="product.status" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+                <label for="productProvider">Proveedor del Producto</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="product.id_provider" optionLabel="name" optionValue="id" inputId="productProvider" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
-                        <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span [class]="'product-badge status-' + option.id">{{option.name}}</span>
+                        </div>
                     </ng-template>
                 </p-dropdown>
             </div>
             <div class="field col">
-                <label for="inventoryStatus">Marca del Producto</label>
-            <p-dropdown [(ngModel)]="product.status" inputId="inventoryStatus" [options]="statuses" placeholder="Seleccionar">
+            <label for="productBrand">Marca del Producto</label>
+            <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id" inputId="productBrand" [options]="brands" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
-                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                    <div class="flex flex-row justify-content-start align-items-center">
+                        <img class="mr-2" [src]="option.thumbnail" alt="Marca" width="25px">
+                        <span [class]="'product-badge status-' + option.id_brand">{{option.brand_name}}</span>
+                    </div>
                 </ng-template>
             </p-dropdown>
             </div>
         </div>
         <div class="field col">
-            <label for="categoryStatus">Estado del Producto</label>
-            <p-dropdown [(ngModel)]="product.status" inputId="categoryStatus" [options]="states" placeholder="Seleccionar">
+            <label for="productStatus">Estado del Producto</label>
+            <p-dropdown [showClear]="true" [(ngModel)]="product.status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
-                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                    <div class="flex flex-row justify-content-start align-items-center">
+                        <i class="{{option.icon}} mr-2"></i>
+                        <span [class]="'product-badge status-' + option.id">{{option.name}}</span>
+                    </div>
                 </ng-template>
             </p-dropdown>
         </div>
@@ -158,7 +167,7 @@
        
         <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
             <label for="rating">Rating del Producto</label>
-            <p-rating [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
+            <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
         </div>    
     </ng-template>
 
