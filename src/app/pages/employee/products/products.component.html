@@ -144,8 +144,10 @@
             </p-dropdown>
             </div>
         </div>
-        <div class="field col">
-            <label for="productStatus">Estado del Producto</label>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="productStatus">Estado del Producto</label>
             <p-dropdown [showClear]="true" [(ngModel)]="product.status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
@@ -154,26 +156,29 @@
                     </div>
                 </ng-template>
             </p-dropdown>
+            </div>
+            <div class="field col">
+                <label for="rating">Rating del Producto</label>
+                <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
+                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
+                </div> 
+            </div>
         </div>
+
         <div class="field col">    
             <label for="inventoryStatus">Categorías del Producto</label>
-            <div class="flex flex-row justify-content-evenly align-items-center flex-wrap mt-3">
-                <div class="field-checkbox mr-3" *ngFor="let category of categories">
+            <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
+                <div class="field-checkbox mr-3" *ngFor="let category of categories | sortByOrder">
                     <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="selectedCategories" inputId="{{category.id}}"></p-checkbox>
                     <label for="{{category.id}}">{{category.name}}</label>
                 </div>
             </div>
         </div>
-       
-        <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
-            <label for="rating">Rating del Producto</label>
-            <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
-        </div>    
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
     </ng-template>
 </p-dialog>
 

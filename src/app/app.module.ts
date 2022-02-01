@@ -65,6 +65,7 @@ import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.co
 import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
 
 
 @NgModule({
@@ -92,6 +93,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     IndicatorsAdminComponent,
     ReportAdminComponent,
     OrdersAdminComponent,
+    SortByOrderPipe,
   ],
   imports: [
     BrowserModule,

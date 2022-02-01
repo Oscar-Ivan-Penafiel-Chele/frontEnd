@@ -7,12 +7,13 @@ import * as FileSaver from 'file-saver';
 import { HomeService } from 'src/app/services/home.service';
 import { Category } from 'src/app/models/category';
 import { Brand } from 'src/app/models/brand';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
-  providers : [MessageService,ConfirmationService]
+  providers : [MessageService,ConfirmationService, UpperCasePipe]
 })
 export class ProductsComponent implements OnInit {
 
@@ -36,11 +37,13 @@ export class ProductsComponent implements OnInit {
     selectedCategories: Category[] = [];
     categories : Category[] = [];
     states : any[] = [];
+    i : number = 0;
 
     constructor(
         private productService: ProductService, 
         private messageService: MessageService, 
         private confirmationService: ConfirmationService,
+        private _sortByOrder : UpperCasePipe,
         private _homeService : HomeService) { }
 
     ngOnInit(): void {
@@ -103,6 +106,9 @@ export class ProductsComponent implements OnInit {
         this._homeService.getAllBrands()
         .subscribe((response) => {
           this.brands = <Brand[]>response;
+          for( this.i = 0 ; this.i < this.brands.length ; this.i++){
+              this._sortByOrder.transform(this.brands[this.i].brand_name);
+          }
         })
     }
 
