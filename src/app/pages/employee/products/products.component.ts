@@ -7,6 +7,7 @@ import { HomeService } from 'src/app/services/home.service';
 import { Category } from 'src/app/models/category';
 import { Brand } from 'src/app/models/brand';
 import { UpperCasePipe } from '@angular/common';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-products',
@@ -42,6 +43,7 @@ export class ProductsComponent implements OnInit {
 
 
     constructor(
+        private _rest : RestService,
         private messageService: MessageService, 
         private confirmationService: ConfirmationService,
         private _sortByOrder : UpperCasePipe,
@@ -130,10 +132,12 @@ export class ProductsComponent implements OnInit {
     }
 
     saveProduct() {
-        this.isError = true;
+        const data = new FormData();
+        this._rest.createProduct(data);
+        // this.isError = true;
         //   this.submitted = true;
-        console.log(this.product);
-        this.validateData;
+        // console.log(this.product);
+        // this.validateData;
         //   if (this.product.name?.trim()) {
         //       if (this.product.id) {
         //           this.products[this.findIndexById(this.product.id)] = this.product;
