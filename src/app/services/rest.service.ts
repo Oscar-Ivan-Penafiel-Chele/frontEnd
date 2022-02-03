@@ -8,9 +8,11 @@ import { Product } from '../models/product';
 })
 export class RestService {
 
+  API : string = "https://localhost:8000/api";
+  
   constructor(private _http : HttpClient) { }
 
   createProduct(data : FormData): Observable<Product>{
-    return this._http.post<Product>('https://localhost:3000',data);
+    return this._http.post<Product>(`${this.API}/products`,data);
   }
 }
