@@ -74,7 +74,7 @@
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img [src]="product.image" [alt]="product.image" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img [src]="product.product_image" [alt]="product.product_image" height="250px" class="product-image" *ngIf="isPhotoEdit">
                         <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
                     </div>
                 </ng-template>
@@ -90,7 +90,7 @@
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p>{{file?.name}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
+                        <p>{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
                     </div>
                 </div>
                 <div class="infoButtonImage">
@@ -100,24 +100,29 @@
         </div>
         <div class="field">
             <label for="name">Nombre del Producto</label>
-            <input type="text" required pInputText id="name" [(ngModel)]="product.name" required autofocus />
-            <small class="p-error" *ngIf="submitted && !product.name">Nombre es requerido</small>
+            <input type="text" required pInputText id="name" [(ngModel)]="product.product_name" required autofocus />
+            <small class="p-error" *ngIf="submitted && !product.product_name">Nombre es requerido</small>
         </div>
         <div class="field">
             <label for="description">Descripción del Producto</label>
-            <textarea id="description" required pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20"></textarea>
-            <small class="p-error" *ngIf="submitted && !product.name">Descripción es requerido</small>
+            <textarea id="description" required pInputTextarea [(ngModel)]="product.product_description" required rows="3" cols="20"></textarea>
+            <small class="p-error" *ngIf="submitted && !product.product_description">Descripción es requerido</small>
         </div>
         <div class="formgrid grid">
             <div class="field col">
+                <label for="code">Código del Producto</label>
+                <input type="text" required pInputText id="code" [(ngModel)]="product.product_code" [pKeyFilter]="'alphanum'" required/>
+                <small class="p-error" *ngIf="submitted && !product.product_code">Código es requerido</small>
+            </div>
+            <div class="field col">
                 <label for="price">Precio del Producto</label>
-                <p-inputNumber [required]="true" id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                <small class="p-error" *ngIf="submitted && !product.name">Precio es requerido</small>
+                <p-inputNumber [required]="true" id="price" [(ngModel)]="product.product_price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                <small class="p-error" *ngIf="submitted && !product.product_price">Precio es requerido</small>
             </div>
             <div class="field col">
                 <label for="quantity">Cantidad del Producto</label>
-                <p-inputNumber [required]="true" id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
-                <small class="p-error" *ngIf="submitted && !product.name">Cantidad es requerido</small>
+                <p-inputNumber [required]="true" id="quantity" [(ngModel)]="product.product_stock"></p-inputNumber>
+                <small class="p-error" *ngIf="submitted && !product.product_stock">Cantidad es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
@@ -148,7 +153,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="productStatus">Estado del Producto</label>
-            <p-dropdown [showClear]="true" [(ngModel)]="product.status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+            <p-dropdown [showClear]="true" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
                         <i class="{{option.icon}} mr-2"></i>
@@ -160,7 +165,7 @@
             <div class="field col">
                 <label for="rating">Rating del Producto</label>
                 <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
-                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="product.rating" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
+                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="product.product_rating" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
                 </div> 
             </div>
         </div>
@@ -169,7 +174,7 @@
             <label for="inventoryStatus">Categorías del Producto</label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
                 <div class="field-checkbox mr-3" *ngFor="let category of categories | sortByOrder">
-                    <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="product.id_product_category" inputId="{{category.id}}"></p-checkbox>
+                    <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="categorieSelected" inputId="{{category.id}}"></p-checkbox>
                     <label for="{{category.id}}">{{category.name}}</label>
                 </div>
             </div>

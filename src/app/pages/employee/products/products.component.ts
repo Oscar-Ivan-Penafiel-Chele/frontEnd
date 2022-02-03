@@ -28,7 +28,8 @@ export class ProductsComponent implements OnInit {
     cols: any[] = [];
     exportColumns: any[] = [];
     isPhoto : boolean = false;
-    file : File | undefined;
+    categorieSelected : number []  = [];
+    fileTmp : any;
     photoSelected? : string | ArrayBuffer | null;
     inputFile :boolean = false;
     fileSize : string = "";
@@ -82,17 +83,24 @@ export class ProductsComponent implements OnInit {
         this.productDialog = true;
     }
 
-    getPhotoSelected(event : any){
-        if(event.target.files && event.target.files[0]){
-            this.file = <File>event.target.files[0];
-            this.getSizeImage(this.file.size);
+    getPhotoSelected($event : any){
+        if($event.target.files && $event.target.files[0]){
+            // this.file = <File>event.target.files[0];
+            const [ file ] = $event.target.files;
+            this.fileTmp = {
+                fileRaw : file,
+                fileName : file.name,
+                fileSize : file.size,
+            }
+
+            this.getSizeImage(this.fileTmp.fileSize);
             
             const reader = new FileReader;
             reader.onload = e => this.photoSelected = reader.result;
-            reader.readAsDataURL(this.file);
+            reader.readAsDataURL(this.fileTmp.fileRaw);
             this.isPhoto = true;
             this.inputFile = true;
-            this.product.image = this.file.name;
+            this.product.product_image = this.fileTmp.fileName;
         }
     }
 
@@ -126,15 +134,26 @@ export class ProductsComponent implements OnInit {
     clearImage(){
         this.isPhoto = false;
         this.inputFile = false;
-        this.file = undefined;
+        this.fileTmp = {};
         this.photoSelected = "";
         this.isPhotoEdit = false;
     }
 
     saveProduct() {
+        this.product.id_user = 1;
         const data = new FormData();
-        this._rest.createProduct(data);
-        // this.isError = true;
+        data.append('image', this.fileTmp.fileRaw);
+        Object.entries(this.product).forEach(([key , value]) => {
+            data.append(`${key}`, value);
+        });
+        this._rest.createProduct(data)
+            .subscribe((response)=>{
+                console.log(response);
+            });
+        
+        
+        
+            // this.isError = true;
         //   this.submitted = true;
         // console.log(this.product);
         // this.validateData;
@@ -192,7 +211,7 @@ export class ProductsComponent implements OnInit {
 
     deleteProduct(product: Product) {
       this.confirmationService.confirm({
-          message: '¿Estás seguro de eliminar el producto: ' + product.name + '?',
+          message: '¿Estás seguro de eliminar el producto: ' + product.product_name + '?',
           header: 'Eliminar Producto',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {

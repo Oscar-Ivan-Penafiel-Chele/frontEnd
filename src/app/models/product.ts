@@ -3,15 +3,14 @@ export interface Product {
     id_user?:number;
     id_provider?:number;
     id_brand?:number;
-    id_product_category : number[];
-    code?:string;
-    name?:string;
-    description?:string;
-    quantity?:number;
-    price?:number;
-    status?:string;
-    image?:string;
-    rating?:number;
+    product_code?:string;
+    product_name?:string;
+    product_description?:string;
+    product_stock?:number;
+    product_price?:number;
+    product_image?:string;
+    product_status?:string;
+    product_rating?:number;
     createDate : Date;
     updateDate : Date;
 }
