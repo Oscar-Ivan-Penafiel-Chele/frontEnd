@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
-import { MessageService } from 'primeng/api';
+import { MessageService, Message, PrimeNGConfig } from 'primeng/api';
 import { Product } from 'src/app/models/product';
-import { ProductService } from 'src/app/services/product-service.service';
 import * as FileSaver from 'file-saver';
 import { HomeService } from 'src/app/services/home.service';
 import { Category } from 'src/app/models/category';
@@ -27,7 +26,6 @@ export class ProductsComponent implements OnInit {
     statuses: any[] = [];
     cols: any[] = [];
     exportColumns: any[] = [];
-    val : number = 0;
     isPhoto : boolean = false;
     file : File | undefined;
     photoSelected? : string | ArrayBuffer | null;
@@ -38,15 +36,26 @@ export class ProductsComponent implements OnInit {
     categories : Category[] = [];
     states : any[] = [];
     i : number = 0;
+    isPhotoEdit : boolean;
+    msgs1: Message[] = [];
+    isError : boolean ;
+
 
     constructor(
-        private productService: ProductService, 
         private messageService: MessageService, 
         private confirmationService: ConfirmationService,
         private _sortByOrder : UpperCasePipe,
-        private _homeService : HomeService) { }
+        private _homeService : HomeService) { 
+
+            this.isPhotoEdit = false;
+            this.isError = false;
+
+        }
 
     ngOnInit(): void {
+        this.msgs1 = [
+            {severity:'warn', summary:'Warning', detail:'Message Content'}
+          ];
         this.states = [
             {name: 'Activo', id: '0', icon : 'pi pi-thumbs-up'},
             {name: 'Inactivo', id: '1', icon : 'pi pi-thumbs-down'},
@@ -75,13 +84,13 @@ export class ProductsComponent implements OnInit {
         if(event.target.files && event.target.files[0]){
             this.file = <File>event.target.files[0];
             this.getSizeImage(this.file.size);
-
+            
             const reader = new FileReader;
             reader.onload = e => this.photoSelected = reader.result;
             reader.readAsDataURL(this.file);
             this.isPhoto = true;
             this.inputFile = true;
-            
+            this.product.image = this.file.name;
         }
     }
 
@@ -117,14 +126,14 @@ export class ProductsComponent implements OnInit {
         this.inputFile = false;
         this.file = undefined;
         this.photoSelected = "";
-        console.log(this.photoSelected);
+        this.isPhotoEdit = false;
     }
 
     saveProduct() {
-        // console.log(this.product.inventoryStatus);
-        console.log(this.product.id_brand);
+        this.isError = true;
         //   this.submitted = true;
-    
+        console.log(this.product);
+        this.validateData;
         //   if (this.product.name?.trim()) {
         //       if (this.product.id) {
         //           this.products[this.findIndexById(this.product.id)] = this.product;
@@ -143,6 +152,8 @@ export class ProductsComponent implements OnInit {
         //   }
     }
 
+    validateData(){
+    }
 
     exportPdf() {
         // import("jspdf").then(jsPDF => {
@@ -170,6 +181,7 @@ export class ProductsComponent implements OnInit {
     editProduct(product: Product) {
       this.isPhoto = true;  
       this.inputFile = true;
+      this.isPhotoEdit = true;
       this.product = {...product};
       this.productDialog = true;
     }

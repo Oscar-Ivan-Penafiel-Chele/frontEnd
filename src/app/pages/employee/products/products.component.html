@@ -34,8 +34,8 @@
                 <th><i class="pi pi-image"></i> Imagen</th>
                 <th pSortableColumn="price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="price"></p-sortIcon></th>
                 <th pSortableColumn="category"><i class="pi pi-tag"></i> Categoría <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="state"><i class="pi pi-star"></i> Estado <p-sortIcon field="state"></p-sortIcon></th>
-                <th pSortableColumn="acciones"><i class="pi pi-star"></i> Acciones</th>
+                <th pSortableColumn="state"><i class="pi pi-bookmark"></i> Estado <p-sortIcon field="state"></p-sortIcon></th>
+                <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product let-columns="columns" let-index="rowIndex">
@@ -68,14 +68,14 @@
 <p-dialog [(visible)]="productDialog" [draggable]="false" [style]="{width: '800px'}" header="Detalles del Producto" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="field">
+            <p-messages [(value)]="msgs1" [enableService]="false" [hidden]="!isError"></p-messages>
             <label for="name">Imagen</label><br>
-            
             <div class="imageSelect" (click)="photoInput.click()">
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img [src]="product.image" [alt]="product.image" height="250px" class="product-image" *ngIf="product.image">
-                        <img src="{{photoSelected}}" alt="" height="250px" *ngIf="!product.image">
+                        <img [src]="product.image" [alt]="product.image" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
                     </div>
                 </ng-template>
                 <ng-template #desingImage>
@@ -160,7 +160,7 @@
             <div class="field col">
                 <label for="rating">Rating del Producto</label>
                 <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
-                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="val" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
+                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="product.rating" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
                 </div> 
             </div>
         </div>
@@ -169,7 +169,7 @@
             <label for="inventoryStatus">Categorías del Producto</label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
                 <div class="field-checkbox mr-3" *ngFor="let category of categories | sortByOrder">
-                    <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="selectedCategories" inputId="{{category.id}}"></p-checkbox>
+                    <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="product.id_product_category" inputId="{{category.id}}"></p-checkbox>
                     <label for="{{category.id}}">{{category.name}}</label>
                 </div>
             </div>
