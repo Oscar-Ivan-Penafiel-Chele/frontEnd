@@ -50,6 +50,8 @@ export class ProductsComponent implements OnInit {
     
     msgs1: Message[] = [];
 
+    // blockSpecial: RegExp = /[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g
+    // blockSpecial: RegExp = /^[^<>*!\s]+$/ 
 
     constructor(
         private _rest : RestService,
@@ -166,7 +168,7 @@ export class ProductsComponent implements OnInit {
             data.append(`${key}`, value);
         });
         this.categorieSelected.forEach((item)=>{
-            data.append('id_category', `${item}`);
+            data.append(`id_category_${item}`, `${item}`);
         })
         this._rest.createProduct(data)
             .subscribe((response)=>{
@@ -198,6 +200,10 @@ export class ProductsComponent implements OnInit {
     }
 
     validateData(){
+    }
+
+    regexCode(event: any) {
+        event.target.value = event.target.value.replace(/[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g, "");
     }
 
     exportPdf() {

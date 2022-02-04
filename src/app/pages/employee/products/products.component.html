@@ -111,7 +111,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="code">Código del Producto</label>
-                <input type="text" required pInputText id="code" [(ngModel)]="product.product_code" [pKeyFilter]="'alphanum'" required/>
+                <input type="text" required pInputText id="code" [(ngModel)]="product.product_code" (input)="regexCode($event)" required/>
                 <small class="p-error" *ngIf="submitted && !product.product_code">Código es requerido</small>
             </div>
             <div class="field col">
