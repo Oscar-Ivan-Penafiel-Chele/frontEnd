@@ -9,6 +9,7 @@ import { Brand } from 'src/app/models/brand';
 import { UpperCasePipe } from '@angular/common';
 import { RestService } from 'src/app/services/rest.service';
 import { IProvider } from 'src/app/models/provider';
+import { Product_Category } from 'src/app/models/product_category';
 
 @Component({
   selector: 'app-products',
@@ -23,16 +24,18 @@ export class ProductsComponent implements OnInit {
     brands : Brand[] = [];
     providers : IProvider[] = [];
    
-    productDialog: boolean = false;
+    
     brand : Brand = {} as Brand;
     product : Product = {} as Product;
+    product_category : Product_Category = {} as Product_Category;
    
     isPhoto : boolean = false;
     isPhotoEdit : boolean;
     isError : boolean ;
     submitted: boolean = false;
     inputFile :boolean = false;
-   
+    productDialog: boolean = false;
+
     selectedProducts: Product[] = [];
     
     statuses: any[] = [];
@@ -47,6 +50,7 @@ export class ProductsComponent implements OnInit {
     
     categorieSelected : number []  = [];
     i : number = 0;
+    idProduct : number = 0;
     
     msgs1: Message[] = [];
 
@@ -167,12 +171,14 @@ export class ProductsComponent implements OnInit {
         Object.entries(this.product).forEach(([key , value]) => {
             data.append(`${key}`, value);
         });
-        this.categorieSelected.forEach((item)=>{
-            data.append(`id_category_${item}`, `${item}`);
-        })
         this._rest.createProduct(data)
             .subscribe((response)=>{
-                console.log(response);
+                this.product_category.id_product = response;
+                this.product_category.id_category = this.categorieSelected;
+                this._rest.createProductCategory(this.product_category).
+                subscribe((r) => {
+                    console.log("Mensaje de Finalización: " + r);
+                })
             });
         
         
