@@ -128,11 +128,11 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="productProvider">Proveedor del Producto</label>
-                <p-dropdown [showClear]="true" [(ngModel)]="product.id_provider" optionLabel="name" optionValue="id" inputId="productProvider" [options]="states" placeholder="Seleccionar">
+                <p-dropdown [showClear]="true" [(ngModel)]="product.id_provider" optionLabel="provider_name" optionValue="id_provider" inputId="productProvider" [options]="providers" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
-                            <i class="{{option.icon}} mr-2"></i>
-                            <span [class]="'product-badge status-' + option.id">{{option.name}}</span>
+                            <i class="pi pi-building mr-2"></i>
+                            <span [class]="'product-badge status-' + option.id_provider">{{option.provider_name}}</span>
                         </div>
                     </ng-template>
                 </p-dropdown>

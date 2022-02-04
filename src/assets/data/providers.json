@@ -1,32 +1,57 @@
 [
     {
-        "id":1,
-        "url":"#home",
-        "icon":"pi pi-home",
-        "description":"Inicio"
+        "id_provider":1,
+        "id_type_provider": 1,
+        "provider_qualified": 1,
+        "provider_identification": "0930421466",
+        "provider_name" : "Don Roscas",
+        "provider_address" : "Coop. Gallegos Lara",
+        "provider_email" : "oscar@gmail.com",
+        "provider_products_offered" : "Lorem ipsum lat es du firm aprotua daios pruncio deas",
+        "provider_phone" : "0990822993",
+        "provider_landlie" : "2257594",
+        "provider_web_page" : "www.twitch.com",
+        "provider_person_name" : "Oscar",
+        "provider_person_lastName" : "Peñafiel",
+        "provider_transport" : "vehiculo",
+        "provider_response_time" : "1",
+        "provider_status" : "0"
     },
     {
-        "id":2,
-        "url":"#products",
-        "icon":"pi pi-slack",
-        "description":"Categorías"
+        "id_provider": 2,
+        "id_type_provider": 1,
+        "provider_qualified": 1,
+        "provider_identification": "0930421466",
+        "provider_name" : "Chele y sus amigos",
+        "provider_address" : "Coop. Gallegos Lara",
+        "provider_email" : "oscar@gmail.com",
+        "provider_products_offered" : "Lorem ipsum lat es du firm aprotua daios pruncio deas",
+        "provider_phone" : "0990822993",
+        "provider_landlie" : "2257594",
+        "provider_web_page" : "www.twitch.com",
+        "provider_person_name" : "Sebastian",
+        "provider_person_lastName" : "Coello",
+        "provider_transport" : "vehiculo",
+        "provider_response_time" : "1",
+        "provider_status" : "0"
     },
     {
-        "id":3,
-        "url":"#services",
-        "icon":"pi pi-th-large",
-        "description":"Servicios"
-    },
-    {
-        "id":4,
-        "url":"#brands",
-        "icon":"pi pi-tags",
-        "description":"Marcas"
-    },
-    {
-        "id":5,
-        "url":"/about",
-        "icon":"pi pi-users",
-        "description":"Nosotros"
+        "id_provider": 3,
+        "id_type_provider": 1,
+        "provider_qualified": 1,
+        "provider_identification": "0930421466",
+        "provider_name" : "Viamatica",
+        "provider_address" : "Coop. Gallegos Lara",
+        "provider_email" : "oscar@gmail.com",
+        "provider_products_offered" : "Lorem ipsum lat es du firm aprotua daios pruncio deas",
+        "provider_phone" : "0990822993",
+        "provider_landlie" : "2257594",
+        "provider_web_page" : "www.twitch.com",
+        "provider_person_name" : "Jeanpier",
+        "provider_person_lastName" : "Mendoza",
+        "provider_transport" : "vehiculo",
+        "provider_response_time" : "1",
+        "provider_status" : "0"
     }
+
 ]

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Provider } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService, Message, PrimeNGConfig } from 'primeng/api';
 import { Product } from 'src/app/models/product';
@@ -8,6 +8,7 @@ import { Category } from 'src/app/models/category';
 import { Brand } from 'src/app/models/brand';
 import { UpperCasePipe } from '@angular/common';
 import { RestService } from 'src/app/services/rest.service';
+import { IProvider } from 'src/app/models/provider';
 
 @Component({
   selector: 'app-products',
@@ -17,30 +18,37 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class ProductsComponent implements OnInit {
 
-    productDialog: boolean = false;
     products : Product[] = [];
-    product : Product = {} as Product;
+    categories : Category[] = [];
     brands : Brand[] = [];
+    providers : IProvider[] = [];
+   
+    productDialog: boolean = false;
     brand : Brand = {} as Brand;
-    selectedProducts: Product[] = [];
+    product : Product = {} as Product;
+   
+    isPhoto : boolean = false;
+    isPhotoEdit : boolean;
+    isError : boolean ;
     submitted: boolean = false;
+    inputFile :boolean = false;
+   
+    selectedProducts: Product[] = [];
+    
     statuses: any[] = [];
     cols: any[] = [];
     exportColumns: any[] = [];
-    isPhoto : boolean = false;
-    categorieSelected : number []  = [];
     fileTmp : any;
+    states : any[] = [];
+    
     photoSelected? : string | ArrayBuffer | null;
-    inputFile :boolean = false;
     fileSize : string = "";
     descriptionSize : string = "";
-    selectedCategories: Category[] = [];
-    categories : Category[] = [];
-    states : any[] = [];
+    
+    categorieSelected : number []  = [];
     i : number = 0;
-    isPhotoEdit : boolean;
+    
     msgs1: Message[] = [];
-    isError : boolean ;
 
 
     constructor(
@@ -60,12 +68,13 @@ export class ProductsComponent implements OnInit {
             {severity:'warn', summary:'Warning', detail:'Message Content'}
           ];
         this.states = [
-            {name: 'Activo', id: '0', icon : 'pi pi-thumbs-up'},
-            {name: 'Inactivo', id: '1', icon : 'pi pi-thumbs-down'},
+            {name: 'Activo', id: '1', icon : 'pi pi-thumbs-up'},
+            {name: 'Inactivo', id: '0', icon : 'pi pi-thumbs-down'},
         ]
         this.getAllProducts();
         this.getAllCategories();
         this.getAllBrands();
+        this.getAllProviders();
     }
 
     getAllProducts() {
@@ -131,6 +140,16 @@ export class ProductsComponent implements OnInit {
         })
     }
 
+    getAllProviders(){
+        this._rest.getProviders()
+        .subscribe((response) =>{
+            this.providers = <IProvider[]>response;
+            // for( this.i = 0 ; this.i < this.providers.length ; this.i++){
+            //     this._sortByOrder.transform(`${this.providers[this.i].provider_person_name} ${this.providers[this.i].provider_person_lastName}`);
+            // }
+        })
+    }
+
     clearImage(){
         this.isPhoto = false;
         this.inputFile = false;
@@ -146,6 +165,9 @@ export class ProductsComponent implements OnInit {
         Object.entries(this.product).forEach(([key , value]) => {
             data.append(`${key}`, value);
         });
+        this.categorieSelected.forEach((item)=>{
+            data.append('id_category', `${item}`);
+        })
         this._rest.createProduct(data)
             .subscribe((response)=>{
                 console.log(response);
