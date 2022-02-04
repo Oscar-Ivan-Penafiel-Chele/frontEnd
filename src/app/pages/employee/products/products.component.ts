@@ -173,12 +173,7 @@ export class ProductsComponent implements OnInit {
         });
         this._rest.createProduct(data)
             .subscribe((response)=>{
-                this.product_category.id_product = response;
-                this.product_category.id_category = this.categorieSelected;
-                this._rest.createProductCategory(this.product_category).
-                subscribe((r) => {
-                    console.log("Mensaje de Finalización: " + r);
-                })
+               this.saveProduCategory(response);
             });
         
         
@@ -203,6 +198,19 @@ export class ProductsComponent implements OnInit {
         //       this.productDialog = false;
         //       this.product = {};
         //   }
+    }
+
+    saveProduCategory(response : number){
+        if(!response){
+            return ;
+        }
+        
+        this.product_category.id_product = response;
+        this.product_category.id_category = this.categorieSelected;
+        this._rest.createProductCategory(this.product_category)
+            .subscribe((r) => {
+                console.log("Mensaje de Finalización: " + r);
+            })
     }
 
     validateData(){
