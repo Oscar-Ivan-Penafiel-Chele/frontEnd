@@ -15,6 +15,9 @@ export class RestService {
   constructor(private _http : HttpClient) { }
 
   /* PRODUCTO */
+  getAllProducts() : Observable<Product[]>{
+    return this._http.get<Product[]>(`${this.API}/products`);
+  }
 
   createProduct(data : FormData): Observable<number>{
     return this._http.post<number>(`${this.API}/products`,data);

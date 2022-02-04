@@ -27,13 +27,11 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="order"><i class="pi pi-sort"></i> Orden</th>
-                <th style="width: 2rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
                 <th pSortableColumn="name"><i class="pi pi-book"></i> Nombre <p-sortIcon field="name"></p-sortIcon></th>
                 <th><i class="pi pi-image"></i> Imagen</th>
                 <th pSortableColumn="price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="price"></p-sortIcon></th>
-                <th pSortableColumn="category"><i class="pi pi-tag"></i> Categoría <p-sortIcon field="category"></p-sortIcon></th>
+                <th pSortableColumn="stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="stock"></p-sortIcon></th>
+                <!-- <th pSortableColumn="category"><i class="pi pi-tag"></i> Categoría <p-sortIcon field="category"></p-sortIcon></th> -->
                 <th pSortableColumn="state"><i class="pi pi-bookmark"></i> Estado <p-sortIcon field="state"></p-sortIcon></th>
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
@@ -43,14 +41,11 @@
                 <td>
                     <span class="pi pi-bars" [pReorderableRowHandle]="index"></span>
                 </td>
-                <td>
-                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
-                </td>
-                <td>{{product.name}}</td>
-                <td><img [src]="product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
-                <td>{{product.price | currency:'USD'}}</td>
-                <td>{{product.category}}</td>
-                <td><span [class]="'product-badge status-' + (product.status ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td>
+                <td>{{product.product_name}}</td>
+                <td><img [src]="product.product_image" [alt]="product.product_name" width="100" class="shadow-4" /></td>
+                <td>{{product.product_price | currency:'USD'}}</td>
+                <td>{{product.product_stock}}</td>
+                <td>{{product.product_status}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>

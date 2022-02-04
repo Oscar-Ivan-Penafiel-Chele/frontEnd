@@ -32,8 +32,4 @@ export class HomeService {
     return this._http.get<Brand[]>(this.pathBrand);
   }
 
-  getAllProducts() : Observable<Product[]>{
-    return this._http.get<Product[]>(this.pathProducts);
-  }
-
 }
