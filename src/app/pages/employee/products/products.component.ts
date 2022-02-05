@@ -81,17 +81,13 @@ export class ProductsComponent implements OnInit {
         this.getAllCategories();
         this.getAllBrands();
         this.getAllProviders();
+        this.fileTmp = {};
     }
 
     getAllProducts() {
     this._rest.getAllProducts()
     .subscribe((response : Product[]) =>{
         this.products = Object.values(response);
-        console.log(this.products);
-        // response.forEach((item)=>{
-        //     console.log(item);
-        // })
-        // this.products = <Product[]>response;
     });
     }
 
@@ -99,8 +95,10 @@ export class ProductsComponent implements OnInit {
         this.isPhoto = false;  
         this.inputFile = false;
         this.product = {} as Product;
+        this.fileTmp = {};
         this.submitted = false;
         this.productDialog = true;
+        this.categorieSelected = [];
     }
 
     getPhotoSelected($event : any){
@@ -170,12 +168,19 @@ export class ProductsComponent implements OnInit {
     }
 
     saveProduct() {
+        this.submitted = true
+        
+        if(!this.validateData()){
+            return ;
+        }
+            
         this.product.id_user = 1;
         const data = new FormData();
         data.append('image', this.fileTmp.fileRaw);
         Object.entries(this.product).forEach(([key , value]) => {
             data.append(`${key}`, value);
         });
+
         this._rest.createProduct(data)
             .subscribe((response)=>{
                this.saveProduCategory(response);
@@ -214,11 +219,26 @@ export class ProductsComponent implements OnInit {
         this.product_category.id_category = this.categorieSelected;
         this._rest.createProductCategory(this.product_category)
             .subscribe((r) => {
-                console.log("Mensaje de Finalización: " + r);
+                if(r){
+                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
+                    this.hideDialog();
+                }
             })
     }
 
     validateData(){
+        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.categorieSelected.length == 0){
+            return false;
+        }
+      
+        return true;
+    }
+
+    isObjEmpty(obj : any) {
+        for (var prop in obj) {
+          if (obj.hasOwnProperty(prop)) return false;
+        }
+        return true;
     }
 
     regexCode(event: any) {
@@ -271,7 +291,6 @@ export class ProductsComponent implements OnInit {
 
     hideDialog() {
         this.productDialog = false;
-        this.submitted = false;
     }
 
 }

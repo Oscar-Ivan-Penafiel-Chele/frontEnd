@@ -80,6 +80,7 @@
                     </div>
                 </ng-template>
             </div>
+            <small class="p-error" *ngIf="submitted && (!product.product_image || !photoSelected)">Imagen es requerido</small>
             <div *ngIf="isPhoto" class="infoPhoto">
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
@@ -130,6 +131,7 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !product.id_provider">Proveedor es requerido</small>
             </div>
             <div class="field col">
             <label for="productBrand">Marca del Producto</label>
@@ -141,6 +143,7 @@
                     </div>
                 </ng-template>
             </p-dropdown>
+            <small class="p-error" *ngIf="submitted && !product.id_brand">Marca es requerido</small>
             </div>
         </div>
 
@@ -155,12 +158,14 @@
                     </div>
                 </ng-template>
             </p-dropdown>
+            <small class="p-error" *ngIf="submitted && !product.product_status">Estado es requerido</small>
             </div>
             <div class="field col">
                 <label for="rating">Rating del Producto</label>
                 <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
                     <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="product.product_rating" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
                 </div> 
+                <small class="p-error" *ngIf="submitted && !product.product_rating">Rating es requerido</small>
             </div>
         </div>
 
@@ -172,6 +177,7 @@
                     <label for="{{category.id}}">{{category.name}}</label>
                 </div>
             </div>
+            <small class="p-error" *ngIf="submitted && categorieSelected.length == 0">Categoría es requerido</small>
         </div>
     </ng-template>
 
