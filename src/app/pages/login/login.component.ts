@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,10 @@ export class LoginComponent implements OnInit {
   keepSession : boolean = false;
 
   msgs1: Message[] = [];
+  data:{} = {};
 
 
-  constructor(private primengConfig: PrimeNGConfig) { }
+  constructor(private primengConfig: PrimeNGConfig, private _rest:RestService) { }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -31,7 +33,15 @@ export class LoginComponent implements OnInit {
       let msg = "Datos incompletos!";
       this.alertMessage(msg);
     }else{
-      //verificar con servicios
+      this.data = {};
+      this.data = {
+        'email': this.email,
+        'password': this.password
+      }
+      this._rest.login(this.data)
+      .subscribe((response) => {
+          console.log(response);
+      })
     }
   }
 
@@ -40,7 +50,7 @@ export class LoginComponent implements OnInit {
       return true;
     }else{
       return false;
-    } 
+    }
   }
 
   alertMessage(msg : string){

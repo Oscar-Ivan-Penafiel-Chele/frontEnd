@@ -1,13 +1,11 @@
 export interface User {
-    id?:string;
-    name?:string;
-    lastName?:string;
+    id_user?:string;
+    user_name?:string;
+    user_lastName?:string;
     email?:string;
     password?:string;
-    rol: UserRole;
-  }
-
-  export enum UserRole{
-      Cliente,
-      Administrador
+    user_phone?:string
+    id_role?: number;
+    create_date?: Date;
+    updated_at?: Date;
   }

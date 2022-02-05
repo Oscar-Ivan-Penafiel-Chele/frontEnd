@@ -11,7 +11,7 @@ import { Product_Category } from '../models/product_category';
 export class RestService {
 
   API : string = "http://localhost:8000/api";
-  
+
   constructor(private _http : HttpClient) { }
 
   /* PRODUCTO */
@@ -31,6 +31,11 @@ export class RestService {
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
     return this._http.get<IProvider[]>('assets/data/providers.json');
+  }
+
+  /* USER */
+  login(data : {}) : Observable<any>{
+    return this._http.post<any>(`${this.API}/login`,data);
   }
 
 }
