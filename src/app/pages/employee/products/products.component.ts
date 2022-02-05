@@ -85,7 +85,7 @@ export class ProductsComponent implements OnInit {
     }
 
     getAllProducts() {
-    this._rest.getAllProducts()
+    this._rest.getProducts()
     .subscribe((response : Product[]) =>{
         this.products = Object.values(response);
     });

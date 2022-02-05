@@ -15,7 +15,7 @@ export class RestService {
   constructor(private _http : HttpClient) { }
 
   /* PRODUCTO */
-  getAllProducts() : Observable<Product[]>{
+  getProducts() : Observable<Product[]>{
     return this._http.get<Product[]>(`${this.API}/products`);
   }
 
@@ -26,6 +26,7 @@ export class RestService {
   createProductCategory(data : Product_Category) : Observable<any>{
     return this._http.post<any>(`${this.API}/productCategory`,data);
   }
+
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
