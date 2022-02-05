@@ -31,6 +31,7 @@
                 <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="product_price"></p-sortIcon></th>
                 <th pSortableColumn="product_stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="product_stock"></p-sortIcon></th>
                 <th pSortableColumn="product_status"><i class="pi pi-bookmark"></i> Estado <p-sortIcon field="product_status"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
@@ -44,6 +45,7 @@
                 <td>{{product.product_price | currency:'USD'}}</td>
                 <td>{{product.product_stock}}</td>
                 <td>{{product.product_status}}</td>
+                <td>{{product.create_date}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
@@ -125,7 +127,7 @@
                 <p-dropdown [showClear]="true" [(ngModel)]="product.id_provider" optionLabel="provider_name" optionValue="id_provider" inputId="productProvider" [options]="providers" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
-                            <i class="pi pi-building mr-2"></i>
+                            <i class="pi pi-briefcase mr-2"></i>
                             <span [class]="'product-badge status-' + option.id_provider">{{option.provider_name}}</span>
                         </div>
                     </ng-template>

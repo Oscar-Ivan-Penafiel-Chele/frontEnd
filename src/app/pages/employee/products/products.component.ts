@@ -54,9 +54,6 @@ export class ProductsComponent implements OnInit {
     
     msgs1: Message[] = [];
 
-    // blockSpecial: RegExp = /[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g
-    // blockSpecial: RegExp = /^[^<>*!\s]+$/ 
-
     constructor(
         private _rest : RestService,
         private messageService: MessageService, 
@@ -103,7 +100,6 @@ export class ProductsComponent implements OnInit {
 
     getPhotoSelected($event : any){
         if($event.target.files && $event.target.files[0]){
-            // this.file = <File>event.target.files[0];
             const [ file ] = $event.target.files;
             this.fileTmp = {
                 fileRaw : file,
@@ -153,9 +149,9 @@ export class ProductsComponent implements OnInit {
         this._rest.getProviders()
         .subscribe((response) =>{
             this.providers = <IProvider[]>response;
-            // for( this.i = 0 ; this.i < this.providers.length ; this.i++){
-            //     this._sortByOrder.transform(`${this.providers[this.i].provider_person_name} ${this.providers[this.i].provider_person_lastName}`);
-            // }
+            for( this.i = 0 ; this.i < this.providers.length ; this.i++){
+                this._sortByOrder.transform(`${this.providers[this.i].provider_name}`);
+            }
         })
     }
 
