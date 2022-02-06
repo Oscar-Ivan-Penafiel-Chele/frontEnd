@@ -180,6 +180,7 @@ export class ProductsComponent implements OnInit {
         this._rest.createProduct(data)
             .subscribe((response)=>{
                this.saveProduCategory(response);
+               this.getAllProducts();
             });
         
         

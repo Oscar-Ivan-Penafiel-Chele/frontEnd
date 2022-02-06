@@ -19,30 +19,37 @@ export class TokenService {
     return localStorage.getItem('auth_token');
   }
 
-  isValidToken(){
-    const token =  this.getToken();
-    if(token){
-      const payload = this.payload(token);
-      if(payload){
-        return Object.values(this.issuer).indexOf(payload.iss) > -1 ? true : false;
-      }else{
-        return false;
-      }
-    }else{
-      return false;
-    }
-  }
-
-  payload(token : any){
-    const jwtPayload = token.split('.')[1];
-    return JSON.parse(atob(jwtPayload));
-  }  
-
-  isLoggedIn(){
-    return this.isValidToken();
+  getTokenDataUser(){
+    return localStorage.getItem('user');
   }
 
   removeToken(){
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
   }
+
+  // isValidToken(){
+  //   const token =  this.getToken();
+  //   if(token){
+  //     const payload = this.payload(token);
+  //     if(payload){
+  //       return Object.values(this.issuer).indexOf(payload.iss) > -1 ? true : false;
+  //     }else{
+  //       return false;
+  //     }
+  //   }else{
+  //     return false;
+  //   }
+  // }
+
+  // payload(token : any){
+  //   const jwtPayload = token.split('.')[1];
+  //   return JSON.parse(atob(jwtPayload));
+  // }  
+
+  // isLoggedIn(){
+  //   return this.isValidToken();
+  // }
+
+  
 }

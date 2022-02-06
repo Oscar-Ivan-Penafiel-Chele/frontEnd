@@ -33,36 +33,12 @@
                 </div>
                 <br>
                 <div class="btn-login">
-                    <button class="button-login" (click)="login()" pButton pRipple type="button" label="INGRESAR"></button>   
+                    <button class="button-login" [loading]="loading" (click)="login()" pButton pRipple type="button">
+                        <p [hidden]="!isVisibleText" style="width: 100%;">INGRESAR</p>
+                        <p [hidden]="isVisibleText" style="width: 48%;"></p>
+                    </button>   
                 </div>
-            </div>
-            <!-- <p-card>    
-                <p-messages [(value)]="msgs1" [enableService]="false" ></p-messages>
-                <span class="p-float-label">
-                    <input id="float-input" [(ngModel)]="email" type="text" pInputText style="width: 100%;"> 
-                    <label for="float-input"><i class="pi pi-user"></i> Usuario o Correo Electrónico</label>
-                </span>
-                <br>
-
-                <div class="input-password">
-                    <span class="p-float-label">
-                        <p-password [(ngModel)]="password" [toggleMask]="true" [feedback]="false" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
-                        <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
-                    </span>
-                </div>
-
-                <div class="link-forgot">
-                    <div class="still-session">
-                        <p-checkbox [(ngModel)]="keepSession" [binary]="true" inputId="binary"></p-checkbox>
-                        <label for="binary">Mantener Sesión</label>
-                    </div>
-                    <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
-                </div>
-                <br>
-                <div class="btn-login">
-                    <button class="button-login" (click)="login()" pButton pRipple type="button" label="INGRESAR"></button>   
-                </div>
-            </p-card> -->
+            </div>  
             <br>
             <div class="text-register">
                 <p>Aún no tienes cuenta, <a [routerLink]="['/signup']" class="link-signup">¡Registrate!</a></p>

@@ -27,18 +27,14 @@ export class DashboardEmployeeComponent implements OnInit {
     private _token : TokenService,
     private _authStateService : AuthStateService,
     ) { 
-      this._authService.profileUser(this._token.getToken())
-      .subscribe((response) =>{
-        console.log(response);
-      });
-
-      this._authStateService.userAuthState.subscribe((response) =>{
-        this.isSignedIn = response;
-      });
-
+      
+      // this._authStateService.userAuthState.subscribe((response) =>{
+      //   this.isSignedIn = response;
+      // });
+      
     }
-
-  ngOnInit(): void {
+    
+    ngOnInit(): void {
     this.primengConfig.ripple = true;
     this.activeFirstLink();
     this.activeLink();
@@ -46,7 +42,15 @@ export class DashboardEmployeeComponent implements OnInit {
     setInterval(()=>{
       this.getDateToday();
     },100); 
+    
+    this.getDataProfile();
   }
+
+  getDataProfile(){
+      const data = this._token.getTokenDataUser() as string;
+      this.user = JSON.parse(data);
+  }
+
 
   displayOptions(){
     const menu = document.querySelector('.header__profile');
@@ -98,7 +102,7 @@ export class DashboardEmployeeComponent implements OnInit {
   }
 
   logOut(){
-    this._authStateService.setAuthState(false);
+    // this._authStateService.setAuthState(false);
     this._token.removeToken();
     this._routerNavigation.navigate(['login']);
   }

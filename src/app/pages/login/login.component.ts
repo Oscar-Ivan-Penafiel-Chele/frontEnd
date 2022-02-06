@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
+import { User } from 'src/app/models/user';
 import { AuthStateService } from 'src/app/services/auth-state.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -18,7 +19,9 @@ export class LoginComponent implements OnInit {
   msgs1: Message[] = [];
   data:{};
   error: any = null;
-
+  loading : boolean = false;
+  isVisibleText : boolean;
+  user : User = {};
 
   constructor(
     private primengConfig: PrimeNGConfig, 
@@ -28,6 +31,7 @@ export class LoginComponent implements OnInit {
     private _authState : AuthStateService,
     ) { 
         this.data = {};
+        this.isVisibleText = true;
     }
 
   ngOnInit(): void {
@@ -41,6 +45,8 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
+    this.loading = true;
+    this.isVisibleText = false;
     if(!this.validateInput()){
       let msg = "Datos incompletos!";
       this.alertMessage(msg);
@@ -52,15 +58,37 @@ export class LoginComponent implements OnInit {
       this._authService.login(this.data)
       .subscribe((response) => {
           this.responseHandle(response);
+          this.redirectRoute();
       }, (error) =>{
         this.error = error.error;
         console.log("Error del login: "+error);
-      }, () =>{
-        this._authState.setAuthState(true);
-        this.data = {};
-        this._router.navigate(['dashboard-employee']);
       });
     }
+  }
+
+  async redirectRoute(){
+    await this.setProfileUser();
+    this.getProfileUser().then((r)=>{
+      this.user = JSON.parse(r);
+      this.getRoute(this.user.id_role);
+    }, (error) =>{
+      console.log(error.error);
+    });
+  }
+
+  async setProfileUser(){
+    this._authService.profileUser(this._token.getToken())
+    .subscribe((response) =>{
+      localStorage.setItem('user', JSON.stringify(response));
+    });
+  }
+
+  async getProfileUser(){
+    return this._token.getTokenDataUser() as string;
+  }
+
+  getRoute(rol? : number){
+    
   }
 
   responseHandle(data : any){
