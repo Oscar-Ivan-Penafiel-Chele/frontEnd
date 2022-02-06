@@ -19,7 +19,7 @@ export class RestService {
     return this._http.get<Product[]>(`${this.API}/products`);
   }
 
-  createProduct(data : {}): Observable<number>{
+  createProduct(data : FormData): Observable<number>{
     return this._http.post<number>(`${this.API}/products`,data);
   }
 
