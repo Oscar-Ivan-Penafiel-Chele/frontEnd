@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
     await this.setProfileUser();
     this.getProfileUser().then((r)=>{
       this.user = JSON.parse(r);
-      this.getRoute(this.user.id_role);
+      this.getRoute(this.user.id_role as number);
     }, (error) =>{
       console.log(error.error);
     });
@@ -87,8 +87,16 @@ export class LoginComponent implements OnInit {
     return this._token.getTokenDataUser() as string;
   }
 
-  getRoute(rol? : number){
-    
+  getRoute(rol : number){
+    const roles : any = {
+      '1' : '/dashboard-employee',
+      '2' : '/dashboard',
+      '3' : '/dashboard',
+      '4' : '/shop',
+    }
+
+    let route = roles[rol];
+    this._router.navigate([`${route}`]);
   }
 
   responseHandle(data : any){
