@@ -21,7 +21,7 @@ export class AuthService {
     return this._http.post<any>(`${this.API}/register`,data);
   }
 
-  profileUser(): Observable<any> {
-    return this._http.get(`${this.API}/user-info`);
+  profileUser(data:any): Observable<User> {
+    return this._http.post<User>(`${this.API}/userinfo`,data);
   }
 }

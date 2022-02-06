@@ -27,7 +27,7 @@ export class DashboardEmployeeComponent implements OnInit {
     private _token : TokenService,
     private _authStateService : AuthStateService,
     ) { 
-      this._authService.profileUser()
+      this._authService.profileUser(this._token.getToken())
       .subscribe((response) =>{
         console.log(response);
       });

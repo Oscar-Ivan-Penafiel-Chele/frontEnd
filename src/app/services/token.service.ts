@@ -25,6 +25,8 @@ export class TokenService {
       const payload = this.payload(token);
       if(payload){
         return Object.values(this.issuer).indexOf(payload.iss) > -1 ? true : false;
+      }else{
+        return false;
       }
     }else{
       return false;

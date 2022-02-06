@@ -54,11 +54,12 @@ export class LoginComponent implements OnInit {
           this.responseHandle(response);
       }, (error) =>{
         this.error = error.error;
+        console.log("Error del login: "+error);
       }, () =>{
         this._authState.setAuthState(true);
         this.data = {};
         this._router.navigate(['dashboard-employee']);
-      })
+      });
     }
   }
 
