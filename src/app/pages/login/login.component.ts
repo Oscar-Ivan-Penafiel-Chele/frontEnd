@@ -68,18 +68,16 @@ export class LoginComponent implements OnInit {
 
   async redirectRoute(){
     await this.setProfileUser();
-    this.getProfileUser().then((r)=>{
-      this.user = JSON.parse(r);
-      this.getRoute(this.user.id_role as number);
-    }, (error) =>{
-      console.log(error.error);
-    });
   }
 
   async setProfileUser(){
     this._authService.profileUser(this._token.getToken())
     .subscribe((response) =>{
       localStorage.setItem('user', JSON.stringify(response));
+       this.getProfileUser().then((r)=>{
+          this.user = JSON.parse(r);
+          this.getRoute(this.user.id_role!);
+       });
     });
   }
 
