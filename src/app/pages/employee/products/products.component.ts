@@ -43,6 +43,7 @@ export class ProductsComponent implements OnInit {
     exportColumns: any[] = [];
     fileTmp : any;
     states : any[] = [];
+    dataTotal : {} = {};
     
     photoSelected? : string | ArrayBuffer | null;
     fileSize : string = "";
@@ -85,7 +86,9 @@ export class ProductsComponent implements OnInit {
     this._rest.getProducts()
     .subscribe((response : Product[]) =>{
         this.products = Object.values(response);
+        // console.log(response);
     });
+
     }
 
     openNew() {
@@ -177,7 +180,12 @@ export class ProductsComponent implements OnInit {
             data.append(`${key}`, value);
         });
 
-        this._rest.createProduct(data)
+        this.dataTotal = {
+            'formdata' : data,
+            'categorias' : this.categorieSelected
+        }
+
+        this._rest.createProduct(this.dataTotal)
             .subscribe((response)=>{
                this.saveProduCategory(response);
                this.getAllProducts();
