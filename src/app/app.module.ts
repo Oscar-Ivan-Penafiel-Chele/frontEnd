@@ -49,7 +49,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
 import { ProductsComponent } from './pages/employee/products/products.component';
 import { OrdersComponent } from './pages/employee/orders/orders.component';
@@ -66,6 +66,7 @@ import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.co
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 
 @NgModule({
@@ -138,7 +139,13 @@ import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
     ProgressSpinnerModule,
     ProgressBarModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
+import { User } from 'src/app/models/user';
+import { AuthStateService } from 'src/app/services/auth-state.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-dashboard-employee',
@@ -13,8 +17,26 @@ export class DashboardEmployeeComponent implements OnInit {
   i : number = 0;
   msgButton : string = "";
   fechaYHora : any ;
+  user : User = {};
+  isSignedIn?: boolean;
  
-  constructor(private primengConfig: PrimeNGConfig, private _routerNavigation : Router) { }
+  constructor(
+    private primengConfig: PrimeNGConfig, 
+    private _routerNavigation : Router,
+    private _authService : AuthService,
+    private _token : TokenService,
+    private _authStateService : AuthStateService,
+    ) { 
+      this._authService.profileUser()
+      .subscribe((response) =>{
+        console.log(response);
+      });
+
+      this._authStateService.userAuthState.subscribe((response) =>{
+        this.isSignedIn = response;
+      });
+
+    }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -76,6 +98,8 @@ export class DashboardEmployeeComponent implements OnInit {
   }
 
   logOut(){
+    this._authStateService.setAuthState(false);
+    this._token.removeToken();
     this._routerNavigation.navigate(['login']);
   }
 

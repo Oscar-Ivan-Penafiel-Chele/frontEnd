@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
-import { RestService } from 'src/app/services/rest.service';
+import { AuthStateService } from 'src/app/services/auth-state.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +16,19 @@ export class LoginComponent implements OnInit {
   keepSession : boolean = false;
 
   msgs1: Message[] = [];
-  data:{} = {};
+  data:{};
+  error: any = null;
 
 
-  constructor(private primengConfig: PrimeNGConfig, private _rest:RestService) { }
+  constructor(
+    private primengConfig: PrimeNGConfig, 
+    private _authService:AuthService,
+    private _router : Router,
+    private _token : TokenService,
+    private _authState : AuthStateService,
+    ) { 
+        this.data = {};
+    }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -33,16 +45,25 @@ export class LoginComponent implements OnInit {
       let msg = "Datos incompletos!";
       this.alertMessage(msg);
     }else{
-      this.data = {};
       this.data = {
         'email': this.email,
         'password': this.password
       }
-      this._rest.login(this.data)
+      this._authService.login(this.data)
       .subscribe((response) => {
-          console.log(response);
+          this.responseHandle(response);
+      }, (error) =>{
+        this.error = error.error;
+      }, () =>{
+        this._authState.setAuthState(true);
+        this.data = {};
+        this._router.navigate(['dashboard-employee']);
       })
     }
+  }
+
+  responseHandle(data : any){
+    this._token.handleData(data.access_token);
   }
 
   validateInput(){

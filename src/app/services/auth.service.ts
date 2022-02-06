@@ -1,0 +1,27 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../models/user';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  API : string = "http://localhost:8000/api";
+
+  constructor(private _http : HttpClient) { }
+
+  /* USER */
+  login(data : {}) : Observable<any>{
+    return this._http.post<any>(`${this.API}/login`,data);
+  }
+
+  register(data : User) : Observable<any>{
+    return this._http.post<any>(`${this.API}/register`,data);
+  }
+
+  profileUser(): Observable<any> {
+    return this._http.get(`${this.API}/user-info`);
+  }
+}

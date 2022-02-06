@@ -33,9 +33,4 @@ export class RestService {
     return this._http.get<IProvider[]>('assets/data/providers.json');
   }
 
-  /* USER */
-  login(data : {}) : Observable<any>{
-    return this._http.post<any>(`${this.API}/login`,data);
-  }
-
 }
