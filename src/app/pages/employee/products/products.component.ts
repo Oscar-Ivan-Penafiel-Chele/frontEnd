@@ -50,6 +50,7 @@ export class ProductsComponent implements OnInit {
     photoSelected? : string | ArrayBuffer | null;
     fileSize : string = "";
     descriptionSize : string = "";
+    actionSelected  : string ="";
     host : string = "http://127.0.0.1:8000";
     
     categorieSelected : number []  = [];
@@ -102,6 +103,7 @@ export class ProductsComponent implements OnInit {
     }
 
     openNew() {
+        this.actionSelected = "new"
         this.isPhoto = false;  
         this.inputFile = false;
         this.product = {} as Product;
@@ -177,24 +179,43 @@ export class ProductsComponent implements OnInit {
     }
 
     saveProduct() {
-        this.submitted = true
+        if(this.actionSelected === "new"){
+            this.submitted = true
         
-        if(!this.validateData()){
-            return ;
-        }
-            
-        this.product.id_user = parseInt(this.user.id_user!);
-        const data = new FormData();
-        data.append('image', this.fileTmp.fileRaw);
-        Object.entries(this.product).forEach(([key , value]) => {
-            data.append(`${key}`, value);
-        });
-
-        this._rest.createProduct(data)
-            .subscribe((response)=>{
-               this.saveProduCategory(response);
-               this.getAllProducts();
+            if(!this.validateData()){
+                return ;
+            }
+            this.product.id_user = parseInt(this.user.id_user!);
+            const data = new FormData();
+            data.append('image', this.fileTmp.fileRaw);
+            Object.entries(this.product).forEach(([key , value]) => {
+                data.append(`${key}`, value);
             });
+
+            this._rest.createProduct(data)
+                .subscribe((response)=>{
+                this.saveProduCategory(response);
+                this.getAllProducts();
+                });
+
+        }else if(this.actionSelected === "edit"){
+            if(this.isObjEmpty(this.fileTmp)){
+                //Si esta vacio
+                // if(this.validateDataNoImage()){
+                //     return ;
+                // }
+
+                console.log(this.product);
+
+            }else{
+                this.submitted = true
+                if(!this.validateData()){
+                    return ;
+                }
+                //No esta vacio
+            }
+        }
+        
         
         
         
@@ -245,6 +266,14 @@ export class ProductsComponent implements OnInit {
         return true;
     }
 
+    validateDataNoImage(){
+        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.categorieSelected.length == 0){
+            return false;
+        }
+      
+        return true;
+    }
+
     isObjEmpty(obj : any) {
         for (var prop in obj) {
           if (obj.hasOwnProperty(prop)) return false;
@@ -280,6 +309,7 @@ export class ProductsComponent implements OnInit {
     }
 
     editProduct(product: Product) {
+      this.actionSelected = "edit"
       this.categorieSelected = [];
       this.product = {...product};
       product.producto_categorias.forEach((i)=>{
@@ -297,9 +327,14 @@ export class ProductsComponent implements OnInit {
           header: 'Eliminar Producto',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
-            //   this.products = this.products.filter(val => val.id_product !== this.products.id_product);
-            //   this.product = {};
-              this.messageService.add({severity:'error', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
+              this._rest.deleteProduct(product.id_product).subscribe((response)=>{
+                  if(response.status == 200 || response.message === "Eliminado correctamente"){
+                      this.messageService.add({severity:'error', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
+                      this.getAllProducts();
+                  }
+              },(err)=>{
+                console.log(err.error);
+              });
           }
       });
     }

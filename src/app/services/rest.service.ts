@@ -23,9 +23,24 @@ export class RestService {
     return this._http.post<number>(`${this.API}/products`,data);
   }
 
+  updateProduct(data : FormData, id? : number) : Observable<number>{
+    return this._http.put<number>(`${this.API}/products/${id}`,data);
+  }
+
+  deleteProduct(id? : number) : Observable<any>{
+    return this._http.delete<any>(`${this.API}/products/${id}`);
+  }
+
+
+  /* CATEGORY PRODUCT*/
   createProductCategory(data : Product_Category) : Observable<any>{
     return this._http.post<any>(`${this.API}/productCategory`,data);
   }
+
+  updateProductCategory(data : Product_Category, id?:number) : Observable<any>{
+    return this._http.put<any>(`${this.API}/productCategory`,data) 
+  }
+
 
 
   /* PROVEEDOR */
