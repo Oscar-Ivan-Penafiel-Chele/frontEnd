@@ -10,6 +10,8 @@ import { UpperCasePipe } from '@angular/common';
 import { RestService } from 'src/app/services/rest.service';
 import { IProvider } from 'src/app/models/provider';
 import { Product_Category } from 'src/app/models/product_category';
+import { TokenService } from 'src/app/services/token.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-products',
@@ -23,6 +25,7 @@ export class ProductsComponent implements OnInit {
     categories : Category[] = [];
     brands : Brand[] = [];
     providers : IProvider[] = [];
+    user : User = {};
    
     
     brand : Brand = {} as Brand;
@@ -47,6 +50,7 @@ export class ProductsComponent implements OnInit {
     photoSelected? : string | ArrayBuffer | null;
     fileSize : string = "";
     descriptionSize : string = "";
+    host : string = "http://127.0.0.1:8000";
     
     categorieSelected : number []  = [];
     i : number = 0;
@@ -59,7 +63,9 @@ export class ProductsComponent implements OnInit {
         private messageService: MessageService, 
         private confirmationService: ConfirmationService,
         private _sortByOrder : UpperCasePipe,
-        private _homeService : HomeService) { 
+        private _homeService : HomeService,
+        private _token : TokenService
+        ) { 
 
             this.isPhotoEdit = false;
             this.isError = false;
@@ -71,13 +77,14 @@ export class ProductsComponent implements OnInit {
             {severity:'warn', summary:'Warning', detail:'Message Content'}
           ];
         this.states = [
-            {name: 'Activo', id: '1', icon : 'pi pi-thumbs-up'},
-            {name: 'Inactivo', id: '0', icon : 'pi pi-thumbs-down'},
+            {name: 'Activo', id: 1, icon : 'pi pi-thumbs-up'},
+            {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
         ]
         this.getAllProducts();
         this.getAllCategories();
         this.getAllBrands();
         this.getAllProviders();
+        this.getDataProfile();
         this.fileTmp = {};
     }
 
@@ -85,9 +92,13 @@ export class ProductsComponent implements OnInit {
     this._rest.getProducts()
     .subscribe((response : Product[]) =>{
         this.products = Object.values(response);
-        console.log(response);
     });
 
+    }
+
+    getDataProfile(){
+        const data = this._token.getTokenDataUser() as string;
+        this.user = JSON.parse(data);
     }
 
     openNew() {
@@ -172,7 +183,7 @@ export class ProductsComponent implements OnInit {
             return ;
         }
             
-        this.product.id_user = 1;
+        this.product.id_user = parseInt(this.user.id_user!);
         const data = new FormData();
         data.append('image', this.fileTmp.fileRaw);
         Object.entries(this.product).forEach(([key , value]) => {
@@ -218,6 +229,7 @@ export class ProductsComponent implements OnInit {
         this.product_category.id_category = this.categorieSelected;
         this._rest.createProductCategory(this.product_category)
             .subscribe((r) => {
+                console.log(r);
                 if(r){
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
                     this.hideDialog();
@@ -268,10 +280,14 @@ export class ProductsComponent implements OnInit {
     }
 
     editProduct(product: Product) {
+      this.categorieSelected = [];
+      this.product = {...product};
+      product.producto_categorias.forEach((i)=>{
+        this.categorieSelected.push(i.id_category.toString());
+      });
       this.isPhoto = true;  
       this.inputFile = true;
       this.isPhotoEdit = true;
-      this.product = {...product};
       this.productDialog = true;
     }
 

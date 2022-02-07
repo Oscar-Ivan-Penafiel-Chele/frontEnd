@@ -11,6 +11,7 @@ export interface Product {
     product_image?:string;
     product_status?:number;
     product_rating?:number;
+    producto_categorias: any[];
     create_date : Date;
     update_at : Date;
 }

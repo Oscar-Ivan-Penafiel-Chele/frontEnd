@@ -1,42 +1,42 @@
 [
     {
-        "id": "1",
+        "id_brand": 1,
         "brand_name" : "3M",
-        "thumbnail": "assets/img/brands/3M.jpg"
+        "category_thumbnail": "assets/img/brands/3M.jpg"
     },
     {
-        "id": "2",
+        "id_brand": 2,
         "brand_name" : "Abro",
-        "thumbnail": "assets/img/brands/Abro.jpg"
+        "category_thumbnail": "assets/img/brands/Abro.jpg"
     },
     {
-        "id": "3",
+        "id_brand": 3,
         "brand_name" : "Dewalt",
-        "thumbnail": "assets/img/brands/dewalt.jpg"
+        "category_thumbnail": "assets/img/brands/dewalt.jpg"
     },
     {
-        "id": "4",
+        "id_brand": 4,
         "brand_name" : "Edesa",
-        "thumbnail": "assets/img/brands/Edesa.png"
+        "category_thumbnail": "assets/img/brands/Edesa.png"
     },
     {
-        "id": "5",
+        "id_brand": 5,
         "brand_name" : "FV",
-        "thumbnail": "assets/img/brands/FV.jpg"
+        "category_thumbnail": "assets/img/brands/FV.jpg"
     },
     {
-        "id": "6",
+        "id_brand": 6,
         "brand_name" : "Latina",
-        "thumbnail": "assets/img/brands/latina.png"
+        "category_thumbnail": "assets/img/brands/latina.png"
     },
     {
-        "id": "7",
+        "id_brand": 7,
         "brand_name" : "Pinturas Unidas",
-        "thumbnail": "assets/img/brands/PINTURAS-UNIDAS.jpg"
+        "category_thumbnail": "assets/img/brands/PINTURAS-UNIDAS.jpg"
     },
     {
-        "id": "8",
+        "id_brand": 8,
         "brand_name" : "Stanley",
-        "thumbnail": "assets/img/brands/stanley.jpg"
+        "category_thumbnail": "assets/img/brands/stanley.jpg"
     }
 ]
