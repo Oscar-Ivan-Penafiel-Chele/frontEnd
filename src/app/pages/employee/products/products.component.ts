@@ -9,7 +9,6 @@ import { Brand } from 'src/app/models/brand';
 import { UpperCasePipe } from '@angular/common';
 import { RestService } from 'src/app/services/rest.service';
 import { IProvider } from 'src/app/models/provider';
-import { Product_Category } from 'src/app/models/product_category';
 import { TokenService } from 'src/app/services/token.service';
 import { User } from 'src/app/models/user';
 
@@ -30,7 +29,6 @@ export class ProductsComponent implements OnInit {
     
     brand : Brand = {} as Brand;
     product : Product = {} as Product;
-    product_category : Product_Category = {} as Product_Category;
    
     isPhoto : boolean = false;
     isPhotoEdit : boolean;
@@ -92,28 +90,46 @@ export class ProductsComponent implements OnInit {
         this.fileTmp = {};
     }
 
-    getAllProducts() {
-    this._rest.getProducts()
-    .subscribe((response : Product[]) =>{
-        this.products = Object.values(response);
-    });
+    /* GET */
 
+    getAllProducts() {
+        this._rest.getProducts()
+        .subscribe((response : Product[]) =>{
+            this.products = Object.values(response);
+            console.log(this.products);
+        });
+    }
+
+    getAllCategories() {
+        this._homeService.getAllCategories()
+        .subscribe((response) =>{
+          this.categories = response;
+        });
+    }
+
+    getAllBrands(){
+        this._homeService.getAllBrands()
+        .subscribe((response) => {
+          this.brands = <Brand[]>response;
+          for( this.i = 0 ; this.i < this.brands.length ; this.i++){
+              this._sortByOrder.transform(this.brands[this.i].brand_name);
+          }
+        })
+    }
+
+    getAllProviders(){
+        this._rest.getProviders()
+        .subscribe((response) =>{
+            this.providers = <IProvider[]>response;
+            for( this.i = 0 ; this.i < this.providers.length ; this.i++){
+                this._sortByOrder.transform(`${this.providers[this.i].provider_name}`);
+            }
+        })
     }
 
     getDataProfile(){
         const data = this._token.getTokenDataUser() as string;
         this.user = JSON.parse(data);
-    }
-
-    openNew() {
-        this.actionSelected = "new"
-        this.isPhoto = false;  
-        this.inputFile = false;
-        this.product = {} as Product;
-        this.fileTmp = {};
-        this.submitted = false;
-        this.productDialog = true;
-        this.product.product_status = 1;
     }
 
     getPhotoSelected($event : any){
@@ -144,9 +160,21 @@ export class ProductsComponent implements OnInit {
         }
     }
 
+    getSizeImage(size : number) : void{
+        if(size < 1048576){
+            this.fileSize = (size/1000).toFixed(0);
+            this.descriptionSize = "kb";
+        }else if(size >= 1048576){
+            this.fileSize = (size/1000000).toFixed(0);
+            this.descriptionSize = "mb";
+        }
+    }
+
+
     validateSizeImage(size : number) : boolean{
         if(size > 1000000){
             this.sizeFileValid = true;
+            this.fileTmp = {};
             return false;
         }else{
             this.sizeFileValid = false;
@@ -160,6 +188,7 @@ export class ProductsComponent implements OnInit {
         
         if(!ext.includes(imageExtension!)){
             this.fileExtensionValid = true;
+            this.fileTmp = {};
             return false;
         }else{
             this.fileExtensionValid = false;
@@ -167,42 +196,17 @@ export class ProductsComponent implements OnInit {
         }
     }
 
-    getSizeImage(size : number) : void{
-        if(size < 1048576){
-            this.fileSize = (size/1000).toFixed(0);
-            this.descriptionSize = "kb";
-        }else if(size >= 1048576){
-            this.fileSize = (size/1000000).toFixed(0);
-            this.descriptionSize = "mb";
-        }
+    openNew() {
+        this.actionSelected = "new"
+        this.isPhoto = false;  
+        this.inputFile = false;
+        this.product = {} as Product;
+        this.fileTmp = {};
+        this.submitted = false;
+        this.productDialog = true;
+        this.product.product_status = 1;
     }
 
-    getAllCategories() {
-        this._homeService.getAllCategories()
-        .subscribe((response) =>{
-          this.categories = response;
-        });
-    }
-
-    getAllBrands(){
-        this._homeService.getAllBrands()
-        .subscribe((response) => {
-          this.brands = <Brand[]>response;
-          for( this.i = 0 ; this.i < this.brands.length ; this.i++){
-              this._sortByOrder.transform(this.brands[this.i].brand_name);
-          }
-        })
-    }
-
-    getAllProviders(){
-        this._rest.getProviders()
-        .subscribe((response) =>{
-            this.providers = <IProvider[]>response;
-            for( this.i = 0 ; this.i < this.providers.length ; this.i++){
-                this._sortByOrder.transform(`${this.providers[this.i].provider_name}`);
-            }
-        })
-    }
 
     clearImage(){
         this.isPhoto = false;
@@ -253,9 +257,11 @@ export class ProductsComponent implements OnInit {
 
         this._rest.createProduct(data)
             .subscribe((response)=>{
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
-                this.hideDialog();
-                this.getAllProducts();
+                if(response.status == 200 || response.message === "Producto creado con exito"){
+                    this.getAllProducts();
+                    this.hideDialog();
+                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
+                }
             });
     }
 
@@ -312,12 +318,14 @@ export class ProductsComponent implements OnInit {
       this.confirmationService.confirm({
           message: '¿Estás seguro de eliminar el producto: ' + product.product_name + '?',
           header: 'Eliminar Producto',
+          acceptLabel : 'Eliminar',
+          rejectLabel : 'Cancelar',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
               this._rest.deleteProduct(product.id_product).subscribe((response)=>{
                   if(response.status == 200 || response.message === "Eliminado correctamente"){
-                      this.messageService.add({severity:'error', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
                       this.getAllProducts();
+                      this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
                   }
               },(err)=>{
                 console.log(err.error);

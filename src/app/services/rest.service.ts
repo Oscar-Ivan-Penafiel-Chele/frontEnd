@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { IProvider } from '../models/provider';
-import { Product_Category } from '../models/product_category';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +18,8 @@ export class RestService {
     return this._http.get<Product[]>(`${this.API}/products`);
   }
 
-  createProduct(data : FormData): Observable<number>{
-    return this._http.post<number>(`${this.API}/products`,data);
+  createProduct(data : FormData): Observable<any>{
+    return this._http.post<any>(`${this.API}/products`,data);
   }
 
   updateProduct(data : FormData, id? : number) : Observable<number>{
