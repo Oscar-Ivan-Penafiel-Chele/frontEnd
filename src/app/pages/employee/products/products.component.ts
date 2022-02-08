@@ -38,6 +38,8 @@ export class ProductsComponent implements OnInit {
     submitted: boolean = false;
     inputFile :boolean = false;
     productDialog: boolean = false;
+    sizeFileValid : boolean = false;
+    fileExtensionValid : boolean = false;
 
     selectedProducts: Product[] = [];
     
@@ -53,7 +55,8 @@ export class ProductsComponent implements OnInit {
     actionSelected  : string ="";
     host : string = "http://127.0.0.1:8000";
     
-    categorieSelected : number []  = [];
+    // categorieSelected : number []  = [];
+    idCategory : string = "";
     i : number = 0;
     idProduct : number = 0;
     
@@ -110,7 +113,7 @@ export class ProductsComponent implements OnInit {
         this.fileTmp = {};
         this.submitted = false;
         this.productDialog = true;
-        this.categorieSelected = [];
+        this.product.product_status = 1;
     }
 
     getPhotoSelected($event : any){
@@ -122,8 +125,16 @@ export class ProductsComponent implements OnInit {
                 fileSize : file.size,
             }
 
-            this.getSizeImage(this.fileTmp.fileSize);
+            if(!this.validateSizeImage(this.fileTmp.fileSize)){
+                return;
+            }
+                   
+            if(!this.validateImageExtension(this.fileTmp.fileName)){
+                return;
+            }
             
+            this.getSizeImage(this.fileTmp.fileSize);
+
             const reader = new FileReader;
             reader.onload = e => this.photoSelected = reader.result;
             reader.readAsDataURL(this.fileTmp.fileRaw);
@@ -133,7 +144,30 @@ export class ProductsComponent implements OnInit {
         }
     }
 
-    getSizeImage(size : number){
+    validateSizeImage(size : number) : boolean{
+        if(size > 1000000){
+            this.sizeFileValid = true;
+            return false;
+        }else{
+            this.sizeFileValid = false;
+            return true;
+        }
+    }
+
+    validateImageExtension(nameImage : string) : boolean{
+        let imageExtension = nameImage.split('.').pop();
+        const ext = ['jpg','png','jpeg'];
+        
+        if(!ext.includes(imageExtension!)){
+            this.fileExtensionValid = true;
+            return false;
+        }else{
+            this.fileExtensionValid = false;
+            return true;
+        }
+    }
+
+    getSizeImage(size : number) : void{
         if(size < 1048576){
             this.fileSize = (size/1000).toFixed(0);
             this.descriptionSize = "kb";
@@ -181,22 +215,12 @@ export class ProductsComponent implements OnInit {
     saveProduct() {
         if(this.actionSelected === "new"){
             this.submitted = true
-        
+    
             if(!this.validateData()){
                 return ;
             }
-            this.product.id_user = parseInt(this.user.id_user!);
-            const data = new FormData();
-            data.append('image', this.fileTmp.fileRaw);
-            Object.entries(this.product).forEach(([key , value]) => {
-                data.append(`${key}`, value);
-            });
-
-            this._rest.createProduct(data)
-                .subscribe((response)=>{
-                this.saveProduCategory(response);
-                this.getAllProducts();
-                });
+            
+            this.saveData();
 
         }else if(this.actionSelected === "edit"){
             if(this.isObjEmpty(this.fileTmp)){
@@ -215,51 +239,28 @@ export class ProductsComponent implements OnInit {
                 //No esta vacio
             }
         }
-        
-        
-        
-        
-            // this.isError = true;
-        //   this.submitted = true;
-        // console.log(this.product);
-        // this.validateData;
-        //   if (this.product.name?.trim()) {
-        //       if (this.product.id) {
-        //           this.products[this.findIndexById(this.product.id)] = this.product;
-        //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
-        //       }
-        //       else {
-        //           this.product.id = this.createId();
-        //           this.product.image = 'product-placeholder.svg';
-        //           this.products.push(this.product);
-        //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
-        //       }
-    
-        //       this.products = [...this.products];
-        //       this.productDialog = false;
-        //       this.product = {};
-        //   }
     }
 
-    saveProduCategory(response : number){
-        if(!response){
-            return ;
-        }
-        
-        this.product_category.id_product = response;
-        this.product_category.id_category = this.categorieSelected;
-        this._rest.createProductCategory(this.product_category)
-            .subscribe((r) => {
-                console.log(r);
-                if(r){
-                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
-                    this.hideDialog();
-                }
-            })
+    saveData() : void{
+        this.product.id_user = parseInt(this.user.id_user!);
+        this.product.id_category = parseInt(this.product.id_category);
+
+        const data = new FormData();
+        data.append('image', this.fileTmp.fileRaw);
+        Object.entries(this.product).forEach(([key , value]) => {
+            data.append(`${key}`, value);
+        });
+
+        this._rest.createProduct(data)
+            .subscribe((response)=>{
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
+                this.hideDialog();
+                this.getAllProducts();
+            });
     }
 
     validateData(){
-        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.categorieSelected.length == 0){
+        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.product.id_category == null){
             return false;
         }
       
@@ -267,7 +268,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.categorieSelected.length == 0){
+        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.product.id_category == null){
             return false;
         }
       
@@ -295,26 +296,12 @@ export class ProductsComponent implements OnInit {
         // })
     }
 
-    deleteSelectedProducts() {
-    //   this.confirmationService.confirm({
-    //       message: 'Are you sure you want to delete the selected products?',
-    //       header: 'Confirm',
-    //       icon: 'pi pi-exclamation-triangle',
-    //       accept: () => {
-    //           this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-    //           this.selectedProducts = [];
-    //           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
-    //       }
-    //   });
-    }
-
     editProduct(product: Product) {
       this.actionSelected = "edit"
-      this.categorieSelected = [];
       this.product = {...product};
-      product.producto_categorias.forEach((i)=>{
-        this.categorieSelected.push(i.id_category.toString());
-      });
+    //   product.producto_categorias.forEach((i)=>{
+    //     this.categorieSelected.push(i.id_category.toString());
+    //   });
       this.isPhoto = true;  
       this.inputFile = true;
       this.isPhotoEdit = true;

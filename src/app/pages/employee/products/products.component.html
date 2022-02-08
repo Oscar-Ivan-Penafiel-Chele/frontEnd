@@ -68,7 +68,7 @@
     <ng-template pTemplate="content">
         <div class="field">
             <input type="hidden" [(ngModel)]="actionSelected">
-            <label for="name">Imagen</label><br>
+            <label for="name">Imagen del Producto</label><br>
             <div class="imageSelect" (click)="photoInput.click()">
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
@@ -80,11 +80,15 @@
                 <ng-template #desingImage>
                     <div class="designeImagen">
                         <i class="pi pi-images"></i>
-                        <p>Browse files <span>or Attach you files here</span></p>
-                        <p>Accept File Type: (.png, .jpeg, .jpg)</p>
+                        <!-- <span>or Attach you files here</span> -->
+                        <p>Click Para Buscar Imagen</p>
+                        <p>Tamaño máximo: 4MB</p>
+                        <p>Tipo de imagen aceptado: (.png, .jpeg, .jpg)</p>
                     </div>
                 </ng-template>
             </div>
+            <small class="p-error" *ngIf="fileExtensionValid"><i class="pi pi-exclamation-triangle"></i> Extensión no admitida</small>
+            <small class="p-error" *ngIf="sizeFileValid"><i class="pi pi-exclamation-triangle"></i> Tamaño no adminido</small>
             <small class="p-error" *ngIf="submitted && (!product.product_image || !photoSelected)">Imagen es requerido</small>
             <div *ngIf="isPhoto" class="infoPhoto">
                 <div class="imgInfoPhoto">
@@ -176,14 +180,14 @@
         </div>
 
         <div class="field col">    
-            <label for="inventoryStatus">Categorías del Producto</label>
+            <label for="inventoryStatus">Categoría del Producto</label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
                 <div class="field-checkbox mr-3" *ngFor="let category of categories | sortByOrder">
-                    <p-checkbox name="group1" value="{{category.id}}" [(ngModel)]="categorieSelected" inputId="{{category.id}}"></p-checkbox>
+                    <p-radioButton name="category" value={{category.id}} [(ngModel)]="product.id_category"></p-radioButton>
                     <label for="{{category.id}}">{{category.name}}</label>
                 </div>
             </div>
-            <small class="p-error" *ngIf="submitted && categorieSelected.length == 0">Categoría es requerido</small>
+            <small class="p-error" *ngIf="submitted && product.id_category == null">Categoría es requerido</small>
         </div>
     </ng-template>
 

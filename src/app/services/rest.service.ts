@@ -10,7 +10,7 @@ import { Product_Category } from '../models/product_category';
 })
 export class RestService {
 
-  API : string = "http://localhost:8000/api";
+  API : string = "http://127.0.0.1:8000/api";
 
   constructor(private _http : HttpClient) { }
 
@@ -30,17 +30,6 @@ export class RestService {
   deleteProduct(id? : number) : Observable<any>{
     return this._http.delete<any>(`${this.API}/products/${id}`);
   }
-
-
-  /* CATEGORY PRODUCT*/
-  createProductCategory(data : Product_Category) : Observable<any>{
-    return this._http.post<any>(`${this.API}/productCategory`,data);
-  }
-
-  updateProductCategory(data : Product_Category, id?:number) : Observable<any>{
-    return this._http.put<any>(`${this.API}/productCategory`,data) 
-  }
-
 
 
   /* PROVEEDOR */

@@ -3,6 +3,7 @@ export interface Product {
     id_user?:number;
     id_provider?:number;
     id_brand?:number;
+    id_category?:any;
     product_code?:string;
     product_name?:string;
     product_description?:string;
@@ -11,7 +12,6 @@ export interface Product {
     product_image?:string;
     product_status?:number;
     product_rating?:number;
-    producto_categorias: any[];
     create_date : Date;
     update_at : Date;
 }
