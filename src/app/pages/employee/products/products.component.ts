@@ -108,7 +108,7 @@ export class ProductsComponent implements OnInit {
     }
 
     getAllBrands(){
-        this._homeService.getAllBrands()
+        this._rest.getBrands()
         .subscribe((response) => {
           this.brands = <Brand[]>response;
           for( this.i = 0 ; this.i < this.brands.length ; this.i++){

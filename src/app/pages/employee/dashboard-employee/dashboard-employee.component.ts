@@ -28,10 +28,6 @@ export class DashboardEmployeeComponent implements OnInit {
     private _authStateService : AuthStateService,
     ) { 
       
-      // this._authStateService.userAuthState.subscribe((response) =>{
-      //   this.isSignedIn = response;
-      // });
-      
     }
     
     ngOnInit(): void {
@@ -102,9 +98,13 @@ export class DashboardEmployeeComponent implements OnInit {
   }
 
   logOut(){
-    // this._authStateService.setAuthState(false);
-    this._token.removeToken();
-    this._routerNavigation.navigate(['login']);
+    this._authService.logout(parseInt(this.user.id_user as string))
+      .subscribe((response)=>{
+        if(response.status == 200 || response.message === "Sesión cerrada con éxito"){
+          this._token.removeToken();
+          this._routerNavigation.navigate(['login']);
+      }
+    });
   }
 
   getDateToday(){

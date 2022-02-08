@@ -27,6 +27,7 @@ export class TokenService {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user');
   }
+  
 
   // isValidToken(){
   //   const token =  this.getToken();

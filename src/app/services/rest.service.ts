@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { IProvider } from '../models/provider';
+import { Brand } from '../models/brand';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,13 @@ export class RestService {
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
-    return this._http.get<IProvider[]>('assets/data/providers.json');
+    return this._http.get<IProvider[]>(`${this.API}/providers`);
+  }
+
+
+  /* BRAND */
+  getBrands() : Observable<Brand[]>{
+    return this._http.get<Brand[]>(`${this.API}/brands`);
   }
 
 }

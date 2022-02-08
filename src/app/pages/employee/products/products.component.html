@@ -144,7 +144,7 @@
             <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
-                        <img class="mr-2" [src]="option.category_thumbnail" alt="Marca" width="25px">
+                        <img class="mr-2" [src]="option.brand_thumbnail" alt=" " width="25px">
                         <span [class]="'product-badge status-' + option.id_brand">{{option.brand_name}}</span>
                     </div>
                 </ng-template>
