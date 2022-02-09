@@ -11,6 +11,7 @@ import { RestService } from 'src/app/services/rest.service';
 import { IProvider } from 'src/app/models/provider';
 import { TokenService } from 'src/app/services/token.service';
 import { User } from 'src/app/models/user';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-products',
@@ -51,7 +52,7 @@ export class ProductsComponent implements OnInit {
     fileSize : string = "";
     descriptionSize : string = "";
     actionSelected  : string ="";
-    host : string = "http://127.0.0.1:8000";
+    host : string = environment.API;
     
     // categorieSelected : number []  = [];
     idCategory : string = "";

@@ -9,7 +9,8 @@ import { TokenService } from 'src/app/services/token.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers : [MessageService]
 })
 export class LoginComponent implements OnInit {
   email : string = "";
@@ -22,6 +23,9 @@ export class LoginComponent implements OnInit {
   loading : boolean = false;
   isVisibleText : boolean;
   user : User = {};
+  submitted: boolean = false;
+  invalidCredentials : boolean = false;
+  isValidCredentials : boolean = false;
 
   constructor(
     private primengConfig: PrimeNGConfig, 
@@ -29,6 +33,7 @@ export class LoginComponent implements OnInit {
     private _router : Router,
     private _token : TokenService,
     private _authState : AuthStateService,
+    private messageService: MessageService,
     ) { 
         this.data = {};
         this.isVisibleText = true;
@@ -45,18 +50,30 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.loading = true;
-    this.isVisibleText = false;
+    this.submitted = true;
     if(!this.validateInput()){
-      let msg = "Datos incompletos!";
-      this.alertMessage(msg);
+      this.loading=false;
+      return ;
     }else{
+      this.loading = true;
+      this.isVisibleText = false;
       this.data = {
         'email': this.email,
         'password': this.password
       }
+
       this._authService.login(this.data)
       .subscribe((response) => {
+          if(response.status == 401 || response.message == "Credenciales Invalidas"){
+            this.invalidCredentials = true;
+            setTimeout(()=>{
+              this.invalidCredentials = false;
+            },3000);
+            this.loading = false;
+            this.isVisibleText = true;
+            return ;
+          }
+          this.isValidCredentials = true;
           this.responseHandle(response);
           this.redirectRoute();
       }, (error) =>{
@@ -87,14 +104,16 @@ export class LoginComponent implements OnInit {
 
   getRoute(rol : number){
     const roles : any = {
-      '1' : '/dashboard-employee',
-      '2' : '/dashboard',
-      '3' : '/dashboard',
-      '4' : '/shop',
+      1 : '/dashboard',
+      2 : '/dashboard-employee',
+      3 : '/dashboard',
+      4 : '/shop',
     }
 
     let route = roles[rol];
-    this._router.navigate([`${route}`]);
+    setTimeout(()=>{
+      this._router.navigate([`${route}`]);
+    },2000);
   }
 
   responseHandle(data : any){
@@ -102,10 +121,10 @@ export class LoginComponent implements OnInit {
   }
 
   validateInput(){
-    if(this.email.length > 0 || this.password.length > 0){
-      return true;
-    }else{
+    if(this.email === '' || this.password === ''){
       return false;
+    }else{
+      return true;
     }
   }
 

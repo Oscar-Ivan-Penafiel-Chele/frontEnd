@@ -19,6 +19,7 @@ export class DashboardEmployeeComponent implements OnInit {
   fechaYHora : any ;
   user : User = {};
   isSignedIn?: boolean;
+  roleUser : string = "";
  
   constructor(
     private primengConfig: PrimeNGConfig, 
@@ -45,8 +46,19 @@ export class DashboardEmployeeComponent implements OnInit {
   getDataProfile(){
       const data = this._token.getTokenDataUser() as string;
       this.user = JSON.parse(data);
+      this.getRoleUser(this.user.id_role!);
   }
 
+  getRoleUser(id_role : number){
+    const roles : any= {
+      1 : 'Gerente',
+      2 : 'Administrador',
+      3 : 'Contable',
+      4 : 'Vendedor'
+    }
+
+    this.roleUser = roles[id_role];
+  }
 
   displayOptions(){
     const menu = document.querySelector('.header__profile');
@@ -98,6 +110,8 @@ export class DashboardEmployeeComponent implements OnInit {
   }
 
   logOut(){
+    const divLogout = document.getElementById('nav__aside__footer');
+    divLogout!.style.pointerEvents = "none";
     this._authService.logout(parseInt(this.user.id_user as string))
       .subscribe((response)=>{
         if(response.status == 200 || response.message === "Sesión cerrada con éxito"){

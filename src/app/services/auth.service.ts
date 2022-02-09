@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 import { User } from '../models/user';
 
 @Injectable({
@@ -8,24 +9,24 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
-  API : string = "http://localhost:8000/api";
+  url : string = environment.API;
 
   constructor(private _http : HttpClient) { }
 
   /* USER */
   login(data : {}) : Observable<any>{
-    return this._http.post<any>(`${this.API}/login`,data);
+    return this._http.post<any>(`${this.url}/login`,data);
   }
 
   logout(id_User : number) : Observable<any>{
-    return this._http.post<any>(`${this.API}/logout`,id_User);
+    return this._http.post<any>(`${this.url}/logout/${id_User}`,"");
   }
 
   register(data : User) : Observable<any>{
-    return this._http.post<any>(`${this.API}/register`,data);
+    return this._http.post<any>(`${this.url}/register`,data);
   }
 
   profileUser(data:any): Observable<User> {
-    return this._http.post<User>(`${this.API}/userinfo`,data);
+    return this._http.post<User>(`${this.url}/userinfo`,data);
   }
 }
