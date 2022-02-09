@@ -4,6 +4,7 @@ export interface Product {
     id_provider?:number;
     id_brand?:number;
     id_category?:any;
+    id_product_unit?:number;
     product_code?:string;
     product_name?:string;
     product_description?:string;

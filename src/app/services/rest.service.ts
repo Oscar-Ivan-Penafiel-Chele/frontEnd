@@ -5,6 +5,7 @@ import { Product } from '../models/product';
 import { IProvider } from '../models/provider';
 import { Brand } from '../models/brand';
 import { environment } from 'src/environments/environment.prod';
+import { Measure } from '../models/measure';
 
 
 @Injectable({
@@ -43,6 +44,11 @@ export class RestService {
   /* BRAND */
   getBrands() : Observable<Brand[]>{
     return this._http.get<Brand[]>(`${this.url}/brands`);
+  }
+
+  /* MEDIDAS */
+  getMeasure() : Observable<Measure[]>{
+    return this._http.get<Measure[]>(`${this.url}/units`);
   }
 
 }

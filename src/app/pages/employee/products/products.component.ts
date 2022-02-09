@@ -12,6 +12,7 @@ import { IProvider } from 'src/app/models/provider';
 import { TokenService } from 'src/app/services/token.service';
 import { User } from 'src/app/models/user';
 import { environment } from 'src/environments/environment.prod';
+import { Measure } from 'src/app/models/measure';
 
 @Component({
   selector: 'app-products',
@@ -25,6 +26,7 @@ export class ProductsComponent implements OnInit {
     categories : Category[] = [];
     brands : Brand[] = [];
     providers : IProvider[] = [];
+    measures : Measure[] = [];
     user : User = {};
    
     
@@ -52,9 +54,8 @@ export class ProductsComponent implements OnInit {
     fileSize : string = "";
     descriptionSize : string = "";
     actionSelected  : string ="";
-    host : string = environment.API;
+    host : string = environment.URL;
     
-    // categorieSelected : number []  = [];
     idCategory : string = "";
     i : number = 0;
     idProduct : number = 0;
@@ -88,6 +89,7 @@ export class ProductsComponent implements OnInit {
         this.getAllBrands();
         this.getAllProviders();
         this.getDataProfile();
+        this.getMeasures();
         this.fileTmp = {};
     }
 
@@ -169,6 +171,16 @@ export class ProductsComponent implements OnInit {
             this.fileSize = (size/1000000).toFixed(0);
             this.descriptionSize = "mb";
         }
+    }
+
+    getMeasures(){
+        this._rest.getMeasure()
+        .subscribe((response) =>{
+            this.measures = <Measure[]>response;
+            for( this.i = 0 ; this.i < this.measures.length ; this.i++){
+                this._sortByOrder.transform(`${this.measures[this.i].description_product_unit}`);
+            }
+        })
     }
 
 

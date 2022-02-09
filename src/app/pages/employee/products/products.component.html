@@ -121,13 +121,6 @@
                 <small class="p-error" *ngIf="submitted && !product.product_price">Precio es requerido</small>
             </div>
             <div class="field col">
-                <label for="quantity">Cantidad del Producto</label>
-                <p-inputNumber [required]="true" id="quantity" [(ngModel)]="product.product_stock"></p-inputNumber>
-                <small class="p-error" *ngIf="submitted && !product.product_stock">Cantidad es requerido</small>
-            </div>
-        </div>
-        <div class="formgrid grid">
-            <div class="field col">
                 <label for="productProvider">Proveedor del Producto</label>
                 <p-dropdown [showClear]="true" [(ngModel)]="product.id_provider" optionLabel="provider_name" optionValue="id_provider" inputId="productProvider" [options]="providers" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
@@ -139,6 +132,8 @@
                 </p-dropdown>
                 <small class="p-error" *ngIf="submitted && !product.id_provider">Proveedor es requerido</small>
             </div>
+        </div>
+        <div class="formgrid grid">
             <div class="field col">
             <label for="productBrand">Marca del Producto</label>
             <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands" placeholder="Seleccionar">
@@ -151,11 +146,8 @@
             </p-dropdown>
             <small class="p-error" *ngIf="submitted && !product.id_brand">Marca es requerido</small>
             </div>
-        </div>
-
-        <div class="formgrid grid">
             <div class="field col">
-                <label for="productStatus">Estado del Producto</label>
+            <label for="productStatus">Estado del Producto</label>
             <p-dropdown [showClear]="true" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
@@ -165,6 +157,25 @@
                 </ng-template>
             </p-dropdown>
             <small class="p-error" *ngIf="submitted && !product.product_status">Estado es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="id_product_unit">Medida del Producto</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="product.id_product_unit" optionLabel="description_product_unit" optionValue="id_product_unit" inputId="id_product_unit" [options]="measures" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="pi pi-box mr-2"></i>
+                            <span>{{option.description_product_unit}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !product.id_product_unit">Medida es requerida</small>
+            </div>
+            <div class="field col">
+                <label for="quantity">Cantidad del Producto</label>
+                <p-inputNumber [disabled]="!product.id_product_unit" [required]="true" id="quantity" [(ngModel)]="product.product_stock"></p-inputNumber>
+                <small class="p-error" *ngIf="submitted && !product.product_stock">Cantidad es requerido</small>
             </div>
             <div class="field col">
                 <label for="rating">Rating del Producto</label>
