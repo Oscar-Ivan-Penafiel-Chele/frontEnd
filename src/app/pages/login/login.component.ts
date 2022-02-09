@@ -55,32 +55,36 @@ export class LoginComponent implements OnInit {
       this.loading=false;
       return ;
     }else{
-      this.loading = true;
-      this.isVisibleText = false;
-      this.data = {
-        'email': this.email,
-        'password': this.password
-      }
-
-      this._authService.login(this.data)
-      .subscribe((response) => {
-          if(response.status == 401 || response.message == "Credenciales Invalidas"){
-            this.invalidCredentials = true;
-            setTimeout(()=>{
-              this.invalidCredentials = false;
-            },3000);
-            this.loading = false;
-            this.isVisibleText = true;
-            return ;
-          }
-          this.isValidCredentials = true;
-          this.responseHandle(response);
-          this.redirectRoute();
-      }, (error) =>{
-        this.error = error.error;
-        console.log("Error del login: "+error);
-      });
+      this.requestLogin();
     }
+  }
+
+  requestLogin(){
+    this.loading = true;
+    this.isVisibleText = false;
+    this.data = {
+      'email': this.email,
+      'password': this.password
+    }
+
+    this._authService.login(this.data)
+    .subscribe((response) => {
+        if(response.status == 401 || response.message == "Credenciales Invalidas"){
+          this.invalidCredentials = true;
+          setTimeout(()=>{
+            this.invalidCredentials = false;
+          },3000);
+          this.loading = false;
+          this.isVisibleText = true;
+          return ;
+        }
+        this.isValidCredentials = true;
+        this.responseHandle(response);
+        this.redirectRoute();
+    }, (error) =>{
+      this.error = error.error;
+      console.log("Error del login: "+error);
+    });
   }
 
   async redirectRoute(){

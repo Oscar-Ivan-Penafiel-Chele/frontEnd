@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoryAdminComponent } from './pages/admin/category-admin/category-admin.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
@@ -44,7 +45,7 @@ const routes: Routes = [
       {path: 'report', component : ReportAdminComponent, pathMatch : 'full',},
     ]
   }, 
-  {path: 'dashboard-employee', component : DashboardEmployeeComponent, 
+  {path: 'dashboard-employee', component : DashboardEmployeeComponent, canActivate : [AuthGuard],
     children : [
       {path: '', redirectTo: 'products', pathMatch : 'full'},
       {path: 'promotions', component : PromoComponent, pathMatch : 'full',},
