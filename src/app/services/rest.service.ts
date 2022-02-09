@@ -21,15 +21,12 @@ export class RestService {
   getProducts() : Observable<Product[]>{
     return this._http.get<Product[]>(`${this.url}/products`);
   }
-
   createProduct(data : FormData): Observable<any>{
     return this._http.post<any>(`${this.url}/products`,data);
   }
-
-  updateProduct(data : FormData, id? : number) : Observable<number>{
-    return this._http.put<number>(`${this.url}/products/${id}`,data);
+  updateProduct(data : FormData, id? : number) : Observable<any>{
+    return this._http.put<any>(`${this.url}/products/${id}`,data);
   }
-
   deleteProduct(id? : number) : Observable<any>{
     return this._http.delete<any>(`${this.url}/products/${id}`);
   }

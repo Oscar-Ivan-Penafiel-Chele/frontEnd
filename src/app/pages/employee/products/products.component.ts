@@ -211,13 +211,14 @@ export class ProductsComponent implements OnInit {
 
     openNew() {
         this.actionSelected = "new"
-        this.isPhoto = false;  
-        this.inputFile = false;
-        this.product = {} as Product;
-        this.fileTmp = {};
-        this.submitted = false;
-        this.productDialog = true;
-        this.product.product_status = 1;
+        this.isPhoto = false;  // Le decimos que no hay foto
+        this.inputFile = false; // Le decimos que habilite el inputFile
+        this.product = {} as Product; // seteamos el producto
+        this.fileTmp = {};  // seteamos el archivo de las imagenes
+        this.submitted = false; // le decimos que no valide ningun campo
+        this.productDialog = true; // abrimos el modal
+        this.isPhotoEdit = false; // LE decimos que no es una imagen a editar
+        this.product.product_status = 1;  // asignamos el status por defecto a : Activo
     }
 
 
@@ -241,19 +242,23 @@ export class ProductsComponent implements OnInit {
 
         }else if(this.actionSelected === "edit"){
             if(this.isObjEmpty(this.fileTmp)){
-                //Si esta vacio
-                // if(this.validateDataNoImage()){
-                //     return ;
-                // }
+                //Se envia la misma imagen 
+                this.fileTmp = {};
+                if(!this.validateDataNoImage()){
+                    return ;
+                }
+                if(!this.product.product_image){
+                    this.submitted = true
+                }
 
-                console.log(this.product);
-
+                this.updateData(false);
             }else{
+                //Se cambia la imagen
                 this.submitted = true
                 if(!this.validateData()){
                     return ;
                 }
-                //No esta vacio
+                this.updateData(true);
             }
         }
     }
@@ -278,6 +283,31 @@ export class ProductsComponent implements OnInit {
             });
     }
 
+    updateData(existImage : boolean){
+        this.product.id_user = parseInt(this.user.id_user as string);
+        const data = new FormData();
+
+        if(existImage){
+            data.append('image', this.fileTmp.fileRaw);
+        }
+
+        Object.entries(this.product).forEach(([key , value]) => {
+            data.append(`${key}`, value);
+        });
+
+        this._rest.updateProduct(data, this.product.id_product)
+        .subscribe((response)=>{
+            if(response.status == 200 || response.message === "Producto actualizado con exito"){
+                this.getAllProducts();
+                this.hideDialog();
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito'});
+            }else if(response.status == 400 || response.message === "Ocurrio un error interno en el servidor"){
+                this.hideDialog();
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, intento más tarde'});
+            }
+        });
+    }
+
     validateData(){
         if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.product.id_category == null){
             return false;
@@ -287,7 +317,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.product.id_category == null){
+        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || !this.product.id_category){
             return false;
         }
       
@@ -318,13 +348,10 @@ export class ProductsComponent implements OnInit {
     editProduct(product: Product) {
       this.actionSelected = "edit"
       this.product = {...product};
-    //   product.producto_categorias.forEach((i)=>{
-    //     this.categorieSelected.push(i.id_category.toString());
-    //   });
-      this.isPhoto = true;  
-      this.inputFile = true;
-      this.isPhotoEdit = true;
-      this.productDialog = true;
+      this.isPhoto = true;   // Le decimos que si hay foto
+      this.inputFile = true; // LE decimos que bloquee el inputFile
+      this.isPhotoEdit = true; // Le decimos que si hay foto para editar
+      this.productDialog = true; // abrimos modal
     }
 
     deleteProduct(product: Product) {
