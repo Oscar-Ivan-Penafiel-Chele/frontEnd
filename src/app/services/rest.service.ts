@@ -25,12 +25,13 @@ export class RestService {
     return this._http.post<any>(`${this.url}/products`,data);
   }
   updateProduct(data : FormData, id : number) : Observable<any>{
-    data.append('_method','PUT');
-    let headers: HttpHeaders = new HttpHeaders({
-      'X-Requested-With': 'XMLHttpRequest'
-    });
+    // data.append('_method','PUT');
+    // let headers: HttpHeaders = new HttpHeaders({
+    //   'X-Requested-With': 'XMLHttpRequest'
+    // });
 
-    return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
+    // return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
+    return this._http.post<any>(`${this.url}/products/${id}`,data);
   }
 
   deleteProduct(id? : number) : Observable<any>{
@@ -48,16 +49,19 @@ export class RestService {
   getBrands() : Observable<Brand[]>{
     return this._http.get<Brand[]>(`${this.url}/brands`);
   }
+
   createBrand(data : FormData) : Observable<any>{
     return this._http.post<any>(`${this.url}/brands`,data);
   }
+
   updateBrand(data : FormData, id : number) : Observable<any>{
     data.append('_method','PUT');
     let headers: HttpHeaders = new HttpHeaders({
       'X-Requested-With': 'XMLHttpRequest'
     });
-    return this._http.post<any>(`${this.url}/brands/${id}`,data,{headers : headers});
+    return this._http.post<any>(`${this.url}/brands/${id}`,data,{headers: headers});
   }
+
   deleteBrand(id:number) : Observable<any>{
     return this._http.delete<any>(`${this.url}/brands/${id}`);
   }
