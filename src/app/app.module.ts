@@ -67,6 +67,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { BrandComponent } from './pages/employee/brand/brand.component';
+import { ProviderComponent } from './pages/employee/provider/provider.component';
 
 
 @NgModule({
@@ -95,6 +97,8 @@ import { AuthInterceptor } from './services/auth.interceptor';
     ReportAdminComponent,
     OrdersAdminComponent,
     SortByOrderPipe,
+    BrandComponent,
+    ProviderComponent,
   ],
   imports: [
     BrowserModule,

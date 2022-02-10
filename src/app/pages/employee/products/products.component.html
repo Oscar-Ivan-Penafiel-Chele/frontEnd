@@ -28,7 +28,7 @@
             </div>
         </ng-template>
         <ng-template pTemplate="header">
-            <tr>
+            <tr >
                 <th pSortableColumn="product_code"><i class="pi pi-qrcode"></i> Código <p-sortIcon field="product_code"></p-sortIcon></th>
                 <th pSortableColumn="product_name"><i class="pi pi-book"></i> Nombre <p-sortIcon field="product_name"></p-sortIcon></th>
                 <th><i class="pi pi-image"></i> Imagen</th>
@@ -38,8 +38,8 @@
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product let-columns="columns" let-index="rowIndex">
-            <tr [pReorderableRow]="index">
+        <ng-template pTemplate="body" let-product>
+            <tr>
                 <td>{{product.product_code}}</td>
                 <td>{{product.product_name}}</td>
                 <td><img [src]="host+product.product_image" [alt]="product.product_name" width="100" class="shadow-4" /></td>

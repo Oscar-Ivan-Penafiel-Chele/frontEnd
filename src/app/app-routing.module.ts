@@ -11,11 +11,13 @@ import { PromoAdminComponent } from './pages/admin/promo-admin/promo-admin.compo
 import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
 import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { BrandComponent } from './pages/employee/brand/brand.component';
 import { CategoryComponent } from './pages/employee/category/category.component';
 import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
 import { OrdersComponent } from './pages/employee/orders/orders.component';
 import { ProductsComponent } from './pages/employee/products/products.component';
 import { PromoComponent } from './pages/employee/promo/promo.component';
+import { ProviderComponent } from './pages/employee/provider/provider.component';
 import { ReportComponent } from './pages/employee/report/report.component';
 
 import { HomeComponent } from './pages/home/home.component';
@@ -51,6 +53,8 @@ const routes: Routes = [
       {path: 'promotions', component : PromoComponent, pathMatch : 'full',},
       {path: 'products', component : ProductsComponent, pathMatch : 'full',},
       {path: 'orders', component : OrdersComponent, pathMatch : 'full',},
+      {path: 'brand', component : BrandComponent, pathMatch : 'full',},
+      {path: 'provider', component : ProviderComponent, pathMatch : 'full',},
       {path: 'category', component : CategoryComponent, pathMatch : 'full',},
       {path: 'report', component : ReportComponent, pathMatch : 'full',},
     ]

@@ -1,0 +1,122 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="brands" [rows]="10" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Marcas</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="brand_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="brand_name"></p-sortIcon></th>
+                <th><i class="pi pi-image"></i> Imagen</th>
+                <th pSortableColumn="brand_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="brand_status"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-brand let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>{{brand.brand_name}}</td>
+                <td><img [src]="host+brand.brand_thumbnail" [alt]="brand.brand_thumbnail" width="100" class="shadow-4" /></td>
+                <td>{{brand.brand_status}}</td>
+                <td>{{brand.create_date}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBrand(brand)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteBrand(brand)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{brands ? brands.length : 0 }} productos.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="productDialog" [draggable]="false" [style]="{width: '800px'}" header="Detalles de la Marca" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <input type="hidden" [(ngModel)]="actionSelected">
+            <label for="name">Imagen de la Marca</label><br>
+            <div class="imageSelect" (click)="photoInput.click()">
+                <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
+                <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
+                    <div class="imgSelected">
+                        <img [src]="host+brand.brand_thumbnail" [alt]="brand.brand_thumbnail" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
+                    </div>
+                </ng-template>
+                <ng-template #desingImage>
+                    <div class="designeImagen">
+                        <i class="pi pi-images"></i>
+                        <!-- <span>or Attach you files here</span> -->
+                        <p>Click Para Buscar Imagen</p>
+                        <p>Tamaño máximo: 4MB</p>
+                        <p>Tipo de imagen aceptado: (.png, .jpeg, .jpg)</p>
+                    </div>
+                </ng-template>
+            </div>
+            <small class="p-error" *ngIf="fileExtensionValid"><i class="pi pi-exclamation-triangle"></i> Extensión no admitida</small>
+            <small class="p-error" *ngIf="sizeFileValid"><i class="pi pi-exclamation-triangle"></i> Tamaño no adminido</small>
+            <small class="p-error" *ngIf="submitted && (!brand.brand_thumbnail || !photoSelected)">Imagen es requerido</small>
+            <div *ngIf="isPhoto" class="infoPhoto">
+                <div class="imgInfoPhoto">
+                    <i class="pi pi-image"></i>
+                    <div class="infoDescriptionImage">
+                        <p *ngIf="isPhotoEdit">{{brand.brand_thumbnail}}</p> 
+                        <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
+                    </div>
+                </div>
+                <div class="infoButtonImage">
+                    <i class="pi pi-times" (click)="clearImage()" pRipple></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Nombre de la Marca</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="brand.brand_name" required autofocus />
+                <small class="p-error" *ngIf="submitted && !brand.brand_name">Nombre es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="productStatus">Estado de la Marca</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="brand.brand_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !brand.brand_status">Estado es requerido</small>
+            </div>
+        </div>
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
