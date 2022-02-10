@@ -24,7 +24,7 @@ export class RestService {
   createProduct(data : FormData): Observable<any>{
     return this._http.post<any>(`${this.url}/products`,data);
   }
-  updateProduct(data : FormData, id : number, product: Product) : Observable<any>{
+  updateProduct(data : FormData, id : number) : Observable<any>{
     data.append('_method','PUT');
     let headers: HttpHeaders = new HttpHeaders({
       'X-Requested-With': 'XMLHttpRequest'
@@ -32,6 +32,7 @@ export class RestService {
 
     return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
   }
+
   deleteProduct(id? : number) : Observable<any>{
     return this._http.delete<any>(`${this.url}/products/${id}`);
   }

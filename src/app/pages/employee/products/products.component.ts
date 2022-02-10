@@ -305,7 +305,7 @@ export class ProductsComponent implements OnInit {
             data.append(`${key}`, value);
         });
 
-        this._rest.updateProduct(data, this.product.id_product!, this.product)
+        this._rest.updateProduct(data, this.product.id_product!)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
                 this.getAllProducts();
