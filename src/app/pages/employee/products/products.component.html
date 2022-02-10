@@ -15,7 +15,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="['product_name']" responsiveLayout="scroll"
+    <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="['product_name', 'id_product_category','id_brand']" responsiveLayout="scroll"
         [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">

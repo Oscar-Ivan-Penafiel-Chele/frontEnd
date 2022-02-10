@@ -99,7 +99,6 @@ export class ProductsComponent implements OnInit {
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
             this.products = Object.values(response);
-            console.log(this.products);
         });
     }
 
@@ -230,6 +229,15 @@ export class ProductsComponent implements OnInit {
         this.isPhotoEdit = false;
     }
 
+    editProduct(product: Product) {
+        this.actionSelected = "edit"
+        this.product = {...product};
+        this.isPhoto = true;   // Le decimos que si hay foto
+        this.inputFile = true; // LE decimos que bloquee el inputFile
+        this.isPhotoEdit = true; // Le decimos que si hay foto para editar
+        this.productDialog = true; // abrimos modal
+      }
+
     saveProduct() {
         if(this.actionSelected === "new"){
             this.submitted = true
@@ -272,7 +280,7 @@ export class ProductsComponent implements OnInit {
         Object.entries(this.product).forEach(([key , value]) => {
             data.append(`${key}`, value);
         });
-
+            
         this._rest.createProduct(data)
             .subscribe((response)=>{
                 if(response.status == 200 || response.message === "Producto creado con exito"){
@@ -284,7 +292,9 @@ export class ProductsComponent implements OnInit {
     }
 
     updateData(existImage : boolean){
-        this.product.id_user = parseInt(this.user.id_user as string);
+        this.product.id_user = parseInt(this.user.id_user!);
+        this.product.id_category = parseInt(this.product.id_category);
+
         const data = new FormData();
 
         if(existImage){
@@ -295,15 +305,15 @@ export class ProductsComponent implements OnInit {
             data.append(`${key}`, value);
         });
 
-        this._rest.updateProduct(data, this.product.id_product)
+        this._rest.updateProduct(data, this.product.id_product!, this.product)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
                 this.getAllProducts();
                 this.hideDialog();
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito'});
-            }else if(response.status == 400 || response.message === "Ocurrio un error interno en el servidor"){
+            }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
                 this.hideDialog();
-                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, intento más tarde'});
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde'});
             }
         });
     }
@@ -345,14 +355,7 @@ export class ProductsComponent implements OnInit {
         // })
     }
 
-    editProduct(product: Product) {
-      this.actionSelected = "edit"
-      this.product = {...product};
-      this.isPhoto = true;   // Le decimos que si hay foto
-      this.inputFile = true; // LE decimos que bloquee el inputFile
-      this.isPhotoEdit = true; // Le decimos que si hay foto para editar
-      this.productDialog = true; // abrimos modal
-    }
+   
 
     deleteProduct(product: Product) {
       this.confirmationService.confirm({

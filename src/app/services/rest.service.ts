@@ -1,5 +1,5 @@
 import { Injectable} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { IProvider } from '../models/provider';
@@ -24,8 +24,13 @@ export class RestService {
   createProduct(data : FormData): Observable<any>{
     return this._http.post<any>(`${this.url}/products`,data);
   }
-  updateProduct(data : FormData, id? : number) : Observable<any>{
-    return this._http.put<any>(`${this.url}/products/${id}`,data);
+  updateProduct(data : FormData, id : number, product: Product) : Observable<any>{
+    data.append('_method','PUT');
+    let headers: HttpHeaders = new HttpHeaders({
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+
+    return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
   }
   deleteProduct(id? : number) : Observable<any>{
     return this._http.delete<any>(`${this.url}/products/${id}`);
