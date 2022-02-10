@@ -67,8 +67,8 @@ export class BrandComponent implements OnInit {
 
   getBrands(){
     this._rest.getBrands()
-    .subscribe((response) => {
-      this.brands = <Brand[]>response;
+    .subscribe((response : Brand[]) => {
+      this.brands = Object.values(response);
       for( this.i = 0 ; this.i < this.brands.length ; this.i++){
           this._sortByOrder.transform(this.brands[this.i].brand_name);
       }
@@ -202,7 +202,7 @@ export class BrandComponent implements OnInit {
             if(response.status == 200 || response.message === "Marca creada con exito"){
                 this.getBrands();
                 this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue creado con éxito'});
             }else{
               this.hideDialog();
               this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema'});
@@ -277,7 +277,7 @@ export class BrandComponent implements OnInit {
         rejectLabel : 'Cancelar',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            this._rest.deleteProduct(brand.id_brand).subscribe((response)=>{
+            this._rest.deleteBrand(brand.id_brand!).subscribe((response)=>{
                 if(response.status == 200 || response.message === "Eliminado correctamente"){
                     this.getBrands();
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Marca Eliminado', life: 3000});
