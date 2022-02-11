@@ -214,7 +214,7 @@ export class CategoryComponent implements OnInit {
 
     this._rest.updateCategory(data, this.category.id_category!)
     .subscribe((response)=>{
-        if(response.status == 200 || response.message === "Categoria actualizado con exito"){
+        if(response.status == 200 || response.message === "Categoria actualizada con exito"){
             this.getCategories();
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoria fue actualizado con éxito'});

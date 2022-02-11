@@ -85,7 +85,7 @@ export class RestService {
     let headers: HttpHeaders = new HttpHeaders({
       'X-Requested-With': 'XMLHttpRequest'
     });
-    return this._http.post(`${this.url}/brands/${id}`,data,{headers: headers});
+    return this._http.post(`${this.url}/categories/${id}`,data,{headers: headers});
   }
   deleteCategory(id : number) : Observable<any>{
     return this._http.delete(`${this.url}/categories/${id}`);
