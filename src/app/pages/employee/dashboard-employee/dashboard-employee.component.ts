@@ -105,11 +105,13 @@ export class DashboardEmployeeComponent implements OnInit {
     const opciones = ['products','category','brand','provider','promotions','orders','report'];
     const route = window.location.pathname.split('/').pop();
 
+
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
         const posc = opciones.indexOf(route!);
         links[posc].classList.add('active');
-        links[0].classList.remove('active');
-        
+        if(route != opciones[0]){
+          links[0].classList.remove('active');
+        }
     } 
 
     links.forEach( l => l.addEventListener('click', () =>{
