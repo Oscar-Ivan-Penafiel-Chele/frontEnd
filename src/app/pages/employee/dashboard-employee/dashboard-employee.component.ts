@@ -31,7 +31,7 @@ export class DashboardEmployeeComponent implements OnInit {
       
     }
     
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.primengConfig.ripple = true;
     this.activeFirstLink();
     this.activeLink();
@@ -101,6 +101,16 @@ export class DashboardEmployeeComponent implements OnInit {
 
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
+
+    const opciones = ['products','category','brand','provider','promotions','orders','report'];
+    const route = window.location.pathname.split('/').pop();
+
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        const posc = opciones.indexOf(route!);
+        links[posc].classList.add('active');
+        links[0].classList.remove('active');
+        
+    } 
 
     links.forEach( l => l.addEventListener('click', () =>{
         links.forEach(j => j.classList.remove('active'));

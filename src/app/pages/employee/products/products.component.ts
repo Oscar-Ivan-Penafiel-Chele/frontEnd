@@ -103,7 +103,7 @@ export class ProductsComponent implements OnInit {
     }
 
     getAllCategories() {
-        this._homeService.getAllCategories()
+        this._rest.getCategories()
         .subscribe((response) =>{
           this.categories = response;
         });
@@ -111,8 +111,8 @@ export class ProductsComponent implements OnInit {
 
     getAllBrands(){
         this._rest.getBrands()
-        .subscribe((response) => {
-          this.brands = <Brand[]>response;
+        .subscribe((response : Brand[]) => {
+          this.brands = Object.values(response);
           for( this.i = 0 ; this.i < this.brands.length ; this.i++){
               this._sortByOrder.transform(this.brands[this.i].brand_name);
           }

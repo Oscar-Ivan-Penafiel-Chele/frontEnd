@@ -8,31 +8,32 @@
                 </div>
             </div>
             <div class="nav__aside__content">
-                <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Productos</p>
                 </div>
-                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'promotions'" pRipple pTooltip="Promociones" tooltipPosition="right">
-                    <i class="pi pi-tag"></i>
-                    <p [hidden]="isHidden">Promociones</p>
-                </div>
+               
                 <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Categorías" tooltipPosition="right">
                     <i class="pi pi-th-large"></i>
                     <p [hidden]="isHidden">Categorías</p>
                 </div>
-                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'brand'" pRipple pTooltip="Marcas" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'brand'" pRipple pTooltip="Marcas" tooltipPosition="right">
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Marcas</p>
                 </div>
-                <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'provider'" pRipple pTooltip="Proveedor" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'provider'" pRipple pTooltip="Proveedor" tooltipPosition="right">
                     <i class="pi pi-users"></i>
                     <p [hidden]="isHidden">Proveedor</p>
                 </div>
-                <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="Pedidos" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'promotions'" pRipple pTooltip="Promociones" tooltipPosition="right">
+                    <i class="pi pi-tag"></i>
+                    <p [hidden]="isHidden">Promociones</p>
+                </div>
+                <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'orders'" pRipple pTooltip="Pedidos" tooltipPosition="right">
                     <i class="pi pi-cloud"></i>
                     <p [hidden]="isHidden">Pedidos</p>
                 </div>
-                <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'report'" pRipple pTooltip="Reportes" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'report'" pRipple pTooltip="Reportes" tooltipPosition="right">
                     <i class="pi pi-file-pdf"></i>
                     <p [hidden]="isHidden">Reportes</p>
                 </div> 
