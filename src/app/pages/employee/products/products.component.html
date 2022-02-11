@@ -190,8 +190,8 @@
             <label for="inventoryStatus">Categoría del Producto</label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
                 <div class="field-checkbox mr-3" *ngFor="let category of categories | sortByOrder">
-                    <p-radioButton name="category" value={{category.id}} [(ngModel)]="product.id_category"></p-radioButton>
-                    <label for="{{category.id}}">{{category.name}}</label>
+                    <p-radioButton name="category" value={{category.id_category}} [(ngModel)]="product.id_category"></p-radioButton>
+                    <label for="{{category.id_category}}">{{category.category_name}}</label>
                 </div>
             </div>
             <small class="p-error" *ngIf="submitted && product.id_category == null">Categoría es requerido</small>

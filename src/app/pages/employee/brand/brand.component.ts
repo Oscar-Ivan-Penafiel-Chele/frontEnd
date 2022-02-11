@@ -58,6 +58,7 @@ export class BrandComponent implements OnInit {
 
     this.getBrands();
     this.getDataProfile();
+    this.fileTmp = {};
   }
 
   getDataProfile(){

@@ -40,11 +40,11 @@
             <div class="stock-content">
                 <div class="card-stock" data-aos="fade-up" *ngFor="let category of categories">
                     <figure>
-                        <img src="{{category?.thumbnail}}" alt="producto" width="100px">
+                        <img src="{{category?.category_thumbnail}}" alt="producto" width="100px">
                     </figure>
 
                     <div class="overlay">
-                        <p>{{category?.name}}</p>
+                        <p>{{category?.category_name}}</p>
                         <button class="overlay-button" pRipple>Ver más<i class="pi pi-arrow-right"></i></button>
                     </div>
                 </div>

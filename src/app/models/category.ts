@@ -1,8 +1,9 @@
 export interface Category {
-    id : number ;
-    name : string ;
-    thumbnail : string;
-    status : string;
-    createDate : Date;
-    uploadDate : Date;
+    id_category : number ;
+    category_name : string ;
+    category_descripcion : string;
+    category_thumbnail : string;
+    category_status : number;
+    create_date : Date;
+    upload_date : Date;
 }

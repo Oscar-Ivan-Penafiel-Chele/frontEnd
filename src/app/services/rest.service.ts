@@ -6,6 +6,7 @@ import { IProvider } from '../models/provider';
 import { Brand } from '../models/brand';
 import { environment } from 'src/environments/environment.prod';
 import { Measure } from '../models/measure';
+import { Category } from '../models/category';
 
 
 @Injectable({
@@ -25,13 +26,12 @@ export class RestService {
     return this._http.post<any>(`${this.url}/products`,data);
   }
   updateProduct(data : FormData, id : number) : Observable<any>{
-    // data.append('_method','PUT');
-    // let headers: HttpHeaders = new HttpHeaders({
-    //   'X-Requested-With': 'XMLHttpRequest'
-    // });
+    data.append('_method','PUT');
+    let headers: HttpHeaders = new HttpHeaders({
+      'X-Requested-With': 'XMLHttpRequest'
+    });
 
-    // return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
-    return this._http.post<any>(`${this.url}/products/${id}`,data);
+    return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
   }
 
   deleteProduct(id? : number) : Observable<any>{
@@ -72,4 +72,22 @@ export class RestService {
     return this._http.get<Measure[]>(`${this.url}/units`);
   }
 
+
+  /* CATEGORIES */
+  getCategories() : Observable<Category[]>{
+    return this._http.get<Category[]>(`${this.url}/categories`);
+  }
+  createCategory(data : FormData) : Observable<any>{
+    return this._http.post<any>(`${this.url}/categories`,data);
+  }
+  updateCategory(data : FormData, id: number) : Observable<any>{
+    data.append('_method','PUT');
+    let headers: HttpHeaders = new HttpHeaders({
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+    return this._http.post(`${this.url}/brands/${id}`,data,{headers: headers});
+  }
+  deleteCategory(id : number) : Observable<any>{
+    return this._http.delete(`${this.url}/categories/${id}`);
+  }
 }
