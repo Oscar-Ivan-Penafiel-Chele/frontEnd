@@ -20,6 +20,7 @@ export class DashboardEmployeeComponent implements OnInit {
   user : User = {};
   isSignedIn?: boolean;
   roleUser : string = "";
+  overlayLogout : boolean = false;
  
   constructor(
     private primengConfig: PrimeNGConfig, 
@@ -122,6 +123,7 @@ export class DashboardEmployeeComponent implements OnInit {
   }
 
   logOut(){
+    this.overlayLogout = true;
     const divLogout = document.getElementById('nav__aside__footer');
     divLogout!.style.pointerEvents = "none";
     this._authService.logout(parseInt(this.user.id_user as string))

@@ -286,7 +286,7 @@ export class ProductsComponent implements OnInit {
                 if(response.status == 200 || response.message === "Producto creado con exito"){
                     this.getAllProducts();
                     this.hideDialog();
-                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito'});
+                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito', sticky: true});
                 }
             });
     }
@@ -310,10 +310,10 @@ export class ProductsComponent implements OnInit {
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
                 this.getAllProducts();
                 this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito'});
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', sticky: true});
             }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
                 this.hideDialog();
-                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde'});
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', sticky: true});
             }
         });
     }
@@ -368,7 +368,7 @@ export class ProductsComponent implements OnInit {
               this._rest.deleteProduct(product.id_product).subscribe((response)=>{
                   if(response.status == 200 || response.message === "Eliminado correctamente"){
                       this.getAllProducts();
-                      this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
+                      this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto Eliminado', life: 3000, sticky: true});
                   }
               },(err)=>{
                 console.log(err.error);

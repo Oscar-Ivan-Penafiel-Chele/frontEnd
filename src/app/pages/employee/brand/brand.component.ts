@@ -203,10 +203,10 @@ export class BrandComponent implements OnInit {
             if(response.status == 200 || response.message === "Marca creada con exito"){
                 this.getBrands();
                 this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue creado con éxito'});
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue creado con éxito', sticky: true});
             }else{
               this.hideDialog();
-              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema'});
+              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', sticky: true});
             }
         });
   }
@@ -251,10 +251,10 @@ export class BrandComponent implements OnInit {
         if(response.status == 200 || response.message === "Marca actualizada con exito"){
             this.getBrands();
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue actualizado con éxito'});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue actualizado con éxito', sticky: true});
         }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error'});
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', sticky: true});
         }
     });
   }
@@ -281,9 +281,9 @@ export class BrandComponent implements OnInit {
             this._rest.deleteBrand(brand.id_brand!).subscribe((response)=>{
                 if(response.status == 200 || response.message === "Eliminado correctamente"){
                     this.getBrands();
-                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'Marca Eliminado', life: 3000});
+                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'Marca Eliminado', life: 3000, sticky: true});
                 }else{
-                  this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
+                  this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000, sticky: true});
                 }
             },(err)=>{
               console.log(err.error);
