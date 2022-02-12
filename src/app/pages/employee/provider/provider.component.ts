@@ -49,7 +49,6 @@ export class ProviderComponent implements OnInit {
   getTypeProviders(){
     this._rest.getTypeProviders().subscribe((response : Type_Provider[])=>{
       this.types_provider = Object.values(response);
-      console.log(this.types_provider);
       for(let i = 0; i < this.types_provider.length ; i++){
         this._sortByOrder.transform(`${this.types_provider[i].type_provider_description}`);
       }
@@ -70,9 +69,69 @@ export class ProviderComponent implements OnInit {
     event.target.value = event.target.value.replace(/[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g, "");
 }
 
-  hideDialog(){}
-  saveProvider(){}
+  hideDialog(){
+    this.productDialog = false;
 
-  editProvider(provider : IProvider){}
-  deleteProvider(provider : IProvider){}
+  }
+
+  saveProvider(){
+    if(this.actionSelected === "new"){
+      this.saveData();
+
+    }else if(this.actionSelected === "edit"){
+        this.updateData();
+    }
+  }
+
+  saveData(){
+    this._rest.createProvider(this.provider)
+    .subscribe((response)=>{
+        if(response.status == 200 || response.message === "Proveedor creado con exito"){
+            this.getProviders();
+            this.hideDialog();
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El Proveedor fue creado con éxito'});
+        }
+    });
+  }
+
+  updateData(){
+    this._rest.updateProvider(this.provider, this.provider.id_provider!)
+    .subscribe((response)=>{
+        if(response.status == 200 || response.message === "Proveedor actualizado con exito"){
+            this.getProviders();
+            this.hideDialog();
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El proveedor fue actualizado con éxito'});
+        }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+            this.hideDialog();
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error'});
+        }
+    });
+  }
+
+  editProvider(provider : IProvider){
+    this.actionSelected = "edit"
+    this.provider = {...provider};
+    this.productDialog = true; // abrimos modal
+  }
+
+  deleteProvider(provider : IProvider){
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de eliminar el producto: ' + '"'+provider.provider_name + '"'+'?',
+      header: 'Eliminar Producto',
+      acceptLabel : 'Eliminar',
+      rejectLabel : 'Cancelar',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+          this._rest.deleteProvider(provider.id_provider!).subscribe((response)=>{
+              if(response.status == 200 || response.message === "Eliminado correctamente"){
+                  this.getProviders();
+                  this.messageService.add({severity:'success', summary: 'Completado', detail: 'Proveedor Inactivado', life: 3000});
+              }
+          },(err)=>{
+            console.log(err.error);
+          });
+      }
+  });
+    
+  }
 }

@@ -44,15 +44,11 @@ export class RestService {
   getProviders() : Observable<IProvider[]>{
     return this._http.get<IProvider[]>(`${this.url}/providers`);
   }
-  createProvider(data : FormData) : Observable<any>{
-    return this._http.post<any>(`${this.url}/providers`,data);
+  createProvider(provider : IProvider) : Observable<any>{
+    return this._http.post<any>(`${this.url}/providers`,provider);
   }
-  updateProvider(data : FormData, id: number) : Observable<any>{
-    data.append('_method','PUT');
-    let headers: HttpHeaders = new HttpHeaders({
-      'X-Requested-With': 'XMLHttpRequest'
-    });
-    return this._http.post(`${this.url}/providers/${id}`,data,{headers: headers});
+  updateProvider(provider : IProvider, id: number) : Observable<any>{
+    return this._http.put(`${this.url}/providers/${id}`,provider);
   }
   deleteProvider(id : number) : Observable<any>{
     return this._http.delete(`${this.url}/providers/${id}`);
@@ -61,19 +57,6 @@ export class RestService {
   /* TYPE PROVIDER */
   getTypeProviders() : Observable<Type_Provider[]>{
     return this._http.get<Type_Provider[]>(`${this.url}/type-providers`);
-  }
-  createTypeProvider(data : FormData) : Observable<any>{
-    return this._http.post<any>(`${this.url}/type-providers`,data);
-  }
-  updateTypeProvider(data : FormData, id: number) : Observable<any>{
-    data.append('_method','PUT');
-    let headers: HttpHeaders = new HttpHeaders({
-      'X-Requested-With': 'XMLHttpRequest'
-    });
-    return this._http.post(`${this.url}/type-providers/${id}`,data,{headers: headers});
-  }
-  deleteTypeProvider(id : number) : Observable<any>{
-    return this._http.delete(`${this.url}/type-providers/${id}`);
   }
 
 

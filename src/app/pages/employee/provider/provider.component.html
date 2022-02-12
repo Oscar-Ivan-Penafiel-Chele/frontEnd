@@ -25,7 +25,6 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="provider_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="provider_name"></p-sortIcon></th>
-                <th pSortableColumn="provider_qualified"><i class="pi pi-chart-line"></i> Rating<p-sortIcon field="provider_qualified"></p-sortIcon></th>
                 <th pSortableColumn="provider_address"><i class="pi pi-map-marker"></i> Dirección <p-sortIcon field="provider_address"></p-sortIcon></th>
                 <th pSortableColumn="provider_email"><i class="pi pi-envelope"></i> Email <p-sortIcon field="provider_email"></p-sortIcon></th>
                 <th pSortableColumn="provider_landline"><i class="pi pi-phone"></i> Teléfono fijo <p-sortIcon field="provider_landline"></p-sortIcon></th>
@@ -36,11 +35,10 @@
         <ng-template pTemplate="body" let-provider let-columns="columns" let-index="rowIndex">
             <tr>
                 <td>{{provider.provider_name}}</td>
-                <td>{{provider.provider_qualified}}</td>
                 <td>{{provider.provider_address}}</td>
                 <td>{{provider.provider_email}}</td>
                 <td>{{provider.provider_landline}}</td>
-                <td>{{provider.provider_response_time}}</td>
+                <td>Días : {{provider.provider_response_time_day}} Horas : {{provider.provider_response_time_hour}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProvider(provider)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProvider(provider)"></button>
@@ -126,12 +124,12 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="phone">Celular del Proveedor</label>
-                <p-inputMask id="phone" mask="(+ 999) 99 999 9999" [(ngModel)]="provider.provider_phone" placeholder="(+ 999) 99 999 9999"></p-inputMask>
+                <p-inputMask id="phone" mask="(+999) 99 999 9999" [(ngModel)]="provider.provider_phone" placeholder="(+999) 99 999 9999"></p-inputMask>
                 <small class="p-error" *ngIf="submitted && !provider.provider_phone">Celular es requerido</small>
             </div>
             <div class="field col">
                 <label for="phone">Teléfono fijo del Proveedor</label>
-                <p-inputMask id="phone" mask="999-9999 ext 99999" [(ngModel)]="provider.provider_landline" placeholder="999-9999 ext 99999"></p-inputMask>
+                <p-inputMask id="phone" mask="999-9999" [(ngModel)]="provider.provider_landline" placeholder="999-9999d"></p-inputMask>
                 <small class="p-error" *ngIf="submitted && !provider.provider_landline">Teléfono es requerido</small>
             </div>
         </div>
@@ -139,7 +137,7 @@
             <div class="field col">
                 <label for="web">Página Web del Proveedor</label>
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon">www</span>
+                    <span class="p-inputgroup-addon">www.</span>
                     <input id="web" [(ngModel)]="provider.provider_web_page" type="text" pInputText placeholder="Website">      
                 </div>
                 <small class="p-error" *ngIf="submitted && !provider.provider_web_page">Página web es requerido</small>
