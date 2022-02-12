@@ -63,11 +63,11 @@
             </div>
             <div class="field col">    
                 <label for="productStatus">Tipo de Proveedor</label>
-                <p-dropdown [showClear]="true" [(ngModel)]="provider.id_type_provider" optionLabel="type_provider_description" optionValue="id_type_provider" inputId="productStatus" [options]="types_provider" placeholder="Seleccionar">
+                <p-dropdown [showClear]="true" [(ngModel)]="provider.id_type_provider" optionLabel="type_provider_name" optionValue="id_type_provider" inputId="productStatus" [options]="types_provider" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="pi pi-directions mr-2"></i>
-                            <span>{{option.type_provider_description}}</span>
+                            <span>{{option.type_provider_name}}</span>
                         </div>
                     </ng-template>
                 </p-dropdown>

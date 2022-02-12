@@ -50,7 +50,7 @@ export class ProviderComponent implements OnInit {
     this._rest.getTypeProviders().subscribe((response : Type_Provider[])=>{
       this.types_provider = Object.values(response);
       for(let i = 0; i < this.types_provider.length ; i++){
-        this._sortByOrder.transform(`${this.types_provider[i].type_provider_description}`);
+        this._sortByOrder.transform(`${this.types_provider[i].type_provider_name}`);
       }
     });
   }
