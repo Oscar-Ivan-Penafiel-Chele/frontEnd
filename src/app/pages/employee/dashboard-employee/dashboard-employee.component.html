@@ -1,7 +1,7 @@
 <section>
     <div class="nav__header">
         <div class="logout" *ngIf="overlayLogout">
-            <p-progressSpinner></p-progressSpinner>
+            <p-progressSpinner strokeWidth="3"></p-progressSpinner>
             <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
         </div>
         <div class="nav__aside" id="nav__aside">
@@ -37,10 +37,10 @@
                     <i class="pi pi-cloud"></i>
                     <p [hidden]="isHidden">Pedidos</p>
                 </div>
-                <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'report'" pRipple pTooltip="Reportes" tooltipPosition="right">
+                <!-- <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'report'" pRipple pTooltip="Reportes" tooltipPosition="right">
                     <i class="pi pi-file-pdf"></i>
                     <p [hidden]="isHidden">Reportes</p>
-                </div> 
+                </div>  -->
 
                 <div id="nav__aside__footer" class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
                     <i class="pi pi-power-off"></i>

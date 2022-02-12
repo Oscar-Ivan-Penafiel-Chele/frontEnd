@@ -359,7 +359,7 @@ export class ProductsComponent implements OnInit {
 
     deleteProduct(product: Product) {
       this.confirmationService.confirm({
-          message: '¿Estás seguro de eliminar el producto: ' + product.product_name + '?',
+          message: '¿Estás seguro de eliminar el producto: ' + '"'+product.product_name + '"'+'?',
           header: 'Eliminar Producto',
           acceptLabel : 'Eliminar',
           rejectLabel : 'Cancelar',

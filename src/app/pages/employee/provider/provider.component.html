@@ -1,1 +1,181 @@
-<p>provider works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="providers" [rows]="10" [paginator]="true" [globalFilterFields]="['provider_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Proveedores</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="provider_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="provider_name"></p-sortIcon></th>
+                <th pSortableColumn="provider_qualified"><i class="pi pi-chart-line"></i> Rating<p-sortIcon field="provider_qualified"></p-sortIcon></th>
+                <th pSortableColumn="provider_address"><i class="pi pi-map-marker"></i> Dirección <p-sortIcon field="provider_address"></p-sortIcon></th>
+                <th pSortableColumn="provider_email"><i class="pi pi-envelope"></i> Email <p-sortIcon field="provider_email"></p-sortIcon></th>
+                <th pSortableColumn="provider_landline"><i class="pi pi-phone"></i> Teléfono fijo <p-sortIcon field="provider_landline"></p-sortIcon></th>
+                <th pSortableColumn="provider_response_time"><i class="pi pi-history"></i> Tiempo de Respuesta<p-sortIcon field="provider_response_time"></p-sortIcon></th>
+                <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-provider let-columns="columns" let-index="rowIndex">
+            <tr>
+                <td>{{provider.provider_name}}</td>
+                <td>{{provider.provider_qualified}}</td>
+                <td>{{provider.provider_address}}</td>
+                <td>{{provider.provider_email}}</td>
+                <td>{{provider.provider_landline}}</td>
+                <td>{{provider.provider_response_time}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProvider(provider)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProvider(provider)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{providers ? providers.length : 0 }} proveedores.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="productDialog" [draggable]="false" [style]="{width: '800px'}" header="Detalles del Proveedor" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Nombre del Proveedor</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_name" required autofocus />
+                <small class="p-error" *ngIf="submitted && !provider.provider_name">Nombre es requerido</small>
+            </div>
+            <div class="field col">    
+                <label for="productStatus">Tipo de Proveedor</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="provider.id_type_provider" optionLabel="type_provider_description" optionValue="id_type_provider" inputId="productStatus" [options]="types_provider" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="pi pi-directions mr-2"></i>
+                            <span>{{option.type_provider_description}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && provider.id_type_provider == null">Tipo es requerido</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="rating">Rating del Proveedor</label>
+                <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
+                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="provider.provider_qualified" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
+                </div> 
+                <small class="p-error" *ngIf="submitted && !provider.provider_qualified">Rating es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="productStatus">Estado del Proveedor</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="provider.provider_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !provider.provider_status">Estado es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="code">Identificación del Proveedor</label>
+                <input type="text" required pInputText id="code" placeholder="Cédula - Pasaporte - Ruc" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
+                <small class="p-error" *ngIf="submitted && !provider.provider_identification">Identificación es requerido</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Dirección del Proveedor</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_address" placeholder="Ejemplo: Av. 9 De Octubre" required autofocus />
+                <small class="p-error" *ngIf="submitted && !provider.provider_address">Dirección es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="name">Email del Proveedor</label>
+                <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="provider.provider_email" required autofocus />
+                <small class="p-error" *ngIf="submitted && !provider.provider_email">Nombre es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="description">Productos Ofertados por el Proveedor</label>
+                <textarea id="description" required pInputTextarea [(ngModel)]="provider.provider_products_offered" rows="2" cols="20"></textarea>
+                <small class="p-error" *ngIf="submitted && !provider.provider_products_offered">Descripción es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="phone">Celular del Proveedor</label>
+                <p-inputMask id="phone" mask="(+ 999) 99 999 9999" [(ngModel)]="provider.provider_phone" placeholder="(+ 999) 99 999 9999"></p-inputMask>
+                <small class="p-error" *ngIf="submitted && !provider.provider_phone">Celular es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="phone">Teléfono fijo del Proveedor</label>
+                <p-inputMask id="phone" mask="999-9999 ext 99999" [(ngModel)]="provider.provider_landline" placeholder="999-9999 ext 99999"></p-inputMask>
+                <small class="p-error" *ngIf="submitted && !provider.provider_landline">Teléfono es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="web">Página Web del Proveedor</label>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">www</span>
+                    <input id="web" [(ngModel)]="provider.provider_web_page" type="text" pInputText placeholder="Website">      
+                </div>
+                <small class="p-error" *ngIf="submitted && !provider.provider_web_page">Página web es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Nombres del Encargado</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_person_name" required autofocus />
+                <small class="p-error" *ngIf="submitted && !provider.provider_person_name">Nombre es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="name">Apellidos del Encargado</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_person_lastName" required autofocus />
+                <small class="p-error" *ngIf="submitted && !provider.provider_person_lastName">Apellido es requerido</small>
+            </div>
+        </div>
+        <div class="flex flex-column" style="border: 2px solid #e9ecee; margin: 0px 1px; border-radius: 5px; padding: 10px;">
+            <p style="color: #495057; font-weight: bold; text-align: center;">Detalles del Tiempo de Respuesta del Proveedor</p>   
+            <div class="formgrid grid" style="padding: 15px;">
+                <div class="field col">
+                    <label for="minmax-buttons">Tiempo en Días</label>
+                    <p-inputNumber [(ngModel)]="provider.provider_response_time_day" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="365"></p-inputNumber>
+                </div>
+                <div class="field col">
+                    <label for="minmax-buttons">Tiempo en Horas</label>
+                    <p-inputNumber [(ngModel)]="provider.provider_response_time_hour" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="24"></p-inputNumber>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveProvider()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

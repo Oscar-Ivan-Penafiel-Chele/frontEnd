@@ -35,7 +35,7 @@ const routes: Routes = [
   {path: 'about', component : AboutComponent, pathMatch : 'full', }, 
   {path: 'shop', component : ShopComponent, pathMatch : 'full', }, 
   {path: 'terminos-y-condiciones', component : TermsComponent, pathMatch : 'full', }, 
-  {path: 'dashboard', component : DashboardComponent,
+  {path: 'gerente', component : DashboardComponent,
     children : [
       {path: '', redirectTo: 'indicators', pathMatch : 'full'},
       {path: 'indicators', component : IndicatorsAdminComponent, pathMatch : 'full',},
@@ -47,7 +47,7 @@ const routes: Routes = [
       {path: 'report', component : ReportAdminComponent, pathMatch : 'full',},
     ]
   }, 
-  {path: 'dashboard-employee', component : DashboardEmployeeComponent, canActivate : [AuthGuard],
+  {path: 'administrador', component : DashboardEmployeeComponent, canActivate : [AuthGuard],
     children : [
       {path: '', redirectTo: 'products', pathMatch : 'full'},
       {path: 'promotions', component : PromoComponent, pathMatch : 'full',},

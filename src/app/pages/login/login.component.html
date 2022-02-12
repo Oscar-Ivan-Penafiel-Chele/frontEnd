@@ -9,34 +9,27 @@
       
         <div class="content-login-main">
             <div class="card-login">
-                <p class="mb-4">Inicio de Sesión</p>
+                <p class="mb-2">Inicio de Sesión</p>
+                <div *ngIf="invalidCredentials" class="mb-3" style="width: 100%;">
+                    <p-message severity="error" [style]="{'width':'100%'}" text="Credenciales Incorrectas"></p-message>
+                </div>
+                <div *ngIf="isValidCredentials" class="mb-3" style="width: 100%;">
+                    <p-message severity="success" [style]="{'width':'100%'}" text="Credenciales Correctas"></p-message>
+                </div>
+                <br>
                 <span class="p-float-label">
                     <input required id="float-input" [(ngModel)]="email" type="text" autofocus pInputText style="width: 100%;"> 
                     <label for="float-input"><i class="pi pi-user"></i> Usuario o Correo Electrónico</label>
                 </span>
-                <small class="p-error" *ngIf="submitted && email==''">Email es requerido</small>
+                <small class="p-error" style="float: right;" *ngIf="submitted && email==''">Email es requerido</small>
                 <br>
-
                 <div class="input-password">
                     <span class="p-float-label">
-                        <p-password required [(ngModel)]="password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
-                            <ng-template pTemplate="header">
-                                <p class="title-sugerencias">Ingresa tu contraseña</p>
-                            </ng-template>
-                            <ng-template pTemplate="footer">
-                                <p-divider></p-divider>
-                                <p class="sugerencias-content">Sugerencias :</p>
-                                <ul class="sugerencias-list">
-                                    <li>Al menos una minúscula</li>
-                                    <li>Al menos una mayúscula</li>
-                                    <li>Al menos un número</li>
-                                    <li>Mínimo 8 caracteres</li>
-                                </ul>
-                            </ng-template>
+                        <p-password required [(ngModel)]="password" [toggleMask]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
                         </p-password>
                         <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
                     </span>
-                    <small class="p-error" *ngIf="submitted && password==''">Contraseña es requerido</small>
+                    <small class="p-error" style="float: right;" *ngIf="submitted && password==''">Contraseña es requerido</small>
                 </div>
 
                 <div class="link-forgot">
@@ -47,12 +40,6 @@
                     <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
                 </div>
                 <br>
-                <div *ngIf="invalidCredentials" class="mb-4" style="width: 100%;">
-                    <p-message severity="error" [style]="{'width':'100%'}" text="Credenciales Incorrectas"></p-message>
-                </div>
-                <div *ngIf="isValidCredentials" class="mb-4" style="width: 100%;">
-                    <p-message severity="success" [style]="{'width':'100%'}" text="Credenciales Correctas"></p-message>
-                </div>
                 <div class="btn-login">
                     <button class="button-login" [loading]="loading" (click)="login()" pButton pRipple type="button">
                         <p [hidden]="!isVisibleText" style="width: 100%;">INGRESAR</p>

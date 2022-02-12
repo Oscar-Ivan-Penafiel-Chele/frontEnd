@@ -108,9 +108,9 @@ export class LoginComponent implements OnInit {
 
   getRoute(rol : number){
     const roles : any = {
-      1 : '/dashboard',
-      2 : '/dashboard-employee',
-      3 : '/dashboard',
+      1 : '/gerente',
+      2 : '/administrador',
+      3 : '/vendedor',
       4 : '/shop',
     }
 

@@ -174,10 +174,7 @@
             </div>
             <div class="field col">
                 <label for="minmax-buttons">Cantidad del Producto</label>
-                <p-inputNumber [disabled]="!product.id_product_unit" [required]="true" [(ngModel)]="product.product_stock" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="10000">
-                </p-inputNumber>
-                <!-- <label for="quantity">Cantidad del Producto</label>
-                <p-inputNumber [disabled]="!product.id_product_unit" [required]="true" id="quantity" [(ngModel)]="product.product_stock"></p-inputNumber> -->
+                <p-inputNumber [disabled]="!product.id_product_unit" [required]="true" [(ngModel)]="product.product_stock" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="10000"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && !product.product_stock">Cantidad es requerido</small>
             </div>
             <div class="field col">

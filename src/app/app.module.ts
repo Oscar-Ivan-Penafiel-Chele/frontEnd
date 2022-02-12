@@ -47,6 +47,7 @@ import {ToastModule} from 'primeng/toast';
 import {ImageModule} from 'primeng/image';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
+import {InputMaskModule} from 'primeng/inputmask';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -141,7 +142,8 @@ import { ProviderComponent } from './pages/employee/provider/provider.component'
     RadioButtonModule,
     ImageModule,
     ProgressSpinnerModule,
-    ProgressBarModule
+    ProgressBarModule,
+    InputMaskModule
   ],
   providers: [
     {

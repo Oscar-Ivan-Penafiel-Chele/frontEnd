@@ -7,6 +7,7 @@ import { Brand } from '../models/brand';
 import { environment } from 'src/environments/environment.prod';
 import { Measure } from '../models/measure';
 import { Category } from '../models/category';
+import { Type_Provider } from '../models/type_provider';
 
 
 @Injectable({
@@ -42,6 +43,37 @@ export class RestService {
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
     return this._http.get<IProvider[]>(`${this.url}/providers`);
+  }
+  createProvider(data : FormData) : Observable<any>{
+    return this._http.post<any>(`${this.url}/providers`,data);
+  }
+  updateProvider(data : FormData, id: number) : Observable<any>{
+    data.append('_method','PUT');
+    let headers: HttpHeaders = new HttpHeaders({
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+    return this._http.post(`${this.url}/providers/${id}`,data,{headers: headers});
+  }
+  deleteProvider(id : number) : Observable<any>{
+    return this._http.delete(`${this.url}/providers/${id}`);
+  }
+
+  /* TYPE PROVIDER */
+  getTypeProviders() : Observable<Type_Provider[]>{
+    return this._http.get<Type_Provider[]>(`${this.url}/type-providers`);
+  }
+  createTypeProvider(data : FormData) : Observable<any>{
+    return this._http.post<any>(`${this.url}/type-providers`,data);
+  }
+  updateTypeProvider(data : FormData, id: number) : Observable<any>{
+    data.append('_method','PUT');
+    let headers: HttpHeaders = new HttpHeaders({
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+    return this._http.post(`${this.url}/type-providers/${id}`,data,{headers: headers});
+  }
+  deleteTypeProvider(id : number) : Observable<any>{
+    return this._http.delete(`${this.url}/type-providers/${id}`);
   }
 
 
