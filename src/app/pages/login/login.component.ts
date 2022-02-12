@@ -5,6 +5,7 @@ import { User } from 'src/app/models/user';
 import { AuthStateService } from 'src/app/services/auth-state.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -107,13 +108,8 @@ export class LoginComponent implements OnInit {
   }
 
   getRoute(rol : number){
-    const roles : any = {
-      1 : '/gerente',
-      2 : '/administrador',
-      3 : '/vendedor',
-      4 : '/shop',
-    }
-
+    const roles : any = environment.dataRol;
+    
     let route = roles[rol];
     setTimeout(()=>{
       this._router.navigate([`${route}`]);
