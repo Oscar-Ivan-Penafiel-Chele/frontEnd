@@ -77,11 +77,16 @@
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="rating">Rating del Proveedor</label>
-                <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
-                    <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="provider.provider_qualified" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
-                </div> 
-                <small class="p-error" *ngIf="submitted && !provider.provider_qualified">Rating es requerido</small>
+                <label for="productStatus">Calificado el Proveedor</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="provider.provider_qualified" optionLabel="name" optionValue="id" inputId="productStatus" [options]="qualified" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !provider.provider_qualified">Calificación es requerido</small>
             </div>
             <div class="field col">
                 <label for="productStatus">Estado del Proveedor</label>

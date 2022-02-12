@@ -5,6 +5,8 @@ import { MessageService, Message, PrimeNGConfig, ConfirmationService } from 'pri
 import { RestService } from 'src/app/services/rest.service';
 import { IProvider } from 'src/app/models/provider';
 import { Type_Provider } from 'src/app/models/type_provider';
+import { TokenService } from 'src/app/services/token.service';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-provider',
@@ -22,6 +24,7 @@ export class ProviderComponent implements OnInit {
   productDialog: boolean = false;
   submitted: boolean = false;
   states : any[] = [];
+  qualified : any[] = [];
   actionSelected  : string ="";
 
   constructor(
@@ -29,12 +32,17 @@ export class ProviderComponent implements OnInit {
     private messageService: MessageService, 
     private confirmationService: ConfirmationService,
     private _sortByOrder : UpperCasePipe,
+    private _token : TokenService,
   ) { }
 
   ngOnInit(): void {
     this.states = [
       {name: 'Activo', id: 1, icon : 'pi pi-thumbs-up'},
       {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
+    ];
+    this.qualified = [
+      {name: 'Si', id: 1, icon : 'pi pi-thumbs-up'},
+      {name: 'No', id: 0, icon : 'pi pi-thumbs-down'},
     ];
     this.getProviders();
     this.getTypeProviders();
@@ -61,6 +69,7 @@ export class ProviderComponent implements OnInit {
     this.submitted = false; // le decimos que no valide ningun campo
     this.productDialog = true; // abrimos el modal
     this.provider.provider_status = 1;  // asignamos el status por defecto a : Activo
+    this.provider.provider_qualified = 1;  // asignamos el calificado por defecto a : Si
   }
 
   exportPdf(){}
