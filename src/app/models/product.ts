@@ -11,7 +11,7 @@ export interface Product {
     product_stock?:number;
     product_price?:number;
     product_image?:string;
-    product_status?:number;
+    product_status:number;
     product_rating?:number;
     create_date : string;
     update_at : string;

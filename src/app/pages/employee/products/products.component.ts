@@ -105,31 +105,24 @@ export class ProductsComponent implements OnInit {
     getAllProducts() {
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
-            this.products = Object.values(response);
-            this.productsAux = this.products;
-            this.productsInState(this.products);
-            this.products = this.productsActive;
+            this.productsAux = response;
+            this.products = this.productsAux.filter(i => i.product_status == 1)
         });
     }
 
-    productsInState(products : Product[]){
-       products.forEach((i, j)=>{
-            if(i.product_status == 1){
-                this.productsActive.push(i);
-            }else if(i.product_status == 0){
-                this.productsInactive.push(i);
-            }
-       })
-    }
-
     change($event : any){
-        if(this.stateCheckActive && this.stateCheckInactive) this.products = this.productsAux ;
+        if(this.stateCheckActive && this.stateCheckInactive){
+             this.products = this.productsAux; 
+        }
+
         if(!this.stateCheckActive && !this.stateCheckInactive) this.products = [] ;
 
         if(this.stateCheckActive && !this.stateCheckInactive){
-            this.products = this.productsActive;
+            this.products = this.productsAux.filter( i => i.product_status == 1);
+            console.log(this.products);
         }else if(!this.stateCheckActive && this.stateCheckInactive){
-            this.products = this.productsInactive;
+            this.products = this.productsAux.filter( i => i.product_status == 0)
+            console.log(this.products);
         }
     }
 
@@ -317,7 +310,7 @@ export class ProductsComponent implements OnInit {
                 if(response.status == 200 || response.message === "Producto creado con exito"){
                     this.getAllProducts();
                     this.hideDialog();
-                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito', sticky: true});
+                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito', life: 3000});
                 }
             });
     }
@@ -342,10 +335,10 @@ export class ProductsComponent implements OnInit {
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
                 this.getAllProducts();
                 this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', sticky: true});
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', life: 3000});
             }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
                 this.hideDialog();
-                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', sticky: true});
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', life: 3000});
             }
         });
     }
@@ -400,7 +393,7 @@ export class ProductsComponent implements OnInit {
               this._rest.deleteProduct(product.id_product).subscribe((response)=>{
                   if(response.status == 200 || response.message === "Eliminado correctamente"){
                       this.getAllProducts();
-                      this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto Eliminado', life: 3000, sticky: true});
+                      this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
                   }
               },(err)=>{
                 console.log(err.error);
