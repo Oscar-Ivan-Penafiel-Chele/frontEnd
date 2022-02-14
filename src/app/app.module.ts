@@ -48,6 +48,9 @@ import {ImageModule} from 'primeng/image';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputMaskModule} from 'primeng/inputmask';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -143,7 +146,8 @@ import { ProviderComponent } from './pages/employee/provider/provider.component'
     ImageModule,
     ProgressSpinnerModule,
     ProgressBarModule,
-    InputMaskModule
+    InputMaskModule,
+    OverlayPanelModule
   ],
   providers: [
     {

@@ -1,13 +1,23 @@
 <p-toast></p-toast>
 
-<!-- <div *ngFor="let product of products">
-    <p>{{product.producto_categorias.id_product_category}}</p>
-</div> -->
-
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+                <ng-template pTemplate>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckActive" (onChange)="change($event)" [binary]="true" inputId="active"></p-checkbox>
+                        <label for="active">Activo</label>
+                    </div>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckInactive" (onChange)="change($event)" [binary]="true" inputId="inactive"></p-checkbox>
+                        <label for="inactive">Inactivo</label>
+                    </div>
+                </ng-template>
+            </p-overlayPanel>
         </ng-template>
 
         <ng-template pTemplate="right">
@@ -48,7 +58,7 @@
                 <td>{{product.create_date}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                    <button pButton pRipple [disabled]="product.product_stock == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -203,5 +213,7 @@
         <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
     </ng-template>
 </p-dialog>
+
+
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

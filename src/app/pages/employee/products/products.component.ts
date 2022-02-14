@@ -3,7 +3,6 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService, Message, PrimeNGConfig } from 'primeng/api';
 import { Product } from 'src/app/models/product';
 import * as FileSaver from 'file-saver';
-import { HomeService } from 'src/app/services/home.service';
 import { Category } from 'src/app/models/category';
 import { Brand } from 'src/app/models/brand';
 import { UpperCasePipe } from '@angular/common';
@@ -23,6 +22,9 @@ import { Measure } from 'src/app/models/measure';
 export class ProductsComponent implements OnInit {
 
     products : Product[] = [];
+    productsActive : Product [] = [];
+    productsInactive : Product [] = [];
+
     categories : Category[] = [];
     brands : Brand[] = [];
     providers : IProvider[] = [];
@@ -62,12 +64,17 @@ export class ProductsComponent implements OnInit {
     
     msgs1: Message[] = [];
 
+    stateCheckActive : boolean = true;
+    stateCheckInactive : boolean = false;
+    productsAux : Product[] = [];
+
+    
+
     constructor(
         private _rest : RestService,
         private messageService: MessageService, 
         private confirmationService: ConfirmationService,
         private _sortByOrder : UpperCasePipe,
-        private _homeService : HomeService,
         private _token : TokenService
         ) { 
 
@@ -99,7 +106,31 @@ export class ProductsComponent implements OnInit {
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
             this.products = Object.values(response);
+            this.productsAux = this.products;
+            this.productsInState(this.products);
+            this.products = this.productsActive;
         });
+    }
+
+    productsInState(products : Product[]){
+       products.forEach((i, j)=>{
+            if(i.product_status == 1){
+                this.productsActive.push(i);
+            }else if(i.product_status == 0){
+                this.productsInactive.push(i);
+            }
+       })
+    }
+
+    change($event : any){
+        if(this.stateCheckActive && this.stateCheckInactive) this.products = this.productsAux ;
+        if(!this.stateCheckActive && !this.stateCheckInactive) this.products = [] ;
+
+        if(this.stateCheckActive && !this.stateCheckInactive){
+            this.products = this.productsActive;
+        }else if(!this.stateCheckActive && this.stateCheckInactive){
+            this.products = this.productsInactive;
+        }
     }
 
     getAllCategories() {
@@ -258,7 +289,7 @@ export class ProductsComponent implements OnInit {
                 if(!this.product.product_image){
                     this.submitted = true
                 }
-
+                console.log(this.product.product_stock);
                 this.updateData(false);
             }else{
                 //Se cambia la imagen
@@ -290,6 +321,7 @@ export class ProductsComponent implements OnInit {
                 }
             });
     }
+
 
     updateData(existImage : boolean){
         this.product.id_user = parseInt(this.user.id_user!);
