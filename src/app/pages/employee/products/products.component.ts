@@ -117,10 +117,19 @@ export class ProductsComponent implements OnInit {
 
         if(!this.stateCheckActive && !this.stateCheckInactive) this.products = [] ;
 
+        this.getProductsActives();
+        this.getProductsInactives();
+    }
+
+    getProductsActives(){
         if(this.stateCheckActive && !this.stateCheckInactive){
             this.products = this.productsAux.filter( i => i.product_status == 1);
             console.log(this.products);
-        }else if(!this.stateCheckActive && this.stateCheckInactive){
+        }
+    }
+
+    getProductsInactives(){
+        if(!this.stateCheckActive && this.stateCheckInactive){
             this.products = this.productsAux.filter( i => i.product_status == 0)
             console.log(this.products);
         }
@@ -282,7 +291,7 @@ export class ProductsComponent implements OnInit {
                 if(!this.product.product_image){
                     this.submitted = true
                 }
-                console.log(this.product.product_stock);
+                
                 this.updateData(false);
             }else{
                 //Se cambia la imagen
@@ -330,10 +339,20 @@ export class ProductsComponent implements OnInit {
             data.append(`${key}`, value);
         });
 
+        console.log(this.product.product_status);
         this._rest.updateProduct(data, this.product.id_product!)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
-                this.getAllProducts();
+                if(this.product.product_status == 1){
+                    this.getAllProducts();
+                    this.stateCheckActive = true;
+                    this.stateCheckInactive = false;
+                }else if(this.product.product_status == 0){
+                    this.getProductsInactives();
+                    this.stateCheckActive = false;
+                    this.stateCheckInactive = true;
+                }
+                
                 this.hideDialog();
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', life: 3000});
             }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
@@ -344,7 +363,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateData(){
-        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.product.id_category == null){
+        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || this.product.id_category == null){
             return false;
         }
       
@@ -352,7 +371,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || !this.product.product_stock || !this.product.id_provider || !this.product.id_brand || !this.product.product_status || !this.product.product_rating || !this.product.id_category){
+        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category){
             return false;
         }
       
