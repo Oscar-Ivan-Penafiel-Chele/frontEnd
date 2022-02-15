@@ -34,7 +34,8 @@ export class CategoryComponent implements OnInit {
   fileSize : string = "";
   descriptionSize : string = "";
   actionSelected  : string ="";
-  
+  overImage : string = "assets/img/not_image.jpg";
+
   constructor(
     private _rest : RestService,
     private messageService: MessageService, 

@@ -25,7 +25,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="['product_name', 'product_code']" responsiveLayout="scroll"
+    <p-table #dt [value]="products" [rows]="5" [paginator]="true" [globalFilterFields]="['product_name', 'product_code']" responsiveLayout="scroll"
         [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
@@ -33,14 +33,14 @@
                 <h5 class="m-0">Gestión de Poductos</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre y código..." />
                 </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr >
                 <th pSortableColumn="product_code"><i class="pi pi-qrcode"></i> Código <p-sortIcon field="product_code"></p-sortIcon></th>
-                <th pSortableColumn="product_name"><i class="pi pi-book"></i> Nombre <p-sortIcon field="product_name"></p-sortIcon></th>
+                <th pSortableColumn="product_name" style="width: 250px;"><i class="pi pi-book"></i> Nombre <p-sortIcon field="product_name"></p-sortIcon></th>
                 <th><i class="pi pi-image"></i> Imagen</th>
                 <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="product_price"></p-sortIcon></th>
                 <th pSortableColumn="product_stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="product_stock"></p-sortIcon></th>
@@ -52,13 +52,13 @@
             <tr>
                 <td>{{product.product_code}}</td>
                 <td>{{product.product_name}}</td>
-                <td><img [src]="host+product.product_image" [alt]="product.product_name" width="100" class="shadow-4" /></td>
+                <td><img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_name" width="80" height="80" class="shadow-4" /></td>
                 <td>{{product.product_price | currency:'USD'}}</td>
                 <td>{{product.product_stock}}</td>
                 <td>{{product.create_date}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
-                    <button pButton pRipple [disabled]="product.product_stock == 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                    <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
+                    <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock == 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -210,7 +210,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+        <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
     </ng-template>
 </p-dialog>
 

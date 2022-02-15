@@ -4,6 +4,20 @@
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+                <ng-template pTemplate>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckActive" (onChange)="change($event)" [binary]="true" inputId="active"></p-checkbox>
+                        <label for="active">Activo</label>
+                    </div>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckInactive" (onChange)="change($event)" [binary]="true" inputId="inactive"></p-checkbox>
+                        <label for="inactive">Inactivo</label>
+                    </div>
+                </ng-template>
+            </p-overlayPanel>
         </ng-template>
 
         <ng-template pTemplate="right">
@@ -11,7 +25,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="brands" [rows]="10" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="brands" [rows]="5" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -34,7 +48,7 @@
         <ng-template pTemplate="body" let-brand let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
                 <td>{{brand.brand_name}}</td>
-                <td><img [src]="host+brand.brand_thumbnail" [alt]="brand.brand_thumbnail" width="100" class="shadow-4" /></td>
+                <td><img [src]="brand.brand_thumbnail ? host+brand.brand_thumbnail : overImage" [alt]="brand.brand_thumbnail" width="80" height="80" class="shadow-4" /></td>
                 <td>{{brand.brand_status}}</td>
                 <td>{{brand.create_date}}</td>
                 <td>

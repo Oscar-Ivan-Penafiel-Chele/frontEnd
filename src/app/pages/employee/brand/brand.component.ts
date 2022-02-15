@@ -35,7 +35,10 @@ export class BrandComponent implements OnInit {
   descriptionSize : string = "";
   states : any[] = [];
   i : number = 0;
-
+  overImage : string = "assets/img/not_image.jpg";
+  stateCheckActive : boolean = true;
+  stateCheckInactive : boolean = false;
+  brandsAux : Brand[] = [];
 
   host : string = environment.URL;
 
@@ -69,10 +72,11 @@ export class BrandComponent implements OnInit {
   getBrands(){
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
-      this.brands = Object.values(response);
-      for( this.i = 0 ; this.i < this.brands.length ; this.i++){
-          this._sortByOrder.transform(this.brands[this.i].brand_name);
-      }
+      this.brandsAux = Object.values(response);
+      this.brands = this.brandsAux.filter(i => i.brand_status == 1)
+      // for( this.i = 0 ; this.i < this.brands.length ; this.i++){
+      //     this._sortByOrder.transform(this.brands[this.i].brand_name);
+      // }
     })
   }
 
@@ -103,6 +107,8 @@ export class BrandComponent implements OnInit {
       this.brand.brand_thumbnail = this.fileTmp.fileName;
     }
   }
+
+  change($event : any){}
 
   validateSizeImage(size : number) : boolean{
     if(size > 1000000){

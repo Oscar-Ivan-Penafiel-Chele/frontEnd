@@ -11,7 +11,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="categories" [rows]="10" [paginator]="true" [globalFilterFields]="['category_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="categories" [rows]="5" [paginator]="true" [globalFilterFields]="['category_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -36,7 +36,7 @@
             <tr>
                 <td>{{category.category_name}}</td>
                 <td>{{category.category_descripcion}}</td>
-                <td><img [src]="host+category.category_thumbnail" [alt]="category.category_thumbnail" width="100" class="shadow-4" /></td>
+                <td><img [src]="category.category_thumbnail ? host+category.category_thumbnail : overImage" [alt]="category.category_thumbnail" width="80" height="80" class="shadow-4" /></td>
                 <td>{{category.category_status}}</td>
                 <td>{{category.create_date}}</td>
                 <td>
@@ -123,7 +123,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveCategory()"></button>
+        <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="saveCategory()"></button>
     </ng-template>
 </p-dialog>
 

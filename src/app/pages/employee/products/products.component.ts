@@ -68,7 +68,7 @@ export class ProductsComponent implements OnInit {
     stateCheckInactive : boolean = false;
     productsAux : Product[] = [];
 
-    
+    overImage : string = "assets/img/not_image.jpg";
 
     constructor(
         private _rest : RestService,
