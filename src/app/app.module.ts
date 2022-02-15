@@ -48,7 +48,6 @@ import {ImageModule} from 'primeng/image';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputMaskModule} from 'primeng/inputmask';
-import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 

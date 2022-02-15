@@ -27,6 +27,10 @@ export class ProviderComponent implements OnInit {
   qualified : any[] = [];
   actionSelected  : string ="";
 
+  stateCheckActive : boolean = true;
+  stateCheckInactive : boolean = false;
+  providersAux : IProvider[] = [];
+
   constructor(
     private _rest : RestService,
     private messageService: MessageService, 
@@ -50,7 +54,8 @@ export class ProviderComponent implements OnInit {
 
   getProviders(){
     this._rest.getProviders().subscribe((response : IProvider[])=>{
-      this.providers = Object.values(response);
+      this.providersAux = Object.values(response);
+      this.providers = this.providersAux.filter(i => i.provider_status == 1);
     })
   }
 
@@ -70,6 +75,29 @@ export class ProviderComponent implements OnInit {
     this.productDialog = true; // abrimos el modal
     this.provider.provider_status = 1;  // asignamos el status por defecto a : Activo
     this.provider.provider_qualified = 1;  // asignamos el calificado por defecto a : Si
+  }
+
+  change($event : any){
+    if(this.stateCheckActive && this.stateCheckInactive){
+         this.providers = this.providersAux; 
+    }
+
+    if(!this.stateCheckActive && !this.stateCheckInactive) this.providers = [] ;
+
+    this.getProvidersActives();
+    this.getProvidersInactives();
+  }
+
+  getProvidersActives(){
+    if(this.stateCheckActive && !this.stateCheckInactive){
+        this.providers = this.providersAux.filter( i => i.provider_status == 1);
+    }
+  }
+
+  getProvidersInactives(){
+      if(!this.stateCheckActive && this.stateCheckInactive){
+          this.providers = this.providersAux.filter( i => i.provider_status == 0)
+      }
   }
 
   exportPdf(){}
@@ -98,7 +126,11 @@ export class ProviderComponent implements OnInit {
         if(response.status == 200 || response.message === "Proveedor creado con exito"){
             this.getProviders();
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El Proveedor fue creado con éxito'});
+            if(this.provider.provider_status == 0){
+              this.stateCheckActive = true;
+              this.stateCheckInactive = false;
+          }
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El Proveedor fue creado con éxito', life:3000});
         }
     });
   }
@@ -107,12 +139,20 @@ export class ProviderComponent implements OnInit {
     this._rest.updateProvider(this.provider, this.provider.id_provider!)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor actualizado con exito"){
-            this.getProviders();
+            if(this.provider.provider_status == 1){
+              this.getProviders();
+              this.stateCheckActive = true;
+              this.stateCheckInactive = false;
+            }else if(this.provider.provider_status == 0){
+                this.getProvidersInactives();
+                this.stateCheckActive = false;
+                this.stateCheckInactive = true;
+            }
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El proveedor fue actualizado con éxito'});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El proveedor fue actualizado con éxito', life: 3000});
         }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error'});
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
         }
     });
   }

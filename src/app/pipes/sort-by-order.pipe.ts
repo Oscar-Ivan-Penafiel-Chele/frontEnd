@@ -9,7 +9,7 @@ export class SortByOrderPipe implements PipeTransform {
 
   transform(value: Array<any>): Array<any> {
     if(!value) return [];
-    return _.sortBy(value, function(category){ return category.name})
+    return _.sortBy(value, function(i){ return i.name})
   }
 
 }

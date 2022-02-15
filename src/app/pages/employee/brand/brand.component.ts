@@ -74,9 +74,6 @@ export class BrandComponent implements OnInit {
     .subscribe((response : Brand[]) => {
       this.brandsAux = Object.values(response);
       this.brands = this.brandsAux.filter(i => i.brand_status == 1)
-      // for( this.i = 0 ; this.i < this.brands.length ; this.i++){
-      //     this._sortByOrder.transform(this.brands[this.i].brand_name);
-      // }
     })
   }
 
@@ -108,7 +105,28 @@ export class BrandComponent implements OnInit {
     }
   }
 
-  change($event : any){}
+  change($event : any){
+    if(this.stateCheckActive && this.stateCheckInactive){
+         this.brands = this.brandsAux; 
+    }
+
+    if(!this.stateCheckActive && !this.stateCheckInactive) this.brands = [] ;
+
+    this.getBrandsActives();
+    this.getBrandsInactives();
+  }
+
+  getBrandsActives(){
+    if(this.stateCheckActive && !this.stateCheckInactive){
+        this.brands = this.brandsAux.filter( i => i.brand_status == 1);
+    }
+  }
+
+  getBrandsInactives(){
+      if(!this.stateCheckActive && this.stateCheckInactive){
+          this.brands = this.brandsAux.filter( i => i.brand_status == 0)
+      }
+  }
 
   validateSizeImage(size : number) : boolean{
     if(size > 1000000){
@@ -209,10 +227,14 @@ export class BrandComponent implements OnInit {
             if(response.status == 200 || response.message === "Marca creada con exito"){
                 this.getBrands();
                 this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue creado con éxito', sticky: true});
+                if(this.brand.brand_status == 0){
+                  this.stateCheckActive = true;
+                  this.stateCheckInactive = false;
+                }
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue creado con éxito', life: 3000});
             }else{
               this.hideDialog();
-              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', sticky: true});
+              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
             }
         });
   }
@@ -255,12 +277,21 @@ export class BrandComponent implements OnInit {
     this._rest.updateBrand(data, this.brand.id_brand!)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Marca actualizada con exito"){
-            this.getBrands();
+          if(this.brand.brand_status == 1) {
+            this.getBrands(); 
+            this.stateCheckActive = true;
+            this.stateCheckInactive = false;
+          }
+          if(this.brand.brand_status == 0){
+             this.getBrandsInactives();
+             this.stateCheckActive = false;
+             this.stateCheckInactive = true;
+          }
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue actualizado con éxito', sticky: true});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue actualizado con éxito', life:3000});
         }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', sticky: true});
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
         }
     });
   }

@@ -124,22 +124,27 @@ export class ProductsComponent implements OnInit {
     getProductsActives(){
         if(this.stateCheckActive && !this.stateCheckInactive){
             this.products = this.productsAux.filter( i => i.product_status == 1);
-            console.log(this.products);
         }
     }
 
     getProductsInactives(){
         if(!this.stateCheckActive && this.stateCheckInactive){
-            this.products = this.productsAux.filter( i => i.product_status == 0)
-            console.log(this.products);
+            this.products = this.productsAux.filter( i => i.product_status == 0);
         }
     }
 
     getAllCategories() {
         this._rest.getCategories()
         .subscribe((response) =>{
-          this.categories = response;
+          this.categories = Object.values(response);
+          this.categories = this.categories.sort(this.sortCategories);
         });
+    }
+
+    sortCategories(x : any ,y : any){
+        if(x.category_name < y.category_name) return -1;
+        if(x.category_name > y.category_name) return 1;
+        return 0;
     }
 
     getAllBrands(){
@@ -319,6 +324,10 @@ export class ProductsComponent implements OnInit {
                 if(response.status == 200 || response.message === "Producto creado con exito"){
                     this.getAllProducts();
                     this.hideDialog();
+                    if(this.product.product_status == 0){
+                        this.stateCheckActive = true;
+                        this.stateCheckInactive = false;
+                    }
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito', life: 3000});
                 }
             });

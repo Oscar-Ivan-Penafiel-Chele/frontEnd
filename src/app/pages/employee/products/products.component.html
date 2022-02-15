@@ -146,10 +146,10 @@
         <div class="formgrid grid">
             <div class="field col">
             <label for="productBrand">Marca del Producto</label>
-            <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands" placeholder="Seleccionar">
+            <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands | sortByOrder" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
-                        <img class="mr-2" [src]="option.brand_thumbnail" alt=" " width="25px">
+                        <img class="mr-2" [src]="option.brand_thumbnail ? host+option.brand_thumbnail : overImage" alt=" " width="25px">
                         <span [class]="'product-badge status-' + option.id_brand">{{option.brand_name}}</span>
                     </div>
                 </ng-template>
@@ -199,7 +199,7 @@
         <div class="field col">    
             <label for="inventoryStatus">Categoría del Producto</label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
-                <div class="field-checkbox mr-3" *ngFor="let category of categories | sortByOrder">
+                <div class="field-checkbox mr-3" *ngFor="let category of categories">
                     <p-radioButton name="category" value={{category.id_category}} [(ngModel)]="product.id_category"></p-radioButton>
                     <label for="{{category.id_category}}">{{category.category_name}}</label>
                 </div>

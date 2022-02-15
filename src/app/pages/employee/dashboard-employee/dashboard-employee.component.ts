@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { PrimeNGConfig } from 'primeng/api';
+import { NavigationStart, Router } from '@angular/router';
+import { ConfirmationService, ConfirmEventType, MessageService, PrimeNGConfig } from 'primeng/api';
 import { User } from 'src/app/models/user';
 import { AuthStateService } from 'src/app/services/auth-state.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -9,7 +9,8 @@ import { TokenService } from 'src/app/services/token.service';
 @Component({
   selector: 'app-dashboard-employee',
   templateUrl: './dashboard-employee.component.html',
-  styleUrls: ['./dashboard-employee.component.css']
+  styleUrls: ['./dashboard-employee.component.css'],
+  providers: [ConfirmationService,MessageService]
 })
 export class DashboardEmployeeComponent implements OnInit {
 
@@ -28,8 +29,10 @@ export class DashboardEmployeeComponent implements OnInit {
     private _authService : AuthService,
     private _token : TokenService,
     private _authStateService : AuthStateService,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService
     ) { 
-      
+     
     }
     
   ngOnInit(): void {

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoryAdminComponent } from './pages/admin/category-admin/category-admin.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
@@ -29,7 +30,7 @@ import { ShopComponent } from './pages/user/shop/shop.component';
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch : 'full'}, 
   {path: '', component : HomeComponent, pathMatch : 'full', }, 
-  {path: 'login', component : LoginComponent, pathMatch : 'full', }, 
+  {path: 'login', component : LoginComponent, pathMatch : 'full', canActivate : [LoginGuard] }, 
   {path: 'signup', component : SignupComponent, pathMatch : 'full', }, 
   {path: 'contact', component : ContactComponent, pathMatch : 'full', }, 
   {path: 'about', component : AboutComponent, pathMatch : 'full', }, 

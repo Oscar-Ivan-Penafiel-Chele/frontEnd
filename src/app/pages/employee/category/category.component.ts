@@ -35,6 +35,9 @@ export class CategoryComponent implements OnInit {
   descriptionSize : string = "";
   actionSelected  : string ="";
   overImage : string = "assets/img/not_image.jpg";
+  stateCheckActive : boolean = true;
+  stateCheckInactive : boolean = false;
+  categoriesAux : Category[] = [];
 
   constructor(
     private _rest : RestService,
@@ -59,10 +62,8 @@ export class CategoryComponent implements OnInit {
 
   getCategories(){
     this._rest.getCategories().subscribe((response : Category[]) => {
-      this.categories = Object.values(response);
-      for( this.i = 0 ; this.i < this.categories.length ; this.i++){
-        this._sortByOrder.transform(this.categories[this.i].category_name);
-      }
+      this.categoriesAux = Object.values(response);
+      this.categories = this.categoriesAux.filter(i => i.category_status == 1);
     });
   }
 
@@ -103,6 +104,30 @@ export class CategoryComponent implements OnInit {
           this.descriptionSize = "mb";
       }
   }
+
+  change($event : any){
+    if(this.stateCheckActive && this.stateCheckInactive){
+         this.categories = this.categoriesAux; 
+    }
+
+    if(!this.stateCheckActive && !this.stateCheckInactive) this.categories = [] ;
+
+    this.getCategoriesActives();
+    this.getCategoriesInactives();
+  }
+
+  getCategoriesActives(){
+    if(this.stateCheckActive && !this.stateCheckInactive){
+        this.categories = this.categoriesAux.filter( i => i.category_status == 1);
+    }
+  }
+
+  getCategoriesInactives(){
+      if(!this.stateCheckActive && this.stateCheckInactive){
+          this.categories = this.categoriesAux.filter( i => i.category_status == 0)
+      }
+  }
+
   validateSizeImage(size : number) : boolean{
     if(size > 1000000){
         this.sizeFileValid = true;
@@ -197,7 +222,11 @@ export class CategoryComponent implements OnInit {
             if(response.status == 200 || response.message === "Categoria creado con exito"){
                 this.getCategories();
                 this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoría fue creado con éxito', sticky: true});
+                if(this.category.category_status == 0){
+                  this.stateCheckActive = true;
+                  this.stateCheckInactive = false;
+                }
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoría fue creado con éxito', life: 3000});
             }
         });
   }
@@ -216,12 +245,21 @@ export class CategoryComponent implements OnInit {
     this._rest.updateCategory(data, this.category.id_category!)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Categoria actualizada con exito"){
-            this.getCategories();
+            if(this.category.category_status == 1) {
+              this.getCategories(); 
+              this.stateCheckActive = true;
+              this.stateCheckInactive = false;
+            }
+            if(this.category.category_status == 0){
+               this.getCategoriesInactives();
+               this.stateCheckActive = false;
+               this.stateCheckInactive = true;
+            }
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoria fue actualizado con éxito', sticky: true});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoria fue actualizado con éxito', life: 3000});
         }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', sticky: true});
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', life: 3000});
         }
     });
   }
@@ -269,7 +307,7 @@ export class CategoryComponent implements OnInit {
             this._rest.deleteCategory(category.id_category).subscribe((response)=>{
                 if(response.status == 200 || response.message === "Eliminado correctamente"){
                     this.getCategories();
-                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'Categoría Eliminado', life: 3000, sticky: true});
+                    this.messageService.add({severity:'success', summary: 'Completado', detail: 'Categoría Eliminado', life: 3000});
                 }
             },(err)=>{
               console.log(err.error);
