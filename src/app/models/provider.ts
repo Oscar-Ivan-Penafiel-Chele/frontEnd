@@ -14,5 +14,6 @@ export interface IProvider {
     provider_person_lastName?:string;
     provider_response_time_day?:number;
     provider_response_time_hour?:number;
+    provider_id_identification_type?:number;
     provider_status?:number;
 }

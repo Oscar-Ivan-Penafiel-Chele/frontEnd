@@ -40,7 +40,7 @@
             <tr>
                 <th pSortableColumn="provider_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="provider_name"></p-sortIcon></th>
                 <th pSortableColumn="provider_address"><i class="pi pi-map-marker"></i> Dirección <p-sortIcon field="provider_address"></p-sortIcon></th>
-                <th pSortableColumn="provider_email"><i class="pi pi-envelope"></i> Email <p-sortIcon field="provider_email"></p-sortIcon></th>
+                <th pSortableColumn="provider_email"><i class="pi pi-envelope"></i> Correo Electrónico <p-sortIcon field="provider_email"></p-sortIcon></th>
                 <th pSortableColumn="provider_landline"><i class="pi pi-phone"></i> Teléfono fijo <p-sortIcon field="provider_landline"></p-sortIcon></th>
                 <th pSortableColumn="provider_response_time"><i class="pi pi-history"></i> Tiempo de Respuesta<p-sortIcon field="provider_response_time"></p-sortIcon></th>
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
@@ -114,9 +114,24 @@
                 </p-dropdown>
                 <small class="p-error" *ngIf="submitted && !provider.provider_status">Estado es requerido</small>
             </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="identificationType">Tipo de Identificación</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="provider.provider_id_identification_type" optionLabel="name" optionValue="id" inputId="identificationType" [options]="identificationType" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !provider.provider_id_identification_type">Tipo de identificación es requerido</small>
+            </div>
             <div class="field col">
                 <label for="code">Identificación del Proveedor</label>
-                <input type="text" required pInputText id="code" placeholder="Cédula - Pasaporte - Ruc" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
+                <input type="text" [disabled]="!provider.provider_id_identification_type" required pInputText id="code" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
                 <small class="p-error" *ngIf="submitted && !provider.provider_identification">Identificación es requerido</small>
             </div>
         </div>
@@ -128,7 +143,7 @@
                 <small class="p-error" *ngIf="submitted && !provider.provider_address">Dirección es requerido</small>
             </div>
             <div class="field col">
-                <label for="name">Email del Proveedor</label>
+                <label for="name">Correo Electrónico del Proveedor</label>
                 <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="provider.provider_email" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_email">Nombre es requerido</small>
             </div>

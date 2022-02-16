@@ -31,6 +31,8 @@ export class ProviderComponent implements OnInit {
   stateCheckInactive : boolean = false;
   providersAux : IProvider[] = [];
 
+  identificationType : any [] = [];
+
   constructor(
     private _rest : RestService,
     private messageService: MessageService, 
@@ -47,6 +49,11 @@ export class ProviderComponent implements OnInit {
     this.qualified = [
       {name: 'Si', id: 1, icon : 'pi pi-thumbs-up'},
       {name: 'No', id: 0, icon : 'pi pi-thumbs-down'},
+    ];
+    this.identificationType = [
+      {id:1, name:'Cédula', icon : 'pi pi-id-card'},
+      {id:2, name:'Pasaporte', icon : 'pi pi-wallet'},
+      {id:3, name:'RUC', icon : 'pi pi-book'}
     ];
     this.getProviders();
     this.getTypeProviders();
