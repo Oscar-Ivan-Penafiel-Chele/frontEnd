@@ -40,7 +40,7 @@
             <div class="stock-content">
                 <div class="card-stock" data-aos="fade-up" *ngFor="let category of categories">
                     <figure>
-                        <img src="{{category?.category_thumbnail}}" alt="producto" width="100px">
+                        <img [src]="category.category_thumbnail ? host+category.category_thumbnail : overImage" [alt]="category.category_thumbnail" width="100px">
                     </figure>
 
                     <div class="overlay">
@@ -77,7 +77,7 @@
             <p-carousel styleClass="custom-carousel" [value]="brands" [numVisible]="3" [autoplayInterval]="2000" [circular]="true" [numScroll]="2" [page]="0" [responsiveOptions]="responsiveOptions">
                 <ng-template let-brands pTemplate="item">
                     <div class="img-brands">
-                        <img loading="lazy" src="{{brands?.thumbnail}}" alt="Logo">
+                        <img loading="lazy" [src]="brands?.thumbnail ? host+brands?.thumbnail : overImage" [alt]="brands?.thumbnail">
                     </div>
                 </ng-template>
             </p-carousel>

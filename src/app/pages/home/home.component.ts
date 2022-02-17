@@ -5,6 +5,8 @@ import { Brand } from 'src/app/models/brand';
 import { Category } from 'src/app/models/category';
 import { NavigationItem } from 'src/app/models/navigation';
 import { HomeService } from 'src/app/services/home.service';
+import { environment } from 'src/environments/environment.prod';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-home',
@@ -16,8 +18,10 @@ export class HomeComponent implements OnInit {
   brands : Brand [] = [];
   categories  : Category [] = [];
   itemNavigation : NavigationItem [] = [];
+  host : string = environment.URL;
+  overImage : string = "assets/img/not_image.jpg";
 
-  constructor(private primengConfig: PrimeNGConfig, private _homeService : HomeService) { 
+  constructor(private primengConfig: PrimeNGConfig, private _rest : RestService , private _homeService : HomeService) { 
     this.responsiveOptions = [
       {
           breakpoint: '1024px',
@@ -76,16 +80,23 @@ export class HomeComponent implements OnInit {
   // }
 
   getAllCategories() {
-    this._homeService.getAllCategories()
-    .subscribe((response) =>{
-      this.categories = response;
+    this._rest.getCategories()
+    .subscribe((response : Category[]) =>{
+      this.categories = Object.values(response);
+      this.categories = this.categories.sort(this.sortCategories);
     });
   }
 
   getAllBrands(){
-    this._homeService.getAllBrands()
-    .subscribe((response) => {
+    this._rest.getBrands()
+    .subscribe((response : Brand[]) => {
       this.brands = response;
     })
+  }
+
+  sortCategories(x : any ,y : any){
+    if(x.category_name < y.category_name) return -1;
+    if(x.category_name > y.category_name) return 1;
+    return 0;
   }
 }
