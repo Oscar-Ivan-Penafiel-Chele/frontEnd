@@ -75,9 +75,9 @@
         <div class="carousel header" id="brands">
             <p>DISTRIBUIMOS Y REPRESENTAMOS MARCAS DE LA MEJOR CALIDAD</p>
             <p-carousel styleClass="custom-carousel" [value]="brands" [numVisible]="3" [autoplayInterval]="2000" [circular]="true" [numScroll]="2" [page]="0" [responsiveOptions]="responsiveOptions">
-                <ng-template let-brands pTemplate="item">
+                <ng-template let-brand pTemplate="item">
                     <div class="img-brands">
-                        <img loading="lazy" [src]="brands?.thumbnail ? host+brands?.thumbnail : overImage" [alt]="brands?.thumbnail">
+                        <img loading="lazy" [src]="brand?.brand_thumbnail ? host+brand?.brand_thumbnail : overImage" [alt]="brand?.thumbnail">
                     </div>
                 </ng-template>
             </p-carousel>

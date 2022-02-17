@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   categories  : Category [] = [];
   itemNavigation : NavigationItem [] = [];
   host : string = environment.URL;
-  overImage : string = "assets/img/not_image.jpg";
+  overImage : string = "assets/img/not_image.png";
 
   constructor(private primengConfig: PrimeNGConfig, private _rest : RestService , private _homeService : HomeService) { 
     this.responsiveOptions = [
@@ -84,13 +84,16 @@ export class HomeComponent implements OnInit {
     .subscribe((response : Category[]) =>{
       this.categories = Object.values(response);
       this.categories = this.categories.sort(this.sortCategories);
+      this.categories = this.categories.filter(i => i.category_status == 1);
     });
   }
 
   getAllBrands(){
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
-      this.brands = response;
+      this.brands = Object.values(response);
+      console.log(this.brands);
+      this.brands = this.brands.filter(i => i.brand_status == 1);
     })
   }
 
