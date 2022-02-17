@@ -5,6 +5,7 @@ export interface User {
     user_name?:string;
     user_lastName?:string;
     email?:string;
+    user_address?:string;
     user_document?:string;
     password?:string;
     user_phone?:string

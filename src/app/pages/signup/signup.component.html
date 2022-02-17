@@ -58,6 +58,13 @@
                     </div>
                     <div>
                         <span class="p-float-label">
+                            <input required [(ngModel)]="user.user_address" id="float-input" type="text" pInputText style="width: 100%;"> 
+                            <label for="float-input"><i class="pi pi-map-marker"></i> Dirección</label>
+                        </span>
+                        <small class="p-error" *ngIf="submitted && !user.user_address">Dirección son requerido</small>
+                    </div>
+                    <div>
+                        <span class="p-float-label">
                             <p-password required [(ngModel)]="user.password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
                                 <ng-template pTemplate="header">
                                     <p class="title-sugerencias">Ingresa tu contraseña</p>

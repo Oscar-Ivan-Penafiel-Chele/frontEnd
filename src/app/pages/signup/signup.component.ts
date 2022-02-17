@@ -153,7 +153,7 @@ export class SignupComponent implements OnInit {
   }
 
   validateData(){
-    if(!this.user.user_name || !this.user.user_lastName || !this.user.email || !this.user.user_phone || !this.user.id_type_identification || !this.user.user_document || !this.user.password || !this.passwordConfirm || !this.checked){
+    if(!this.user.user_name || !this.user.user_lastName || !this.user.email || !this.user.user_phone || !this.user.user_address ||!this.user.id_type_identification || !this.user.user_document || !this.user.password || !this.passwordConfirm || !this.checked){
       return false;
     }
 
