@@ -52,6 +52,7 @@ export class SignupComponent implements OnInit {
   registerUser(){
     this.submitted = true;
     this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
+    this.user.id_role = 5;
 
     !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico inválido' : this.messageEmail = "";
     !this.validateIdentification() ? this.messageIdentification = 'Identificación inválida' : this.messageIdentification = '';

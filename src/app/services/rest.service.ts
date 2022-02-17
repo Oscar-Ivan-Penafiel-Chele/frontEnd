@@ -22,7 +22,7 @@ export class RestService {
 
   /* CLIENT */
   createClient(user : User) : Observable<any>{
-    return this._http.post<any>(`${this.url}/users`,user);
+    return this._http.post<any>(`${this.url}/register/client`,user);
   }
 
 
