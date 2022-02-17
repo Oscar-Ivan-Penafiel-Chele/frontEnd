@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
 import { UpperCasePipe } from '@angular/common';
-import { MessageService, Message, PrimeNGConfig, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { RestService } from 'src/app/services/rest.service';
 import { IProvider } from 'src/app/models/provider';
 import { Type_Provider } from 'src/app/models/type_provider';
 import { TokenService } from 'src/app/services/token.service';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { verificarRuc } from 'udv-ec';
 
 @Component({
   selector: 'app-provider',
@@ -32,6 +32,9 @@ export class ProviderComponent implements OnInit {
   providersAux : IProvider[] = [];
 
   identificationType : any [] = [];
+  messageIdentification : string = "";
+  maxLength : number = 0;
+  stateIdentification : boolean = false;
 
   constructor(
     private _rest : RestService,
@@ -79,6 +82,7 @@ export class ProviderComponent implements OnInit {
     this.actionSelected = "new"
     this.provider = {}; // seteamos el producto
     this.submitted = false; // le decimos que no valide ningun campo
+    this.stateIdentification = false;
     this.productDialog = true; // abrimos el modal
     this.provider.provider_status = 1;  // asignamos el status por defecto a : Activo
     this.provider.provider_qualified = 1;  // asignamos el calificado por defecto a : Si
@@ -120,14 +124,29 @@ export class ProviderComponent implements OnInit {
 
   saveProvider(){
     if(this.actionSelected === "new"){
-      this.saveData();
+      this.submitted = true;
+      if(!this.validateIdentification()){
+        this.messageIdentification = 'Identificación invalida';
+        return ;
+      }else{
+        this.messageIdentification = '';
+        this.saveData();
+      }
 
     }else if(this.actionSelected === "edit"){
+      this.submitted = true;
+      if(!this.validateIdentification()){
+        this.messageIdentification = 'Identificación invalida';
+        return ;
+      }else{
+        this.messageIdentification = '';
         this.updateData();
+      }
     }
   }
 
   saveData(){
+    this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
     this._rest.createProvider(this.provider)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor creado con exito"){
@@ -143,6 +162,7 @@ export class ProviderComponent implements OnInit {
   }
 
   updateData(){
+    this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
     this._rest.updateProvider(this.provider, this.provider.id_provider!)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor actualizado con exito"){
@@ -162,6 +182,67 @@ export class ProviderComponent implements OnInit {
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
         }
     });
+  }
+
+  changeIdentification($event : any){
+    if($event.value == 1) this.maxLength = 10;
+    if($event.value == 2) this.maxLength = 10;
+    if($event.value == 3) this.maxLength = 20;
+  }
+
+  validateIdentification(){
+    if(this.provider.id_identification_type == 1) return this.validateCedula();
+    if(this.provider.id_identification_type == 2) return this.validatePasaporte();
+    if(this.provider.id_identification_type == 3) return verificarRuc(this.provider.provider_identification!);
+    
+    return false;
+  }
+
+  validateCedula(){
+    this.stateIdentification = true;
+    let cedula = this.provider.provider_identification!;
+    let firsTwoDigits = parseInt(String(cedula?.slice(0,2)));
+    let lastDigit = cedula.slice(9);
+    let digits :any = cedula.slice(0,9);
+    let resultPar = 0;
+    let sumaPar = 0;
+    let sumaImpar = 0;
+    let total = 0;
+    let base = 0;
+
+    if(cedula!?.length < 10) return false;
+    if((firsTwoDigits > 0 && firsTwoDigits < 25) || firsTwoDigits == 30){
+      for (let i = 0; i < digits!.length; i++) {
+        if(i%2 == 0) {
+           resultPar = digits[i] * 2;
+           if(resultPar > 9){
+            resultPar = resultPar - 9;
+           }
+           sumaPar += resultPar;
+        }else{
+            sumaImpar += parseInt(digits[i]);
+        }
+      }
+
+      total = sumaPar + sumaImpar;
+      base = ((parseInt(String(sumaPar + sumaImpar).slice(0,1))+1)*10) - total;
+      if(lastDigit === String(base)){
+          return true;
+      }else{
+          return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  validatePasaporte(){
+    let pasaporte = parseInt(this.provider.provider_identification!);
+    if(pasaporte < 14 || pasaporte > 20){
+      return false;
+    } 
+
+    return true;
   }
 
   editProvider(provider : IProvider){

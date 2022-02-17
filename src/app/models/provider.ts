@@ -1,6 +1,7 @@
 export interface IProvider {
     id_provider?:number;
     id_type_provider? : number; //check
+    id_identification_type?:number;
     provider_name?:string;//check
     provider_qualified? : number;//check
     provider_identification? : string;
@@ -14,6 +15,5 @@ export interface IProvider {
     provider_person_lastName?:string;
     provider_response_time_day?:number;
     provider_response_time_hour?:number;
-    provider_id_identification_type?:number;
     provider_status?:number;
 }

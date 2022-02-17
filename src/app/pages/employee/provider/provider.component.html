@@ -25,7 +25,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="providers" [rows]="10" [paginator]="true" [globalFilterFields]="['provider_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="providers" [rows]="5"  [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -119,7 +119,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="identificationType">Tipo de Identificación</label>
-                <p-dropdown [showClear]="true" [(ngModel)]="provider.provider_id_identification_type" optionLabel="name" optionValue="id" inputId="identificationType" [options]="identificationType" placeholder="Seleccionar">
+                <p-dropdown [showClear]="true" [(ngModel)]="provider.id_identification_type" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" inputId="identificationType" [options]="identificationType" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="{{option.icon}} mr-2"></i>
@@ -127,12 +127,12 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && !provider.provider_id_identification_type">Tipo de identificación es requerido</small>
+                <small class="p-error" *ngIf="submitted && !provider.id_identification_type">Tipo de identificación es requerido</small>
             </div>
             <div class="field col">
                 <label for="code">Identificación del Proveedor</label>
-                <input type="text" [disabled]="!provider.provider_id_identification_type" required pInputText id="code" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
-                <small class="p-error" *ngIf="submitted && !provider.provider_identification">Identificación es requerido</small>
+                <input type="text" [disabled]="!provider.id_identification_type" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
+                <small class="p-error" *ngIf="(submitted && !provider.provider_identification) || (stateIdentification && provider.provider_identification)">{{!provider.provider_identification ? 'Identificación requerida' : messageIdentification}}</small>
             </div>
         </div>
 
@@ -174,7 +174,6 @@
                     <span class="p-inputgroup-addon">www.</span>
                     <input id="web" [(ngModel)]="provider.provider_web_page" type="text" pInputText placeholder="Website">      
                 </div>
-                <small class="p-error" *ngIf="submitted && !provider.provider_web_page">Página web es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
@@ -195,10 +194,12 @@
                 <div class="field col">
                     <label for="minmax-buttons">Tiempo en Días</label>
                     <p-inputNumber [(ngModel)]="provider.provider_response_time_day" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="365"></p-inputNumber>
+                    <small class="p-error" *ngIf="submitted && !provider.provider_response_time_day">Tiempo es requerido</small>
                 </div>
                 <div class="field col">
                     <label for="minmax-buttons">Tiempo en Horas</label>
                     <p-inputNumber [(ngModel)]="provider.provider_response_time_hour" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="24"></p-inputNumber>
+                    <small class="p-error" *ngIf="submitted && !provider.provider_response_time_hour">Tiempo es requerido</small>
                 </div>
             </div>
         </div>

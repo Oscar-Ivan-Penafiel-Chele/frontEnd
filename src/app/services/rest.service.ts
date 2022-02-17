@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment.prod';
 import { Measure } from '../models/measure';
 import { Category } from '../models/category';
 import { Type_Provider } from '../models/type_provider';
+import { User } from '../models/user';
 
 
 @Injectable({
@@ -18,6 +19,12 @@ export class RestService {
   url : string = environment.API;
 
   constructor(private _http : HttpClient) { }
+
+  /* CLIENT */
+  createClient(user : User) : Observable<any>{
+    return this._http.post<any>(`${this.url}/users`,user);
+  }
+
 
   /* PRODUCTO */
   getProducts() : Observable<Product[]>{

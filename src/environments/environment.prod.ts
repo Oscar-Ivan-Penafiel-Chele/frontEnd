@@ -6,6 +6,7 @@ export const environment = {
     1 : '/gerente',
     2 : '/administrador',
     3 : '/vendedor',
-    4 : 'shop'
+    4 : '/vendedor',
+    5 : '/shop'
   },
 };

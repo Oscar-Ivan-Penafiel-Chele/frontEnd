@@ -34,7 +34,7 @@ const routes: Routes = [
   {path: 'signup', component : SignupComponent, pathMatch : 'full', }, 
   {path: 'contact', component : ContactComponent, pathMatch : 'full', }, 
   {path: 'about', component : AboutComponent, pathMatch : 'full', }, 
-  {path: 'shop', component : ShopComponent, pathMatch : 'full', }, 
+  {path: 'shop', component : ShopComponent, pathMatch : 'full', data: {role : 5}}, 
   {path: 'terminos-y-condiciones', component : TermsComponent, pathMatch : 'full', }, 
   {path: 'gerente', component : DashboardComponent, canActivate : [AuthGuard], data : { role : '1'},
     children : [

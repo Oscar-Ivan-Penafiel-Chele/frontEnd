@@ -129,7 +129,7 @@ export class DashboardEmployeeComponent implements OnInit {
     this.overlayLogout = true;
     const divLogout = document.getElementById('nav__aside__footer');
     divLogout!.style.pointerEvents = "none";
-    this._authService.logout(parseInt(this.user.id_user as string))
+    this._authService.logout(this.user.id_user!)
       .subscribe((response)=>{
         if(response.status == 200 || response.message === "Sesión cerrada con éxito"){
           this._token.removeToken();

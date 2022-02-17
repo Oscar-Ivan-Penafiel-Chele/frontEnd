@@ -310,7 +310,7 @@ export class ProductsComponent implements OnInit {
     }
 
     saveData() : void{
-        this.product.id_user = parseInt(this.user.id_user!);
+        this.product.id_user = this.user.id_user!;
         this.product.id_category = parseInt(this.product.id_category);
 
         const data = new FormData();
@@ -335,7 +335,7 @@ export class ProductsComponent implements OnInit {
 
 
     updateData(existImage : boolean){
-        this.product.id_user = parseInt(this.user.id_user!);
+        this.product.id_user = this.user.id_user!;
         this.product.id_category = parseInt(this.product.id_category);
 
         const data = new FormData();
