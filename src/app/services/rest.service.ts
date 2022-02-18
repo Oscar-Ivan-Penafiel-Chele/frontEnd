@@ -33,7 +33,7 @@ export class RestService {
     return this._http.post<any>(`${this.url}/users`, user);
   }
   updateEmployee(user : User) : Observable<any>{
-    return this._http.put<any>(`${this.url}/users`, user);
+    return this._http.put<any>(`${this.url}/users/${user.id_user}`, user);
   }
   deleteEmployee(id : number) : Observable<any>{
     return this._http.delete<any>((`${this.url}/users/${id}`));

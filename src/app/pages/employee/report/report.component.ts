@@ -85,6 +85,7 @@ export class ReportComponent implements OnInit {
   }
 
   createEmployee(){
+    this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
     //validaciones
     if(this.actionSelected === "new"){
       this.submitted = true;
