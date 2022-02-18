@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit {
     this.isVisibleText = false;
 
     this._rest.createClient(this.user).subscribe((response:any) =>{
-      if(response.code === 200 || response.state === 'Cliente creado con exito'){
+      if(response.status === 200 || response.message === 'Usuario creado exitosamente'){
         this._router.navigate(['login']);
       }else{
        this.loading = false;

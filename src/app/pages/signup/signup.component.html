@@ -61,7 +61,7 @@
                             <input required [(ngModel)]="user.user_address" id="float-input" type="text" pInputText style="width: 100%;"> 
                             <label for="float-input"><i class="pi pi-map-marker"></i> Dirección</label>
                         </span>
-                        <small class="p-error" *ngIf="submitted && !user.user_address">Dirección son requerido</small>
+                        <small class="p-error" *ngIf="(submitted && !user.user_address) || (submitted && user.user_address?.length! < 8)">Dirección son requerido</small>
                     </div>
                     <div>
                         <span class="p-float-label">
@@ -93,7 +93,7 @@
                             </p-password>
                             <label for="float-input"><i class="pi pi-lock"></i> Confirmar Contraseña</label>
                         </span>
-                        <small class="p-error" *ngIf="(submitted && !passwordConfirm) || (passwordConfirm.length < 9 && submitted)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="(submitted && !passwordConfirm) || (passwordConfirm.length < 8 && submitted)">Contraseña es requerida</small>
                     </div>
                 </div>
                 <div class="terms-and-condicions">

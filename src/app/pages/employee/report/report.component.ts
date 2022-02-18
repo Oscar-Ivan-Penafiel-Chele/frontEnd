@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
+import { verificarRuc } from 'udv-ec';
 
 @Component({
   selector: 'app-report',
@@ -86,33 +87,30 @@ export class ReportComponent implements OnInit {
 
   createEmployee(){
     this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
-    //validaciones
+   
     if(this.actionSelected === "new"){
       this.submitted = true;
-      // if(!this.validateIdentification()){
-      //   this.messageIdentification = 'Identificación invalida';
-      //   return ;
-      // }else{
-      //   this.messageIdentification = '';
-      // aqui iria la funcion de guardar
-      // }
-      this.createEmployee();
+      if(!this.validateIdentification()){
+        this.messageIdentification = 'Identificación invalida';
+        return ;
+      }else{
+        this.messageIdentification = '';
+        this.createEmployee();
+      }
 
     }else if(this.actionSelected === "edit"){
       this.submitted = true;
-      // if(!this.validateIdentification()){
-      //   this.messageIdentification = 'Identificación invalida';
-      //   return ;
-      // }else{
-      //   this.messageIdentification = '';
-      //  aqui iria la funcion 
-      //  this.updateData();
-      // }
-      this.updateEmployee();
+      if(!this.validateIdentification()){
+        this.messageIdentification = 'Identificación invalida';
+        return ;
+      }else{
+        this.messageIdentification = '';
+        this.updateEmployee();
+      }
     }
 
     this._rest.createEmployee(this.user).subscribe((response)=>{
-      if(response.status == 200 || response.message === "Empleado creado con exito"){
+      if(response.status == 200 || response.message === "Usuario creado exitosamente"){
         this.getEmployees();
         this.hideDialog();
         if(this.user.user_status == 0){
@@ -126,7 +124,7 @@ export class ReportComponent implements OnInit {
 
   updateEmployee(){
     this._rest.updateEmployee(this.user).subscribe((response)=>{
-      if(response.status == 200 || response.message === "Empleado actualizado con exito"){
+      if(response.status == 200 || response.message === "Usuario actualizado exitosamente"){
         this.getEmployees();
         this.hideDialog();
         if(this.user.user_status == 1){
@@ -150,10 +148,10 @@ export class ReportComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-        //  this.providers = this.providersAux; 
+        this.users = this.userAux; 
     }
 
-    if(!this.stateCheckActive && !this.stateCheckInactive) //this.providers = [] ;
+    if(!this.stateCheckActive && !this.stateCheckInactive) this.users = [] ;
 
     this.getEmployeesActives();
     this.getEmployeesInactive();
@@ -161,14 +159,69 @@ export class ReportComponent implements OnInit {
 
   getEmployeesActives(){
     if(this.stateCheckActive && !this.stateCheckInactive){
-        // this.providers = this.providersAux.filter( i => i.provider_status == 1);
+        this.users = this.userAux.filter( i => i.user_status == 1);
     }
   }
 
   getEmployeesInactive(){
       if(!this.stateCheckActive && this.stateCheckInactive){
-          // this.providers = this.providersAux.filter( i => i.provider_status == 0)
+          this.users = this.userAux.filter( i => i.user_status == 0)
       }
+  }
+
+  validateIdentification(){
+    if(this.user.id_identification_type == 1) return this.validateCedula();
+    if(this.user.id_identification_type == 2) return this.validatePasaporte();
+    if(this.user.id_identification_type == 3) return verificarRuc(this.user.user_document!);
+    
+    return false;
+  }
+
+  validateCedula(){
+    this.stateIdentification = true;
+    let cedula = this.user.user_document!;
+    let firsTwoDigits = parseInt(String(cedula?.slice(0,2)));
+    let lastDigit = cedula.slice(9);
+    let digits :any = cedula.slice(0,9);
+    let resultPar = 0;
+    let sumaPar = 0;
+    let sumaImpar = 0;
+    let total = 0;
+    let base = 0;
+
+    if(cedula!?.length < 10) return false;
+    if((firsTwoDigits > 0 && firsTwoDigits < 25) || firsTwoDigits == 30){
+      for (let i = 0; i < digits!.length; i++) {
+        if(i%2 == 0) {
+           resultPar = digits[i] * 2;
+           if(resultPar > 9){
+            resultPar = resultPar - 9;
+           }
+           sumaPar += resultPar;
+        }else{
+            sumaImpar += parseInt(digits[i]);
+        }
+      }
+
+      total = sumaPar + sumaImpar;
+      base = ((parseInt(String(sumaPar + sumaImpar).slice(0,1))+1)*10) - total;
+      if(lastDigit === String(base)){
+          return true;
+      }else{
+          return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  validatePasaporte(){
+    let pasaporte = parseInt(this.user.user_document!);
+    if(pasaporte < 14 || pasaporte > 20){
+      return false;
+    } 
+
+    return true;
   }
 
   regexCode(event: any) {
