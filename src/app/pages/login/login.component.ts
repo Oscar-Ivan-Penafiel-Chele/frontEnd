@@ -111,9 +111,7 @@ export class LoginComponent implements OnInit {
     const roles : any = environment.dataRol;
     
     let route = roles[rol];
-    setTimeout(()=>{
-      this._router.navigate([`${route}`]);
-    },2000);
+    this._router.navigate([`${route}`]);
   }
 
   responseHandle(data : any){

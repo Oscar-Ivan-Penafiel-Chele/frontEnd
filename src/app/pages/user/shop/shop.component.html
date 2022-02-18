@@ -1,4 +1,8 @@
 <section>
+    <div class="logout" *ngIf=" overlayLogout">
+        <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+        <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+    </div>
     <nav>
         <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
            <div class="nav__container">
@@ -47,7 +51,7 @@
                     <div class="nav__options__content">
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input type="text" pInputText placeholder="Search" [(ngModel)]="searchValue" />
+                            <input type="text" pInputText placeholder="Buscar..." [(ngModel)]="searchValue" />
                         </span>
                     </div>
                 </div>
@@ -58,7 +62,7 @@
                         </div>
                         <div class="nav__menu__option">
                             <div class="nav__user" pRipple (click)="displayOptions()">
-                                <p><i class="pi pi-user"></i> Oscar Peñafiel <i class="pi pi-angle-down"> </i></p>
+                                <p><i class="pi pi-user mr-2"></i>{{user?.user_name}} {{user?.user_lastName}}<i class="pi pi-angle-down"> </i></p>
                             </div>
                             <div class="nav__user__option isActiveNavOption">
                                 <p>Opciones</p>
@@ -66,7 +70,7 @@
                                 <a href=""><i class="pi pi-shopping-bag"></i> Pedidos</a>
                                 <a href=""><i class="pi pi-th-large"></i> Configuración</a>
                                 <p>Sesión</p>
-                                <a href="/"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
+                                <a (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
                             </div>
                         </div>
                         

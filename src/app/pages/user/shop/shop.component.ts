@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { PrimeNGConfig} from 'primeng/api';
+import { TokenService } from 'src/app/services/token.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-shop',
@@ -10,18 +13,34 @@ import { PrimeNGConfig} from 'primeng/api';
 export class ShopComponent implements OnInit {
   isLogged?: boolean = false;
   searchValue : string = "";
-  user? : User ;
+  user : User = {};
   isHidden?: boolean;
   fechaYHora : any ;
+  overlayLogout : boolean = false;
   
-  constructor(private _primengConfig : PrimeNGConfig) { }
+  constructor(
+    private _primengConfig : PrimeNGConfig, 
+    private _token : TokenService, 
+    private _routerNavigation : Router,
+    private _authService : AuthService,
+  ) { }
 
   ngOnInit(): void {
     this._primengConfig.ripple = true;
     this.isHidden= true;
+    this.isLog();
     setInterval(()=>{
       this.getDateToday();
     },100); 
+  }
+
+  isLog(){
+    if(!this._token.getTokenDataUser()){
+      return ;
+    }
+
+    this.user = JSON.parse(this._token.getTokenDataUser()!);
+    this.isLogged = true;
   }
 
   displayOptions(){
@@ -66,6 +85,18 @@ export class ShopComponent implements OnInit {
 
     this.fechaYHora = fecha + ' ' + hora;
 
+  }
+
+  logOut(){
+    this.overlayLogout = true;
+    this._authService.logout(this.user.id_user!)
+      .subscribe((response)=>{
+        if(response.status == 200 || response.message === "Sesión cerrada con éxito"){
+          this._token.removeToken();
+          window.location.href = '/shop';
+          this.overlayLogout = false;
+      }
+    });
   }
 
 }
