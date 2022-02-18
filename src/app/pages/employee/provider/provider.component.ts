@@ -88,6 +88,7 @@ export class ProviderComponent implements OnInit {
     this.provider.provider_qualified = 1;  // asignamos el calificado por defecto a : Si
   }
 
+
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
          this.providers = this.providersAux; 
@@ -115,11 +116,10 @@ export class ProviderComponent implements OnInit {
 
   regexCode(event: any) {
     event.target.value = event.target.value.replace(/[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g, "");
-}
+  }
 
   hideDialog(){
     this.productDialog = false;
-
   }
 
   saveProvider(){
@@ -186,8 +186,8 @@ export class ProviderComponent implements OnInit {
 
   changeIdentification($event : any){
     if($event.value == 1) this.maxLength = 10;
-    if($event.value == 2) this.maxLength = 10;
-    if($event.value == 3) this.maxLength = 20;
+    if($event.value == 2) this.maxLength = 20;
+    if($event.value == 3) this.maxLength = 13;
   }
 
   validateIdentification(){

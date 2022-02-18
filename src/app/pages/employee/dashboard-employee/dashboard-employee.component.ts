@@ -106,7 +106,7 @@ export class DashboardEmployeeComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
 
-    const opciones = ['products','category','brand','provider','promotions','orders','report'];
+    const opciones = ['products','category','brand','provider','promotions','orders','employee'];
     const route = window.location.pathname.split('/').pop();
 
 

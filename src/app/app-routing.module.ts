@@ -45,7 +45,7 @@ const routes: Routes = [
       {path: 'products', component : ProductsAdminComponent, pathMatch : 'full',},
       {path: 'orders', component : OrdersAdminComponent, pathMatch : 'full',},
       {path: 'category', component : CategoryAdminComponent, pathMatch : 'full',},
-      {path: 'report', component : ReportAdminComponent, pathMatch : 'full',},
+      {path: 'employee', component : ReportAdminComponent, pathMatch : 'full',},
     ]
   }, 
   {path: 'administrador', component : DashboardEmployeeComponent, canActivate : [AuthGuard], data : { role : '2'},
@@ -57,7 +57,7 @@ const routes: Routes = [
       {path: 'brand', component : BrandComponent, pathMatch : 'full',},
       {path: 'provider', component : ProviderComponent, pathMatch : 'full',},
       {path: 'category', component : CategoryComponent, pathMatch : 'full',},
-      {path: 'report', component : ReportComponent, pathMatch : 'full',},
+      {path: 'employee', component : ReportComponent, pathMatch : 'full',},
     ]
   }, 
   {path: '**', redirectTo: '', pathMatch : 'full'}, 

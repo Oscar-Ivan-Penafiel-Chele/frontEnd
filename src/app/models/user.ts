@@ -1,7 +1,7 @@
 export interface User {
     id_user?:number;
     id_role?:number;
-    id_type_identification?:number;
+    id_identification_type?:number;
     user_name?:string;
     user_lastName?:string;
     email?:string;

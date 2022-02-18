@@ -92,9 +92,9 @@ export class SignupComponent implements OnInit {
   }
 
   validateIdentification(){
-    if(this.user.id_type_identification == 1) return this.validateCedula();
-    if(this.user.id_type_identification == 2) return this.validatePasaporte();
-    if(this.user.id_type_identification == 3) return verificarRuc(this.user.user_document!);
+    if(this.user.id_identification_type == 1) return this.validateCedula();
+    if(this.user.id_identification_type == 2) return this.validatePasaporte();
+    if(this.user.id_identification_type == 3) return verificarRuc(this.user.user_document!);
     
     return false;
   }
@@ -154,7 +154,7 @@ export class SignupComponent implements OnInit {
   }
 
   validateData(){
-    if(!this.user.user_name || !this.user.user_lastName || !this.user.email || !this.user.user_phone || !this.user.user_address ||!this.user.id_type_identification || !this.user.user_document || !this.user.password || !this.passwordConfirm || !this.checked){
+    if(!this.user.user_name || !this.user.user_lastName || !this.user.email || !this.user.user_phone || !this.user.user_address ||!this.user.id_identification_type || !this.user.user_document || !this.user.password || !this.passwordConfirm || !this.checked){
       return false;
     }
 
@@ -163,7 +163,7 @@ export class SignupComponent implements OnInit {
 
   regexData(email : string){
     this.stateEmail = true;
-    let regexEmail = /^[\w]+@{1}[\w]+\.+[a-z]{2,3}$/
+    let regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
      return regexEmail.test(email);
   }

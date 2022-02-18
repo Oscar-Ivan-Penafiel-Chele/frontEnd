@@ -26,9 +26,9 @@
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Marcas</p>
                 </div>
-                <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'provider'" pRipple pTooltip="Proveedor" tooltipPosition="right">
+                <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'provider'" pRipple pTooltip="Proveedores" tooltipPosition="right">
                     <i class="pi pi-users"></i>
-                    <p [hidden]="isHidden">Proveedor</p>
+                    <p [hidden]="isHidden">Proveedores</p>
                 </div>
                 <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'promotions'" pRipple pTooltip="Promociones" tooltipPosition="right">
                     <i class="pi pi-tag"></i>
@@ -38,10 +38,10 @@
                     <i class="pi pi-cloud"></i>
                     <p [hidden]="isHidden">Pedidos</p>
                 </div>
-                <!-- <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'report'" pRipple pTooltip="Reportes" tooltipPosition="right">
-                    <i class="pi pi-file-pdf"></i>
-                    <p [hidden]="isHidden">Reportes</p>
-                </div>  -->
+                <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'employee'" pRipple pTooltip="Empleados" tooltipPosition="right">
+                    <i class="pi pi-user"></i>
+                    <p [hidden]="isHidden">Empleados</p>
+                </div> 
 
                 <div id="nav__aside__footer" class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
                     <i class="pi pi-power-off"></i>

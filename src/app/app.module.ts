@@ -49,7 +49,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputMaskModule} from 'primeng/inputmask';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -146,7 +146,8 @@ import { ProviderComponent } from './pages/employee/provider/provider.component'
     ProgressSpinnerModule,
     ProgressBarModule,
     InputMaskModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    InputSwitchModule
   ],
   providers: [
     {

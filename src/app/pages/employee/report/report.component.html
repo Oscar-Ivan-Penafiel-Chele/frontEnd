@@ -1,1 +1,173 @@
-<p>report works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+                <ng-template pTemplate>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckActive" (onChange)="change($event)" [binary]="true" inputId="active"></p-checkbox>
+                        <label for="active">Activo</label>
+                    </div>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckInactive" (onChange)="change($event)" [binary]="true" inputId="inactive"></p-checkbox>
+                        <label for="inactive">Inactivo</label>
+                    </div>
+                </ng-template>
+            </p-overlayPanel>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="users" [rows]="5"  [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Usuarios</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="provider_name"><i class="pi pi-user"></i> Nombres<p-sortIcon field="provider_name"></p-sortIcon></th>
+                <th pSortableColumn="provider_address"><i class="pi pi-user"></i> Apellidos <p-sortIcon field="provider_address"></p-sortIcon></th>
+                <th pSortableColumn="provider_email"><i class="pi pi-globe"></i> Rol <p-sortIcon field="provider_email"></p-sortIcon></th>
+                <th pSortableColumn="provider_email"><i class="pi pi-envelope"></i> Correo Electrónico <p-sortIcon field="provider_email"></p-sortIcon></th>
+                <th pSortableColumn="provider_landline"><i class="pi pi-phone"></i> Celular <p-sortIcon field="provider_landline"></p-sortIcon></th>          <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-columns="columns" let-index="rowIndex">
+            <tr>
+                <td>{{user.user_name}}</td>
+                <td>{{user.user_lastName}}</td>
+                <td>{{user.id_role}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.user_phone}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editUser(user)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteEmployee(user)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{users ? users.length : 0 }} usuarios.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="productDialog" [draggable]="false" [style]="{width: '800px'}" header="Detalles del Proveedor" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Nombre del Empleado</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" [pKeyFilter]="regexLetterSpace" required autofocus />
+                <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requerido</small>
+            </div>
+            <div class="field col">
+                <label for="name">Apellidos del Empleado</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" [pKeyFilter]="regexLetterSpace" required  />
+                <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Correo Electrónico del Empleado</label>
+                <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="user.email" required  />
+                <small class="p-error" *ngIf="submitted && !user.email">Correo Electrónico es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="phone">Celular del Empleado</label>
+                <p-inputMask id="phone" mask="(+999) 99 999 9999" [(ngModel)]="user.user_phone" placeholder="(+999) 99 999 9999"></p-inputMask>
+                <small class="p-error" *ngIf="submitted && !user.user_phone">Celular es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">    
+                <label for="productStatus">Tipo de Empleado</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="user.id_role" optionLabel="name" optionValue="id" inputId="productStatus" [options]="types_employees" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="pi pi-user mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && user.id_role == null">Rol es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="productStatus">Estado del Proveedor</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="user.user_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !user.user_status">Estado es requerido</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="identificationType">Tipo de Identificación</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="user.id_identification_type" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" inputId="identificationType" [options]="identificationType" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && !user.id_identification_type">Tipo de identificación es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="code">Identificación del Proveedor</label>
+                <input type="text" [disabled]="!user.id_identification_type" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="user.user_document" (input)="regexCode($event)" required/>
+                <small class="p-error" *ngIf="(submitted && !user.user_document) || (stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación requerida' : messageIdentification}}</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Dirección del Proveedor</label>
+                <input type="text" required pInputText id="name" [(ngModel)]="user.user_address" placeholder="Ejemplo: Av. 9 De Octubre" required autofocus />
+                <small class="p-error" *ngIf="submitted && !user.user_address">Dirección es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="pass">Cambiar Contraseña <p-checkbox [(ngModel)]="changePassword" [binary]="true" inputId="binary"></p-checkbox></label> 
+                <p-password required [disabled]="!changePassword" [(ngModel)]="user.password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
+                    <ng-template pTemplate="header">
+                        <p class="title-sugerencias">Ingresa tu contraseña</p>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <p-divider></p-divider>
+                        <p class="sugerencias-content">Sugerencias :</p>
+                        <ul class="sugerencias-list">
+                            <li>Al menos una minúscula</li>
+                            <li>Al menos una mayúscula</li>
+                            <li>Al menos un número</li>
+                            <li>Mínimo 8 caracteres</li>
+                        </ul>
+                    </ng-template>
+                </p-password>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="createEmployee()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

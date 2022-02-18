@@ -25,6 +25,19 @@ export class RestService {
     return this._http.post<any>(`${this.url}/register`,user);
   }
 
+  /* EMPLEADOS */
+  getEmployees() : Observable<User[]>{
+    return this._http.get<User[]>(`${this.url}/users`); 
+  }
+  createEmployee(user : User) : Observable<any>{
+    return this._http.post<any>(`${this.url}/users`, user);
+  }
+  updateEmployee(user : User) : Observable<any>{
+    return this._http.put<any>(`${this.url}/users`, user);
+  }
+  deleteEmployee(id : number) : Observable<any>{
+    return this._http.delete<any>((`${this.url}/users/${id}`));
+  }
 
   /* PRODUCTO */
   getProducts() : Observable<Product[]>{

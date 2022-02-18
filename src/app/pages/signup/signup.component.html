@@ -39,7 +39,7 @@
                         <small class="p-error" *ngIf="submitted && !user.user_phone">Celular son requerido</small>
                     </div>
                     <div class="flex flex-column">
-                        <p-dropdown [style]="{'width':'250px', 'max-width':'100%'}" [showClear]="true" [(ngModel)]="user.id_type_identification" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" [options]="typeIdentification" placeholder="Tipo de identificación">
+                        <p-dropdown [style]="{'width':'250px', 'max-width':'100%'}" [showClear]="true" [(ngModel)]="user.id_identification_type" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" [options]="typeIdentification" placeholder="Tipo de identificación">
                             <ng-template let-option pTemplate="item">
                                 <div class="flex flex-row justify-content-start align-items-center">
                                     <i class="{{option.icon}} mr-2"></i>
@@ -47,11 +47,11 @@
                                 </div>
                             </ng-template>
                         </p-dropdown>
-                        <small class="p-error" *ngIf="submitted && !user.id_type_identification">Tipo de identificación es requerido</small>
+                        <small class="p-error" *ngIf="submitted && !user.id_identification_type">Tipo de identificación es requerido</small>
                     </div>
                     <div>
                         <span class="p-float-label">
-                            <input required type="text" [disabled]="!user.id_type_identification" [(ngModel)]="user.user_document" pInputText (input)="regexCedula($event)" id="float-input" maxlength="10"  style="width: 100%;"> 
+                            <input required type="text" [disabled]="!user.id_identification_type" [(ngModel)]="user.user_document" pInputText (input)="regexCedula($event)" id="float-input" maxlength="10"  style="width: 100%;"> 
                             <label for="float-input"><i class="pi pi-id-card"></i> Identificación</label>
                         </span>
                         <small class="p-error" *ngIf="(submitted && !user.user_document) || (stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación requerida' : messageIdentification}}</small>
