@@ -6,10 +6,14 @@ section{
 }
 
 main{
-    width: 80%;
+    width: 100%;
     height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column nowrap;
 }
 
+/* NAVBAR */
 .nav__container{
     width: 100%;
     margin: auto 0;
@@ -427,6 +431,8 @@ main{
 
 }
 
+    /* OVERLAY LOGOUT */
+
 .logout{
     position: absolute;
     top: 0;
@@ -492,4 +498,84 @@ main{
     100% {
         opacity: 1;
     }
+}
+
+/* BANNER SHOP */
+.banner__shop{
+    background-color: aqua;
+    width: 100%;
+    height: 300px;
+}
+
+
+.main__content{
+    padding: 30px 50px;
+}
+
+.card-template{
+    border: 1px solid #ccc;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    /* height: 100%; */
+    margin: auto;
+    padding: 15px;
+    z-index: 9;
+}
+
+.carousel__content{
+    margin-bottom: 80px;
+}
+
+.card-template:hover{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    cursor: pointer;
+}
+
+
+.carousel__header > p{
+    margin-right: 10px;
+    color: #495057;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.carousel__mas > a{
+    text-decoration: none;
+    color: #4F46E5;
+}
+
+.carousel__mas > i{
+    padding-left: 5px;
+    color: #4F46E5;
+    font-size: 14px;
+}
+
+.carousel__mas > a:hover{
+    text-decoration: underline;
+}
+
+
+.carousel__header > a > i{
+    padding-left: 5px;
+}
+
+.card__description > p:first-of-type{
+    font-size: 16px;
+    color: #495057;
+    text-align: center;
+}
+
+.card__description > p:nth-child(2){
+    font-weight: bold;
+    font-size: 19px;
+    color: #495057;
+}
+
+.footer__main{
+    background-color: brown;
+    margin-top: auto;
+    width: 100%;
 }

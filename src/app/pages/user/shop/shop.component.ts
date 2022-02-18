@@ -4,6 +4,7 @@ import { PrimeNGConfig} from 'primeng/api';
 import { TokenService } from 'src/app/services/token.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-shop',
@@ -17,13 +18,33 @@ export class ShopComponent implements OnInit {
   isHidden?: boolean;
   fechaYHora : any ;
   overlayLogout : boolean = false;
-  
+  products : Product[] = [];
+  responsiveOptions : any;
+
   constructor(
     private _primengConfig : PrimeNGConfig, 
     private _token : TokenService, 
     private _routerNavigation : Router,
     private _authService : AuthService,
-  ) { }
+  ) { 
+    this.responsiveOptions = [
+      {
+          breakpoint: '1024px',
+          numVisible: 3,
+          numScroll: 3
+      },
+      {
+          breakpoint: '768px',
+          numVisible: 2,
+          numScroll: 2
+      },
+      {
+          breakpoint: '560px',
+          numVisible: 1,
+          numScroll: 1
+      }
+  ];
+  }
 
   ngOnInit(): void {
     this._primengConfig.ripple = true;
@@ -32,6 +53,200 @@ export class ShopComponent implements OnInit {
     setInterval(()=>{
       this.getDateToday();
     },100); 
+    this.products = [
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+      {
+        id_product: 1, 
+        id_user : 1, 
+        id_provider : 1 , 
+        id_brand : 1, 
+        id_category : 1, 
+        id_product_unit: 1,
+        product_code:'123',
+        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
+        product_description:'Algo',
+        product_stock: 12,
+        product_price: 12,
+        product_image:'Algo.jpg',
+        product_status:1,
+        product_rating:3,
+      },
+    ];
   }
 
   isLog(){
@@ -99,4 +314,7 @@ export class ShopComponent implements OnInit {
     });
   }
 
+  go(){
+    window.location.href='shop';
+  }
 }

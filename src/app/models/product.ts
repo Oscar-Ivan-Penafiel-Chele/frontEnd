@@ -13,6 +13,6 @@ export interface Product {
     product_image?:string;
     product_status:number;
     product_rating?:number;
-    create_date : string;
-    update_at : string;
+    create_date? : string;
+    update_at? : string;
 }

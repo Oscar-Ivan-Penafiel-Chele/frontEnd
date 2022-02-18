@@ -91,11 +91,268 @@
         </ng-template>
     </nav>
 
+    <app-scroll-to-up></app-scroll-to-up>
+    
     <main>
-        <app-scroll-to-up></app-scroll-to-up>
-        <div class="content-main">
-            <p></p>
+        <div class="banner__shop flex justify-content-center align-items-center">
+           <p>Banner de Promociones</p>
         </div>
+        <div class="flex justify-content-center align-items-center" style="background-color: blue;">
+            Aun no se que poner
+        </div>
+        <div class="main__content">
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Productos Populares</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Cerrajería</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Construcción</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Ferretería</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Herramientas</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Iluminación</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Jardín</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Pinturas</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()" >
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+
+            <div class="carousel__content">
+                <p-carousel [value]="products" [showIndicators]="false" [numVisible]="5" [circular]="true" [numScroll]="3" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <div class="carousel__header flex mb-4">
+                            <p>Plomeria</p>
+                            <div class="carousel__mas flex justify-content-center align-items-center">
+                                <a href="#" >Ver más</a><i class="pi pi-arrow-right"></i> 
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                        <div class="card-template" (click)="go()">
+                            <div>
+                                <p-image src="assets/img/categories/jardin.jpg" alt="Image" width="170" height="150"></p-image>
+                            </div>
+                            <div class="card__description flex flex-column justify-content-center align-items-center">
+                                <p>{{product.product_name}}</p>
+                                <p>U$S {{product.product_price}}</p>
+                                <p-rating [(ngModel)]="product.product_rating" [iconOnStyle]="{'color':'#f7b733'}" [cancel]="false" [readonly]="true" [stars]="5"></p-rating>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+        </div>
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name"
             [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
             <ng-template pTemplate="header">
@@ -145,7 +402,9 @@
     </main>
 
     <footer>
-
+        <div class="footer__main">
+            <p>Footer</p>
+        </div>
     </footer>
     
 </section>
