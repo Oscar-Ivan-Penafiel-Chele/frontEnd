@@ -239,8 +239,8 @@ export class ReportComponent implements OnInit {
   deleteEmployee(user : User){
     this.confirmationService.confirm({
       message: `¿Estás seguro de inactivar al usuario: ${user.user_name} ${user.user_lastName} ?`,
-      header: 'Eliminar Producto',
-      acceptLabel : 'Eliminar',
+      header: 'Inactivar Usuario',
+      acceptLabel : 'Inactivar',
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

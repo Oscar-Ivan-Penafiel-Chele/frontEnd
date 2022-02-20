@@ -28,7 +28,7 @@
     <p-table #dt [value]="users" [rows]="5"  [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user_name','user_lastName']" responsiveLayout="scroll" [rowHover]="true" dataKey="id" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Gestión de Usuarios</h5>
+                <h5 class="m-0">Gestión de Empleados</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre y apellido..." />

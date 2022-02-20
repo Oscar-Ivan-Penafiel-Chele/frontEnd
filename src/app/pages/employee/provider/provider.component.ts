@@ -258,9 +258,9 @@ export class ProviderComponent implements OnInit {
 
   deleteProvider(provider : IProvider){
     this.confirmationService.confirm({
-      message: '¿Estás seguro de eliminar el producto: ' + '"'+provider.provider_name + '"'+'?',
-      header: 'Eliminar Producto',
-      acceptLabel : 'Eliminar',
+      message: '¿Estás seguro de inactivar al proveedor: ' + '"'+provider.provider_name + '"'+'?',
+      header: 'Inactivar Proveedor',
+      acceptLabel : 'Inactivar',
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
