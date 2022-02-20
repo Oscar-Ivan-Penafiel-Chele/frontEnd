@@ -61,6 +61,7 @@ export class ReportComponent implements OnInit {
     ];
 
     this.getEmployees();
+    this.getDataProfile();
   }
 
   openNew(){

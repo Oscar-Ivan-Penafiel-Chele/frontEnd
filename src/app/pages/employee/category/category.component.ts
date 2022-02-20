@@ -62,6 +62,7 @@ export class CategoryComponent implements OnInit {
     ]
     this.getCategories();
     this.fileTmp = {};
+    this.getDataProfile();
   }
 
   getDataProfile(){
@@ -227,7 +228,6 @@ export class CategoryComponent implements OnInit {
     });
     
     data.append('id_user',String(this.user.id_user));
-
     this._rest.createCategory(data)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Categoria creado con exito"){

@@ -62,6 +62,7 @@ export class ProviderComponent implements OnInit {
     ];
     this.getProviders();
     this.getTypeProviders();
+    this.getDataProfile();
   }
 
   getDataProfile(){
