@@ -121,7 +121,7 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && !brand.brand_status">Estado es requerido</small>
+                <small class="p-error" *ngIf="submitted && brand.brand_status == null">Estado es requerido</small>
             </div>
         </div>
         <br><br><br> 

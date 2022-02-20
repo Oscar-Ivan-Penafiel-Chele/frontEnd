@@ -166,7 +166,7 @@
                     </div>
                 </ng-template>
             </p-dropdown>
-            <small class="p-error" *ngIf="submitted && !product.product_status">Estado es requerido</small>
+            <small class="p-error" *ngIf="submitted && product.product_status == null">Estado es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
