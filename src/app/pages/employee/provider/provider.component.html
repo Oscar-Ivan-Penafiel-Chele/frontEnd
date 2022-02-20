@@ -55,7 +55,7 @@
                 <td>Días : {{provider.provider_response_time_day}} Horas : {{provider.provider_response_time_hour}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProvider(provider)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProvider(provider)"></button>
+                    <button [disabled]="provider.provider_status == 0" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProvider(provider)"></button>
                 </td>
             </tr>
         </ng-template>
