@@ -73,7 +73,13 @@ export class CategoryComponent implements OnInit {
   getCategories(){
     this._rest.getCategories().subscribe((response : Category[]) => {
       this.categoriesAux = Object.values(response);
-      this.categories = this.categoriesAux.filter(i => i.category_status == 1);
+      if(this.stateCheckActive && !this.stateCheckInactive){
+        this.categories = this.categoriesAux.filter(i => i.category_status == 1);
+      }else if(!this.stateCheckActive && this.stateCheckInactive){
+        this.categories = this.categoriesAux.filter(i => i.category_status == 0);
+      }else if(this.stateCheckActive && this.stateCheckInactive){
+        this.categories = this.categoriesAux;
+      }
     });
   }
 
@@ -233,10 +239,6 @@ export class CategoryComponent implements OnInit {
             if(response.status == 200 || response.message === "Categoria creado con exito"){
                 this.getCategories();
                 this.hideDialog();
-                if(this.category.category_status == 0){
-                  this.stateCheckActive = true;
-                  this.stateCheckInactive = false;
-                }
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoría fue creado con éxito', life: 3000});
             }
         });
@@ -257,17 +259,8 @@ export class CategoryComponent implements OnInit {
 
     this._rest.updateCategory(data, this.category.id_category!)
     .subscribe((response)=>{
-        if(response.status == 200 || response.message === "Categoria actualizada con exito"){
-            if(this.category.category_status == 1) {
-              this.getCategories(); 
-              this.stateCheckActive = true;
-              this.stateCheckInactive = false;
-            }
-            if(this.category.category_status == 0){
-               this.getCategoriesInactives();
-               this.stateCheckActive = false;
-               this.stateCheckInactive = true;
-            }
+        if(response.status == 200 && response.message === "Categoria actualizada con exito"){
+            this.getCategories();
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoria fue actualizado con éxito', life: 3000});
         }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
@@ -278,7 +271,7 @@ export class CategoryComponent implements OnInit {
   }
 
   validateData(){
-    if(this.isObjEmpty(this.fileTmp) || !this.category.category_name || !this.category.category_descripcion || !this.category.category_status){
+    if(this.isObjEmpty(this.fileTmp) || !this.category.category_name || !this.category.category_descripcion || this.category.category_status == null){
         return false;
     }
   
@@ -286,7 +279,7 @@ export class CategoryComponent implements OnInit {
   }
 
   validateDataNoImage(){
-      if(!this.category.category_name || !this.category.category_descripcion || !this.category.category_status){
+      if(!this.category.category_name || !this.category.category_descripcion || this.category.category_status == null){
           return false;
       }
     

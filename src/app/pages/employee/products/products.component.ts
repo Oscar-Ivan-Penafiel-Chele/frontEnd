@@ -106,7 +106,13 @@ export class ProductsComponent implements OnInit {
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
             this.productsAux = response;
-            this.products = this.productsAux.filter(i => i.product_status == 1)
+            if(this.stateCheckActive && !this.stateCheckInactive){
+                this.products = this.productsAux.filter(i => i.product_status == 1)
+              }else if(!this.stateCheckActive && this.stateCheckInactive){
+                this.products = this.productsAux.filter(i => i.product_status == 0)
+              }else if(this.stateCheckActive && this.stateCheckInactive){
+                this.products = this.productsAux;
+              }
         });
     }
 
@@ -138,6 +144,7 @@ export class ProductsComponent implements OnInit {
         .subscribe((response) =>{
           this.categories = Object.values(response);
           this.categories = this.categories.sort(this.sortCategories);
+          this.categories = this.categories.filter((i)=> i.category_status == 1);
         });
     }
 
@@ -154,6 +161,7 @@ export class ProductsComponent implements OnInit {
           for( this.i = 0 ; this.i < this.brands.length ; this.i++){
               this._sortByOrder.transform(this.brands[this.i].brand_name);
           }
+          this.brands = this.brands.filter((i)=> i.brand_status == 1);
         })
     }
 
@@ -164,6 +172,7 @@ export class ProductsComponent implements OnInit {
             for( this.i = 0 ; this.i < this.providers.length ; this.i++){
                 this._sortByOrder.transform(`${this.providers[this.i].provider_name}`);
             }
+            this.providers = this.providers.filter((i)=> i.provider_status == 1);
         })
     }
 
@@ -217,6 +226,7 @@ export class ProductsComponent implements OnInit {
             for( this.i = 0 ; this.i < this.measures.length ; this.i++){
                 this._sortByOrder.transform(`${this.measures[this.i].description_product_unit}`);
             }
+            this.measures = this.measures.filter((i)=> i.product_unit_status == 1)
         })
     }
 
@@ -324,10 +334,6 @@ export class ProductsComponent implements OnInit {
                 if(response.status == 200 || response.message === "Producto creado con exito"){
                     this.getAllProducts();
                     this.hideDialog();
-                    if(this.product.product_status == 0){
-                        this.stateCheckActive = true;
-                        this.stateCheckInactive = false;
-                    }
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito', life: 3000});
                 }
             });
@@ -352,16 +358,7 @@ export class ProductsComponent implements OnInit {
         this._rest.updateProduct(data, this.product.id_product!)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
-                if(this.product.product_status == 1){
-                    this.getAllProducts();
-                    this.stateCheckActive = true;
-                    this.stateCheckInactive = false;
-                }else if(this.product.product_status == 0){
-                    this.getProductsInactives();
-                    this.stateCheckActive = false;
-                    this.stateCheckInactive = true;
-                }
-                
+                this.getAllProducts();
                 this.hideDialog();
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', life: 3000});
             }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){

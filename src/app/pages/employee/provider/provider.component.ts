@@ -73,7 +73,14 @@ export class ProviderComponent implements OnInit {
   getProviders(){
     this._rest.getProviders().subscribe((response : IProvider[])=>{
       this.providersAux = Object.values(response);
-      this.providers = this.providersAux.filter(i => i.provider_status == 1);
+      if(this.stateCheckActive && !this.stateCheckInactive){
+        this.providers = this.providersAux.filter(i => i.provider_status == 1);
+      }else if(!this.stateCheckActive && this.stateCheckInactive){
+        this.providers = this.providersAux.filter(i => i.provider_status == 0);
+      }else if(this.stateCheckActive && this.stateCheckInactive){
+        this.providers = this.providersAux;
+      }
+      
     })
   }
 
@@ -161,10 +168,6 @@ export class ProviderComponent implements OnInit {
         if(response.status == 200 || response.message === "Proveedor creado con exito"){
             this.getProviders();
             this.hideDialog();
-            if(this.provider.provider_status == 0){
-              this.stateCheckActive = true;
-              this.stateCheckInactive = false;
-          }
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'El Proveedor fue creado con éxito', life:3000});
         }
     });
@@ -176,15 +179,7 @@ export class ProviderComponent implements OnInit {
     this._rest.updateProvider(this.provider, this.provider.id_provider!)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor actualizado con exito"){
-            if(this.provider.provider_status == 1){
-              this.getProviders();
-              this.stateCheckActive = true;
-              this.stateCheckInactive = false;
-            }else if(this.provider.provider_status == 0){
-                this.getProvidersInactives();
-                this.stateCheckActive = false;
-                this.stateCheckInactive = true;
-            }
+            this.getProviders();
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'El proveedor fue actualizado con éxito', life: 3000});
         }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){

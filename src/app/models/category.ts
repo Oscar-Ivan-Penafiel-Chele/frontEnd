@@ -3,7 +3,7 @@ export interface Category {
     category_name : string ;
     category_descripcion : string;
     category_thumbnail : string;
-    category_status : number;
+    category_status?: number;
     create_date : Date;
     upload_date : Date;
 }

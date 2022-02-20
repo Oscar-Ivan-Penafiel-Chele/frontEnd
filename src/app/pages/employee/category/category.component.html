@@ -122,7 +122,7 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && !category.category_status">Estado es requerido</small>
+                <small class="p-error" *ngIf="submitted && category.category_status == null">Estado es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
@@ -131,8 +131,7 @@
                 <textarea id="description" required pInputTextarea [(ngModel)]="category.category_descripcion" required rows="3" cols="20"></textarea>
                 <small class="p-error" *ngIf="submitted && !category.category_descripcion">Descripción es requerido</small>
             </div>
-        </div>
-        
+        </div>   
     </ng-template>
 
     <ng-template pTemplate="footer">

@@ -73,7 +73,13 @@ export class BrandComponent implements OnInit {
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
       this.brandsAux = Object.values(response);
-      this.brands = this.brandsAux.filter(i => i.brand_status == 1)
+      if(this.stateCheckActive && !this.stateCheckInactive){
+        this.brands = this.brandsAux.filter(i => i.brand_status == 1)
+      }else if(!this.stateCheckActive && this.stateCheckInactive){
+        this.brands = this.brandsAux.filter(i => i.brand_status == 0)
+      }else if(this.stateCheckActive && this.stateCheckInactive){
+        this.brands = this.brandsAux;
+      }
     })
   }
 
@@ -228,10 +234,6 @@ export class BrandComponent implements OnInit {
             if(response.status == 200 && response.message === "Marca creada con exito"){
                 this.getBrands();
                 this.hideDialog();
-                if(this.brand.brand_status == 0){
-                  this.stateCheckActive = true;
-                  this.stateCheckInactive = false;
-                }
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue creado con éxito', life: 3000});
             }else{
               this.hideDialog();
@@ -241,7 +243,7 @@ export class BrandComponent implements OnInit {
   }
 
   validateData(){
-    if(this.isObjEmpty(this.fileTmp) || !this.brand.brand_name || !this.brand.brand_status){
+    if(this.isObjEmpty(this.fileTmp) || !this.brand.brand_name || this.brand.brand_status == null){
         return false;
     }
   
@@ -249,7 +251,7 @@ export class BrandComponent implements OnInit {
   }
 
   validateDataNoImage(){
-      if(!this.brand.brand_name || !this.brand.brand_status){
+      if(!this.brand.brand_name || this.brand.brand_status == null){
           return false;
       }
     
@@ -279,16 +281,7 @@ export class BrandComponent implements OnInit {
     this._rest.updateBrand(data, this.brand.id_brand!)
     .subscribe((response)=>{
         if(response.status == 200 && response.message === "Marca actualizada con exito"){
-          if(this.brand.brand_status == 1) {
-            this.getBrands(); 
-            this.stateCheckActive = true;
-            this.stateCheckInactive = false;
-          }
-          if(this.brand.brand_status == 0){
-             this.getBrandsInactives();
-             this.stateCheckActive = false;
-             this.stateCheckInactive = true;
-          }
+            this.getBrands();
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue actualizado con éxito', life:3000});
         }else if((response.status == 400 || response.status == 500) && response.message === "Ocurrio un error interno en el servidor"){

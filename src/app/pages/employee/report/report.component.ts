@@ -82,9 +82,15 @@ export class ReportComponent implements OnInit {
 
   getEmployees(){
     this._rest.getEmployees().subscribe((response : User[])=>{
-      console.log(response);
       this.userAux = Object.values(response);
-      this.users = this.userAux.filter(i => i.user_status == 1);
+      if(this.stateCheckActive && !this.stateCheckInactive){
+        this.users = this.userAux.filter(i => i.user_status == 1);
+      }else if(!this.stateCheckActive && this.stateCheckInactive){
+        this.users = this.userAux.filter(i => i.user_status == 0);
+      }else if(this.stateCheckActive && this.stateCheckInactive){
+        this.users = this.userAux;
+      }
+      
     })
   }
 
@@ -122,10 +128,6 @@ export class ReportComponent implements OnInit {
       if(response.status == 200 || response.message === "Usuario creado exitosamente"){
         this.getEmployees();
         this.hideDialog();
-        if(this.user.user_status == 0){
-          this.stateCheckActive = true;
-          this.stateCheckInactive = false;
-      }
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'El empleado fue creado con éxito', life:3000});
     }
     });
@@ -136,15 +138,6 @@ export class ReportComponent implements OnInit {
       if(response.status == 200 || response.message === "Usuario actualizado exitosamente"){
         this.getEmployees();
         this.hideDialog();
-        if(this.user.user_status == 1){
-          this.getEmployees();
-          this.stateCheckActive = true;
-          this.stateCheckInactive = false;
-        }else if(this.user.user_status == 0){
-            this.getEmployeesInactive();
-            this.stateCheckActive = false;
-            this.stateCheckInactive = true;
-        }
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Empleado actualizado con éxito', life:3000});
     }
     });
