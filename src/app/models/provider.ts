@@ -2,6 +2,7 @@ export interface IProvider {
     id_provider?:number;
     id_type_provider? : number; //check
     id_identification_type?:number;
+    id_user?:number;
     provider_name?:string;//check
     provider_qualified? : number;//check
     provider_identification? : string;

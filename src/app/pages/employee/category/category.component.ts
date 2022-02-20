@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment.prod';
 import { UpperCasePipe } from '@angular/common';
 import { MessageService, Message, PrimeNGConfig, ConfirmationService } from 'primeng/api';
 import { RestService } from 'src/app/services/rest.service';
+import { TokenService } from 'src/app/services/token.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-category',
@@ -16,6 +18,7 @@ export class CategoryComponent implements OnInit {
   categories : Category[] = [];
 
   category : Category = {} as Category;
+  user : User = {};
 
   host : string = environment.URL;
 
@@ -44,6 +47,7 @@ export class CategoryComponent implements OnInit {
     private messageService: MessageService, 
     private confirmationService: ConfirmationService,
     private _sortByOrder : UpperCasePipe,
+    private _token : TokenService,
     ) { 
 
         this.isPhotoEdit = false;
@@ -58,6 +62,11 @@ export class CategoryComponent implements OnInit {
     ]
     this.getCategories();
     this.fileTmp = {};
+  }
+
+  getDataProfile(){
+    const data = this._token.getTokenDataUser() as string;
+    this.user = JSON.parse(data);
   }
 
   getCategories(){
@@ -216,7 +225,9 @@ export class CategoryComponent implements OnInit {
     Object.entries(this.category).forEach(([key , value]) => {
         data.append(`${key}`, value);
     });
-        
+    
+    data.append('id_user',String(this.user.id_user));
+
     this._rest.createCategory(data)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Categoria creado con exito"){
@@ -241,6 +252,8 @@ export class CategoryComponent implements OnInit {
     Object.entries(this.category).forEach(([key , value]) => {
         data.append(`${key}`, value);
     });
+
+    data.append('id_user',String(this.user.id_user));
 
     this._rest.updateCategory(data, this.category.id_category!)
     .subscribe((response)=>{

@@ -7,6 +7,7 @@ import { IProvider } from 'src/app/models/provider';
 import { Type_Provider } from 'src/app/models/type_provider';
 import { TokenService } from 'src/app/services/token.service';
 import { verificarRuc } from 'udv-ec';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-provider',
@@ -20,6 +21,7 @@ export class ProviderComponent implements OnInit {
   types_provider : Type_Provider[] = []; 
 
   provider : IProvider = {} as IProvider;
+  user : User = {};
 
   productDialog: boolean = false;
   submitted: boolean = false;
@@ -60,6 +62,11 @@ export class ProviderComponent implements OnInit {
     ];
     this.getProviders();
     this.getTypeProviders();
+  }
+
+  getDataProfile(){
+    const data = this._token.getTokenDataUser() as string;
+    this.user = JSON.parse(data);
   }
 
   getProviders(){
@@ -147,6 +154,7 @@ export class ProviderComponent implements OnInit {
 
   saveData(){
     this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
+    this.provider.id_user = this.user.id_user;
     this._rest.createProvider(this.provider)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor creado con exito"){
@@ -163,6 +171,7 @@ export class ProviderComponent implements OnInit {
 
   updateData(){
     this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
+    this.provider.id_user = this.user.id_user;
     this._rest.updateProvider(this.provider, this.provider.id_provider!)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor actualizado con exito"){

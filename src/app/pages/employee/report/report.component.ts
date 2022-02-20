@@ -17,6 +17,7 @@ export class ReportComponent implements OnInit {
   users : User[] = [];
 
   user : User = {};
+  userLoged : User = {};
 
   actionSelected  : string ="";
   productDialog: boolean = false;
@@ -32,6 +33,7 @@ export class ReportComponent implements OnInit {
   types_employees : any
   maxLength : number = 0;
   userAux : User[] = [];
+  
 
   regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;  
   
@@ -85,8 +87,14 @@ export class ReportComponent implements OnInit {
     })
   }
 
+  getDataProfile(){
+    const data = this._token.getTokenDataUser() as string;
+    this.userLoged = JSON.parse(data);
+  }
+
   createEmployee(){
     this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
+    this.user.id_user_created = this.userLoged.id_user;
    
     if(this.actionSelected === "new"){
       this.submitted = true;

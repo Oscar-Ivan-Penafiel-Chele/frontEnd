@@ -221,10 +221,11 @@ export class BrandComponent implements OnInit {
     Object.entries(this.brand).forEach(([key , value]) => {
         data.append(`${key}`, value);
     });
+    data.append('id_user',String(this.user.id_user));
         
     this._rest.createBrand(data)
         .subscribe((response)=>{
-            if(response.status == 200 || response.message === "Marca creada con exito"){
+            if(response.status == 200 && response.message === "Marca creada con exito"){
                 this.getBrands();
                 this.hideDialog();
                 if(this.brand.brand_status == 0){
@@ -273,10 +274,11 @@ export class BrandComponent implements OnInit {
     Object.entries(this.brand).forEach(([key , value]) => {
         data.append(`${key}`, value);
     });
+    data.append('id_user',String(this.user.id_user));
 
     this._rest.updateBrand(data, this.brand.id_brand!)
     .subscribe((response)=>{
-        if(response.status == 200 || response.message === "Marca actualizada con exito"){
+        if(response.status == 200 && response.message === "Marca actualizada con exito"){
           if(this.brand.brand_status == 1) {
             this.getBrands(); 
             this.stateCheckActive = true;
@@ -289,7 +291,7 @@ export class BrandComponent implements OnInit {
           }
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'La marca fue actualizado con éxito', life:3000});
-        }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+        }else if((response.status == 400 || response.status == 500) && response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
         }
@@ -308,6 +310,10 @@ export class BrandComponent implements OnInit {
   }
 
   deleteBrand(brand: Brand) {
+    const obj = {
+      'id_brand' : brand.id_brand,
+      'id_user' : this.user.id_user
+    }
     this.confirmationService.confirm({
         message: '¿Estás seguro de eliminar la marca: ' + brand.brand_name + '?',
         header: 'Eliminar Marca',
@@ -316,7 +322,7 @@ export class BrandComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
             this._rest.deleteBrand(brand.id_brand!).subscribe((response)=>{
-                if(response.status == 200 || response.message === "Eliminado correctamente"){
+                if(response.status === 200 && response.message === "Eliminado correctamente"){
                     this.getBrands();
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Marca Eliminado', life: 3000, sticky: true});
                 }else{
