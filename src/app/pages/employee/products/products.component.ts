@@ -67,6 +67,7 @@ export class ProductsComponent implements OnInit {
     stateCheckActive : boolean = true;
     stateCheckInactive : boolean = false;
     productsAux : Product[] = [];
+    isDisabled : boolean = true;
 
     overImage : string = "assets/img/not_image.jpg";
 

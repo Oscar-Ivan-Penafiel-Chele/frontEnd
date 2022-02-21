@@ -20,6 +20,10 @@ export class ShopComponent implements OnInit {
   overlayLogout : boolean = false;
   products : Product[] = [];
   responsiveOptions : any;
+  images: any[] = [
+    {name : 'assets/img/back.svg'},
+    {name : 'assets/img/back.svg'},
+  ];
 
   constructor(
     private _primengConfig : PrimeNGConfig, 

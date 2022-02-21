@@ -112,7 +112,7 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && !provider.provider_status">Estado es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_status ==null">Estado es requerido</small>
             </div>
         </div>
 

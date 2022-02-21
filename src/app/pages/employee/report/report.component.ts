@@ -82,6 +82,7 @@ export class ReportComponent implements OnInit {
 
   getEmployees(){
     this._rest.getEmployees().subscribe((response : User[])=>{
+      console.log(response);
       this.userAux = Object.values(response);
       if(this.stateCheckActive && !this.stateCheckInactive){
         this.users = this.userAux.filter(i => i.user_status == 1);
@@ -89,8 +90,7 @@ export class ReportComponent implements OnInit {
         this.users = this.userAux.filter(i => i.user_status == 0);
       }else if(this.stateCheckActive && this.stateCheckInactive){
         this.users = this.userAux;
-      }
-      
+      }     
     })
   }
 
