@@ -144,7 +144,7 @@
                 <small class="p-error" *ngIf="submitted && !user.user_address">Dirección es requerido</small>
             </div>
             <div class="field col">
-                <label for="pass">Cambiar Contraseña <p-checkbox [(ngModel)]="changePassword" [binary]="true" inputId="binary"></p-checkbox></label> 
+                <label for="pass">{{actionSelected == 'new' ? 'Crear Contraseña' : 'Cambiar Contraseña'}} <p-checkbox *ngIf="isVisible" [(ngModel)]="changePassword"  [binary]="true" inputId="binary"></p-checkbox></label> 
                 <p-password required [disabled]="!changePassword" [(ngModel)]="user.password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
                     <ng-template pTemplate="header">
                         <p class="title-sugerencias">Ingresa tu contraseña</p>

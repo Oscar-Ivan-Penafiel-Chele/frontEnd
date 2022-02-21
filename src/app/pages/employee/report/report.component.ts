@@ -28,6 +28,7 @@ export class ReportComponent implements OnInit {
   stateCheckInactive : boolean = false;
   states : any[] = [];
   changePassword : boolean = false;
+  isVisible : boolean = false;
 
   identificationType : any [] = [];
   types_employees : any
@@ -71,7 +72,8 @@ export class ReportComponent implements OnInit {
     this.stateIdentification = false;
     this.productDialog = true; // abrimos el moda
     this.user.user_status = 1;
-    this.changePassword = false;
+    this.changePassword = true;
+    this.isVisible = false;
   }
 
   exportPdf(){}
@@ -82,7 +84,6 @@ export class ReportComponent implements OnInit {
 
   getEmployees(){
     this._rest.getEmployees().subscribe((response : User[])=>{
-      console.log(response);
       this.userAux = Object.values(response);
       if(this.stateCheckActive && !this.stateCheckInactive){
         this.users = this.userAux.filter(i => i.user_status == 1);
@@ -234,6 +235,8 @@ export class ReportComponent implements OnInit {
     this.actionSelected = "edit"
     this.user = {...user};
     this.productDialog = true; // abrimos modal
+    this.changePassword = false;
+    this.isVisible = true;
   }
 
   deleteEmployee(user : User){
