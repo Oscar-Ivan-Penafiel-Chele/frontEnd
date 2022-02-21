@@ -69,6 +69,9 @@ export class ProductsComponent implements OnInit {
     productsAux : Product[] = [];
     isDisabled : boolean = true;
 
+    codeProduct : number = 0;
+    nameProd : string = "";
+
     overImage : string = "assets/img/not_image.jpg";
 
     constructor(
@@ -93,6 +96,7 @@ export class ProductsComponent implements OnInit {
             {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
         ]
         this.getAllProducts();
+        this.getCodeProduct();
         this.getAllCategories();
         this.getAllBrands();
         this.getAllProviders();
@@ -114,6 +118,14 @@ export class ProductsComponent implements OnInit {
               }else if(this.stateCheckActive && this.stateCheckInactive){
                 this.products = this.productsAux;
               }
+        });
+    }
+    
+    getCodeProduct(){
+        this._rest.getCodeProduct().subscribe((response)=>{
+            if(response.status == 200){
+                this.codeProduct = response.message;
+            }
         });
     }
 
@@ -267,6 +279,7 @@ export class ProductsComponent implements OnInit {
         this.productDialog = true; // abrimos el modal
         this.isPhotoEdit = false; // LE decimos que no es una imagen a editar
         this.product.product_status = 1;  // asignamos el status por defecto a : Activo
+        this.product.product_code = this.codeProduct;
     }
 
 
@@ -285,6 +298,7 @@ export class ProductsComponent implements OnInit {
         this.inputFile = true; // LE decimos que bloquee el inputFile
         this.isPhotoEdit = true; // Le decimos que si hay foto para editar
         this.productDialog = true; // abrimos modal
+        this.nameProd = product.product_name!;
       }
 
     saveProduct() {
@@ -295,9 +309,13 @@ export class ProductsComponent implements OnInit {
                 return ;
             }
             
-            this.saveData();
+            this.validateNameProduct();
 
         }else if(this.actionSelected === "edit"){
+            if(this.nameProd != this.product.product_name){
+                this.validateNameProduct();
+                return;
+            }
             if(this.isObjEmpty(this.fileTmp)){
                 //Se envia la misma imagen 
                 this.fileTmp = {};
@@ -320,6 +338,22 @@ export class ProductsComponent implements OnInit {
         }
     }
 
+    validateNameProduct(){
+        console.log(this.product.product_name);
+        this._rest.validateNameProduct(this.product.product_name!).subscribe((response)=>{
+            if(response.status == 200 && response.message == "No existe"){
+                if(this.actionSelected == "new"){
+                    this.saveData();
+                    return;
+                }
+            }else if(response.status == 200 && response.message == "Existe"){
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ya existe un producto con ese nombre!', life: 3000});
+            }else{
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
+            }
+        });
+    }
+
     saveData() : void{
         this.product.id_user = this.user.id_user!;
         this.product.id_category = parseInt(this.product.id_category);
@@ -335,6 +369,7 @@ export class ProductsComponent implements OnInit {
                 if(response.status == 200 || response.message === "Producto creado con exito"){
                     this.getAllProducts();
                     this.hideDialog();
+                    this.getCodeProduct();
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue creado con éxito', life: 3000});
                 }
             });
@@ -361,6 +396,7 @@ export class ProductsComponent implements OnInit {
             if(response.status == 200 || response.message === "Producto actualizado con exito"){
                 this.getAllProducts();
                 this.hideDialog();
+                this.getCodeProduct();
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', life: 3000});
             }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
                 this.hideDialog();
@@ -419,6 +455,7 @@ export class ProductsComponent implements OnInit {
               this._rest.deleteProduct(product.id_product).subscribe((response)=>{
                   if(response.status == 200 || response.message === "Eliminado correctamente"){
                       this.getAllProducts();
+                      this.getCodeProduct();
                       this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto Eliminado', life: 3000});
                   }
               },(err)=>{

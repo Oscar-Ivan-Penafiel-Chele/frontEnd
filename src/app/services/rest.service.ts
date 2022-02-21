@@ -44,6 +44,10 @@ export class RestService {
   getProducts() : Observable<Product[]>{
     return this._http.get<Product[]>(`${this.url}/products`);
   }
+  validateNameProduct(nameProduct : string) : Observable<any>{
+    const data = {'product_name':nameProduct}
+    return this._http.post<any>(`${this.url}/validate/product/name`,data);
+  }
   createProduct(data : FormData): Observable<any>{
     return this._http.post<any>(`${this.url}/products`,data);
   }
@@ -58,6 +62,11 @@ export class RestService {
 
   deleteProduct(id? : number) : Observable<any>{
     return this._http.delete<any>(`${this.url}/products/${id}`);
+  }
+
+  /* CODIGO PRODUCT */
+  getCodeProduct() : Observable<any>{
+    return this._http.get<any>(`${this.url}/validate/product/code`);
   }
 
 

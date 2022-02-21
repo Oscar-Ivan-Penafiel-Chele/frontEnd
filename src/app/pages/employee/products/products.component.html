@@ -58,7 +58,7 @@
                 <td>{{product.create_date}}</td>
                 <td>
                     <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
-                    <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock == 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                    <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock != 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -185,7 +185,7 @@
             <div class="field col">
                 <label for="minmax-buttons">Cantidad del Producto</label>
                 <p-inputNumber [disabled]="!product.id_product_unit" [required]="true" [(ngModel)]="product.product_stock" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="10000"></p-inputNumber>
-                <small class="p-error" *ngIf="submitted && !product.product_stock">Cantidad es requerido</small>
+                <small class="p-error" *ngIf="submitted && product.product_stock == null">Cantidad es requerido</small>
             </div>
             <div class="field col">
                 <label for="rating">Rating del Producto</label>
