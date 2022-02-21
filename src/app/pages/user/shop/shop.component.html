@@ -96,7 +96,7 @@
     <main>
         <div class="banner__shop">
            <!-- <p>Banner de Promociones</p> -->
-           <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%'}" [numVisible]="5"
+           <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%', 'z-index':'-999'}" [numVisible]="5"
            [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showItemNavigatorsOnHover]="true"
            [showIndicatorsOnItem]="true"> 
                 <ng-template pTemplate="item" let-item>

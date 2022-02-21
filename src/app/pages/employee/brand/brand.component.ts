@@ -73,13 +73,13 @@ export class BrandComponent implements OnInit {
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
       this.brandsAux = Object.values(response);
-      if(this.stateCheckActive && !this.stateCheckInactive){
-        this.brands = this.brandsAux.filter(i => i.brand_status == 1)
-      }else if(!this.stateCheckActive && this.stateCheckInactive){
-        this.brands = this.brandsAux.filter(i => i.brand_status == 0)
-      }else if(this.stateCheckActive && this.stateCheckInactive){
-        this.brands = this.brandsAux;
-      }
+        if(this.stateCheckActive && !this.stateCheckInactive){
+          this.brands = this.brandsAux.filter(i => i.brand_status == 1)
+        }else if(!this.stateCheckActive && this.stateCheckInactive){
+          this.brands = this.brandsAux.filter(i => i.brand_status == 0)
+        }else if(this.stateCheckActive && this.stateCheckInactive){
+          this.brands = this.brandsAux;
+        }
     })
   }
 
@@ -315,7 +315,7 @@ export class BrandComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
             this._rest.deleteBrand(brand.id_brand!).subscribe((response)=>{
-                if(response.status === 200 && response.message === "Eliminado correctamente"){
+                if(response.status == 200 && response.message === "Eliminado correctamente"){
                     this.getBrands();
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Marca Eliminado', life: 3000, sticky: true});
                 }else{
