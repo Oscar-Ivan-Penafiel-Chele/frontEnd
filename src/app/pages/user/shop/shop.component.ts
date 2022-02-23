@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Product } from 'src/app/models/product';
 import { Category } from 'src/app/models/category';
 import { RestService } from 'src/app/services/rest.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-shop',
@@ -31,6 +32,8 @@ export class ShopComponent implements OnInit {
   sortOptions: any;
   sortOrder: number = 0;
   sortField: string = "";
+  host : string = environment.URL;
+  overImage : string = "assets/img/not_image.jpg";
   images: any[] = [
     {name : 'assets/img/back.svg'},
     {name : 'assets/img/back.svg'},
@@ -91,6 +94,7 @@ export class ShopComponent implements OnInit {
 
   getProducts(){
     this._rest.getProducts().subscribe((response : Product[]) =>{
+      console.log(response);
       this.productAux = Object.values(response);
       this.products = this.productAux.filter(i=> i.product_status == 1)
       this.products.sort(this.sortProducts)
@@ -150,6 +154,10 @@ export class ShopComponent implements OnInit {
       menuOptions?.classList.add('isActiveNavOption');
     }
   }
+
+  // selectedCategory($event : any){
+  //   console.log($event);
+  // }
 
   isActive(){
     const hamburger =  document.querySelector('.hamburger');

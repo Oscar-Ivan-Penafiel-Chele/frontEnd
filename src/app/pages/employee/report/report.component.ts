@@ -32,7 +32,7 @@ export class ReportComponent implements OnInit {
 
   identificationType : any [] = [];
   types_employees : any
-  maxLength : number = 0;
+  maxLength : number = 10;
   userAux : User[] = [];
   
 
@@ -85,6 +85,7 @@ export class ReportComponent implements OnInit {
   getEmployees(){
     this._rest.getEmployees().subscribe((response : User[])=>{
       this.userAux = Object.values(response);
+      console.log(this.userAux);
       if(this.stateCheckActive && !this.stateCheckInactive){
         this.users = this.userAux.filter(i => i.user_status == 1);
       }else if(!this.stateCheckActive && this.stateCheckInactive){
@@ -111,7 +112,13 @@ export class ReportComponent implements OnInit {
         return ;
       }else{
         this.messageIdentification = '';
-        this.createEmployee();
+        this._rest.createEmployee(this.user).subscribe((response)=>{
+          if(response.status == 200 || response.message === "Usuario creado exitosamente"){
+            this.getEmployees();
+            this.hideDialog();
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El empleado fue creado con éxito', life:3000});
+        }
+        });
       }
 
     }else if(this.actionSelected === "edit"){
@@ -125,13 +132,7 @@ export class ReportComponent implements OnInit {
       }
     }
 
-    this._rest.createEmployee(this.user).subscribe((response)=>{
-      if(response.status == 200 || response.message === "Usuario creado exitosamente"){
-        this.getEmployees();
-        this.hideDialog();
-        this.messageService.add({severity:'success', summary: 'Completado', detail: 'El empleado fue creado con éxito', life:3000});
-    }
-    });
+    
   }
 
   updateEmployee(){

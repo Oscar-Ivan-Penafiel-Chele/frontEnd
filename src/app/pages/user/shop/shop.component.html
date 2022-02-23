@@ -134,7 +134,7 @@
             </p-fieldset>
             <br>
             <div class="card">
-                <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="product_name" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                <p-dataView #dv [value]="products" [paginator]="true" [rows]="8" filterBy="product_name" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                     <ng-template pTemplate="header">
                         <div class="flex flex-column md:flex-row md:justify-content-between">
                             <p-dropdown [options]="sortOptions" placeholder="Ordenar por precio" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
@@ -148,7 +148,7 @@
                     <ng-template let-product pTemplate="listItem">
                         <div class="col-12">
                             <div class="product-list-item">
-                                <img [src]="'http://127.0.0.1:8000' + product.product_image" [alt]="product.product_image"/>
+                                <img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_image"/>
                                 <div class="product-list-detail">
                                     <div class="product-name">{{product.product_name}}</div>
                                     <div class="product-description">{{product.product_description}}</div>
@@ -172,7 +172,7 @@
                                     </div>
                                 </div>
                                 <div class="product-grid-item-content">
-                                    <img [src]="'http://127.0.0.1:8000' + product.product_image" [alt]="product.product_image"/>
+                                    <img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_image"/>
                                     <div class="product-name">{{product.product_name}}</div>
                                     <div class="product-description">{{product.product_description}}</div>
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [(ngModel)]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>

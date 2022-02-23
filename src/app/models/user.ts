@@ -11,7 +11,7 @@ export interface User {
       password?:string;
       user_phone?:string;
       user_status?:number;
-      role_users?:any;
+      role_users?:string;
       create_date?: Date;
       updated_at?: Date;
     }

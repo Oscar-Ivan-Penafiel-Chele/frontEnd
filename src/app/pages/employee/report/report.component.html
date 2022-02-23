@@ -128,11 +128,11 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && !user.id_identification_type">Tipo de identificación es requerido</small>
+                <small class="p-error" *ngIf="submitted && user.id_identification_type == null">Tipo de identificación es requerido</small>
             </div>
             <div class="field col">
                 <label for="code">Identificación del Empleado</label>
-                <input type="text" [disabled]="!user.id_identification_type" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="user.user_document" (input)="regexCode($event)" required/>
+                <input type="text" [disabled]="user.id_identification_type == null" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="user.user_document" (input)="regexCode($event)" required/>
                 <small class="p-error" *ngIf="(submitted && !user.user_document) || (stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación requerida' : messageIdentification}}</small>
             </div>
         </div>
