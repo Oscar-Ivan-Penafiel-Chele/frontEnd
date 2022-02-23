@@ -151,7 +151,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="description">Productos Ofertados por el Proveedor</label>
-                <textarea id="description" required pInputTextarea [(ngModel)]="provider.provider_products_offered" rows="2" cols="20"></textarea>
+                <textarea id="description" required pInputTextarea [(ngModel)]="provider.provider_products_offered" rows="5" cols="20" [autoResize]="true"></textarea>
                 <small class="p-error" *ngIf="submitted && !provider.provider_products_offered">Descripción es requerido</small>
             </div>
         </div>
@@ -163,7 +163,7 @@
             </div>
             <div class="field col">
                 <label for="phone">Teléfono fijo del Proveedor</label>
-                <p-inputMask id="phone" mask="999-9999" [(ngModel)]="provider.provider_landline" placeholder="999-9999"></p-inputMask>
+                <p-inputMask id="phone" mask="(99) 9999999" [(ngModel)]="provider.provider_landline" placeholder="(99) 9999999"></p-inputMask>
                 <small class="p-error" *ngIf="submitted && !provider.provider_landline">Teléfono es requerido</small>
             </div>
         </div>
@@ -194,12 +194,12 @@
                 <div class="field col">
                     <label for="minmax-buttons">Tiempo en Días</label>
                     <p-inputNumber [(ngModel)]="provider.provider_response_time_day" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="365"></p-inputNumber>
-                    <small class="p-error" *ngIf="submitted && !provider.provider_response_time_day">Tiempo es requerido</small>
+                    <small class="p-error" *ngIf="submitted && provider.provider_response_time_day == null">Tiempo es requerido</small>
                 </div>
                 <div class="field col">
                     <label for="minmax-buttons">Tiempo en Horas</label>
                     <p-inputNumber [(ngModel)]="provider.provider_response_time_hour" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="24"></p-inputNumber>
-                    <small class="p-error" *ngIf="submitted && !provider.provider_response_time_hour">Tiempo es requerido</small>
+                    <small class="p-error" *ngIf="submitted && provider.provider_response_time_hour == null">Tiempo es requerido</small>
                 </div>
             </div>
         </div>
@@ -207,7 +207,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveProvider()"></button>
+        <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="saveProvider()"></button>
     </ng-template>
 </p-dialog>
 

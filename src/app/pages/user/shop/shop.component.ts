@@ -5,6 +5,8 @@ import { TokenService } from 'src/app/services/token.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Product } from 'src/app/models/product';
+import { Category } from 'src/app/models/category';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-shop',
@@ -12,14 +14,23 @@ import { Product } from 'src/app/models/product';
   styleUrls: ['./shop.component.css']
 })
 export class ShopComponent implements OnInit {
+  user : User = {};
+  
+  products : Product[] = [];
+  productAux : Product[] = [];
+  
+  categories : Category[] = [];
+  
   isLogged?: boolean = false;
   searchValue : string = "";
-  user : User = {};
   isHidden?: boolean;
+  hide : boolean = true;
   fechaYHora : any ;
   overlayLogout : boolean = false;
-  products : Product[] = [];
   responsiveOptions : any;
+  sortOptions: any;
+  sortOrder: number = 0;
+  sortField: string = "";
   images: any[] = [
     {name : 'assets/img/back.svg'},
     {name : 'assets/img/back.svg'},
@@ -30,6 +41,7 @@ export class ShopComponent implements OnInit {
     private _token : TokenService, 
     private _routerNavigation : Router,
     private _authService : AuthService,
+    private _rest : RestService,
   ) { 
     this.responsiveOptions = [
       {
@@ -51,206 +63,50 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getProducts();
+    this.sortOptions = [
+      {label: 'De mayor a menor', value: 'menor'},
+      {label: 'De menor a mayor', value: 'mayor'}
+  ];
     this._primengConfig.ripple = true;
     this.isHidden= true;
     this.isLog();
     setInterval(()=>{
       this.getDateToday();
     },100); 
-    this.products = [
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-      {
-        id_product: 1, 
-        id_user : 1, 
-        id_provider : 1 , 
-        id_brand : 1, 
-        id_category : 1, 
-        id_product_unit: 1,
-        product_code:123,
-        product_name:'Roku Express | HD Streaming Media Player with High Speed HDMI Cable and Simple Remote',
-        product_description:'Algo',
-        product_stock: 12,
-        product_price: 12,
-        product_image:'Algo.jpg',
-        product_status:1,
-        product_rating:3,
-      },
-    ];
+    this.getCategories();
+    setTimeout(()=>{
+      this.isActiveCategory();
+    },3000)
+  }
+
+  getCategories(){
+    this._rest.getCategories().subscribe((response : Category[])=>{
+      this.categories = Object.values(response);
+      this.categories = this.categories.sort(this.sortCategories);
+      this.categories = this.categories.filter((i)=> i.category_status == 1);
+      this.hide = false;
+    });
+  }
+
+  getProducts(){
+    this._rest.getProducts().subscribe((response : Product[]) =>{
+      this.productAux = Object.values(response);
+      this.products = this.productAux.filter(i=> i.product_status == 1)
+      this.products.sort(this.sortProducts)
+    });
+  }
+
+  sortProducts(x : any ,y : any){
+    if(x.product_name < y.product_name) return -1;
+    if(x.product_name > y.product_name) return 1;
+    return 0;
+  }
+
+  sortCategories(x : any ,y : any){
+    if(x.category_name < y.category_name) return -1;
+    if(x.category_name > y.category_name) return 1;
+    return 0;
   }
 
   isLog(){
@@ -260,6 +116,26 @@ export class ShopComponent implements OnInit {
 
     this.user = JSON.parse(this._token.getTokenDataUser()!);
     this.isLogged = true;
+  }
+
+  onSortChange(event : any) {
+    if(event.value == "mayor"){
+      this.products = this.products.sort(this.sortProductForPriceHight);
+    }else if(event.value == "menor"){
+      this.products = this.products.sort(this.sortProductForPriceLow);
+    }
+  }
+
+  sortProductForPriceHight(x : any,y : any){
+    if(x.product_price < y.product_price) return -1;
+    if(x.product_price > y.product_price) return 1;
+    return 0;
+  }
+
+  sortProductForPriceLow(x : any,y : any){
+    if(x.product_price > y.product_price) return -1;
+    if(x.product_price < y.product_price) return 1;
+    return 0;
   }
 
   displayOptions(){
@@ -294,6 +170,16 @@ export class ShopComponent implements OnInit {
     //      }
     //  })
     // }
+  }
+
+  isActiveCategory(){
+    const opc = document.querySelectorAll('.chip__item');
+    
+    opc.forEach( i => i.addEventListener('click',()=>{
+        opc.forEach(j => j.classList.remove('chip__item__active'));
+        i.classList.add('chip__item__active');
+      })
+    );
   }
 
   getDateToday(){

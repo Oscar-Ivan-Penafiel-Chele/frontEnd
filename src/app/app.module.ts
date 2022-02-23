@@ -51,6 +51,7 @@ import {InputMaskModule} from 'primeng/inputmask';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {GalleriaModule} from 'primeng/galleria';
+import {FieldsetModule} from 'primeng/fieldset';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -150,6 +151,7 @@ import { ProviderComponent } from './pages/employee/provider/provider.component'
     OverlayPanelModule,
     InputSwitchModule,
     GalleriaModule,
+    FieldsetModule,
   ],
   providers: [
     {
