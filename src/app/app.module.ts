@@ -74,6 +74,8 @@ import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { BrandComponent } from './pages/employee/brand/brand.component';
 import { ProviderComponent } from './pages/employee/provider/provider.component';
+import { HeaderuserComponent } from './components/headeruser/headeruser.component';
+import { FooteruserComponent } from './components/footeruser/footeruser.component';
 
 
 @NgModule({
@@ -104,6 +106,8 @@ import { ProviderComponent } from './pages/employee/provider/provider.component'
     SortByOrderPipe,
     BrandComponent,
     ProviderComponent,
+    HeaderuserComponent,
+    FooteruserComponent,
   ],
   imports: [
     BrowserModule,
