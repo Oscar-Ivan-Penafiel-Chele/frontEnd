@@ -53,7 +53,7 @@ const routes: Routes = [
       {path: '', redirectTo: 'products', pathMatch : 'full'},
       {path: 'promotions', component : PromoComponent, pathMatch : 'full',},
       {path: 'products', component : ProductsComponent, pathMatch : 'full',},
-      {path: 'orders', component : OrdersComponent, pathMatch : 'full',},
+      {path: 'stock', component : OrdersComponent, pathMatch : 'full',},
       {path: 'brand', component : BrandComponent, pathMatch : 'full',},
       {path: 'provider', component : ProviderComponent, pathMatch : 'full',},
       {path: 'category', component : CategoryComponent, pathMatch : 'full',},

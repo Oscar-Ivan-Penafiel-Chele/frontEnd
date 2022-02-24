@@ -68,7 +68,11 @@ export class RestService {
   getCodeProduct() : Observable<any>{
     return this._http.get<any>(`${this.url}/validate/product/code`);
   }
-
+ 
+  /* UPLOAD STOCK */
+  uploadStock(data : FormData) : Observable<any>{
+    return this._http.post<any>(`${this.url}/products/upload/excel`,data);
+  }
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{

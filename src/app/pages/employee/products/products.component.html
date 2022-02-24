@@ -5,6 +5,7 @@
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+            <button pButton pRipple label="Actualizar Stock" icon="pi pi-cloud-upload" class="p-button-success mr-2" style="color: rgb(65, 65, 65);" (click)="openModalUpload()"></button>
 
             <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
                 <ng-template pTemplate>
@@ -212,6 +213,18 @@
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
         <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
     </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="uploadFileExcel" [draggable]="false" [style]="{width: '850px'}" header="Actualizar Stock" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
+    <p-fileUpload [fileLimit]="1" [chooseLabel]="'Seleccionar'" [customUpload]="true" (uploadHandler)="upLoadFile($event)" (onSelect)="onSelect($event)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" name="demo[]" url="" (onSelect)="onUpload($event)" accept=".xlsx" [maxFileSize]="1000000">
+        <ng-template let-file pTemplate="file">
+            <div class="flex justify-content-evenly align-items-center">
+                <div><img [src]="imageExcel" alt="image" width="50px"></div>
+                <div>{{file.name}}</div>
+                <div>{{(file.size/1000)}} {{descriptionSize}}</div>
+            </div>
+        </ng-template>
+    </p-fileUpload>
 </p-dialog>
 
 

@@ -41,6 +41,8 @@ export class ProductsComponent implements OnInit {
     submitted: boolean = false;
     inputFile :boolean = false;
     productDialog: boolean = false;
+    uploadFileExcel : boolean = false;
+    uploadedFiles : any[] = [];
     sizeFileValid : boolean = false;
     fileExtensionValid : boolean = false;
 
@@ -68,10 +70,12 @@ export class ProductsComponent implements OnInit {
     stateCheckInactive : boolean = false;
     productsAux : Product[] = [];
     isDisabled : boolean = true;
+    visible : boolean = false;
 
     codeProduct : number = 0;
     nameProd : string = "";
 
+    imageExcel = "assets/img/logo_excel.jpg";
     overImage : string = "assets/img/not_image.jpg";
 
     constructor(
@@ -222,16 +226,6 @@ export class ProductsComponent implements OnInit {
         }
     }
 
-    getSizeImage(size : number) : void{
-        if(size < 1048576){
-            this.fileSize = (size/1000).toFixed(0);
-            this.descriptionSize = "kb";
-        }else if(size >= 1048576){
-            this.fileSize = (size/1000000).toFixed(0);
-            this.descriptionSize = "mb";
-        }
-    }
-
     getMeasures(){
         this._rest.getMeasure()
         .subscribe((response) =>{
@@ -282,6 +276,48 @@ export class ProductsComponent implements OnInit {
         this.product.product_code = this.codeProduct;
     }
 
+    openModalUpload(){
+        this.uploadFileExcel = true;
+    }
+
+    onSelect($event:any){
+        if($event.currentFiles){
+            this.uploadedFiles.push($event.currentFiles);
+        }else{
+            return;
+        }
+    }
+
+    onUpload($event:any){
+        if($event.files[0].size < 1048576){
+            this.descriptionSize = "kb";
+        }else if($event.files[0].size >= 1048576){
+            this.descriptionSize = "mb";
+        }
+    }
+
+    upLoadFile($event:any){
+        const fileExcel = new FormData();
+        fileExcel.append('excel',$event.files[0]);
+
+        this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
+            if(response.status == 200){
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
+                this.uploadFileExcel = false;
+            }
+
+        })
+    }
+
+    getSizeImage(size : number) : void{
+        if(size < 1048576){
+            this.fileSize = (size/1000).toFixed(0);
+            this.descriptionSize = "kb";
+        }else if(size >= 1048576){
+            this.fileSize = (size/1000000).toFixed(0);
+            this.descriptionSize = "mb";
+        }
+    }
 
     clearImage(){
         this.isPhoto = false;
@@ -347,7 +383,7 @@ export class ProductsComponent implements OnInit {
                     return;
                 }
             }else if(response.status == 200 && response.message == "Existe"){
-                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ya existe un producto con ese nombre!', life: 3000});
+                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ya existe un producto con ese nombre', life: 3000});
             }else{
                 this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
             }
