@@ -85,7 +85,6 @@ export class ReportComponent implements OnInit {
   getEmployees(){
     this._rest.getEmployees().subscribe((response : User[])=>{
       this.userAux = Object.values(response);
-      console.log(this.userAux);
       if(this.stateCheckActive && !this.stateCheckInactive){
         this.users = this.userAux.filter(i => i.user_status == 1);
       }else if(!this.stateCheckActive && this.stateCheckInactive){

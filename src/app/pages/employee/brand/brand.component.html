@@ -49,7 +49,7 @@
             <tr [pReorderableRow]="index">
                 <td>{{brand.brand_name}}</td>
                 <td><img [src]="brand.brand_thumbnail ? host+brand.brand_thumbnail : overImage" [alt]="brand.brand_thumbnail" width="80" height="80" class="shadow-4" /></td>
-                <td>{{brand.brand_status}}</td>
+                <td>{{brand.brand_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{brand.create_date}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBrand(brand)"></button>

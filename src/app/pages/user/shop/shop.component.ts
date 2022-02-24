@@ -34,6 +34,9 @@ export class ShopComponent implements OnInit {
   sortField: string = "";
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.jpg";
+  completeProduct : boolean = false;
+
+
   images: any[] = [
     {name : 'assets/img/back.svg'},
     {name : 'assets/img/back.svg'},
@@ -94,23 +97,11 @@ export class ShopComponent implements OnInit {
 
   getProducts(){
     this._rest.getProducts().subscribe((response : Product[]) =>{
-      console.log(response);
       this.productAux = Object.values(response);
       this.products = this.productAux.filter(i=> i.product_status == 1)
       this.products.sort(this.sortProducts)
+      this.completeProduct = true;
     });
-  }
-
-  sortProducts(x : any ,y : any){
-    if(x.product_name < y.product_name) return -1;
-    if(x.product_name > y.product_name) return 1;
-    return 0;
-  }
-
-  sortCategories(x : any ,y : any){
-    if(x.category_name < y.category_name) return -1;
-    if(x.category_name > y.category_name) return 1;
-    return 0;
   }
 
   isLog(){
@@ -130,18 +121,6 @@ export class ShopComponent implements OnInit {
     }
   }
 
-  sortProductForPriceHight(x : any,y : any){
-    if(x.product_price < y.product_price) return -1;
-    if(x.product_price > y.product_price) return 1;
-    return 0;
-  }
-
-  sortProductForPriceLow(x : any,y : any){
-    if(x.product_price > y.product_price) return -1;
-    if(x.product_price < y.product_price) return 1;
-    return 0;
-  }
-
   displayOptions(){
     const menu = document.querySelector('.nav__user');
     const menuOptions = document.querySelector('.nav__user__option');
@@ -154,10 +133,6 @@ export class ShopComponent implements OnInit {
       menuOptions?.classList.add('isActiveNavOption');
     }
   }
-
-  // selectedCategory($event : any){
-  //   console.log($event);
-  // }
 
   isActive(){
     const hamburger =  document.querySelector('.hamburger');
@@ -186,8 +161,38 @@ export class ShopComponent implements OnInit {
     opc.forEach( i => i.addEventListener('click',()=>{
         opc.forEach(j => j.classList.remove('chip__item__active'));
         i.classList.add('chip__item__active');
+        if(i.id == '0'){
+          this.products = this.productAux.filter(i=>i.product_status == 1);
+          this.products.sort(this.sortProducts);
+        }else{
+          this.products = this.productAux.filter(l=> l.id_category == i.id);
+        }
       })
     );
+  }
+
+  sortProducts(x : any ,y : any){
+    if(x.product_name < y.product_name) return -1;
+    if(x.product_name > y.product_name) return 1;
+    return 0;
+  }
+
+  sortCategories(x : any ,y : any){
+    if(x.category_name < y.category_name) return -1;
+    if(x.category_name > y.category_name) return 1;
+    return 0;
+  }
+
+  sortProductForPriceHight(x : any,y : any){
+    if(x.product_price < y.product_price) return -1;
+    if(x.product_price > y.product_price) return 1;
+    return 0;
+  }
+
+  sortProductForPriceLow(x : any,y : any){
+    if(x.product_price > y.product_price) return -1;
+    if(x.product_price < y.product_price) return 1;
+    return 0;
   }
 
   getDateToday(){

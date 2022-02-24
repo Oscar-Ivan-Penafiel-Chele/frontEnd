@@ -51,7 +51,7 @@
                 <td>{{category.category_name}}</td>
                 <td>{{category.category_descripcion}}</td>
                 <td><img [src]="category.category_thumbnail ? host+category.category_thumbnail : overImage" [alt]="category.category_thumbnail" width="80" height="80" class="shadow-4" /></td>
-                <td>{{category.category_status}}</td>
+                <td>{{category.category_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{category.create_date}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editCategory(category)"></button>
