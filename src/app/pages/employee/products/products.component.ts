@@ -293,19 +293,20 @@ export class ProductsComponent implements OnInit {
     }
 
     upLoadFile($event:any){
-        $event=[];
-        this.visible = false;
-        // this.uploadFileExcel = false;
-        // const fileExcel = new FormData();
-        // fileExcel.append('excel',$event.files[0]);
+        this.uploadFileExcel = false;
+        const fileExcel = new FormData();
+        fileExcel.append('excel',$event.files[0]);
+        fileExcel.append('id_user',String(this.user.id_user));
+        
+        this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
+            if(response.status == 200){
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
+                $event=[];
+                this.visible = false;
+                this.uploadFileExcel = false;
+            }
 
-        // this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
-        //     if(response.status == 200){
-        //         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
-        //         this.uploadFileExcel = false;
-        //     }
-
-        // })
+        })
     }
 
     getSizeImage(size : number) : void{
