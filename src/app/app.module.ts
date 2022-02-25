@@ -76,6 +76,7 @@ import { BrandComponent } from './pages/employee/brand/brand.component';
 import { ProviderComponent } from './pages/employee/provider/provider.component';
 import { HeaderuserComponent } from './components/headeruser/headeruser.component';
 import { FooteruserComponent } from './components/footeruser/footeruser.component';
+import { CarComponent } from './pages/car/car.component';
 
 
 @NgModule({
@@ -108,6 +109,7 @@ import { FooteruserComponent } from './components/footeruser/footeruser.componen
     ProviderComponent,
     HeaderuserComponent,
     FooteruserComponent,
+    CarComponent,
   ],
   imports: [
     BrowserModule,

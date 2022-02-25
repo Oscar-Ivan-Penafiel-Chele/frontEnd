@@ -1,4 +1,5 @@
 import { Component, Host, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { ShopComponent } from 'src/app/pages/user/shop/shop.component';
 import { AuthService } from 'src/app/services/auth.service';
@@ -19,7 +20,7 @@ export class HeaderuserComponent implements OnInit {
   constructor( 
     private _token : TokenService, 
     private _authService : AuthService,
-    @Host() private _shop : ShopComponent,
+    private _navigate : Router,
     ) { }
 
   ngOnInit(): void {
@@ -27,6 +28,10 @@ export class HeaderuserComponent implements OnInit {
     setInterval(()=>{
       this.getDateToday();
     },100); 
+  }
+
+  goCart(){
+    this._navigate.navigate(["/checkout/cart"]);
   }
 
   isLog(){
@@ -83,7 +88,7 @@ export class HeaderuserComponent implements OnInit {
   }
 
   logOut(){
-    this._shop.overlayLogout = true;
+    this.overlayLogout = true;
     this._authService.logout(this.user.id_user!)
       .subscribe((response)=>{
         if(response.status == 200 || response.message === "Sesión cerrada con éxito"){

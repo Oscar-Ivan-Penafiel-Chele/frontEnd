@@ -216,17 +216,15 @@
 </p-dialog>
 
 <p-dialog [(visible)]="uploadFileExcel" [draggable]="false" [style]="{width: '850px'}" header="Actualizar Stock" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
-    <p-fileUpload [fileLimit]="1" [chooseLabel]="'Seleccionar'" [customUpload]="true" (uploadHandler)="upLoadFile($event)" (onSelect)="onSelect($event)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" name="demo[]" url="" (onSelect)="onUpload($event)" accept=".xlsx" [maxFileSize]="1000000">
+    <p-fileUpload [fileLimit]="1" [chooseLabel]="'Seleccionar'" [invalidFileTypeMessageSummary]="invalidFileTypeMessageSummary" [invalidFileTypeMessageDetail]="invalidFileTypeMessageDetail" [customUpload]="true" (uploadHandler)="upLoadFile($event)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" (onSelect)="onUpload($event)" accept=".xlsx" [maxFileSize]="1000000">
         <ng-template let-file pTemplate="file">
-            <div class="flex justify-content-evenly align-items-center">
+            <div *ngIf="visible" class="flex justify-content-evenly align-items-center">
                 <div><img [src]="imageExcel" alt="image" width="50px"></div>
                 <div>{{file.name}}</div>
-                <div>{{(file.size/1000)}} {{descriptionSize}}</div>
+                <div>{{(file.size/1000).toFixed(2)}} {{descriptionSize}}</div>
             </div>
         </ng-template>
     </p-fileUpload>
 </p-dialog>
-
-
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

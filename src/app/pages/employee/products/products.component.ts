@@ -75,8 +75,10 @@ export class ProductsComponent implements OnInit {
     codeProduct : number = 0;
     nameProd : string = "";
 
-    imageExcel = "assets/img/logo_excel.jpg";
+    imageExcel = "assets/img/IconExcel.svg";
     overImage : string = "assets/img/not_image.jpg";
+    invalidFileTypeMessageSummary : string = `Tipo de archivo inválido:`;
+    invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .xlsx`;
 
     constructor(
         private _rest : RestService,
@@ -278,17 +280,11 @@ export class ProductsComponent implements OnInit {
 
     openModalUpload(){
         this.uploadFileExcel = true;
-    }
-
-    onSelect($event:any){
-        if($event.currentFiles){
-            this.uploadedFiles.push($event.currentFiles);
-        }else{
-            return;
-        }
+        this.visible = false;
     }
 
     onUpload($event:any){
+        this.visible = true;
         if($event.files[0].size < 1048576){
             this.descriptionSize = "kb";
         }else if($event.files[0].size >= 1048576){
@@ -297,16 +293,19 @@ export class ProductsComponent implements OnInit {
     }
 
     upLoadFile($event:any){
-        const fileExcel = new FormData();
-        fileExcel.append('excel',$event.files[0]);
+        $event=[];
+        this.visible = false;
+        // this.uploadFileExcel = false;
+        // const fileExcel = new FormData();
+        // fileExcel.append('excel',$event.files[0]);
 
-        this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
-            if(response.status == 200){
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
-                this.uploadFileExcel = false;
-            }
+        // this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
+        //     if(response.status == 200){
+        //         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
+        //         this.uploadFileExcel = false;
+        //     }
 
-        })
+        // })
     }
 
     getSizeImage(size : number) : void{

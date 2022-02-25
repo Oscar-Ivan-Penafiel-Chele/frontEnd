@@ -1,4 +1,9 @@
 <nav>
+    <div class="logout" *ngIf="overlayLogout">
+        <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+        <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+    </div>
+    
     <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
        <div class="nav__container">
             <div class="nav__logo">
@@ -37,11 +42,11 @@
             <div class="nav__menu">
                 <div class="nav__menu__content">
                     <div class="nav__menu__cart">
-                        <button pRipple><i class="pi pi-shopping-cart"></i></button>
+                        <button pRipple (click)="goCart()"><i class="pi pi-shopping-cart"></i></button>
                     </div>
                     <div class="nav__menu__option">
                         <div class="nav__user" pRipple (click)="displayOptions()">
-                            <p><i class="pi pi-user mr-2"></i>{{user?.user_name}} {{user?.user_lastName}}<i class="pi pi-angle-down ml-3"> </i></p>
+                            <p><i class="pi pi-user mr-1"></i>{{user?.user_name}} {{user?.user_lastName}}<i class="pi pi-angle-down ml-3"> </i></p>
                         </div>
                         <div class="nav__user__option isActiveNavOption">
                             <p>Opciones</p>

@@ -11,6 +11,7 @@ import { ProductsAdminComponent } from './pages/admin/products-admin/products-ad
 import { PromoAdminComponent } from './pages/admin/promo-admin/promo-admin.component';
 import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
 import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
+import { CarComponent } from './pages/car/car.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { BrandComponent } from './pages/employee/brand/brand.component';
 import { CategoryComponent } from './pages/employee/category/category.component';
@@ -34,7 +35,8 @@ const routes: Routes = [
   {path: 'signup', component : SignupComponent, pathMatch : 'full', }, 
   {path: 'contact', component : ContactComponent, pathMatch : 'full', }, 
   {path: 'about', component : AboutComponent, pathMatch : 'full', }, 
-  {path: 'shop', component : ShopComponent, pathMatch : 'full', data: {role : 5}}, 
+  {path: 'shop', component : ShopComponent, data: {role : 5}, pathMatch : 'full'}, 
+  {path: 'checkout/cart' , component : CarComponent, data: {role : 5}, pathMatch : 'full'},
   {path: 'terminos-y-condiciones', component : TermsComponent, pathMatch : 'full', }, 
   {path: 'gerente', component : DashboardComponent, canActivate : [AuthGuard], data : { role : '1'},
     children : [

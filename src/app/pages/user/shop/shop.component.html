@@ -1,8 +1,4 @@
 <section>
-    <div class="logout" *ngIf="overlayLogout">
-        <p-progressSpinner strokeWidth="3"></p-progressSpinner>
-        <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
-    </div>
 
     <!-- Header -->
     <app-headeruser></app-headeruser>
@@ -124,6 +120,7 @@
                 </p-dataView>
             </div>
         </div>
+        <router-outlet></router-outlet>
     </main>
 
     <app-footeruser></app-footeruser>
