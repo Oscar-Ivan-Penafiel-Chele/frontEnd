@@ -6,47 +6,8 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { ScrollToUpComponent } from './components/scroll-to-up/scroll-to-up.component';
 
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {TabViewModule} from 'primeng/tabview';
-import {InputTextModule} from 'primeng/inputtext';
-import {PasswordModule} from 'primeng/password';
-import {DividerModule} from 'primeng/divider';
-import {CheckboxModule} from 'primeng/checkbox';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {RippleModule} from 'primeng/ripple';
-import {SkeletonModule} from 'primeng/skeleton';
-import {TooltipModule} from 'primeng/tooltip';
-import {CarouselModule} from 'primeng/carousel';
 import {BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
-import {KeyFilterModule} from 'primeng/keyfilter';
-import {ChipsModule} from 'primeng/chips';
-import {DataViewModule} from 'primeng/dataview';
-import {RatingModule} from 'primeng/rating';
-import {DropdownModule} from 'primeng/dropdown';
-import {PaginatorModule} from 'primeng/paginator';
-import {DialogModule} from 'primeng/dialog';
-import {PanelModule} from 'primeng/panel';
-import {BadgeModule} from 'primeng/badge';
-import {SidebarModule} from 'primeng/sidebar';
-import {MenubarModule} from 'primeng/menubar';
-import {MenuModule} from 'primeng/menu';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {TableModule} from 'primeng/table';
-import {ToolbarModule} from 'primeng/toolbar';
-import {FileUploadModule} from 'primeng/fileupload';
-import {ToastModule} from 'primeng/toast';
-import {ImageModule} from 'primeng/image';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {InputMaskModule} from 'primeng/inputmask';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import {InputSwitchModule} from 'primeng/inputswitch';
-import {GalleriaModule} from 'primeng/galleria';
-import {FieldsetModule} from 'primeng/fieldset';
 
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
 import { ProductsAdminComponent } from './pages/admin/products-admin/products-admin.component';
@@ -55,8 +16,7 @@ import { CategoryAdminComponent } from './pages/admin/category-admin/category-ad
 import { IndicatorsAdminComponent } from './pages/admin/indicators-admin/indicators-admin.component';
 import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
 import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.component';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { RadioButtonModule} from 'primeng/radiobutton';
+
 import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
 import { AuthInterceptor } from './services/auth.interceptor';
 
@@ -79,48 +39,6 @@ import { AuthInterceptor } from './services/auth.interceptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PasswordModule,
-    InputTextModule,
-    TabViewModule,
-    CardModule,
-    ButtonModule,
-    DividerModule,
-    CheckboxModule,
-    InputTextareaModule,
-    RippleModule,
-    SkeletonModule,
-    TooltipModule,
-    CarouselModule,
-    KeyFilterModule,
-    ChipsModule,
-    DataViewModule,
-    RatingModule,
-    DropdownModule,
-    PaginatorModule,
-    PanelModule,
-    DialogModule,
-    BadgeModule,
-    SidebarModule,
-    MenubarModule,
-    MenuModule,
-    MessagesModule,
-    MessageModule,
-    TableModule,
-    ToolbarModule,
-    FileUploadModule,
-    ToastModule,
-    ConfirmDialogModule,
-    RadioButtonModule,
-    ImageModule,
-    ProgressSpinnerModule,
-    ProgressBarModule,
-    InputMaskModule,
-    OverlayPanelModule,
-    InputSwitchModule,
-    GalleriaModule,
-    FieldsetModule,
   ],
   providers: [
     {

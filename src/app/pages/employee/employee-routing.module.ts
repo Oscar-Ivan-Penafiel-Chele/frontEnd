@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardEmployeeComponent } from './dashboard-employee/dashboard-employee.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { ProductsComponent } from './products/products.component';
 
 const routes : Routes = [
   { path:'', component: DashboardEmployeeComponent, canActivate : [AuthGuard], data : { role : '2'},

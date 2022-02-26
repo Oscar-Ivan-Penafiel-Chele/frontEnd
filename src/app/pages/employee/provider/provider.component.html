@@ -100,7 +100,7 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && !provider.provider_qualified">Calificación es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_qualified == null">Calificación es requerido</small>
             </div>
             <div class="field col">
                 <label for="productStatus">Estado del Proveedor</label>

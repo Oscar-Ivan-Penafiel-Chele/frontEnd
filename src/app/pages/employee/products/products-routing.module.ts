@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductsComponent } from './products.component';
 
 const routes : Routes = [
-  { path:'product', component: ProductsComponent},
+  { path:'', component: ProductsComponent},
   { path:'**' , redirectTo:''}
 ]
 

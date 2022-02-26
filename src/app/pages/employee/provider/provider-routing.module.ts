@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProviderComponent } from './provider.component';
 
 const routes : Routes = [
-  { path:'provider', component: ProviderComponent},
+  { path:'', component: ProviderComponent},
   { path:'**' , redirectTo:''}
 ]
 

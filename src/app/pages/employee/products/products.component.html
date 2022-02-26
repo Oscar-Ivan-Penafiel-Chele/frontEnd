@@ -148,7 +148,7 @@
         <div class="formgrid grid">
             <div class="field col">
             <label for="productBrand">Marca del Producto</label>
-            <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands | sortByOrder" placeholder="Seleccionar">
+            <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
                         <img class="mr-2" [src]="option.brand_thumbnail ? host+option.brand_thumbnail : overImage" alt=" " width="25px">

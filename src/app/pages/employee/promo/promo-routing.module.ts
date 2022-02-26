@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PromoComponent } from './promo.component';
 
 const routes : Routes = [
-  { path:'promotion', component: PromoComponent},
+  { path:'', component: PromoComponent},
   { path:'**' , redirectTo:''}
 ]
 

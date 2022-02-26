@@ -4,7 +4,7 @@ import { Router, RouterModule, Routes } from '@angular/router';
 import { ReportComponent } from './report.component';
 
 const routes : Routes = [
-  { path:'employee', component: ReportComponent},
+  { path:'', component: ReportComponent},
   { path:'**' , redirectTo:''}
 ]
 
