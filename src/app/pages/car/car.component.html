@@ -1,6 +1,80 @@
 <section>
-    <!-- Header -->
-    <app-headeruser></app-headeruser>
+    <nav>
+        <div class="logout" *ngIf="overlayLogout">
+            <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+            <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+        </div>
+        
+        <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
+           <div class="nav__container">
+                <div class="nav__logo">
+                    <a href="/shop"><img src="assets/img/logo_app.svg" alt="" width="60px">El Descanso</a>
+                </div>
+                <div class="nav__menu">
+                    <div class="nav__menu__content">
+                        <a href="/login"><i class="pi pi-sign-in"> </i>Iniciar Sesión</a>
+                        <a href="/signup"><i class="pi pi-user-plus"> </i>Registrar</a>
+    
+                        <div class="nav__menu__content_social">
+                            <div class="nav__menu__content_social__icons">
+                                <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
+                                <a href="https://facebook.com" target="_blank" class="facebook" pTooltip="Facebook" tooltipPosition="top"><i class="pi pi-facebook" ></i></a>
+                                <a href="https://instagram.com" target="_blank" class="instagram" pTooltip="Instagram" tooltipPosition="top"><i class="pi pi-instagram" ></i></a>
+                                <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <button class="hamburger" (click)="isActive()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+           </div>
+    
+        </ng-template>
+    
+        <ng-template #logged>
+            <div class="nav__container">
+                <div class="nav__logo">
+                    <a href="/shop"><img src="assets/img/logo_app.svg" alt="" width="60px">El Descanso</a>
+                </div>
+                <div class="nav__menu">
+                    <div class="nav__menu__content">
+                        <div class="nav__menu__cart">
+                            <button pRipple (click)="goCart()"><i class="pi pi-shopping-cart"></i></button>
+                        </div>
+                        <div class="nav__menu__option">
+                            <div class="nav__user" pRipple (click)="displayOptions()">
+                                <p><i class="pi pi-user mr-1"></i>{{user?.user_name}} {{user?.user_lastName}}<i class="pi pi-angle-down ml-3"> </i></p>
+                            </div>
+                            <div class="nav__user__option isActiveNavOption">
+                                <p>Opciones</p>
+                                <a href=""><i class="pi pi-user"></i> Perfil</a>
+                                <a href=""><i class="pi pi-shopping-bag"></i> Pedidos</a>
+                                <a href=""><i class="pi pi-th-large"></i> Configuración</a>
+                                <p>Sesión</p>
+                                <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
+                            </div>
+                        </div>
+                        
+                        <div class="nav__menu__content__date">
+                            <div class="menu__social__date">
+                                <p>{{fechaYHora}}</p>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <button class="hamburger" (click)="isActive()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+           </div>
+        </ng-template>
+    </nav>
 
     <main>
         <div class="card__products__select">
@@ -13,6 +87,52 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <app-footeruser></app-footeruser>
+    <footer>
+        <div class="box-content-main">
+            <div class="box-content">
+                <figure>
+                    <img loading="lazy" id="logo-img" src="assets/img/logo_app.svg" alt="Logo" width="65px">
+                    <p>Ferretería | El Descanso</p>
+                </figure>
+                <div class="box-content-social">
+                    <a href="#" class="facebook"><i class="pi pi-facebook " ></i></a>
+                    <a href="#" class="instagram"><i class="pi pi-instagram" ></i></a>
+                    <a href="#" class="twitter"><i class="pi pi-twitter" ></i></a>
+                    <a href="#" class="whatsapp"><i class="pi pi-whatsapp" ></i></a>
+                </div>
+            </div>
+            <div class="box-content shop">
+                <h3>Tienda</h3>
+                <div class="box-content-links">
+                    <a href="#">- Herramientas</a>
+                    <a href="#">- Pinturas</a>
+                    <a href="#">- Otros</a>
+                </div>
+            </div>
+            <div class="box-content company">
+                <h3>Compañia</h3>
+                <div class="box-content-links">
+                    <a href="/login">- Login</a>
+                    <a href="/signup">- Registro</a>
+                    <a href="/contact">- Contacto</a>
+                </div>
+            </div>
+          
+            <div class="box-content">
+                <h3>Subscripción</h3>
+                <div class="box-content-email">
+                    <p>Subscribete para estar al día con nuestras actualizaciones!</p>
+                        <div class="p-inputgroup"  style="height: 45px">
+                            <input type="email" pInputText placeholder="Email">   
+                            <button type="button" pButton pRipple icon="pi pi-send" style="background-color: #4F46E5;" styleClass="p-button-warn"></button>      
+                        </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="company">
+            <p class="copyright">© 2021 Ferretería | El Descanso . All right reserved</p>
+        </div>
+    </footer>
+   
 </section>

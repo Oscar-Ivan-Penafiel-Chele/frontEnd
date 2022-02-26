@@ -505,4 +505,9 @@ export class ProductsComponent implements OnInit {
         this.productDialog = false;
     }
 
+    exportExcel(){
+        this._rest.downloadExcel().subscribe((response)=>{
+            console.log(response);
+        })
+    }
 }

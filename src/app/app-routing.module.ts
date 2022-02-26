@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { LoginGuard } from './guards/login.guard';
-import { AboutComponent } from './pages/about/about.component';
+
 import { CategoryAdminComponent } from './pages/admin/category-admin/category-admin.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { IndicatorsAdminComponent } from './pages/admin/indicators-admin/indicators-admin.component';
@@ -12,7 +11,6 @@ import { PromoAdminComponent } from './pages/admin/promo-admin/promo-admin.compo
 import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
 import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
 import { CarComponent } from './pages/car/car.component';
-import { ContactComponent } from './pages/contact/contact.component';
 import { BrandComponent } from './pages/employee/brand/brand.component';
 import { CategoryComponent } from './pages/employee/category/category.component';
 import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
@@ -22,22 +20,16 @@ import { PromoComponent } from './pages/employee/promo/promo.component';
 import { ProviderComponent } from './pages/employee/provider/provider.component';
 import { ReportComponent } from './pages/employee/report/report.component';
 
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './pages/signup/signup.component';
-import { TermsComponent } from './pages/terms/terms.component';
-import { ShopComponent } from './pages/user/shop/shop.component';
-
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch : 'full'}, 
-  {path: '', component : HomeComponent, pathMatch : 'full', }, 
-  {path: 'login', component : LoginComponent, pathMatch : 'full', canActivate : [LoginGuard] }, 
-  {path: 'signup', component : SignupComponent, pathMatch : 'full', }, 
-  {path: 'contact', component : ContactComponent, pathMatch : 'full', }, 
-  {path: 'about', component : AboutComponent, pathMatch : 'full', }, 
-  {path: 'shop', component : ShopComponent, data: {role : 5}, pathMatch : 'full'}, 
-  {path: 'checkout/cart' , component : CarComponent, data: {role : 5}, pathMatch : 'full'},
-  {path: 'terminos-y-condiciones', component : TermsComponent, pathMatch : 'full', }, 
+  {path: 'home', loadChildren : ()=> import('./pages/home/home.module').then(m => m.HomeModule) }, 
+  {path: 'login', loadChildren : ()=> import('./pages/login/login.module').then(m => m.LoginModule) }, 
+  {path: 'signup', loadChildren : ()=> import('./pages/signup/signup.module').then(m => m.SignupModule) }, 
+  {path: 'contact', loadChildren : ()=> import('./pages/contact/contact.module').then(m => m.ContactModule) }, 
+  {path: 'about', loadChildren : ()=> import('./pages/about/about.module').then( m => m.AboutModule)}, 
+  {path: 'shop', loadChildren : () => import('./pages/user/shop/shop.module').then( m => m.ShopModule)}, 
+  {path: 'checkout/cart' , loadChildren : ()=> import('./pages/car/car.module').then( m => m.CarModule)},
+  {path: 'terminos-y-condiciones', loadChildren : () => import('./pages/terms/terms.module').then(m => m.TermsModule)}, 
   {path: 'gerente', component : DashboardComponent, canActivate : [AuthGuard], data : { role : '1'},
     children : [
       {path: '', redirectTo: 'indicators', pathMatch : 'full'},
@@ -50,19 +42,8 @@ const routes: Routes = [
       {path: 'employee', component : ReportAdminComponent, pathMatch : 'full',},
     ]
   }, 
-  {path: 'administrador', component : DashboardEmployeeComponent, canActivate : [AuthGuard], data : { role : '2'},
-    children : [
-      {path: '', redirectTo: 'products', pathMatch : 'full'},
-      {path: 'promotions', component : PromoComponent, pathMatch : 'full',},
-      {path: 'products', component : ProductsComponent, pathMatch : 'full',},
-      {path: 'stock', component : OrdersComponent, pathMatch : 'full',},
-      {path: 'brand', component : BrandComponent, pathMatch : 'full',},
-      {path: 'provider', component : ProviderComponent, pathMatch : 'full',},
-      {path: 'category', component : CategoryComponent, pathMatch : 'full',},
-      {path: 'employee', component : ReportComponent, pathMatch : 'full',},
-    ]
-  }, 
-  {path: '**', redirectTo: '', pathMatch : 'full'}, 
+  {path: 'administrador', loadChildren : () => import('./pages/employee/employee.module').then( m => m.EmployeeModule)}, 
+   {path: '**', redirectTo: 'home', pathMatch : 'full'}, 
 ];
 
 @NgModule({

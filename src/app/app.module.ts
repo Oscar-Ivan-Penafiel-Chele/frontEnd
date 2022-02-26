@@ -3,14 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AboutComponent } from './pages/about/about.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './pages/signup/signup.component';
-import { TermsComponent } from './pages/terms/terms.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
-import { ShopComponent } from './pages/user/shop/shop.component';
 import { ScrollToUpComponent } from './components/scroll-to-up/scroll-to-up.component';
 
 import {ButtonModule} from 'primeng/button';
@@ -55,12 +48,6 @@ import {FieldsetModule} from 'primeng/fieldset';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/dashboard-employee.component';
-import { ProductsComponent } from './pages/employee/products/products.component';
-import { OrdersComponent } from './pages/employee/orders/orders.component';
-import { PromoComponent } from './pages/employee/promo/promo.component';
-import { CategoryComponent } from './pages/employee/category/category.component';
-import { ReportComponent } from './pages/employee/report/report.component';
 import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
 import { ProductsAdminComponent } from './pages/admin/products-admin/products-admin.component';
 import { PromoAdminComponent } from './pages/admin/promo-admin/promo-admin.component';
@@ -69,34 +56,15 @@ import { IndicatorsAdminComponent } from './pages/admin/indicators-admin/indicat
 import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
 import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import {RadioButtonModule} from 'primeng/radiobutton';
+import { RadioButtonModule} from 'primeng/radiobutton';
 import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { BrandComponent } from './pages/employee/brand/brand.component';
-import { ProviderComponent } from './pages/employee/provider/provider.component';
-import { HeaderuserComponent } from './components/headeruser/headeruser.component';
-import { FooteruserComponent } from './components/footeruser/footeruser.component';
-import { CarComponent } from './pages/car/car.component';
-
 
 @NgModule({
   declarations: [
     AppComponent,
-    AboutComponent,
-    ContactComponent,
-    HomeComponent,
-    LoginComponent,
-    SignupComponent,
-    TermsComponent,
     DashboardComponent,
-    ShopComponent,
     ScrollToUpComponent,
-    DashboardEmployeeComponent,
-    ProductsComponent,
-    OrdersComponent,
-    PromoComponent,
-    CategoryComponent,
-    ReportComponent,
     UsersAdminComponent,
     ProductsAdminComponent,
     PromoAdminComponent,
@@ -105,11 +73,6 @@ import { CarComponent } from './pages/car/car.component';
     ReportAdminComponent,
     OrdersAdminComponent,
     SortByOrderPipe,
-    BrandComponent,
-    ProviderComponent,
-    HeaderuserComponent,
-    FooteruserComponent,
-    CarComponent,
   ],
   imports: [
     BrowserModule,

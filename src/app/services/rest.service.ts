@@ -73,6 +73,9 @@ export class RestService {
   uploadStock(data : FormData) : Observable<any>{
     return this._http.post<any>(`${this.url}/products/upload/excel`,data);
   }
+  downloadExcel():Observable<any>{
+    return this._http.get<any>(`${this.url}/products/export/excel`);
+  }
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
