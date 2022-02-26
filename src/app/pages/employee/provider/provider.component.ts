@@ -35,7 +35,7 @@ export class ProviderComponent implements OnInit {
 
   identificationType : any [] = [];
   messageIdentification : string = "";
-  maxLength : number = 0;
+  maxLength : number = 10;
   stateIdentification : boolean = false;
 
   constructor(

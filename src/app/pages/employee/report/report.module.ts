@@ -15,6 +15,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {PasswordModule} from 'primeng/password';
 import {DividerModule} from 'primeng/divider';
+import {InputMaskModule} from 'primeng/inputmask';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {DividerModule} from 'primeng/divider';
     KeyFilterModule,
     PasswordModule,
     DividerModule,
+    InputMaskModule,
   ]
 })
 export class ReportModule { }

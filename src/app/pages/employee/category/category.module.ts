@@ -12,6 +12,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {DialogModule} from 'primeng/dialog';
 import {InputTextModule} from 'primeng/inputtext';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {InputTextModule} from 'primeng/inputtext';
     ConfirmDialogModule,
     DropdownModule,
     DialogModule,
-    InputTextModule
+    InputTextModule,
+    InputTextareaModule
   ]
 })
 export class CategoryModule { }

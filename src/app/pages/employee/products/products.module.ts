@@ -16,6 +16,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {FileUploadModule} from 'primeng/fileupload';
 import {RatingModule} from 'primeng/rating';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
     RadioButtonModule,
     FileUploadModule,
     RatingModule,
-    InputNumberModule
+    InputNumberModule,
+    InputTextareaModule
   ]
 })
 export class ProductsModule { }

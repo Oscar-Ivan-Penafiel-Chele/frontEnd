@@ -54,8 +54,8 @@
                 <td>{{category.category_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{category.create_date}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editCategory(category)"></button>
-                    <button [disabled]="category.category_status == 0" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCategory(category)"></button>
+                    <button [disabled]="category.category_name === 'NO DEFINIDO'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editCategory(category)"></button>
+                    <button [disabled]="category.category_status == 0 || category.category_name === 'NO DEFINIDO'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCategory(category)"></button>
                 </td>
             </tr>
         </ng-template>

@@ -14,6 +14,7 @@ import {ToastModule} from 'primeng/toast';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {InputMaskModule} from 'primeng/inputmask';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
     ToastModule,
     InputTextModule,
     InputTextareaModule,
-    InputNumberModule
+    InputNumberModule,
+    InputMaskModule
   ]
 })
 export class ProviderModule { }
