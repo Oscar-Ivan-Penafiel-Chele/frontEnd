@@ -177,11 +177,15 @@ export class ProductsComponent implements OnInit {
         this._rest.getBrands()
         .subscribe((response : Brand[]) => {
           this.brands = Object.values(response);
-          for( this.i = 0 ; this.i < this.brands.length ; this.i++){
-              this._sortByOrder.transform(this.brands[this.i].brand_name);
-          }
+          this.brands = this.brands.sort(this.sortBrands);
           this.brands = this.brands.filter((i)=> i.brand_status == 1);
         })
+    }
+
+    sortBrands(x : any ,y : any){
+        if(x.brand_name < y.brand_name) return -1;
+        if(x.brand_name > y.brand_name) return 1;
+        return 0;
     }
 
     getAllProviders(){
