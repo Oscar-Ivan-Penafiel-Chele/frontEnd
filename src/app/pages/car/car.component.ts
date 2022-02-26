@@ -17,6 +17,7 @@ export class CarComponent implements OnInit {
   user : User = {};
   isLogged?: boolean = false;
   overlayLogout : boolean;
+  amount_product : number = 1;
   
   constructor(
     private _primengConfig : PrimeNGConfig, 
