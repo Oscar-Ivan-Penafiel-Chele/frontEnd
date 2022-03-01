@@ -48,7 +48,7 @@
         <ng-template pTemplate="body" let-brand let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
                 <td>{{brand.brand_name}}</td>
-                <td><img [src]="brand.brand_thumbnail ? host+brand.brand_thumbnail : overImage" [alt]="brand.brand_thumbnail" width="80" height="80" class="shadow-4" /></td>
+                <td><img [src]="!brand.brand_thumbnail || brand.brand_thumbnail == 'null' ? overImage :  host+brand.brand_thumbnail" [alt]="brand.brand_thumbnail" width="80" height="80" class="shadow-4" /></td>
                 <td>{{brand.brand_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{brand.create_date}}</td>
                 <td>
@@ -74,7 +74,7 @@
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img [src]="host+brand.brand_thumbnail" [alt]="brand.brand_thumbnail" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img [src]="!brand.brand_thumbnail || brand.brand_thumbnail=='null' ? overImage : host+brand.brand_thumbnail" [alt]="brand.brand_thumbnail" height="250px" class="product-image" *ngIf="isPhotoEdit">
                         <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
                     </div>
                 </ng-template>
@@ -95,7 +95,7 @@
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p *ngIf="isPhotoEdit">{{brand.brand_thumbnail}}</p> 
+                        <p *ngIf="isPhotoEdit">{{!brand.brand_thumbnail || brand.brand_thumbnail == 'null' ? 'No Imagen' : brand.brand_thumbnail}}</p> 
                         <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
                     </div>
                 </div>

@@ -50,7 +50,7 @@
             <tr>
                 <td>{{category.category_name}}</td>
                 <td>{{category.category_descripcion}}</td>
-                <td><img [src]="category.category_thumbnail ? host+category.category_thumbnail : overImage" [alt]="category.category_thumbnail" width="80" height="80" class="shadow-4" /></td>
+                <td><img [src]="!category.category_thumbnail || category.category_thumbnail=='null' ? overImage : host+category.category_thumbnail" [alt]="category.category_thumbnail" width="80" height="80" class="shadow-4" /></td>
                 <td>{{category.category_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{category.create_date}}</td>
                 <td>
@@ -76,7 +76,7 @@
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img [src]="host+category.category_thumbnail" [alt]="category.category_thumbnail" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img [src]="!category.category_thumbnail || category.category_thumbnail=='null' ? overImage : host+category.category_thumbnail" [alt]="category.category_thumbnail" height="250px" class="product-image" *ngIf="isPhotoEdit">
                         <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
                     </div>
                 </ng-template>
@@ -96,7 +96,7 @@
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p *ngIf="isPhotoEdit">{{category.category_thumbnail}}</p> 
+                        <p *ngIf="isPhotoEdit">{{!category.category_thumbnail || category.category_thumbnail =='null' ? 'No Imagen' : category.category_thumbnail}}</p> 
                         <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
                     </div>
                 </div>

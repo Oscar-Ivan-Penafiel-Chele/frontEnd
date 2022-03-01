@@ -175,6 +175,7 @@ export class CategoryComponent implements OnInit {
     this.fileTmp = {};
     this.photoSelected = "";
     this.isPhotoEdit = false;
+    this.category.category_thumbnail = 'null';
   }
 
   openNew(){
