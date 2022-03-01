@@ -34,14 +34,14 @@
                     <i class="pi pi-tag"></i>
                     <p [hidden]="isHidden">Promociones</p>
                 </div>
-                <!-- <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'stock'" pRipple pTooltip="Stock" tooltipPosition="right">
-                    <i class="pi pi-database"></i>
-                    <p [hidden]="isHidden">Stock</p>
-                </div> -->
                 <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'employee'" pRipple pTooltip="Empleados" tooltipPosition="right">
                     <i class="pi pi-user"></i>
                     <p [hidden]="isHidden">Empleados</p>
                 </div> 
+                <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'auditory'" pRipple pTooltip="Auditoría" tooltipPosition="right">
+                    <i class="pi pi-history"></i>
+                    <p [hidden]="isHidden">Auditoría</p>
+                </div>
 
                 <div id="nav__aside__footer" class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
                     <i class="pi pi-power-off"></i>

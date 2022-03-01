@@ -329,6 +329,7 @@ export class ProductsComponent implements OnInit {
         this.fileTmp = {};
         this.photoSelected = "";
         this.isPhotoEdit = false;
+        this.product.product_image = 'null';
     }
 
     editProduct(product: Product) {
@@ -430,7 +431,7 @@ export class ProductsComponent implements OnInit {
             data.append(`${key}`, value);
         });
 
-        console.log(this.product.product_status);
+        console.log(this.product);
         this._rest.updateProduct(data, this.product.id_product!)
         .subscribe((response)=>{
             if(response.status == 200 || response.message === "Producto actualizado con exito"){

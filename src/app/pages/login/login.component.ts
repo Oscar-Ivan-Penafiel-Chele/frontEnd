@@ -50,6 +50,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  pressButton(e : any){
+    if(e.keyCode === 13 && !e.shiftKey){
+      const btn = document.getElementById('btnLogin');
+      btn?.click();
+    }
+  }
+
   login(){
     this.submitted = true;
     if(!this.validateInput()){

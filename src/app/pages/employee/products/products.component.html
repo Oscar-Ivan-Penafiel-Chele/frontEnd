@@ -54,7 +54,7 @@
             <tr>
                 <td>{{product.product_code}}</td>
                 <td>{{product.product_name}}</td>
-                <td><img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_name" width="80" height="80" class="shadow-4" /></td>
+                <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="80" height="80" class="shadow-4" /></td>
                 <td>{{product.product_price | currency:'USD'}}</td>
                 <td>{{product.product_stock}}</td>
                 <td>{{product.create_date}}</td>
@@ -81,7 +81,7 @@
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img [src]="host+product.product_image" [alt]="product.product_image" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_image" height="250px" class="product-image" *ngIf="isPhotoEdit">
                         <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
                     </div>
                 </ng-template>
@@ -102,7 +102,7 @@
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p *ngIf="isPhotoEdit">{{product.product_image}}</p> 
+                        <p *ngIf="isPhotoEdit">{{!product.product_image || product.product_image =='null' ? 'No Imagen' : product.product_image}}</p> 
                         <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
                     </div>
                 </div>
