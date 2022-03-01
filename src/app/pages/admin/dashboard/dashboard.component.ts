@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
+import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +16,18 @@ export class DashboardComponent implements OnInit {
   i : number = 0;
   msgButton : string = "";
   fechaYHora : any ;
+  user : User = {};
+  roleUser : string = "";
+  overlayLogout : boolean = false;
 
-  constructor(private primengConfig: PrimeNGConfig, private _routerNavigation : Router) { }
+  constructor(
+    private primengConfig: PrimeNGConfig, 
+    private _routerNavigation : Router, 
+    private _token : TokenService,
+    private _authService : AuthService,) { }
 
   ngOnInit(): void {
+    this.getDataProfile();
     this.primengConfig.ripple = true;
     this.activeFirstLink();
     this.activeLink();
@@ -24,6 +35,23 @@ export class DashboardComponent implements OnInit {
     setInterval(()=>{
       this.getDateToday();
     },100); 
+  }
+
+  getDataProfile(){
+    const data = this._token.getTokenDataUser() as string;
+    this.user = JSON.parse(data);
+    this.getRoleUser(this.user.id_role!);
+  }
+
+  getRoleUser(id_role : number){
+    const roles : any= {
+      1 : 'Gerente',
+      2 : 'Administrador',
+      3 : 'Contable',
+      4 : 'Vendedor'
+    }
+
+    this.roleUser = roles[id_role];
   }
 
   displayOptions(){
@@ -68,6 +96,18 @@ export class DashboardComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
 
+    const opciones = ['products'];
+    const route = window.location.pathname.split('/').pop();
+
+
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        const posc = opciones.indexOf(route!);
+        links[posc].classList.add('active');
+        if(route != opciones[0]){
+          links[0].classList.remove('active');
+        }
+    } 
+
     links.forEach( l => l.addEventListener('click', () =>{
         links.forEach(j => j.classList.remove('active'));
         l.classList.add('active');
@@ -76,13 +116,22 @@ export class DashboardComponent implements OnInit {
   }
 
   logOut(){
-    this._routerNavigation.navigate(['login']);
+    this.overlayLogout = true;
+    const divLogout = document.getElementById('nav__aside__footer');
+    divLogout!.style.pointerEvents = "none";
+    this._authService.logout(this.user.id_user!)
+      .subscribe((response)=>{
+        if(response.status == 200 || response.message === "Sesión cerrada con éxito"){
+          this._token.removeToken();
+          this._routerNavigation.navigate(['login']);
+      }
+    });
   }
 
   getDateToday(){
     let hoy = new Date();
 
-    let fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
+    let fecha = hoy.getFullYear() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getDate();
     let hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
 
     this.fechaYHora = fecha + ' ' + hora;

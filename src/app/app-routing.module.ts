@@ -1,15 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-
-import { CategoryAdminComponent } from './pages/admin/category-admin/category-admin.component';
-import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
-import { IndicatorsAdminComponent } from './pages/admin/indicators-admin/indicators-admin.component';
-import { OrdersAdminComponent } from './pages/admin/orders-admin/orders-admin.component';
-import { ProductsAdminComponent } from './pages/admin/products-admin/products-admin.component';
-import { PromoAdminComponent } from './pages/admin/promo-admin/promo-admin.component';
-import { ReportAdminComponent } from './pages/admin/report-admin/report-admin.component';
-import { UsersAdminComponent } from './pages/admin/users-admin/users-admin.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch : 'full'}, 
@@ -21,18 +11,7 @@ const routes: Routes = [
   {path: 'shop', loadChildren : () => import('./pages/user/shop/shop.module').then( m => m.ShopModule)}, 
   {path: 'checkout/cart' , loadChildren : ()=> import('./pages/car/car.module').then( m => m.CarModule)},
   {path: 'terminos-y-condiciones', loadChildren : () => import('./pages/terms/terms.module').then(m => m.TermsModule)}, 
-  // {path: 'gerente', component : DashboardComponent, canActivate : [AuthGuard], data : { role : '1'},
-  //   children : [
-  //     {path: '', redirectTo: 'indicators', pathMatch : 'full'},
-  //     {path: 'indicators', component : IndicatorsAdminComponent, pathMatch : 'full',},
-  //     {path: 'promotions', component : PromoAdminComponent, pathMatch : 'full',},
-  //     {path: 'users', component : UsersAdminComponent, pathMatch : 'full',},
-  //     {path: 'products', component : ProductsAdminComponent, pathMatch : 'full',},
-  //     {path: 'orders', component : OrdersAdminComponent, pathMatch : 'full',},
-  //     {path: 'category', component : CategoryAdminComponent, pathMatch : 'full',},
-  //     {path: 'employee', component : ReportAdminComponent, pathMatch : 'full',},
-  //   ]
-  // }, 
+  {path: 'gerente', loadChildren : ()=> import('./pages/admin/admin.module').then( m => m.AdminModule)},
   {path: 'administrador', loadChildren : () => import('./pages/employee/employee.module').then( m => m.EmployeeModule)}, 
    {path: '**', redirectTo: 'home', pathMatch : 'full'}, 
 ];

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {TooltipModule} from 'primeng/tooltip';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import {TooltipModule} from 'primeng/tooltip';
   imports: [
     CommonModule,
     AdminRoutingModule,
-    TooltipModule
+    TooltipModule,
+    ProgressSpinnerModule
   ]
 })
 export class AdminModule { }
