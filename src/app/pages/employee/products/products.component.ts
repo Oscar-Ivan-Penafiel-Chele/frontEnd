@@ -329,7 +329,7 @@ export class ProductsComponent implements OnInit {
         this.fileTmp = {};
         this.photoSelected = "";
         this.isPhotoEdit = false;
-        this.product.product_image = 'null';
+        this.product.product_image = '';
     }
 
     editProduct(product: Product) {

@@ -187,7 +187,7 @@ export class BrandComponent implements OnInit {
     this.fileTmp = {};
     this.photoSelected = "";
     this.isPhotoEdit = false;
-    this.brand.brand_thumbnail = 'null';
+    this.brand.brand_thumbnail = '';
   }
   
   saveProduct(){
