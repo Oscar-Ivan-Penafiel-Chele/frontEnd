@@ -316,7 +316,7 @@ export class BrandComponent implements OnInit {
         rejectLabel : 'Cancelar',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            this._rest.deleteBrand(brand.id_brand!).subscribe((response)=>{
+            this._rest.deleteBrand(brand.id_brand!, this.user.id_user!).subscribe((response)=>{
                 if(response.status == 200 && response.message === "Eliminado correctamente"){
                     this.getBrands();
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Marca Eliminado', life: 3000, sticky: true});

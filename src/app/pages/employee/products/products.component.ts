@@ -510,8 +510,8 @@ export class ProductsComponent implements OnInit {
     }
 
     exportExcel(){
-        this._rest.downloadExcel().subscribe((response)=>{
-            console.log(response);
-        })
+        // this._rest.downloadExcel().subscribe((response)=>{
+        //     console.log(response);
+        // })
     }
 }

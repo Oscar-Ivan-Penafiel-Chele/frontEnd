@@ -7,6 +7,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {TooltipModule} from 'primeng/tooltip';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {InputTextModule} from 'primeng/inputtext';
     ToolbarModule,
     TooltipModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
+    DialogModule,
   ]
 })
 export class AuditoryModule { }

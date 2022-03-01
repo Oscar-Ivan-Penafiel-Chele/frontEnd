@@ -1,5 +1,5 @@
 import { Injectable} from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { IProvider } from '../models/provider';
@@ -25,7 +25,6 @@ export class RestService {
     return this._http.post<any>(`${this.url}/register`,user);
   }
   
-
   /* EMPLEADOS */
   getEmployees() : Observable<User[]>{
     return this._http.get<User[]>(`${this.url}/users`); 
@@ -73,9 +72,6 @@ export class RestService {
   uploadStock(data : FormData) : Observable<any>{
     return this._http.post<any>(`${this.url}/products/upload/excel`,data);
   }
-  downloadExcel():Observable<any>{
-    return this._http.get<any>(`${this.url}/products/export/excel`);
-  }
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
@@ -114,8 +110,13 @@ export class RestService {
     return this._http.post<any>(`${this.url}/brands/${id}`,data,{headers: headers});
   }
 
-  deleteBrand(id:number) : Observable<any>{
-    return this._http.delete<any>(`${this.url}/brands/${id}`);
+  deleteBrand(id:number, idUser : number) : Observable<any>{
+    // return this._http.delete<any>(`${this.url}/brands/${id}`);
+    return this._http.request('DELETE',`${this.url}/brands/${id}`,{
+      body : {
+        id_user : idUser
+      }
+    });
   }
 
 
@@ -139,7 +140,12 @@ export class RestService {
     });
     return this._http.post(`${this.url}/categories/${id}`,data,{headers: headers});
   }
-  deleteCategory(id : number) : Observable<any>{
+  deleteCategory(id : number) : Observable<any>{ 
     return this._http.delete(`${this.url}/categories/${id}`);
+  }
+
+  /* AUDITORY */
+  getAuditories() : Observable<any>{
+    return this._http.get<any>(`${this.url}/audit`);
   }
 }
