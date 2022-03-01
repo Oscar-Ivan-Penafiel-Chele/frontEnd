@@ -247,7 +247,7 @@ export class ReportComponent implements OnInit {
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this._rest.deleteEmployee(user.id_user!).subscribe((response)=>{
+          this._rest.deleteEmployee(user.id_user!, this.userLoged.id_user!).subscribe((response)=>{
               if(response.status == 200 || response.message === "Eliminado correctamente"){
                   this.getEmployees();
                   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Usuario inactivado', life: 3000});

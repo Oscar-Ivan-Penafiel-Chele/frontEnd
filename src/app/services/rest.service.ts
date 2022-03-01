@@ -35,8 +35,13 @@ export class RestService {
   updateEmployee(user : User) : Observable<any>{
     return this._http.put<any>(`${this.url}/users/${user.id_user}`, user);
   }
-  deleteEmployee(id : number) : Observable<any>{
-    return this._http.delete<any>((`${this.url}/users/${id}`));
+  deleteEmployee(id : number, id_user : number) : Observable<any>{
+    // return this._http.delete<any>(`${this.url}/users/${id}`);
+    return this._http.request('DELETE',`${this.url}/users/${id}`,{
+      body : {
+        id_user : id_user
+      }
+    });
   }
 
   /* PRODUCTO */
@@ -88,8 +93,13 @@ export class RestService {
   updateProvider(provider : IProvider, id: number) : Observable<any>{
     return this._http.put(`${this.url}/providers/${id}`,provider);
   }
-  deleteProvider(id : number) : Observable<any>{
-    return this._http.delete(`${this.url}/providers/${id}`);
+  deleteProvider(id : number, id_user : number) : Observable<any>{
+    // return this._http.delete(`${this.url}/providers/${id}`);
+    return this._http.request('DELETE',`${this.url}/providers/${id}`,{
+      body : {
+        id_user : id_user
+      }
+    });
   }
 
   /* TYPE PROVIDER */
