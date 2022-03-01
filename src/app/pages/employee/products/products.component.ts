@@ -492,7 +492,7 @@ export class ProductsComponent implements OnInit {
           rejectLabel : 'Cancelar',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
-              this._rest.deleteProduct(product.id_product).subscribe((response)=>{
+              this._rest.deleteProduct(product.id_product, this.user.id_user!).subscribe((response)=>{
                   if(response.status == 200 || response.message === "Eliminado correctamente"){
                       this.getAllProducts();
                       this.getCodeProduct();

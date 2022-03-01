@@ -59,8 +59,13 @@ export class RestService {
     return this._http.post<any>(`${this.url}/products/${id}`,data,{headers : headers});
   }
 
-  deleteProduct(id? : number) : Observable<any>{
-    return this._http.delete<any>(`${this.url}/products/${id}`);
+  deleteProduct(id? : number, id_user? : number) : Observable<any>{
+    // return this._http.delete<any>(`${this.url}/products/${id}`);
+    return this._http.request('DELETE',`${this.url}/products/${id}`,{
+      body : {
+        id_user : id_user
+      }
+    });
   }
 
   /* CODIGO PRODUCT */
@@ -110,11 +115,11 @@ export class RestService {
     return this._http.post<any>(`${this.url}/brands/${id}`,data,{headers: headers});
   }
 
-  deleteBrand(id:number, idUser : number) : Observable<any>{
+  deleteBrand(id:number, id_user : number) : Observable<any>{
     // return this._http.delete<any>(`${this.url}/brands/${id}`);
     return this._http.request('DELETE',`${this.url}/brands/${id}`,{
       body : {
-        id_user : idUser
+        id_user : id_user
       }
     });
   }
@@ -140,8 +145,13 @@ export class RestService {
     });
     return this._http.post(`${this.url}/categories/${id}`,data,{headers: headers});
   }
-  deleteCategory(id : number) : Observable<any>{ 
-    return this._http.delete(`${this.url}/categories/${id}`);
+  deleteCategory(id : number, id_user : number) : Observable<any>{ 
+    // return this._http.delete(`${this.url}/categories/${id}`);
+    return this._http.request('DELETE',`${this.url}/categories/${id}`,{
+      body : {
+        id_user : id_user
+      }
+    });
   }
 
   /* AUDITORY */

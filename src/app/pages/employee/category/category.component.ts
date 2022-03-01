@@ -311,7 +311,7 @@ export class CategoryComponent implements OnInit {
         rejectLabel : 'Cancelar',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            this._rest.deleteCategory(category.id_category).subscribe((response)=>{
+            this._rest.deleteCategory(category.id_category, this.user.id_user!).subscribe((response)=>{
                 if(response.status == 200 || response.message === "Eliminado correctamente"){
                     this.getCategories();
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Categoría Eliminado', life: 3000});
