@@ -1,2 +1,41 @@
-<p>auditory works!</p>
-<p>asdasdas</p>
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="right">
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="right"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="auditories" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['auditory_namePerson','auditory_lastNamePerson','auditory_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Auditoría</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="auditory_namePerson"><i class="pi pi-user"></i> Nombre<p-sortIcon field="auditory_namePerson"></p-sortIcon></th>
+                <th pSortableColumn="auditory_lastNamePerson"><i class="pi pi-user"></i> Apellido <p-sortIcon field="auditory_lastNamePerson"></p-sortIcon></th>
+                <th pSortableColumn="auditory_description"><i class="pi pi-book"></i> Descripción <p-sortIcon field="auditory_description"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-auditory let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>{{auditory.auditory_namePerson}}</td>
+                <td>{{auditory.auditory_lastNamePerson}}</td>
+                <td>{{auditory.auditory_description}}</td>
+                <td>{{auditory.create_date}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{auditories ? auditories.length : 0 }}.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

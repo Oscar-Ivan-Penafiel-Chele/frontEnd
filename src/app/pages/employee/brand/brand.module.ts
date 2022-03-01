@@ -12,6 +12,7 @@ import {DialogModule} from 'primeng/dialog';
 import {ToolbarModule} from 'primeng/toolbar';
 import {ToastModule} from 'primeng/toast';
 import {InputTextModule} from 'primeng/inputtext';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {InputTextModule} from 'primeng/inputtext';
     ToolbarModule,
     ToastModule,
     InputTextModule,
+    TooltipModule
   ]
 })
 export class BrandModule { }

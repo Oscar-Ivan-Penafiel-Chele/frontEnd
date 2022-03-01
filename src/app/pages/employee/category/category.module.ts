@@ -13,6 +13,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {DialogModule} from 'primeng/dialog';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     DropdownModule,
     DialogModule,
     InputTextModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TooltipModule
   ]
 })
 export class CategoryModule { }

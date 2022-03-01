@@ -15,6 +15,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {InputMaskModule} from 'primeng/inputmask';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {InputMaskModule} from 'primeng/inputmask';
     InputTextModule,
     InputTextareaModule,
     InputNumberModule,
-    InputMaskModule
+    InputMaskModule,
+    TooltipModule
   ]
 })
 export class ProviderModule { }
