@@ -304,6 +304,7 @@ export class CategoryComponent implements OnInit {
     this.inputFile = true; // LE decimos que bloquee el inputFile
     this.isPhotoEdit = true; // Le decimos que si hay foto para editar
     this.productDialog = true; // abrimos modal
+    this.fileTmp = {}; 
   }
 
   deleteCategory(category : Category){
