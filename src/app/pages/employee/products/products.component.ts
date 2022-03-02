@@ -340,6 +340,7 @@ export class ProductsComponent implements OnInit {
         this.isPhotoEdit = true; // Le decimos que si hay foto para editar
         this.productDialog = true; // abrimos modal
         this.nameProd = product.product_name!;
+        this.fileTmp = {};
       }
 
     saveProduct() {

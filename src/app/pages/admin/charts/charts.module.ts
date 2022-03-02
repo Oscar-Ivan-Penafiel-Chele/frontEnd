@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ChartsRoutingModule } from './charts-routing.module';
 import { ChartsComponent } from './charts.component';
+import {ChartModule} from 'primeng/chart';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { ChartsComponent } from './charts.component';
   ],
   imports: [
     CommonModule,
-    ChartsRoutingModule
+    ChartsRoutingModule,
+    ChartModule
   ]
 })
 export class ChartsModule { }
