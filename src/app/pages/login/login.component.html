@@ -19,7 +19,7 @@
                 <br>
                 <span class="p-float-label">
                     <input required id="float-input" [(ngModel)]="email" type="text" autofocus pInputText style="width: 100%;"> 
-                    <label for="float-input"><i class="pi pi-user"></i> Usuario o Correo Electrónico</label>
+                    <label for="float-input"><i class="pi pi-user mr-2"></i>Correo Electrónico</label>
                 </span>
                 <small class="p-error" style="float: right;" *ngIf="submitted && email==''">Email es requerido</small>
                 <br>
@@ -27,7 +27,7 @@
                     <span class="p-float-label">
                         <p-password required [(ngModel)]="password" [toggleMask]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
                         </p-password>
-                        <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
+                        <label for="float-input"><i class="pi pi-lock mr-2"></i>Contraseña</label>
                     </span>
                     <small class="p-error" style="float: right;" *ngIf="submitted && password==''">Contraseña es requerido</small>
                 </div>

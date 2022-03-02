@@ -24,7 +24,7 @@ export class ChartsComponent implements OnInit {
               label: 'My Second dataset',
               backgroundColor: '#FFA726',
               data: [28, 48, 40, 19, 86, 27, 90]
-          }
+          },
       ]
   };
 
