@@ -12,6 +12,7 @@ export class AuditoryComponent implements OnInit {
   auditories : any[] = [];
   displayModal : boolean = false;
   aud : any = {};
+  loading : boolean = false;
 
   constructor(private _rest : RestService) { }
 
@@ -20,9 +21,10 @@ export class AuditoryComponent implements OnInit {
   }
 
   getAuditories(){
+    this.loading = true;
     this._rest.getAuditories().subscribe((response)=>{
       this.auditories = response;
-      console.log(this.auditories);
+      this.loading = false;
     });
   }
 

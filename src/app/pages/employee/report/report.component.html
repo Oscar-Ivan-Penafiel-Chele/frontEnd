@@ -25,7 +25,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="users" [rows]="5"  [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user_name','user_lastName']" responsiveLayout="scroll" [rowHover]="true" dataKey="id" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+    <p-table #dt [value]="users" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user_name','user_lastName']" responsiveLayout="scroll" [rowHover]="true" dataKey="id" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Empleados</h5>

@@ -5,7 +5,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="auditories" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -31,7 +31,9 @@
                 <td>{{auditory.audit_module}}</td>
                 <td>{{auditory.audit_description}}</td>
                 <td>{{auditory.create_date}}</td>
-                <td><p-button (click)="openModal(auditory)" icon="pi pi-eye"></p-button></td>
+                <td>
+                    <button pButton pRipple type="button" icon="pi pi-eye" (click)="openModal(auditory)" class="p-button-info"></button>
+                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">

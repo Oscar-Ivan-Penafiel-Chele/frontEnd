@@ -24,6 +24,7 @@ export class ReportComponent implements OnInit {
   submitted: boolean = false;
   stateIdentification : boolean = false;
   stateCheckActive : boolean = true;
+  loading : boolean = false;
   messageIdentification : string = "";
   stateCheckInactive : boolean = false;
   states : any[] = [];
@@ -83,6 +84,7 @@ export class ReportComponent implements OnInit {
   }
 
   getEmployees(){
+    this.loading = true;
     this._rest.getEmployees().subscribe((response : User[])=>{
       this.userAux = Object.values(response);
       if(this.stateCheckActive && !this.stateCheckInactive){
@@ -92,6 +94,7 @@ export class ReportComponent implements OnInit {
       }else if(this.stateCheckActive && this.stateCheckInactive){
         this.users = this.userAux;
       }     
+      this.loading = false;
     })
   }
 

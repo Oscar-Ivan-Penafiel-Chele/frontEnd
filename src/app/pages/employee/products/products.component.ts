@@ -39,6 +39,7 @@ export class ProductsComponent implements OnInit {
     isPhotoEdit : boolean;
     isError : boolean ;
     submitted: boolean = false;
+    loading : boolean = false;
     inputFile :boolean = false;
     productDialog: boolean = false;
     uploadFileExcel : boolean = false;
@@ -114,6 +115,7 @@ export class ProductsComponent implements OnInit {
     /* GET */
 
     getAllProducts() {
+        this.loading = true;
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
             this.productsAux = response;
@@ -124,6 +126,7 @@ export class ProductsComponent implements OnInit {
               }else if(this.stateCheckActive && this.stateCheckInactive){
                 this.products = this.productsAux;
               }
+              this.loading = false;
         });
     }
     

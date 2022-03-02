@@ -30,6 +30,7 @@ export class CategoryComponent implements OnInit {
   inputFile :boolean = false;
   productDialog: boolean = false;
   sizeFileValid : boolean = false;
+  loading : boolean = false;
   fileExtensionValid : boolean = false;
   fileTmp : any;
   states : any[] = [];
@@ -71,6 +72,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategories(){
+    this.loading = true;
     this._rest.getCategories().subscribe((response : Category[]) => {
       this.categoriesAux = Object.values(response);
       if(this.stateCheckActive && !this.stateCheckInactive){
@@ -80,6 +82,7 @@ export class CategoryComponent implements OnInit {
       }else if(this.stateCheckActive && this.stateCheckInactive){
         this.categories = this.categoriesAux;
       }
+      this.loading = false;
     });
   }
 

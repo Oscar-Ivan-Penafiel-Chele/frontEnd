@@ -25,6 +25,7 @@ export class BrandComponent implements OnInit {
   actionSelected  : string ="";
   inputFile :boolean = false;
   isPhoto : boolean = false;
+  loading : boolean = false;
   isPhotoEdit : boolean;
   isError : boolean ;
   submitted: boolean = false;
@@ -70,6 +71,7 @@ export class BrandComponent implements OnInit {
   }
 
   getBrands(){
+    this.loading = true;
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
       this.brandsAux = Object.values(response);
@@ -81,6 +83,7 @@ export class BrandComponent implements OnInit {
         }else if(this.stateCheckActive && this.stateCheckInactive){
           this.brands = this.brandsAux;
         }
+        this.loading = false;
     })
   }
 

@@ -31,6 +31,7 @@ export class ProviderComponent implements OnInit {
 
   stateCheckActive : boolean = true;
   stateCheckInactive : boolean = false;
+  loading : boolean = false;
   providersAux : IProvider[] = [];
 
   identificationType : any [] = [];
@@ -71,6 +72,7 @@ export class ProviderComponent implements OnInit {
   }
 
   getProviders(){
+    this.loading = true;
     this._rest.getProviders().subscribe((response : IProvider[])=>{
       this.providersAux = Object.values(response);
       if(this.stateCheckActive && !this.stateCheckInactive){
@@ -80,7 +82,7 @@ export class ProviderComponent implements OnInit {
       }else if(this.stateCheckActive && this.stateCheckInactive){
         this.providers = this.providersAux;
       }
-      
+      this.loading = false;
     })
   }
 
