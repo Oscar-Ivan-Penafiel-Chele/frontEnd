@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
 
-    const opciones = ['products'];
+    const opciones = ['chart'];
     const route = window.location.pathname.split('/').pop();
 
 

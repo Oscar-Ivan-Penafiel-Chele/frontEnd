@@ -357,7 +357,18 @@ export class ProductsComponent implements OnInit {
                 this.validateNameProduct();
                 return;
             }
-            if(this.isObjEmpty(this.fileTmp)){
+
+            if(!this.isObjEmpty(this.fileTmp)){
+                //Se cambia la imagen
+                this.submitted = true
+                if(!this.validateData()){
+                    return ;
+                }
+                this.updateData(true);
+                return;
+            }
+
+            if(this.product.product_image != ''){
                 //Se envia la misma imagen 
                 this.fileTmp = {};
                 if(!this.validateDataNoImage()){
@@ -368,13 +379,17 @@ export class ProductsComponent implements OnInit {
                 }
                 
                 this.updateData(false);
-            }else{
-                //Se cambia la imagen
-                this.submitted = true
-                if(!this.validateData()){
+                return;
+            }
+
+            if(this.product.product_image == ''){
+                this.fileTmp = {};
+                if(!this.validateDataNoImage()){
                     return ;
                 }
-                this.updateData(true);
+
+                this.updateData(false);
+                return;
             }
         }
     }

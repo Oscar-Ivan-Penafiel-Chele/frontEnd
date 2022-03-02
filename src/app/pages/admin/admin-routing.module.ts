@@ -7,7 +7,8 @@ import { AuthGuard } from 'src/app/guards/auth.guard';
 const routes : Routes = [
   { path:'', component: DashboardComponent, canActivate : [AuthGuard], data : { role : '1'},
     children : [
-      {path: '', redirectTo: 'products', pathMatch : 'full'},
+      {path: '', redirectTo: 'chart', pathMatch : 'full'},
+      {path: 'chart', loadChildren : ()=> import('./charts/charts.module').then( m => m.ChartsModule)},
     ]
   },
   { path:'**' , redirectTo:''}
