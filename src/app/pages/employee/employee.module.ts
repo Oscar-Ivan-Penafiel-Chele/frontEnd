@@ -5,6 +5,7 @@ import { DashboardEmployeeComponent } from './dashboard-employee/dashboard-emplo
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {TooltipModule} from 'primeng/tooltip';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {TooltipModule} from 'primeng/tooltip';
     ConfirmDialogModule,
     ProgressSpinnerModule,
     TooltipModule,
+    ScrollPanelModule
   ]
 })
 export class EmployeeModule { }

@@ -1,0 +1,147 @@
+.header__main{
+    height: 60px;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.img__ferreteria > p{
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #414141;
+}
+
+.img__ferreteria:hover{
+    cursor: pointer;
+}
+
+.header__main__content{
+    height: 60px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 2%;
+}
+
+.header__icon > i {
+    color: white;
+    background-color: #4F46E5;
+    border-radius: 50%;
+    padding: 10px;
+    transition: all 0.3s;
+}
+
+.header__icon > i:hover{
+    cursor: pointer;
+}
+
+.header_profile_time{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.header__profile{
+    background-color: #4F46E5;
+    padding: 7px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.header__profile > p{
+    color: white;
+}
+
+.header__profile:hover{
+    cursor: pointer;
+}
+
+.profile__options{
+    position: absolute;
+    right: 25px;
+    top: 60px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 9;
+}
+
+.profile__options > p{
+    padding: 5px 0px 5px 15px;
+    font-weight: 600;
+    font-size: 15px;
+ }
+ 
+ .profile__options > a{
+    color: black;
+    width: 100%;
+    text-decoration: none;
+    padding: 10px 25px;
+    transition: all 0.3s;
+    font-size: 14px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: end;
+    align-items: center;
+    gap: 0.5em;
+ }
+ 
+.profile__options > a:last-of-type{
+margin-bottom: 10px;
+}
+
+.profile__options > a:hover{
+background-color: rgb(238, 238, 238);
+}
+
+.isActiveNavOption{
+    display: none !important;
+}
+
+.main__content{
+    width: 100%;
+    margin-top: 30px;
+}
+
+.content__option__selected{
+    padding: 15px;
+    position: absolute;
+    left: 35%;
+}
+
+.optionsConfiguration{
+    height: min-content;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 15px 0px;
+    color: #414141;
+    position: absolute;
+    left: 10%;
+}
+
+.item__option{
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.item__option a{
+    text-decoration: none;
+    color: #414141;
+}
+
+.item__option:hover{
+    cursor: pointer;
+}
+
+.item__active{
+    /* background-color: rgb(240, 240, 240); */
+    background-color: #4F46E5;
+    color: white;
+}

@@ -17,7 +17,7 @@
                     <i class="pi pi-bookmark"></i>
                     <p [hidden]="isHidden">Productos</p>
                 </div>
-               
+            
                 <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Categorías" tooltipPosition="right">
                     <i class="pi pi-th-large"></i>
                     <p [hidden]="isHidden">Categorías</p>
@@ -66,12 +66,11 @@
                         </div>
                     </div>
                     <div class="profile__options isActiveNavOption">
-                        <div style="width:100%; padding: 10px 0px 0px 0px;" class="flex justify-content-center align-items-center ">
-                            <p style="font-size: 14px; color: rgb(134, 134, 134);"><i class="pi pi-shield"></i> {{roleUser}}</p>
+                        <div style="width:100%; padding: 15px;" class="flex justify-content-center align-items-center ">
+                            <p style="font-size: 14px; color: #414141;"><i class="pi pi-shield"></i> {{roleUser}}</p>
                         </div>
                         <p style="border-top: 1px solid #ccc; width: 100%;" class="mt-2">Opciones</p>
-                        <a href=""><i class="pi pi-user"></i> Perfil</a>
-                        <a href=""><i class="pi pi-cog"></i> Configuración</a>
+                        <a href="configuración/perfil"><i class="pi pi-cog"></i> Configuración</a>
                     </div>
                 </div>
 

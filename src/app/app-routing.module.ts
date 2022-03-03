@@ -12,8 +12,9 @@ const routes: Routes = [
   {path: 'checkout/cart' , loadChildren : ()=> import('./pages/car/car.module').then( m => m.CarModule)},
   {path: 'terminos-y-condiciones', loadChildren : () => import('./pages/terms/terms.module').then(m => m.TermsModule)}, 
   {path: 'gerente', loadChildren : ()=> import('./pages/admin/admin.module').then( m => m.AdminModule)},
-  {path: 'administrador', loadChildren : () => import('./pages/employee/employee.module').then( m => m.EmployeeModule)}, 
-   {path: '**', redirectTo: 'home', pathMatch : 'full'}, 
+  {path: 'administrador', loadChildren : () => import('./pages/employee/employee.module').then( m => m.EmployeeModule)},
+  {path: 'configuración', loadChildren : () => import('./pages/employee/other/other.module').then( m => m.OtherModule)},
+  {path: '**', redirectTo: 'home', pathMatch : 'full'}, 
 ];
 
 @NgModule({
