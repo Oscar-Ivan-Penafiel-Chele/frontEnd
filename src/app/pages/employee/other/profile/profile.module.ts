@@ -6,6 +6,10 @@ import {CardModule} from 'primeng/card';
 import {RippleModule} from 'primeng/ripple';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import {InputMaskModule} from 'primeng/inputmask';
+import {DialogModule} from 'primeng/dialog';
+import {PasswordModule} from 'primeng/password';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,11 @@ import {ButtonModule} from 'primeng/button';
     CardModule,
     RippleModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    FormsModule,
+    InputMaskModule,
+    DialogModule,
+    PasswordModule
   ]
 })
 export class ProfileModule { }
