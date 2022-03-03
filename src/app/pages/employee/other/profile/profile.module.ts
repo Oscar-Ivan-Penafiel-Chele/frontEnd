@@ -10,6 +10,9 @@ import { FormsModule } from '@angular/forms';
 import {InputMaskModule} from 'primeng/inputmask';
 import {DialogModule} from 'primeng/dialog';
 import {PasswordModule} from 'primeng/password';
+import {SkeletonModule} from 'primeng/skeleton';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import {PasswordModule} from 'primeng/password';
     FormsModule,
     InputMaskModule,
     DialogModule,
-    PasswordModule
+    PasswordModule,
+    SkeletonModule,
+    ReactiveFormsModule,
   ]
 })
 export class ProfileModule { }

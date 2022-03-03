@@ -3,6 +3,7 @@ import { User } from 'src/app/models/user';
 import { TokenService } from 'src/app/services/token.service';
 import { PrimeNGConfig } from 'primeng/api';
 import {PrimeIcons} from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-other',
@@ -15,10 +16,12 @@ export class OtherComponent implements OnInit {
   user : User = {};
   roleUser : string = "";
   events1: any[] = [];
+  overlayLogout : boolean = false;
 
   constructor(
     private _token : TokenService,
-    private primengConfig: PrimeNGConfig
+    private primengConfig: PrimeNGConfig,
+    private _navigation : Router
   ) { }
 
   ngOnInit(): void {
@@ -103,6 +106,6 @@ export class OtherComponent implements OnInit {
   }
 
   goHome(){
-    
+    this._navigation.navigate([`/${this.roleUser.toLowerCase()}`]);
   }
 }

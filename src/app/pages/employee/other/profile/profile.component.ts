@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Host, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { TokenService } from 'src/app/services/token.service';
+import { OtherComponent } from '../other.component';
 
 @Component({
   selector: 'app-profile',
@@ -15,9 +16,12 @@ export class ProfileComponent implements OnInit {
   input_phone : boolean =true;
   displayModal : boolean = false;
   confirmPassword : string = "";
+  completeData : boolean = false;
+  overlayLogout : boolean = false;
   
   constructor(
     private _token : TokenService,
+    //@Host() private _other : OtherComponent,
   ) { }
 
   ngOnInit(): void {
@@ -28,6 +32,7 @@ export class ProfileComponent implements OnInit {
     const data = this._token.getTokenDataUser() as string;
     this.user = JSON.parse(data);
     this.getRoleUser(this.user.id_role!);
+    this.completeData = true;
   }
 
   getRoleUser(id_role : number){
@@ -61,7 +66,11 @@ export class ProfileComponent implements OnInit {
     if(!this.confirmPassword) return false;
 
     //realizar peticion
-    
+    // this._other.overlayLogout = true;
+
+    // setTimeout(() => {
+    //   this._other.overlayLogout = false;
+    // }, 2000);
 
     return true;
   }
