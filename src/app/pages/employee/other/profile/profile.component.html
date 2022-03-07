@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <section>
     <p-card header="Información Personal">
         <div *ngIf="!completeData" class="grid p-fluid justify-content-center">
@@ -102,7 +103,11 @@
         </div>
         <div class="grid p-fluid justify-content-center">
             <div class="col-12 md:col-7"> 
-                <button pButton pRipple type="button" (click)="changeInformation()" label="Confirmar"></button>
+                <button id="btnLogin" class="button-login" [loading]="loading" (click)="changeInformation()" pButton pRipple type="button">
+                    <p [hidden]="!isVisibleText" style="width: 100%;">Confirmar</p>
+                    <p [hidden]="isVisibleText" style="width: 48%;"></p>
+                </button>   
+                <!-- <button pButton pRipple type="button" (click)="changeInformation()" label="Confirmar"></button> -->
             </div>
         </div>
     </p-card>

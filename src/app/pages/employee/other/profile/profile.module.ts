@@ -12,7 +12,7 @@ import {DialogModule} from 'primeng/dialog';
 import {PasswordModule} from 'primeng/password';
 import {SkeletonModule} from 'primeng/skeleton';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     DialogModule,
     PasswordModule,
     SkeletonModule,
+    ToastModule,
     ReactiveFormsModule,
   ]
 })
