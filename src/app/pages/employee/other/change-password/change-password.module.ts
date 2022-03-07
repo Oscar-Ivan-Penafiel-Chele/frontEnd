@@ -9,6 +9,7 @@ import {CardModule} from 'primeng/card';
 import {PasswordModule} from 'primeng/password';
 import { FormsModule } from '@angular/forms';
 import {DividerModule} from 'primeng/divider';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {DividerModule} from 'primeng/divider';
     CardModule,
     PasswordModule,
     FormsModule,
-    DividerModule
+    DividerModule,
+    ToastModule
   ]
 })
 export class ChangePasswordModule { }

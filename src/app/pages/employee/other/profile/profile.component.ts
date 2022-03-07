@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit {
   overlayLogout : boolean = false;
   isVisibleText : boolean;
   loading : boolean = false;
+  buttonCancel : boolean = false;
   
   constructor(
     private _token : TokenService,
@@ -57,13 +58,11 @@ export class ProfileComponent implements OnInit {
 
   changeInformation(){
     this.submitted = true;
-
     if(!this.validateInputs()) return ;
-    // this.displayModal = true;
 
-    // if(!this.validatePassword()) return ; 
-    this.saveChangeInformation();
+    this.displayModal = true;
 
+    this.validatePassword();
   }
 
   saveChangeInformation(){
@@ -77,6 +76,8 @@ export class ProfileComponent implements OnInit {
           window.location.reload();
           this.loading = false;
           this.isVisibleText = true;
+          this.displayModal=false
+          this.buttonCancel = false;
         }, 1000);
       }else{
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al actualizar datos', life:3000});
@@ -93,13 +94,22 @@ export class ProfileComponent implements OnInit {
   validatePassword(){
     if(!this.confirmPassword) return false;
 
-    //realizar peticion
-    // this._other.overlayLogout = true;
+    this.loading = true;
+    this.isVisibleText = false;
+    this.buttonCancel = true;
+    const opc = {
+      id_user : this.user.id_user,
+      password : this.confirmPassword
+    }
 
-    // setTimeout(() => {
-    //   this._other.overlayLogout = false;
-    // }, 2000);
+    this._rest.validatePassword(opc).subscribe((response)=>{
+      if(response.status == 200 || response.message === "Coincide"){
+        this.saveChangeInformation();
+      }else{
+        return;
+      }
+    });
 
-    return true;
+    return ;
   }
 }

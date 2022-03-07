@@ -44,6 +44,13 @@ export class RestService {
     });
   }
 
+  validatePassword(opc : any) : Observable<any>{
+    return this._http.post<any>(`${this.url}/validate/user/password`, opc);
+  }
+
+  changePasswordProfileEmployee(password : any, id_user : number) : Observable<any>{
+    return this._http.put<any>(`${this.url}/users/password/${id_user}`, password);
+  }
 
   /* PRODUCTO */
   getProducts() : Observable<Product[]>{

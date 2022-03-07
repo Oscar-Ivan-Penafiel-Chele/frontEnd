@@ -107,7 +107,6 @@
                     <p [hidden]="!isVisibleText" style="width: 100%;">Confirmar</p>
                     <p [hidden]="isVisibleText" style="width: 48%;"></p>
                 </button>   
-                <!-- <button pButton pRipple type="button" (click)="changeInformation()" label="Confirmar"></button> -->
             </div>
         </div>
     </p-card>
@@ -122,8 +121,8 @@
                 </div>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="displayModal=false"></button>
-                <p-button icon="pi pi-check" (click)="displayModal=false" label="Confirmar" styleClass="p-button-text"></p-button>
+                <button [disabled]="buttonCancel" pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="displayModal=false"></button>
+                <p-button icon="pi pi-check" [loading]="loading" (click)="validatePassword()" label="Confirmar" styleClass="p-button-text"></p-button>
             </ng-template>
     </p-dialog>
 
