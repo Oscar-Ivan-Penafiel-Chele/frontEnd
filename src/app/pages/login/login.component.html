@@ -10,11 +10,8 @@
         <div class="content-login-main">
             <div class="card-login">
                 <p class="mb-2">Inicio de Sesión</p>
-                <div *ngIf="invalidCredentials" class="mb-3" style="width: 100%;">
-                    <p-message severity="error" [style]="{'width':'100%'}" text="Credenciales Incorrectas"></p-message>
-                </div>
-                <div *ngIf="isValidCredentials" class="mb-3" style="width: 100%;">
-                    <p-message severity="success" [style]="{'width':'100%'}" text="Credenciales Correctas"></p-message>
+                <div *ngIf="displayMessage" class="mb-3" style="width: 100%;">
+                    <p-message [severity]="selectedMessageStatus.severity" [style]="{'width':'100%'}" [text]="selectedMessageStatus.message"></p-message>
                 </div>
                 <br>
                 <span class="p-float-label">

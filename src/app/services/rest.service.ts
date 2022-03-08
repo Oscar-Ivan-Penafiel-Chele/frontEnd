@@ -44,10 +44,23 @@ export class RestService {
     });
   }
 
+  /* VALIDATIONS */
   validatePassword(opc : any) : Observable<any>{
     return this._http.post<any>(`${this.url}/validate/user/password`, opc);
   }
+  validateNameProduct(nameProduct : string) : Observable<any>{
+    const data = {'product_name':nameProduct}
+    return this._http.post<any>(`${this.url}/validate/product/name`,data);
+  }
+  validateEmailDuplicate(data : any) :Observable<any>{
+    return this._http.post(`${this.url}/validate/user/email`,data);
+  }
+  validateIdentificationDuplicate(data : any) :Observable<any>{
+    return this._http.post<any>(`${this.url}/validate/user/identification`,data);
+  }
 
+
+  /* UPDATE PASSWORD PROFILE */
   changePasswordProfileEmployee(password : any, id_user : number) : Observable<any>{
     return this._http.put<any>(`${this.url}/users/password/${id_user}`, password);
   }
@@ -56,10 +69,7 @@ export class RestService {
   getProducts() : Observable<Product[]>{
     return this._http.get<Product[]>(`${this.url}/products`);
   }
-  validateNameProduct(nameProduct : string) : Observable<any>{
-    const data = {'product_name':nameProduct}
-    return this._http.post<any>(`${this.url}/validate/product/name`,data);
-  }
+  
   createProduct(data : FormData): Observable<any>{
     return this._http.post<any>(`${this.url}/products`,data);
   }

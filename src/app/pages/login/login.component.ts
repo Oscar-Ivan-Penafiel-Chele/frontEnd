@@ -25,8 +25,11 @@ export class LoginComponent implements OnInit {
   isVisibleText : boolean;
   user : User = {};
   submitted: boolean = false;
+  selectedMessageStatus : any;
+  optionsMessageStatus : any;
   invalidCredentials : boolean = false;
   isValidCredentials : boolean = false;
+  displayMessage : boolean = false;
 
   constructor(
     private primengConfig: PrimeNGConfig, 
@@ -38,6 +41,12 @@ export class LoginComponent implements OnInit {
     ) { 
         this.data = {};
         this.isVisibleText = true;
+        this.optionsMessageStatus = {
+          'invalido' : { severity : 'error', message : "Credenciales Inválidas"},
+          'valido' : {severity : 'success', message : "Credenciales Válidas"},
+          'bloqueado' : {severity : 'error', message : "Demasiados intentos, intentalo más tarde"},
+          'error' : {severity : 'error', message : "Error del servidor"}
+        };
     }
 
   ngOnInit(): void {
@@ -77,22 +86,32 @@ export class LoginComponent implements OnInit {
 
     this._authService.login(this.data)
     .subscribe((response) => {
-        if(response.status == 401 || response.message == "Credenciales Invalidas"){
-          this.invalidCredentials = true;
-          setTimeout(()=>{
-            this.invalidCredentials = false;
-          },3000);
-          this.loading = false;
-          this.isVisibleText = true;
+        this.displayMessage = true;
+        if(response.status == 401 && response.message == "Credenciales Invalidas"){
+          this.selectedMessageStatus = this.optionsMessageStatus['invalido'];
+          this.closeMessage();
+          return ;
+        }else if(response.status == 500 && response.message == "Ocurrio un error interno en el servidor"){
+          this.selectedMessageStatus = this.optionsMessageStatus['error'];
+          this.closeMessage();
+          return ; 
+        }else if(response.status == 500 && response.message == "Demasiados intentos, intentar en 1 minuto"){
+          this.selectedMessageStatus = this.optionsMessageStatus['bloqueado'];
+          this.closeMessage();
           return ;
         }
-        this.isValidCredentials = true;
+        this.selectedMessageStatus = this.optionsMessageStatus['valido'];
         this.responseHandle(response);
         this.redirectRoute();
-    }, (error) =>{
-      this.error = error.error;
-      console.log("Error del login: "+error);
     });
+  }
+
+  closeMessage(){
+    setTimeout(()=>{
+      this.displayMessage = false;
+    },3000);
+    this.loading = false;
+    this.isVisibleText = true;
   }
 
   async redirectRoute(){

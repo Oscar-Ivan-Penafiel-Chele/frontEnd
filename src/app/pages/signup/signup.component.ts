@@ -28,7 +28,7 @@ export class SignupComponent implements OnInit {
 
   regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;  
 
-  constructor(private primengConfig: PrimeNGConfig, private _router : Router, private _rest : RestService) {
+  constructor(private primengConfig: PrimeNGConfig, private _router : Router, private _rest : RestService ,private messageService: MessageService, ) {
     this.isVisibleText = true;
    }
 
@@ -57,6 +57,7 @@ export class SignupComponent implements OnInit {
 
     !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico inválido' : this.messageEmail = "";
     !this.validateIdentification() ? this.messageIdentification = 'Identificación inválida' : this.messageIdentification = '';
+    
     if(!this.validatePassword()){
       this.msgs1 = [{severity:'info', summary:'Info', detail:'Contraseñas no coinciden'}];
       setTimeout(() => {
@@ -70,12 +71,21 @@ export class SignupComponent implements OnInit {
     this.loading = true;
     this.isVisibleText = false;
 
+    this.validateEmailDuplicate();
+    this.saveRegister();
+  }
+
+  saveRegister(){
     this._rest.createClient(this.user).subscribe((response:any) =>{
-      if(response.status === 200 || response.message === 'Usuario creado exitosamente'){
-        this._router.navigate(['login']);
-      }else{
+      if(response.status === 200 && response.message === 'Usuario creado exitosamente'){
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'La cuenta fue creada con éxito', life:3000});
+        setTimeout(() => {
+          this._router.navigate(['login']);
+        }, 1000);
+      }else if(response.status === 500 && response.message === 'Ocurrio un error interno en el servidor'){
        this.loading = false;
        this.isVisibleText = true;
+       return;
       }
     })
   }
@@ -176,4 +186,38 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  validateEmailDuplicate(){
+    const data = {
+      email : this.user.email
+    }
+
+    this._rest.validateEmailDuplicate(data).subscribe((response)=>{
+      if(response.status == 200 && response.message == "Existe"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'El correo electrónico ya esta en uso', life:3000});
+        this.loading = false;
+        this.isVisibleText = true;
+        return false;
+      }else if(response.status == 200 && response.message == "No existe"){
+        this.validateIdentificationDuplicate();
+        return true;
+      }
+      return true;
+    })  
+  }
+
+  validateIdentificationDuplicate(){
+    const data = {
+      user_document : this.user.user_document
+    }
+
+    this._rest.validateIdentificationDuplicate(data).subscribe((response)=>{
+      if(response.status == 200 && response.message == "Existe"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'La identificación ya esta en uso', life:3000});
+        this.loading = false;
+        this.isVisibleText = true;
+      }else if(response.status == 200 && response.message == "No existe"){
+        return ;
+      }
+    });
+  }
 }

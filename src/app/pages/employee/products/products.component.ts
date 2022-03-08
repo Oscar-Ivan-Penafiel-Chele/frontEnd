@@ -311,6 +311,7 @@ export class ProductsComponent implements OnInit {
                 $event=[];
                 this.visible = false;
                 this.uploadFileExcel = false;
+                this.getAllProducts();
             }
 
         })
