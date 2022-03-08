@@ -72,22 +72,6 @@ export class SignupComponent implements OnInit {
     this.isVisibleText = false;
 
     this.validateEmailDuplicate();
-    this.saveRegister();
-  }
-
-  saveRegister(){
-    this._rest.createClient(this.user).subscribe((response:any) =>{
-      if(response.status === 200 && response.message === 'Usuario creado exitosamente'){
-        this.messageService.add({severity:'success', summary: 'Completado', detail: 'La cuenta fue creada con éxito', life:3000});
-        setTimeout(() => {
-          this._router.navigate(['login']);
-        }, 1000);
-      }else if(response.status === 500 && response.message === 'Ocurrio un error interno en el servidor'){
-       this.loading = false;
-       this.isVisibleText = true;
-       return;
-      }
-    })
   }
 
   changeIdentification($event : any){
@@ -216,8 +200,23 @@ export class SignupComponent implements OnInit {
         this.loading = false;
         this.isVisibleText = true;
       }else if(response.status == 200 && response.message == "No existe"){
-        return ;
+        this.saveRegister();
       }
     });
+  }
+
+  saveRegister(){
+    this._rest.createClient(this.user).subscribe((response:any) =>{
+      if(response.status === 200 || response.message === 'Usuario creado exitosamente'){
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'La cuenta fue creada con éxito', life:3000});
+        setTimeout(() => {
+          this._router.navigate(['login']);
+        }, 1000);
+      }else if(response.status === 500 || response.message === 'Ocurrio un error interno en el servidor'){
+       this.loading = false;
+       this.isVisibleText = true;
+       return;
+      }
+    })
   }
 }

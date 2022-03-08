@@ -1,1 +1,115 @@
-<p>promo works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+                <ng-template pTemplate>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckActive" (onChange)="change($event)" [binary]="true" inputId="active"></p-checkbox>
+                        <label for="active">Activo</label>
+                    </div>
+                    <div class="field-checkbox">
+                        <p-checkbox [(ngModel)]="stateCheckInactive" (onChange)="change($event)" [binary]="true" inputId="inactive"></p-checkbox>
+                        <label for="inactive">Inactivo</label>
+                    </div>
+                </ng-template>
+            </p-overlayPanel>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Promociones</h5>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th><i class="pi pi-tag"></i> Productos</th>
+                <th pSortableColumn="promotion_discount"><i class="pi pi-percentage"></i> Descuento <p-sortIcon field="banner_name"></p-sortIcon></th>
+                <th pSortableColumn="promotion_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="banner_status"></p-sortIcon></th>
+                <th pSortableColumn="promotion_date_of_expiry"><i class="pi pi-calendar"></i> Fecha de Caducidad <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-promotion let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>{{promotion.promotion_product}}</td>
+                <td>{{promotion.promotion_discount}}</td>
+                <td>{{promotion.promotion_date_of_expiry == 0 ? 'Inactivo' : 'Activo'}}</td>
+                <td>{{promotion.create_date}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBanner(promotion)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteBanner(promotion)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{promotions ? promotions.length : 0 }} promociones.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialogBanner" [draggable]="false" [style]="{width: '800px'}" header="Detalles de la Promoción" [closeOnEscape]="true" [maximizable]="true" [style]="{'z-index':'1'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <div class="field col">
+                <div class="field col">
+                    <label for="name">Código del Producto</label>
+                    <p-dropdown [options]="products" [(ngModel)]="promotion.promotion_product" optionLabel="product_name" optionValue="product_code" [filter]="true" filterBy="product_name,product_code" [showClear]="true" placeholder="Seleccione un producto">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value flex align-items-center"  *ngIf="promotion.promotion_product">
+                                <i class="pi pi-qrcode mr-1"></i>
+                                <div>{{promotion.promotion_product}}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-product pTemplate="item">
+                            <div class="country-item flex align-items-center">
+                                <i class="pi pi-box mr-1"></i>
+                                <div>{{product.product_name}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !promotion.promotion_product">Código es requerido</small>
+                </div>
+            </div>
+            <div class="field col">
+                <label for="productStatus">Estado del Promoción</label>
+                <p-dropdown [showClear]="true" [(ngModel)]="banner.banner_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && promotion.promotion_status == null">Estado es requerido</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="percent">Descuento</label>
+                <p-inputNumber [(ngModel)]="promotion.promotion_discount" inputId="percent" prefix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
+            </div>
+            <div class="field col">
+                <label for="buttonbar">Fecha de Expiración</label>
+                <p-calendar [style]="{'z-index':'9'}" [(ngModel)]="promotion.promotion_date_of_expiry" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true"></p-calendar>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveBanner()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

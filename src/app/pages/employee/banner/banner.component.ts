@@ -64,6 +64,7 @@ export class BannerComponent implements OnInit {
       this.bannersAux = Object.values(response);
 
       this.banners = this.bannersAux.filter((r)=> r.banner_status == 1);
+      console.log(this.banners);
     }); 
   }
 
@@ -112,7 +113,7 @@ export class BannerComponent implements OnInit {
       reader.readAsDataURL(this.fileTmp.fileRaw);
       this.isPhoto = true;
       this.inputFile = true;
-      this.banner.banner_thumbnail = this.fileTmp.fileName;
+      this.banner.banner_image = this.fileTmp.fileName;
     }
   }
 
@@ -191,7 +192,7 @@ export class BannerComponent implements OnInit {
           if(!this.validateDataNoImage()){
               return ;
           }
-          if(!this.banner.banner_thumbnail){
+          if(!this.banner.banner_image){
               this.submitted = true
           }
 
@@ -316,6 +317,6 @@ export class BannerComponent implements OnInit {
     this.fileTmp = {};
     this.photoSelected = "";
     this.isPhotoEdit = false;
-    this.banner.banner_thumbnail = '';
+    this.banner.banner_image = '';
   }
 }
