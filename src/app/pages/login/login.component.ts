@@ -27,8 +27,6 @@ export class LoginComponent implements OnInit {
   submitted: boolean = false;
   selectedMessageStatus : any;
   optionsMessageStatus : any;
-  invalidCredentials : boolean = false;
-  isValidCredentials : boolean = false;
   displayMessage : boolean = false;
 
   constructor(

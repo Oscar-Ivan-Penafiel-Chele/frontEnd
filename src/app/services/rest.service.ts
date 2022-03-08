@@ -1,5 +1,5 @@
 import { Injectable} from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { IProvider } from '../models/provider';
@@ -97,8 +97,10 @@ export class RestService {
   }
  
   /* UPLOAD STOCK */
-  uploadStock(data : FormData) : Observable<any>{
-    return this._http.post<any>(`${this.url}/products/upload/excel`,data);
+  uploadStock(data : FormData) : Observable<HttpEvent<any>>{
+    return this._http.post<any>(`${this.url}/products/upload/excel`,data, {
+      reportProgress: true, observe: "events"
+    });
   }
 
   /* PROVEEDOR */
