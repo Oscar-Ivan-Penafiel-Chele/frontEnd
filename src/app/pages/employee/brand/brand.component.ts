@@ -309,10 +309,6 @@ export class BrandComponent implements OnInit {
   }
 
   deleteBrand(brand: Brand) {
-    const obj = {
-      'id_brand' : brand.id_brand,
-      'id_user' : this.user.id_user
-    }
     this.confirmationService.confirm({
         message: '¿Estás seguro de eliminar la marca: ' + brand.brand_name + '?',
         header: 'Eliminar Marca',

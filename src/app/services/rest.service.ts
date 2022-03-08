@@ -9,6 +9,7 @@ import { Measure } from '../models/measure';
 import { Category } from '../models/category';
 import { Type_Provider } from '../models/type_provider';
 import { User } from '../models/user';
+import { Banner } from '../models/banner';
 
 
 @Injectable({
@@ -19,6 +20,26 @@ export class RestService {
   url : string = environment.API;
 
   constructor(private _http : HttpClient) { }
+
+  /* BANNERS */
+  getBanners() : Observable<Banner[]>{
+    return this._http.get<Banner[]>(`${this.url}/banners`);
+  }
+  createBanner(data : FormData) : Observable<any>{
+    return this._http.post<any>(`${this.url}/banners`, data);
+  }
+  updateBanner(data : FormData, id_banner : number) : Observable<any>{
+    data.append('_method','PUT');
+    return this._http.post<any>(`${this.url}/banners/${id_banner}`,data,);
+  }
+  deleteBanner(id_banner : number, id_user : number){
+    return this._http.request('DELETE',`${this.url}/banners/${id_banner}`,{
+      body : {
+        id_user : id_user
+      }
+    });
+  }
+
 
   /* CLIENT */
   createClient(user : User) : Observable<any>{

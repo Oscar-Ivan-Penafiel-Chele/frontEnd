@@ -10,6 +10,7 @@ const routes : Routes = [
       {path: '', redirectTo: 'products', pathMatch : 'full'},
       {path: 'auditory', loadChildren : ()=> import('./auditory/auditory.module').then( m => m.AuditoryModule)},
       {path: 'brand', loadChildren : ()=> import('./brand/brand.module').then( m => m.BrandModule)},
+      {path: 'banner', loadChildren : ()=> import('./banner/banner.module').then( m => m.BannerModule)},
       {path: 'category', loadChildren : () => import('./category/category.module').then( m => m.CategoryModule)},
       {path: 'employee', loadChildren : () => import('./report/report.module').then(m => m.ReportModule)},
       {path: 'migration', loadChildren : () => import('./migration/migration.module').then(m => m.MigrationModule)},
