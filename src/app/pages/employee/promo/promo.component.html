@@ -45,7 +45,7 @@
                 <td>{{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editPromotion(promotion)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePromotion(promotion)"></button>
+                    <button [disabled]="promotion.promotion_status == 0" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePromotion(promotion)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -63,7 +63,7 @@
             <div class="field col">
                 <div class="field col">
                     <label for="name">Nombre del Producto</label>
-                    <p-dropdown [options]="products" [(ngModel)]="promotion.id_product" optionLabel="product_name" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name" [showClear]="true"></p-dropdown>
+                    <p-dropdown [options]="products" [(ngModel)]="promotion.id_product" optionLabel="product_name" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
                     <small class="p-error" *ngIf="submitted && !promotion.id_product">Nombre es requerido</small>
                 </div>
             </div>
