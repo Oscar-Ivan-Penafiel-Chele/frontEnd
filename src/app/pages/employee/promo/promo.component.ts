@@ -134,7 +134,8 @@ export class PromoComponent implements OnInit {
 
   onSelectDate($event : any){
     try {
-      let date = JSON.stringify($event);
+      let event = new Date($event);
+      let date = JSON.stringify(event);
       date = date.slice(1,11);
       this.promotion.promotion_date_of_expiry = date;
     } catch (error) {
@@ -143,24 +144,23 @@ export class PromoComponent implements OnInit {
   }
 
   saveBanner(){
-    console.log(this.promotion);
-    // if(this.actionSelected === "new"){
-    //   this.submitted = true
+    if(this.actionSelected === "new"){
+      this.submitted = true
 
-    //   if(!this.validateData()){
-    //       return ;
-    //   }
+      if(!this.validateData()){
+          return ;
+      }
       
-    //   this.saveData();
+      this.saveData();
 
-    // }else if(this.actionSelected === "edit"){
-    //   this.submitted = true
-    //   if(!this.validateData()){
-    //     return ;
-    //   }
+    }else if(this.actionSelected === "edit"){
+      this.submitted = true
+      if(!this.validateData()){
+        return ;
+      }
     
-    //   this.updateData();
-    // }
+      this.updateData();
+    }
   }
 
   saveData(){
