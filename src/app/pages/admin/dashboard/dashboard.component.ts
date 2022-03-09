@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PrimeNGConfig } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -8,7 +8,8 @@ import { TokenService } from 'src/app/services/token.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers: [ConfirmationService,MessageService]
 })
 export class DashboardComponent implements OnInit {
 
@@ -96,7 +97,7 @@ export class DashboardComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
 
-    const opciones = ['chart'];
+    const opciones = ['chart','ingresos','egresos'];
     const route = window.location.pathname.split('/').pop();
 
 
@@ -117,8 +118,6 @@ export class DashboardComponent implements OnInit {
 
   logOut(){
     this.overlayLogout = true;
-    const divLogout = document.getElementById('nav__aside__footer');
-    divLogout!.style.pointerEvents = "none";
     this._authService.logout(this.user.id_user!)
       .subscribe((response)=>{
         if(response.status == 200 || response.message === "Sesión cerrada con éxito"){

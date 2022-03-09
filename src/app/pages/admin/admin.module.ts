@@ -4,6 +4,8 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {TooltipModule} from 'primeng/tooltip';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     CommonModule,
     AdminRoutingModule,
     TooltipModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ScrollPanelModule,
+    ConfirmDialogModule
   ]
 })
 export class AdminModule { }

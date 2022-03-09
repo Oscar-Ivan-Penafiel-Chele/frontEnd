@@ -1,4 +1,5 @@
 <section>
+    <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
     <div class="nav__header">
         <div class="logout" *ngIf="overlayLogout">
             <p-progressSpinner strokeWidth="3"></p-progressSpinner>
@@ -11,16 +12,28 @@
                     <p [hidden]="isHidden">El Descanso</p>
                 </div>
             </div>
-            <div class="nav__aside__content">
-                <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'chart'" pRipple pTooltip="Gráficos" tooltipPosition="right">
-                    <i class="pi pi-chart-line"></i>
-                    <p [hidden]="isHidden">Productos</p>
-                </div>
-               
-                <div id="nav__aside__footer" class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
-                    <i class="pi pi-power-off"></i>
-                    <p [hidden]="isHidden">Cerrar Sesión</p>
-                </div>
+            <div style="height: 80vh;">
+                <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+                    <div class="nav__aside__content">
+                        <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'chart'" pRipple pTooltip="Gráficos" tooltipPosition="right">
+                            <i class="pi pi-chart-line"></i>
+                            <p [hidden]="isHidden">Gráficas</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'ingresos'" pRipple pTooltip="Ingresos" tooltipPosition="right">
+                            <i class="pi pi-inbox"></i>
+                            <p [hidden]="isHidden">Ingresos</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Egresos" tooltipPosition="right">
+                            <i class="pi pi-window-maximize"></i>
+                            <p [hidden]="isHidden">Egresos</p>
+                        </div>
+                    </div>
+                </p-scrollPanel>
+            </div>
+
+            <div id="nav__aside__footer" class="nav__aside__footer" (click)="logOut()" pRipple pTooltip="Cerrar Sesión" tooltipPosition="right">
+                <i class="pi pi-power-off"></i>
+                <p [hidden]="isHidden">Cerrar Sesión</p>
             </div>
         </div>
 
@@ -40,12 +53,11 @@
                         </div>
                     </div>
                     <div class="profile__options isActiveNavOption">
-                        <div style="width:100%; padding: 10px 0px 0px 0px;" class="flex justify-content-center align-items-center ">
-                            <p style="font-size: 14px; color: rgb(134, 134, 134);"><i class="pi pi-shield"></i> {{roleUser}}</p>
+                        <div style="width:100%; padding: 15px;" class="flex justify-content-center align-items-center ">
+                            <p style="font-size: 14px; color: #414141;"><i class="pi pi-shield"></i> {{roleUser}}</p>
                         </div>
                         <p style="border-top: 1px solid #ccc; width: 100%;" class="mt-2">Opciones</p>
-                        <a href=""><i class="pi pi-user"></i> Perfil</a>
-                        <a href=""><i class="pi pi-cog"></i> Configuración</a>
+                        <a href="configuración/perfil"><i class="pi pi-cog"></i> Configuración</a>
                     </div>
                 </div>
 

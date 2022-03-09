@@ -1,0 +1,44 @@
+<div class="card">
+    <p-table #dt [value]="egresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Egresos</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Cliente<p-sortIcon field="user.user_name"></p-sortIcon></th>
+                <th pSortableColumn="audit_module"><i class="pi pi-qrcode"></i> Número de comprobante <p-sortIcon field="audit_module"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="audit_description"><i class="pi pi-dollar"></i> Total <p-sortIcon field="audit_description"></p-sortIcon></th>
+                <th><i class="pi pi-file-pdf"></i> Factura</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-auditory let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>{{auditory.user.user_name}} {{auditory.user.user_lastName}}</td>
+                <td>{{auditory.audit_module}}</td>
+                <td>{{auditory.audit_description}}</td>
+                <td>{{auditory.create_date}}</td>
+                <!-- <td>
+                    <button pButton pRipple type="button" icon="pi pi-eye" (click)="openModal(auditory)" class="p-button-info"></button>
+                </td> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Registros Totales: {{egresos ? egresos.length : 0 }}
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- <p-dialog header="Query SQL" [(visible)]="displayModal" [modal]="true" [style]="{width: '70vw'}" [maximizable]="true"
+    [draggable]="false" [resizable]="false">
+    <p>{{aud.audit_query}}</p>
+</p-dialog> -->

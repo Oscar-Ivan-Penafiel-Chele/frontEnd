@@ -1,0 +1,36 @@
+<div class="card">
+    <p-table #dt [value]="ingresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Ingresos</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn=""><i class="pi pi-qrcode"></i> Código del Producto<p-sortIcon field=""></p-sortIcon></th>
+                <th pSortableColumn=""><i class="pi pi-history"></i> Movimiento <p-sortIcon field=""></p-sortIcon></th>
+                <th pSortableColumn=""><i class="pi pi-download"></i> Cantidad Ingresada <p-sortIcon field=""></p-sortIcon></th>
+                <th pSortableColumn=""><i class="pi pi-box"></i> Stock <p-sortIcon field=""></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ingreso let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>{{ingreso.user.user_name}}</td>
+                <td>{{ingreso.audit_module}}</td>
+                <td>{{ingreso.audit_description}}</td>
+                <td>{{ingreso.create_date}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Registros Totales: {{ingresos ? ingresos.length : 0 }}
+            </div>
+        </ng-template>
+    </p-table>
+</div>

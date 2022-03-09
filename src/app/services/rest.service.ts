@@ -11,6 +11,7 @@ import { Type_Provider } from '../models/type_provider';
 import { User } from '../models/user';
 import { Banner } from '../models/banner';
 import { Promotion } from '../models/promotion';
+import { Ingreso } from '../models/ingreso';
 
 
 @Injectable({
@@ -40,7 +41,6 @@ export class RestService {
       }
     });
   }
-
 
   /* CLIENT */
   createClient(user : User) : Observable<any>{
@@ -126,6 +126,13 @@ export class RestService {
       reportProgress: true, observe: "events"
     });
   }
+
+  /* INGRESOS */
+  getIngresos() : Observable<Ingreso[]>{
+    return this._http.get<Ingreso[]>(`${this.url}/ingresos`);
+  }
+
+  /* EGRESOS */
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{
