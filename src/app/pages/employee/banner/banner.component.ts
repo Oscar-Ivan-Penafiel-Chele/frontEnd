@@ -60,11 +60,12 @@ export class BannerComponent implements OnInit {
   }
 
   getBanners(){
+    this.loading = true;
     this._rest.getBanners().subscribe((response : Banner[])=>{
       this.bannersAux = Object.values(response);
-
       this.banners = this.bannersAux.filter((r)=> r.banner_status == 1);
-      console.log(this.banners);
+      
+      this.loading = false;
     }); 
   }
 
@@ -113,7 +114,7 @@ export class BannerComponent implements OnInit {
       reader.readAsDataURL(this.fileTmp.fileRaw);
       this.isPhoto = true;
       this.inputFile = true;
-      this.banner.banner_image = this.fileTmp.fileName;
+      this.banner.banner_thumbnail = this.fileTmp.fileName;
     }
   }
 
@@ -192,7 +193,7 @@ export class BannerComponent implements OnInit {
           if(!this.validateDataNoImage()){
               return ;
           }
-          if(!this.banner.banner_image){
+          if(!this.banner.banner_thumbnail){
               this.submitted = true
           }
 
@@ -252,6 +253,16 @@ export class BannerComponent implements OnInit {
     return true;
   }
 
+  editBanner(banner : Banner){
+    this.actionSelected = "edit"
+    this.banner = {...banner};
+    this.isPhoto = true;   // Le decimos que si hay foto
+    this.inputFile = true; // LE decimos que bloquee el inputFile
+    this.isPhotoEdit = true; // Le decimos que si hay foto para editar
+    this.dialogBanner = true; // abrimos modal
+    this.fileTmp = {}; 
+  }
+
   updateData(existImage : boolean){
 
     const data = new FormData();
@@ -267,7 +278,7 @@ export class BannerComponent implements OnInit {
 
     this._rest.updateBanner(data, this.banner.id_banner!)
     .subscribe((response)=>{
-        if(response.status == 200 && response.message === "Banner actualizada con exito"){
+        if(response.status == 200 && response.message === "Banner actualizado con exito"){
             this.getBanners();
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue actualizado con éxito', life:3000});
@@ -278,16 +289,6 @@ export class BannerComponent implements OnInit {
     });
   }
 
-  editBanner(banner : Banner){
-    this.actionSelected = "edit"
-    this.banner = {...banner};
-    this.isPhoto = true;   // Le decimos que si hay foto
-    this.inputFile = true; // LE decimos que bloquee el inputFile
-    this.isPhotoEdit = true; // Le decimos que si hay foto para editar
-    this.dialogBanner = true; // abrimos modal
-    this.fileTmp = {}; 
-  }
-
   deleteBanner(banner : Banner){
     this.confirmationService.confirm({
       message: '¿Estás seguro de eliminar el banner: ' + banner.banner_name + '?',
@@ -296,7 +297,7 @@ export class BannerComponent implements OnInit {
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this._rest.deleteBrand(banner.id_banner!, this.user.id_user!).subscribe((response)=>{
+          this._rest.deletePromotion(banner.id_banner!, this.user.id_user!).subscribe((response)=>{
               if(response.status == 200 && response.message === "Eliminado correctamente"){
                   this.getBanners()
                   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Banner Eliminado', life: 3000});
@@ -317,6 +318,6 @@ export class BannerComponent implements OnInit {
     this.fileTmp = {};
     this.photoSelected = "";
     this.isPhotoEdit = false;
-    this.banner.banner_image = '';
+    this.banner.banner_thumbnail = '';
   }
 }

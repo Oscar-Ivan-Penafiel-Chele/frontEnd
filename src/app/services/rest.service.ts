@@ -10,6 +10,7 @@ import { Category } from '../models/category';
 import { Type_Provider } from '../models/type_provider';
 import { User } from '../models/user';
 import { Banner } from '../models/banner';
+import { Promotion } from '../models/promotion';
 
 
 @Injectable({
@@ -148,6 +149,23 @@ export class RestService {
     return this._http.get<Type_Provider[]>(`${this.url}/type-providers`);
   }
 
+  /* PROMOTIONS */
+  getPromotions() : Observable<Promotion[]>{
+    return this._http.get<Promotion[]>(`${this.url}/promotions`);
+  }
+  createPromotion(promotion : Promotion) :Observable<any>{
+    return this._http.post<any>(`${this.url}/promotions`,promotion);
+  }
+  updatePromotion(promotion : Promotion) : Observable<any>{
+    return this._http.put<any>(`${this.url}/promotions/${promotion.id_promotion}`,promotion);
+  }
+  deletePromotion(id_promotion : number, id_user:number) : Observable<any>{
+    return this._http.request('DELETE',`${this.url}/promotions/${id_promotion}`,{
+      body : {
+        id_user : id_user
+      }
+    });
+  }
 
   /* BRAND */
   getBrands() : Observable<Brand[]>{

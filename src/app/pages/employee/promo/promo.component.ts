@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Banner } from 'src/app/models/banner';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { PrimeNGConfig ,ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment.prod';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -22,27 +22,12 @@ export class PromoComponent implements OnInit {
   products : Product[] = [];
   promotion : Promotion = {} as Promotion;
 
-  banners : Banner[] = [];
-  bannersAux : Banner[] = [];
-
-  banner : Banner = {};
   user : User = {};
   loading : boolean = false;
   dialogBanner : boolean = false;
   actionSelected  : string ="";
   submitted: boolean = false;
   states : any[] = [];
-  photoSelected? : string | ArrayBuffer | null;
-  inputFile :boolean = false;
-  isPhoto : boolean = false;
-  isPhotoEdit : boolean;
-  isError : boolean ;
-  overImage : string = "assets/img/not_image.jpg";
-  fileExtensionValid : boolean = false;
-  sizeFileValid : boolean = false;
-  fileTmp : any;
-  fileSize : string = "";
-  descriptionSize : string = "";
   stateCheckActive : boolean = true;
   stateCheckInactive : boolean = false;
 
@@ -56,10 +41,15 @@ export class PromoComponent implements OnInit {
     private _rest : RestService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService, 
-    private _token : TokenService
+    private _token : TokenService,
+    private config: PrimeNGConfig
   ) { 
-    this.isPhotoEdit = false;
-    this.isError = false;
+    this.config.setTranslation({
+      "clear" : "Vaciar",
+      "today" : "Hoy",
+      "dayNamesMin": ["D","L","M","X","J","V","S"],
+      "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    });
   }
 
   ngOnInit(): void {
@@ -68,7 +58,6 @@ export class PromoComponent implements OnInit {
       {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
     ];
     this.getProducts();
-    this.getBanners();
     this.getDataProfile();
   }
 
@@ -79,12 +68,11 @@ export class PromoComponent implements OnInit {
     })
   }
 
-  getBanners(){
-    this._rest.getBanners().subscribe((response : Banner[])=>{
-      this.bannersAux = Object.values(response);
-
-      this.banners = this.bannersAux.filter((r)=> r.banner_status == 1);
-    }); 
+  getPromotions(){
+    this._rest.getPromotions().subscribe((response : Promotion[])=>{
+      this.promotionsAux = Object.values(response);
+      this.promotions = this.promotionsAux.filter((i)=> i.promotion_status == 1);
+    });
   }
 
   getDataProfile(){
@@ -94,14 +82,10 @@ export class PromoComponent implements OnInit {
 
   openNew(){
     this.actionSelected = "new"
-    this.isPhoto = false;
-    this.inputFile = false; 
-    this.banner = {};
-    this.fileTmp = {}; 
+    this.promotion = {} as Promotion;
     this.submitted = false; 
     this.dialogBanner = true; 
-    this.isPhotoEdit = false; 
-    this.banner.banner_status = 1;  
+    this.promotion.promotion_status = 1;  
   }
 
   hideDialog(){
@@ -109,7 +93,6 @@ export class PromoComponent implements OnInit {
   }
 
   filterProduct(event : any) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
      let filtered : any[] = [];
      let query = event.query;
 
@@ -125,80 +108,57 @@ export class PromoComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-         this.banners = this.bannersAux; 
+         this.promotions = this.promotionsAux; 
     }
 
-    if(!this.stateCheckActive && !this.stateCheckInactive) this.banners = [] ;
+    if(!this.stateCheckActive && !this.stateCheckInactive) this.promotions = [] ;
 
-    this.getBannersActives();
-    this.getBannersInactives();
+    this.getPromotionsActives();
+    this.getPromotionsInactives();
   }
 
-  getBannersActives(){
+  getPromotionsActives(){
     if(this.stateCheckActive && !this.stateCheckInactive){
-        this.banners = this.bannersAux.filter( i => i.banner_status == 1);
+        this.promotions = this.promotionsAux.filter( i => i.promotion_status == 1);
     }
   }
 
-  getBannersInactives(){
+  getPromotionsInactives(){
       if(!this.stateCheckActive && this.stateCheckInactive){
-          this.banners = this.bannersAux.filter( i => i.banner_status == 0)
+          this.promotions = this.promotionsAux.filter( i => i.promotion_status == 0)
       }
   }
 
-  onSelect(value : any){
-    // this.promotion.promotion_product.product_name = value.product_name;
-  }
-
   saveBanner(){
-    console.log(this.selectedCountryAdvanced.product_name);
-    // if(this.actionSelected === "new"){
-    //   this.submitted = true
+    if(this.actionSelected === "new"){
+      this.submitted = true
 
-    //   if(!this.validateData()){
-    //       return ;
-    //   }
+      if(!this.validateData()){
+          return ;
+      }
       
-    //   this.saveData();
+      this.saveData();
 
-    // }else if(this.actionSelected === "edit"){
-    //   if(this.isObjEmpty(this.fileTmp)){
-    //       //Se envia la misma imagen 
-    //       this.fileTmp = {};
-    //       if(!this.validateDataNoImage()){
-    //           return ;
-    //       }
-    //       if(!this.banner.banner_thumbnail){
-    //           this.submitted = true
-    //       }
-
-    //       this.updateData(false);
-    //   }else{
-    //       //Se cambia la imagen
-    //       this.submitted = true
-    //       if(!this.validateData()){
-    //           return ;
-    //       }
-    //       this.updateData(true);
-    //   }
-    // }
+    }else if(this.actionSelected === "edit"){
+      this.submitted = true
+      if(!this.validateData()){
+        return ;
+      }
+    
+      this.updateData();
+    }
   }
 
   saveData(){
-    const data = new FormData();
-    data.append('image', this.fileTmp.fileRaw);
-    Object.entries(this.banner).forEach(([key , value]) => {
-        data.append(`${key}`, value);
-    });
-    data.append('id_user',String(this.user.id_user));
+    this.promotion.id_user = this.user.id_user!;
         
-    this._rest.createBanner(data)
+    this._rest.createPromotion(this.promotion)
         .subscribe((response)=>{
-            if(response.status == 200 && response.message === "Banner creado con exito"){
-                this.getBanners()
+            if(response.status == 200 && response.message === "Promocion creada con exito"){
+                this.getPromotions()
                 this.hideDialog();
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue creado con éxito', life: 3000});
-            }else{
+            }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
               this.hideDialog();
               this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
             }
@@ -206,45 +166,18 @@ export class PromoComponent implements OnInit {
   }
 
   validateData(){
-    if(this.isObjEmpty(this.fileTmp) || !this.banner.banner_name || this.banner.banner_status == null){
+    if(!this.promotion.promotion_product || !this.promotion.promotion_discount || !this.promotion.promotion_date_of_expiry ||this.promotion.promotion_status == null){
         return false;
     }
   
     return true;
   }
 
-  validateDataNoImage(){
-    if(!this.banner.banner_name || this.banner.banner_status == null){
-        return false;
-    }
-  
-    return true;
-  }
-
-  isObjEmpty(obj : any) {
-    for (var prop in obj) {
-      if (obj.hasOwnProperty(prop)) return false;
-    }
-    return true;
-  }
-
-  updateData(existImage : boolean){
-
-    const data = new FormData();
-
-    if(existImage){
-        data.append('image', this.fileTmp.fileRaw);
-    }
-
-    Object.entries(this.banner).forEach(([key , value]) => {
-        data.append(`${key}`, value);
-    });
-    data.append('id_user',String(this.user.id_user));
-
-    this._rest.updateBanner(data, this.banner.id_banner!)
+  updateData(){
+    this._rest.updatePromotion(this.promotion)
     .subscribe((response)=>{
-        if(response.status == 200 && response.message === "Banner actualizada con exito"){
-            this.getBanners();
+        if(response.status == 200 && response.message === "Promoción actualizada con exito"){
+            this.getPromotions();
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue actualizado con éxito', life:3000});
         }else if((response.status == 400 || response.status == 500) && response.message === "Ocurrio un error interno en el servidor"){
@@ -254,28 +187,24 @@ export class PromoComponent implements OnInit {
     });
   }
 
-  editBanner(banner : Banner){
+  editBanner(promotion : Promotion){
     this.actionSelected = "edit"
-    this.banner = {...banner};
-    this.isPhoto = true;   // Le decimos que si hay foto
-    this.inputFile = true; // LE decimos que bloquee el inputFile
-    this.isPhotoEdit = true; // Le decimos que si hay foto para editar
+    this.promotion = {...promotion};
     this.dialogBanner = true; // abrimos modal
-    this.fileTmp = {}; 
   }
 
-  deleteBanner(banner : Banner){
+  deleteBanner(promotion : Promotion){
     this.confirmationService.confirm({
-      message: '¿Estás seguro de eliminar el banner: ' + banner.banner_name + '?',
-      header: 'Eliminar Banner',
+      message: '¿Estás seguro de eliminar la promoción?',
+      header: 'Eliminar Promoción',
       acceptLabel : 'Eliminar',
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this._rest.deleteBrand(banner.id_banner!, this.user.id_user!).subscribe((response)=>{
+          this._rest.deletePromotion(this.promotion.id_promotion!, this.user.id_user!).subscribe((response)=>{
               if(response.status == 200 && response.message === "Eliminado correctamente"){
-                  this.getBanners()
-                  this.messageService.add({severity:'success', summary: 'Completado', detail: 'Banner Eliminado', life: 3000});
+                  this.getPromotions();
+                  this.messageService.add({severity:'success', summary: 'Completado', detail: 'Promoción Eliminado', life: 3000});
               }else{
                 this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
               }
@@ -285,15 +214,4 @@ export class PromoComponent implements OnInit {
       }
   });
   }
-
-
-  clearImage(){
-    this.isPhoto = false;
-    this.inputFile = false;
-    this.fileTmp = {};
-    this.photoSelected = "";
-    this.isPhotoEdit = false;
-    this.banner.banner_image = '';
-  }
-
 }

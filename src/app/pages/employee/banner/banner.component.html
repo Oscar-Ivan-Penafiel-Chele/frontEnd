@@ -40,7 +40,7 @@
         <ng-template pTemplate="body" let-banner let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
                 <td>{{banner.banner_name}}</td>
-                <td><img [src]="host+banner.banner_image" [alt]="banner.banner_image" width="80" height="80" class="shadow-4" /></td>
+                <td><img [src]="!banner.banner_thumbnail || banner.banner_thumbnail== null ? overImage : host+banner.banner_thumbnail" [alt]="banner.banner_thumbnail" width="80" height="80" class="shadow-4" /></td>
                 <td>{{banner.brand_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{banner.create_date}}</td>
                 <td>
@@ -66,7 +66,7 @@
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
                     <div class="imgSelected">
-                        <img [src]="!banner.banner_image || banner.banner_image=='null' ? overImage : host+banner.banner_image" [alt]="banner.banner_image" height="250px" class="product-image" *ngIf="isPhotoEdit">
+                        <img [src]="!banner.banner_thumbnail || banner.banner_thumbnail=='null' ? overImage : host+banner.banner_thumbnail" [alt]="banner.banner_thumbnail" height="250px" class="product-image" *ngIf="isPhotoEdit">
                         <img src="{{photoSelected}}" alt="Image" height="250px" *ngIf="!isPhotoEdit">
                     </div>
                 </ng-template>
@@ -81,12 +81,12 @@
             </div>
             <small class="p-error" *ngIf="fileExtensionValid"><i class="pi pi-exclamation-triangle"></i> Extensión no admitida</small>
             <small class="p-error" *ngIf="sizeFileValid"><i class="pi pi-exclamation-triangle"></i> Tamaño no adminido</small>
-            <small class="p-error" *ngIf="submitted && (!banner.banner_image || !photoSelected)">Imagen es requerido</small>
+            <small class="p-error" *ngIf="submitted && (!banner.banner_thumbnail || !photoSelected)">Imagen es requerido</small>
             <div *ngIf="isPhoto" class="infoPhoto">
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p *ngIf="isPhotoEdit">{{!banner.banner_image || banner.banner_image == 'null' ? 'No Imagen' : banner.banner_image}}</p> 
+                        <p *ngIf="isPhotoEdit">{{!banner.banner_thumbnail || banner.banner_thumbnail == 'null' ? 'No Imagen' : banner.banner_thumbnail}}</p> 
                         <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
                     </div>
                 </div>

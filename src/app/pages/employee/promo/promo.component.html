@@ -57,32 +57,19 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="dialogBanner" [draggable]="false" [style]="{width: '800px'}" header="Detalles de la Promoción" [closeOnEscape]="true" [maximizable]="true" [style]="{'z-index':'1'}" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="dialogBanner" [draggable]="false" [style]="{width: '1080px'}" header="Detalles de la Promoción" [closeOnEscape]="true" [maximizable]="true" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="formgrid grid">
             <div class="field col">
                 <div class="field col">
-                    <label for="name">Código del Producto</label>
-                    <p-dropdown [options]="products" [(ngModel)]="promotion.promotion_product" optionLabel="product_name" optionValue="product_code" [filter]="true" filterBy="product_name,product_code" [showClear]="true" placeholder="Seleccione un producto">
-                        <ng-template pTemplate="selectedItem">
-                            <div class="country-item country-item-value flex align-items-center"  *ngIf="promotion.promotion_product">
-                                <i class="pi pi-qrcode mr-1"></i>
-                                <div>{{promotion.promotion_product}}</div>
-                            </div>
-                        </ng-template>
-                        <ng-template let-product pTemplate="item">
-                            <div class="country-item flex align-items-center">
-                                <i class="pi pi-box mr-1"></i>
-                                <div>{{product.product_name}}</div>
-                            </div>
-                        </ng-template>
-                    </p-dropdown>
+                    <label for="name">Nombre del Producto</label>
+                    <p-dropdown [options]="products" [(ngModel)]="promotion.promotion_product" optionLabel="product_name" optionValue="product_code" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" [showClear]="true"></p-dropdown>
                     <small class="p-error" *ngIf="submitted && !promotion.promotion_product">Código es requerido</small>
                 </div>
             </div>
             <div class="field col">
                 <label for="productStatus">Estado del Promoción</label>
-                <p-dropdown [showClear]="true" [(ngModel)]="banner.banner_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                <p-dropdown [showClear]="true" [(ngModel)]="promotion.promotion_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="{{option.icon}} mr-2"></i>
@@ -98,10 +85,19 @@
             <div class="field col">
                 <label for="percent">Descuento</label>
                 <p-inputNumber [(ngModel)]="promotion.promotion_discount" inputId="percent" prefix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
+                <small class="p-error" *ngIf="submitted && promotion.promotion_discount == null">Descuento es requerido</small>
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Expiración</label>
-                <p-calendar [style]="{'z-index':'9'}" [(ngModel)]="promotion.promotion_date_of_expiry" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" dateFormat="yy/mm/dd" [(ngModel)]="promotion.promotion_date_of_expiry" [readonlyInput]="true" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Campo es requerido</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="description">Descripción del Banner</label>
+                <textarea id="description" required pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
             </div>
         </div>
     </ng-template>
