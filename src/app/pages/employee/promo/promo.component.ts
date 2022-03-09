@@ -36,6 +36,7 @@ export class PromoComponent implements OnInit {
   filteredProducts: any[] = [];
   selectedCountryAdvanced: Product = {} as Product;
   codeProducts : any = [];
+  invalidDates: Array<Date> = [] ;
 
   constructor(
     private _rest : RestService,
@@ -60,6 +61,7 @@ export class PromoComponent implements OnInit {
     this.getProducts();
     this.getPromotions();
     this.getDataProfile();
+
   }
 
   getProducts(){
@@ -151,7 +153,7 @@ export class PromoComponent implements OnInit {
           return ;
       }
       
-      this.saveData();
+      this.validatePromotionProduct();
 
     }else if(this.actionSelected === "edit"){
       this.submitted = true
@@ -163,6 +165,20 @@ export class PromoComponent implements OnInit {
     }
   }
 
+  validatePromotionProduct(){ 
+    const data = {
+      id_product : this.promotion.id_product,
+    }
+    this._rest.validatePromotionProduct(data).subscribe((response)=>{
+      if(response.status == 200 && response.message === "Tiene promocion"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'El producto seleccionado ya cuenta con una promoción', life:3000});
+        return;
+      }else if(response.status == 200 && response.message === "No tiene promocion"){
+        this.saveData();
+      }
+    })
+  }
+
   saveData(){
     this.promotion.id_user = this.user.id_user!;
         
@@ -171,7 +187,7 @@ export class PromoComponent implements OnInit {
         if(response.status == 200 && response.message === "Promocion creada con exito"){
             this.getPromotions()
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue creado con éxito', life: 3000});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue creado con éxito', life: 3000});
         }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
           this.hideDialog();
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
@@ -187,6 +203,7 @@ export class PromoComponent implements OnInit {
     return true;
   }
 
+
   updateData(){
     this.promotion.id_user = this.user.id_user!;
     this._rest.updatePromotion(this.promotion)
@@ -194,7 +211,7 @@ export class PromoComponent implements OnInit {
         if(response.status == 200 && response.message === "Promoción actualizada con exito"){
             this.getPromotions();
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue actualizado con éxito', life:3000});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue actualizado con éxito', life:3000});
         }else if((response.status == 400 || response.status == 500) && response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});

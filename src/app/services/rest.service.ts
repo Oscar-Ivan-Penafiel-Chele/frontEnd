@@ -80,7 +80,9 @@ export class RestService {
   validateIdentificationDuplicate(data : any) :Observable<any>{
     return this._http.post<any>(`${this.url}/validate/user/identification`,data);
   }
-
+  validatePromotionProduct(data : any) : Observable<any>{
+    return this._http.post(`${this.url}/validate/promotion/product`,data);
+  }
 
   /* UPDATE PASSWORD PROFILE */
   changePasswordProfileEmployee(password : any, id_user : number) : Observable<any>{
