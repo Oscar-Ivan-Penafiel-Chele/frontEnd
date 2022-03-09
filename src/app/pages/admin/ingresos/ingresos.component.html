@@ -1,5 +1,5 @@
 <div class="card">
-    <p-table #dt [value]="ingresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="ingresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -12,19 +12,20 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn=""><i class="pi pi-qrcode"></i> Código del Producto<p-sortIcon field=""></p-sortIcon></th>
-                <th pSortableColumn=""><i class="pi pi-history"></i> Movimiento <p-sortIcon field=""></p-sortIcon></th>
-                <th pSortableColumn=""><i class="pi pi-download"></i> Cantidad Ingresada <p-sortIcon field=""></p-sortIcon></th>
-                <th pSortableColumn=""><i class="pi pi-box"></i> Stock <p-sortIcon field=""></p-sortIcon></th>
-                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="producto.product_code"><i class="pi pi-qrcode"></i> Código del Producto<p-sortIcon field="producto.product_code"></p-sortIcon></th>
+                <th pSortableColumn="inventory_movement_type"><i class="pi pi-history"></i> Movimiento <p-sortIcon field="inventory_movement_type"></p-sortIcon></th>
+                <th pSortableColumn="inventory_stock_amount"><i class="pi pi-download"></i> Cantidad Ingresada <p-sortIcon field=""></p-sortIcon></th>
+                <th pSortableColumn="producto.product_stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="producto.product_stock"></p-sortIcon></th>
+                <th pSortableColumn="updated_at"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="updated_at"></p-sortIcon></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-ingreso let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td>{{ingreso.user.user_name}}</td>
-                <td>{{ingreso.audit_module}}</td>
-                <td>{{ingreso.audit_description}}</td>
-                <td>{{ingreso.create_date}}</td>
+                <td>{{ingreso.producto.product_code}}</td>
+                <td>{{ingreso.inventory_movement_type}}</td>
+                <td>{{ingreso.inventory_stock_amount}}</td>
+                <td>{{ingreso.producto.product_stock }}</td>
+                <td>{{ingreso.updated_at}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">

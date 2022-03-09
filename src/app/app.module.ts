@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ScrollToUpComponent } from './components/scroll-to-up/scroll-to-up.component';
 
 import {BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 
@@ -15,7 +14,6 @@ import { AuthInterceptor } from './services/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
-    ScrollToUpComponent,
     SortByOrderPipe,
   ],
   imports: [

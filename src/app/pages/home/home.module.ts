@@ -6,12 +6,11 @@ import {CarouselModule} from 'primeng/carousel';
 import { RouterModule } from '@angular/router';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
-// import { ScrollToUpComponent } from 'src/app/components/scroll-to-up/scroll-to-up.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    // ScrollToUpComponent
   ],
   imports: [
     CommonModule,
@@ -20,6 +19,7 @@ import {ButtonModule} from 'primeng/button';
     RouterModule,
     InputTextModule,
     ButtonModule,  
+    SharedModule
   ]
 })
 export class HomeModule { }

@@ -8,6 +8,9 @@ import {TooltipModule} from 'primeng/tooltip';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {DialogModule} from 'primeng/dialog';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {DropdownModule} from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import {DialogModule} from 'primeng/dialog';
     TooltipModule,
     InputTextModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    ConfirmDialogModule,
+    DropdownModule,
+    FormsModule
   ]
 })
 export class EgresosModule { }

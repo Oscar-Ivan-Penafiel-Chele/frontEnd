@@ -127,10 +127,11 @@ export class RestService {
     });
   }
 
-  /* INGRESOS */
-  getIngresos() : Observable<Ingreso[]>{
-    return this._http.get<Ingreso[]>(`${this.url}/ingresos`);
+  /* INVENTORY */
+  getInventory() : Observable<Ingreso[]>{
+    return this._http.get<Ingreso[]>(`${this.url}/inventories`);
   }
+
 
   /* EGRESOS */
 

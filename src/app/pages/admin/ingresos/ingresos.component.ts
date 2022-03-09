@@ -22,8 +22,11 @@ export class IngresosComponent implements OnInit {
   }
 
   getIngresos(){
-    this._rest.getIngresos().subscribe((response : Ingreso[])=>{
+    this.loading = true;
+    this._rest.getInventory().subscribe((response : Ingreso[])=>{
       this.ingresos = Object.values(response);
+      this.ingresos = this.ingresos.filter((i)=> i.inventory_movement_type == 'INGRESO')
+      this.loading = false;
     })
   }
 
