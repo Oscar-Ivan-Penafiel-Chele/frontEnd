@@ -42,10 +42,10 @@
                 <td>{{promotion.producto.product_name}}</td>
                 <td>{{'%'+promotion.promotion_discount}}</td>
                 <td>{{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
-                <td>{{promotion.promotion_date_of_expiry}}</td>
+                <td>{{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBanner(promotion)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteBanner(promotion)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editPromotion(promotion)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePromotion(promotion)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -89,7 +89,7 @@
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Expiración</label>
-                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" dateFormat="yy/mm/dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Campo es requerido</small>
             </div>
         </div>
@@ -104,7 +104,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveBanner()"></button>
+        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="savePromotion()"></button>
     </ng-template>
 </p-dialog>
 

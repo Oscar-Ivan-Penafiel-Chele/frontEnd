@@ -143,7 +143,7 @@ export class PromoComponent implements OnInit {
     }
   }
 
-  saveBanner(){
+  savePromotion(){
     if(this.actionSelected === "new"){
       this.submitted = true
 
@@ -189,7 +189,6 @@ export class PromoComponent implements OnInit {
 
   updateData(){
     this.promotion.id_user = this.user.id_user!;
-    console.log(this.promotion);
     this._rest.updatePromotion(this.promotion)
     .subscribe((response)=>{
         if(response.status == 200 && response.message === "Promoción actualizada con exito"){
@@ -203,14 +202,14 @@ export class PromoComponent implements OnInit {
     });
   }
 
-  editBanner(promotion : Promotion){
+  editPromotion(promotion : Promotion){
     this.actionSelected = "edit"
     this.promotion = {...promotion};
     this.dialogBanner = true; 
-    console.log(promotion);
+    promotion.promotion_date_of_expiry = promotion.promotion_date_of_expiry.slice(0,10);
   }
 
-  deleteBanner(promotion : Promotion){
+  deletePromotion(promotion : Promotion){
     this.confirmationService.confirm({
       message: '¿Estás seguro de eliminar la promoción?',
       header: 'Eliminar Promoción',
@@ -218,7 +217,7 @@ export class PromoComponent implements OnInit {
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this._rest.deletePromotion(this.promotion.id_promotion!, this.user.id_user!).subscribe((response)=>{
+          this._rest.deletePromotion(promotion.id_promotion!, this.user.id_user!).subscribe((response)=>{
               if(response.status == 200 && response.message === "Eliminado correctamente"){
                   this.getPromotions();
                   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Promoción Eliminado', life: 3000});
