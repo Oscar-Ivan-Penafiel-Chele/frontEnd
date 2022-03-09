@@ -8,6 +8,10 @@ import { ScrollToUpComponent } from 'src/app/components/scroll-to-up/scroll-to-u
   ],
   imports: [
     CommonModule
+  ],
+  exports : [
+    ScrollToUpComponent
   ]
+  
 })
 export class SharedModule { }

@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputTextModule} from 'primeng/inputtext';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {InputTextModule} from 'primeng/inputtext';
     FormsModule,
     RouterModule,
     ProgressSpinnerModule,
-    InputTextModule
+    InputTextModule,
+    SharedModule
   ]
 })
 export class ShopModule { }
