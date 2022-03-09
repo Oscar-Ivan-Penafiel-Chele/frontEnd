@@ -33,7 +33,7 @@ export class RestService {
     data.append('_method','PUT');
     return this._http.post<any>(`${this.url}/banners/${id_banner}`,data,);
   }
-  deleteBanner(id_banner : number, id_user : number){
+  deleteBanner(id_banner : number, id_user : number) : Observable<any>{
     return this._http.request('DELETE',`${this.url}/banners/${id_banner}`,{
       body : {
         id_user : id_user

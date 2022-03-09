@@ -30,7 +30,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th><i class="pi pi-tag"></i> Productos</th>
+                <th><i class="pi pi-tag"></i> Producto</th>
                 <th pSortableColumn="promotion_discount"><i class="pi pi-percentage"></i> Descuento <p-sortIcon field="banner_name"></p-sortIcon></th>
                 <th pSortableColumn="promotion_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="banner_status"></p-sortIcon></th>
                 <th pSortableColumn="promotion_date_of_expiry"><i class="pi pi-calendar"></i> Fecha de Caducidad <p-sortIcon field="create_date"></p-sortIcon></th>
@@ -39,10 +39,10 @@
         </ng-template>
         <ng-template pTemplate="body" let-promotion let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td>{{promotion.promotion_product}}</td>
-                <td>{{promotion.promotion_discount}}</td>
-                <td>{{promotion.promotion_date_of_expiry == 0 ? 'Inactivo' : 'Activo'}}</td>
-                <td>{{promotion.create_date}}</td>
+                <td>{{promotion.producto.product_name}}</td>
+                <td>{{'%'+promotion.promotion_discount}}</td>
+                <td>{{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
+                <td>{{promotion.promotion_date_of_expiry}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBanner(promotion)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteBanner(promotion)"></button>
@@ -63,8 +63,8 @@
             <div class="field col">
                 <div class="field col">
                     <label for="name">Nombre del Producto</label>
-                    <p-dropdown [options]="products" [(ngModel)]="promotion.promotion_product" optionLabel="product_name" optionValue="product_code" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" [showClear]="true"></p-dropdown>
-                    <small class="p-error" *ngIf="submitted && !promotion.promotion_product">Código es requerido</small>
+                    <p-dropdown [options]="products" [(ngModel)]="promotion.id_product" optionLabel="product_name" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name" [showClear]="true"></p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !promotion.id_product">Nombre es requerido</small>
                 </div>
             </div>
             <div class="field col">
@@ -89,14 +89,14 @@
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Expiración</label>
-                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" dateFormat="yy/mm/dd" [(ngModel)]="promotion.promotion_date_of_expiry" [readonlyInput]="true" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" dateFormat="yy/mm/dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Campo es requerido</small>
             </div>
         </div>
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="description">Descripción del Banner</label>
+                <label for="description">Descripción de la Promoción</label>
                 <textarea id="description" required pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
             </div>
         </div>

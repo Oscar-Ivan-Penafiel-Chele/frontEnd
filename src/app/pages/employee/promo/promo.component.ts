@@ -58,6 +58,7 @@ export class PromoComponent implements OnInit {
       {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
     ];
     this.getProducts();
+    this.getPromotions();
     this.getDataProfile();
   }
 
@@ -69,9 +70,11 @@ export class PromoComponent implements OnInit {
   }
 
   getPromotions(){
+    this.loading = true;
     this._rest.getPromotions().subscribe((response : Promotion[])=>{
       this.promotionsAux = Object.values(response);
       this.promotions = this.promotionsAux.filter((i)=> i.promotion_status == 1);
+      this.loading = false;
     });
   }
 
@@ -129,44 +132,55 @@ export class PromoComponent implements OnInit {
       }
   }
 
-  saveBanner(){
-    if(this.actionSelected === "new"){
-      this.submitted = true
-
-      if(!this.validateData()){
-          return ;
-      }
-      
-      this.saveData();
-
-    }else if(this.actionSelected === "edit"){
-      this.submitted = true
-      if(!this.validateData()){
-        return ;
-      }
-    
-      this.updateData();
+  onSelectDate($event : any){
+    try {
+      let date = JSON.stringify($event);
+      date = date.slice(1,11);
+      this.promotion.promotion_date_of_expiry = date;
+    } catch (error) {
+     
     }
+  }
+
+  saveBanner(){
+    console.log(this.promotion);
+    // if(this.actionSelected === "new"){
+    //   this.submitted = true
+
+    //   if(!this.validateData()){
+    //       return ;
+    //   }
+      
+    //   this.saveData();
+
+    // }else if(this.actionSelected === "edit"){
+    //   this.submitted = true
+    //   if(!this.validateData()){
+    //     return ;
+    //   }
+    
+    //   this.updateData();
+    // }
   }
 
   saveData(){
     this.promotion.id_user = this.user.id_user!;
         
     this._rest.createPromotion(this.promotion)
-        .subscribe((response)=>{
-            if(response.status == 200 && response.message === "Promocion creada con exito"){
-                this.getPromotions()
-                this.hideDialog();
-                this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue creado con éxito', life: 3000});
-            }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
-              this.hideDialog();
-              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
-            }
-        });
+    .subscribe((response)=>{
+        if(response.status == 200 && response.message === "Promocion creada con exito"){
+            this.getPromotions()
+            this.hideDialog();
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El banner fue creado con éxito', life: 3000});
+        }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
+          this.hideDialog();
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
+        }
+    });
   }
 
   validateData(){
-    if(!this.promotion.promotion_product || !this.promotion.promotion_discount || !this.promotion.promotion_date_of_expiry ||this.promotion.promotion_status == null){
+    if(!this.promotion.id_product || !this.promotion.promotion_discount || !this.promotion.promotion_date_of_expiry ||this.promotion.promotion_status == null){
         return false;
     }
   
@@ -174,6 +188,8 @@ export class PromoComponent implements OnInit {
   }
 
   updateData(){
+    this.promotion.id_user = this.user.id_user!;
+    console.log(this.promotion);
     this._rest.updatePromotion(this.promotion)
     .subscribe((response)=>{
         if(response.status == 200 && response.message === "Promoción actualizada con exito"){
@@ -190,7 +206,8 @@ export class PromoComponent implements OnInit {
   editBanner(promotion : Promotion){
     this.actionSelected = "edit"
     this.promotion = {...promotion};
-    this.dialogBanner = true; // abrimos modal
+    this.dialogBanner = true; 
+    console.log(promotion);
   }
 
   deleteBanner(promotion : Promotion){
