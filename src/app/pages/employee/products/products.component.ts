@@ -1,8 +1,7 @@
-import { Component, OnInit, Provider } from '@angular/core';
+import { Component, ElementRef, OnInit, Provider, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService, Message, PrimeNGConfig } from 'primeng/api';
 import { Product } from 'src/app/models/product';
-import * as FileSaver from 'file-saver';
 import { Category } from 'src/app/models/category';
 import { Brand } from 'src/app/models/brand';
 import { UpperCasePipe } from '@angular/common';
@@ -12,6 +11,10 @@ import { TokenService } from 'src/app/services/token.service';
 import { User } from 'src/app/models/user';
 import { environment } from 'src/environments/environment.prod';
 import { Measure } from 'src/app/models/measure';
+import { Cell, Columns, PdfMakeWrapper, QR, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
   selector: 'app-products',
@@ -20,7 +23,6 @@ import { Measure } from 'src/app/models/measure';
   providers : [MessageService,ConfirmationService, UpperCasePipe]
 })
 export class ProductsComponent implements OnInit {
-
     products : Product[] = [];
     productsActive : Product [] = [];
     productsInactive : Product [] = [];
@@ -80,6 +82,7 @@ export class ProductsComponent implements OnInit {
     overImage : string = "assets/img/not_image.jpg";
     invalidFileTypeMessageSummary : string = `Tipo de archivo inválido:`;
     invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .xlsx`;
+    
 
     constructor(
         private _rest : RestService,
@@ -119,6 +122,7 @@ export class ProductsComponent implements OnInit {
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
             this.productsAux = response;
+            console.log(response);
             if(this.stateCheckActive && !this.stateCheckInactive){
                 this.products = this.productsAux.filter(i => i.product_status == 1)
               }else if(!this.stateCheckActive && this.stateCheckInactive){
@@ -493,16 +497,35 @@ export class ProductsComponent implements OnInit {
     }
 
     exportPdf() {
-        // import("jspdf").then(jsPDF => {
-        //     import("jspdf-autotable").then(x => {
-        //         const doc = new jsPDF.default(0,0);
-        //         doc.autoTable(this.exportColumns, this.products);
-        //         doc.save('products.pdf');
-        //     })
-        // })
+        const pdf = new PdfMakeWrapper();
+        pdf.info({
+            title: 'PDF Productos',
+            author: '@Yebba',
+            subject: 'Mostrar los productos de la ferretería',
+        });
+        pdf.pageSize('A4');
+        pdf.pageOrientation('landscape'); // 'portrait'
+        // pdf.pageMargins([ 40, 60, 40, 60 ]); //Top, right, botton, left
+        // pdf.header('This is a header');
+        pdf.add(
+            new Txt('Gestión de Productos').alignment('center').bold().fontSize(16).end
+        );   
+        pdf.add(
+            new Table([
+                [ 'Código','Nombre','Proveedor', 'Marca','Categoría','Medida','Stock','Estado',],
+            ]).widths([ '*','*','*','*','*','*','*',100 ]).bold().end
+        );
+        this.productsAux.forEach((item)=>{
+            pdf.add(
+                new Table([
+                    [ item.product_code , item.product_name , item.provider.provider_name , item.brand.brand_name, item.category.category_name, item.product_unit.name_product_unit, item.product_stock , item.product_status],
+                ]).widths([ '*','*','*','*','*','*','*',100 ]).end
+            );
+        })
+        // pdf.userPassword('123');
+        // pdf.footer('This is a footer');
+        pdf.create().open();        
     }
-
-   
 
     deleteProduct(product: Product) {
       this.confirmationService.confirm({

@@ -12,12 +12,7 @@ export class EgresosComponent implements OnInit {
   egresos : Egreso[] = [];
   
   egreso : Egreso = {} as Egreso;
-
   loading : boolean = false;
-  dialogNewEgreso : boolean = false;
-  actionSelected : string = "";
-  submitted : boolean = false;
-  value : any;
 
   constructor(
     private _rest : RestService
@@ -28,26 +23,14 @@ export class EgresosComponent implements OnInit {
   }
 
   getEgresos(){
+    this.loading = true;
     this._rest.getEgresos().subscribe((response : Egreso[])=>{
       this.egresos = Object.values(response);
-      console.log(this.egresos);
+      this.loading = false;
     })
-  }
-
-  openNew(){
-    this.dialogNewEgreso = true;
   }
 
   openModal(egreso : any){
    
   }
-
-  hideDialog(){
-    this.dialogNewEgreso = false;
-  }
-
-  saveEgreso(){
-
-  }
-
 }

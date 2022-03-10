@@ -27,49 +27,51 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="products" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name', 'product_code']" responsiveLayout="scroll"
-        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Gestión de Poductos</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre y código..." />
-                </span>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr >
-                <th pSortableColumn="product_code"><i class="pi pi-qrcode"></i> Código <p-sortIcon field="product_code"></p-sortIcon></th>
-                <th pSortableColumn="product_name" style="width: 250px;"><i class="pi pi-book"></i> Nombre <p-sortIcon field="product_name"></p-sortIcon></th>
-                <th><i class="pi pi-image"></i> Imagen</th>
-                <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="product_price"></p-sortIcon></th>
-                <th pSortableColumn="product_stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="product_stock"></p-sortIcon></th>
-                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
-                <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-            <tr>
-                <td>{{product.product_code}}</td>
-                <td>{{product.product_name}}</td>
-                <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="80" height="80" class="shadow-4" /></td>
-                <td>{{product.product_price | currency:'USD'}}</td>
-                <td>{{product.product_stock}}</td>
-                <td>{{product.create_date}}</td>
-                <td>
-                    <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
-                    <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock != 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                En total hay {{products ? products.length : 0 }} productos.
-            </div>
-        </ng-template>
-    </p-table>
+    <div id="htmlData">
+        <p-table #dt [value]="products" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name', 'product_code']" responsiveLayout="scroll"
+            [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Gestión de Poductos</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre y código..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr >
+                    <th pSortableColumn="product_code"><i class="pi pi-qrcode"></i> Código <p-sortIcon field="product_code"></p-sortIcon></th>
+                    <th pSortableColumn="product_name" style="width: 250px;"><i class="pi pi-book"></i> Nombre <p-sortIcon field="product_name"></p-sortIcon></th>
+                    <th><i class="pi pi-image"></i> Imagen</th>
+                    <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio <p-sortIcon field="product_price"></p-sortIcon></th>
+                    <th pSortableColumn="product_stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="product_stock"></p-sortIcon></th>
+                    <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                    <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>{{product.product_code}}</td>
+                    <td>{{product.product_name}}</td>
+                    <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="80" height="80" class="shadow-4" /></td>
+                    <td>{{product.product_price | currency:'USD'}}</td>
+                    <td>{{product.product_stock}}</td>
+                    <td>{{product.create_date}}</td>
+                    <td>
+                        <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
+                        <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock != 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    En total hay {{products ? products.length : 0 }} productos.
+                </div>
+            </ng-template>
+        </p-table>
+    </div>
 </div>
 
 <p-dialog [(visible)]="productDialog" [draggable]="false" [style]="{width: '800px'}" header="Detalles del Producto" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
@@ -216,16 +218,35 @@
     </ng-template>
 </p-dialog>
 
-<!-- <p-dialog [(visible)]="uploadFileExcel" [draggable]="false" [style]="{width: '850px'}" header="Actualizar Stock" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
-    <p-fileUpload [fileLimit]="1" [chooseLabel]="'Seleccionar'" [invalidFileTypeMessageSummary]="invalidFileTypeMessageSummary" [invalidFileTypeMessageDetail]="invalidFileTypeMessageDetail" [customUpload]="true" (uploadHandler)="upLoadFile($event)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" (onSelect)="onUpload($event)" accept=".xlsx" [maxFileSize]="1000000">
-        <ng-template let-file pTemplate="file">
-            <div *ngIf="visible" class="flex justify-content-evenly align-items-center">
-                <div><img [src]="imageExcel" alt="image" width="50px"></div>
-                <div>{{file.name}}</div>
-                <div>{{(file.size/1000).toFixed(2)}} {{descriptionSize}}</div>
-            </div>
-        </ng-template>
-    </p-fileUpload>
-</p-dialog> -->
-
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<!-- <div id="htmlCanvasData">
+    <table>
+        <tr>
+            <th>Código</th>
+            <th>Proveedor</th>
+            <th>Marca</th>
+            <th>Categoria</th>
+            <th>Medida</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Fecha de Creación</th>
+        </tr>
+        <tr *ngFor="let product of products">
+            <td>{{product.product_code}}</td>
+            <td>{{product.product_code}}</td>
+            <td>{{product.brand.brand_name}}</td>
+            <td>{{product.category.category_name}}</td>
+            <td>{{product.product_code}}</td>
+            <td>{{product.product_name}}</td>
+            <td>{{product.product_description}}</td>
+            <td>{{product.product_stock}}</td>
+            <td>{{product.product_price}}</td>
+            <td>{{product.product_status}}</td>
+            <td>{{product.create_date}}</td>
+        </tr>
+    </table>
+</div> -->

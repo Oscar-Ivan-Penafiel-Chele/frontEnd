@@ -3,6 +3,10 @@ export interface Product {
     id_user?:number;
     id_provider?:number;
     id_brand?:number;
+    brand : any;
+    category : any;
+    provider : any;
+    product_unit : any;
     id_category?:any;
     id_product_unit?:number;
     product_code?:number;

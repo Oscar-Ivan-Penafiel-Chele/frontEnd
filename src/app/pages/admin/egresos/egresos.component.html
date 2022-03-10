@@ -1,11 +1,5 @@
 <div class="card">
-    <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
-        </ng-template>
-    </p-toolbar>
-
-    <p-table #dt [value]="egresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="egresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -19,18 +13,18 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Cliente<p-sortIcon field="user.user_name"></p-sortIcon></th>
+                <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Movimiento<p-sortIcon field="user.user_name"></p-sortIcon></th>
                 <th pSortableColumn="audit_module"><i class="pi pi-qrcode"></i> Número de comprobante <p-sortIcon field="audit_module"></p-sortIcon></th>
                 <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
-                <th pSortableColumn="audit_description"><i class="pi pi-dollar"></i> Total <p-sortIcon field="audit_description"></p-sortIcon></th>
                 <th><i class="pi pi-file-pdf"></i> Factura</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-egreso let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
                 <td>{{egreso.order.id_user}}</td>
-                <td>{{egreso.order.id_user}}</td>
+                <td>{{egreso.inventory_movement_type}}</td>
+                <td>{{egreso.id_order}}</td>
                 <td>{{egreso.create_date}}</td>
-                <td>{{egreso.order.id_order_detail}}</td>
                 <td>
                     <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="openModal(egreso)" class="p-button"></button>
                 </td>
@@ -48,37 +42,3 @@
     [draggable]="false" [resizable]="false">
     <p>{{aud.audit_query}}</p>
 </p-dialog> -->
-
-
-<p-dialog [(visible)]="dialogNewEgreso" [draggable]="false" [style]="{width: '800px'}" header="Detalles del Egreso" [closeOnEscape]="true" [maximizable]="true"  [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <input type="hidden" [(ngModel)]="actionSelected">
-        <div class="formgrid grid">
-            <div class="field col">
-                <label for="name">Nombre de la Marca</label>
-                <input type="text" required pInputText id="name" [(ngModel)]="value" required autofocus />
-                <small class="p-error" *ngIf="submitted && !value">Nombre es requerido</small>
-            </div>
-            <div class="field col">
-                <label for="productStatus">Estado de la Marca</label>
-                <p-dropdown [showClear]="true" [(ngModel)]="value" optionLabel="name" optionValue="id" inputId="productStatus" [options]="value" placeholder="Seleccionar">
-                    <ng-template let-option pTemplate="item">
-                        <div class="flex flex-row justify-content-start align-items-center">
-                            <i class="{{option.icon}} mr-2"></i>
-                            <span>{{option.name}}</span>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-                <small class="p-error" *ngIf="submitted && value == null">Estado es requerido</small>
-            </div>
-        </div>
-        <br><br><br> 
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveEgreso()"></button>
-    </ng-template>
-</p-dialog>
-
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
