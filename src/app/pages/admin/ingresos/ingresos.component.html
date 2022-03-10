@@ -16,7 +16,7 @@
                 <th pSortableColumn="inventory_movement_type"><i class="pi pi-history"></i> Movimiento <p-sortIcon field="inventory_movement_type"></p-sortIcon></th>
                 <th pSortableColumn="inventory_stock_amount"><i class="pi pi-download"></i> Cantidad Ingresada <p-sortIcon field=""></p-sortIcon></th>
                 <th pSortableColumn="producto.product_stock"><i class="pi pi-box"></i> Stock <p-sortIcon field="producto.product_stock"></p-sortIcon></th>
-                <th pSortableColumn="updated_at"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="updated_at"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-ingreso let-columns="columns" let-index="rowIndex">
@@ -25,7 +25,7 @@
                 <td>{{ingreso.inventory_movement_type}}</td>
                 <td>{{ingreso.inventory_stock_amount}}</td>
                 <td>{{ingreso.producto.product_stock }}</td>
-                <td>{{ingreso.updated_at}}</td>
+                <td>{{ingreso.create_date}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">

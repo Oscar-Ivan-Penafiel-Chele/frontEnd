@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Egreso } from 'src/app/models/egreso';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-egresos',
@@ -18,10 +19,19 @@ export class EgresosComponent implements OnInit {
   submitted : boolean = false;
   value : any;
 
-  constructor() { }
+  constructor(
+    private _rest : RestService
+  ) { }
 
   ngOnInit(): void {
-  
+    this.getEgresos();
+  }
+
+  getEgresos(){
+    this._rest.getEgresos().subscribe((response : Egreso[])=>{
+      this.egresos = Object.values(response);
+      console.log(this.egresos);
+    })
   }
 
   openNew(){

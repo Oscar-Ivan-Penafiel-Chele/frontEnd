@@ -12,6 +12,7 @@ import { User } from '../models/user';
 import { Banner } from '../models/banner';
 import { Promotion } from '../models/promotion';
 import { Ingreso } from '../models/ingreso';
+import { Egreso } from '../models/egreso';
 
 
 @Injectable({
@@ -128,10 +129,13 @@ export class RestService {
   }
 
   /* INVENTORY */
-  getInventory() : Observable<Ingreso[]>{
-    return this._http.get<Ingreso[]>(`${this.url}/inventories`);
+  getIngresos() : Observable<Ingreso[]>{
+    return this._http.get<Ingreso[]>(`${this.url}/inventories/ingreso`);
   }
 
+  getEgresos() : Observable<Egreso[]>{
+    return this._http.get<Egreso[]>(`${this.url}/inventories/egreso`);
+  }
 
   /* EGRESOS */
 

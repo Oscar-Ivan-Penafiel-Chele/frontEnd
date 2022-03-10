@@ -1,6 +1,9 @@
 export interface Egreso{
-    id_egreso : number,
-    egreso_description : string,
+    id_inventory_e : number,
+    id_order : number,
+    inventory_movement_type : string,
+    inventory_stock_amount : string,
+    inventory_description : string,
     create_date : string,
     update_at : string,
 }

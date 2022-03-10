@@ -27,12 +27,12 @@
         </ng-template>
         <ng-template pTemplate="body" let-egreso let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td>{{egreso.user.user_name}}</td>
-                <td>{{egreso.audit_module}}</td>
-                <td>{{egreso.audit_description}}</td>
+                <td>{{egreso.order.id_user}}</td>
+                <td>{{egreso.order.id_user}}</td>
                 <td>{{egreso.create_date}}</td>
+                <td>{{egreso.order.id_order_detail}}</td>
                 <td>
-                    <button pButton pRipple type="button" icon="pi pi-eye" (click)="openModal(egreso)" class="p-button-info"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="openModal(egreso)" class="p-button"></button>
                 </td>
             </tr>
         </ng-template>
