@@ -540,8 +540,8 @@ main{
 }
 
 .options__shop__content{
-    /* background: #FDC830; */
-    background-image: url(./../../../../assets/img/back.svg);
+    background: #FDC830;
+    /* background-image: url(./../../../../assets/img/back.svg); */
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     padding: 20px 0px;
     border-radius: 5px;

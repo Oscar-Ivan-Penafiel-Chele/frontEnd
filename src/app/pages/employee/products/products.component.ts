@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
     isError : boolean ;
     submitted: boolean = false;
     loading : boolean = false;
+    loadingPDF : boolean = false;
     inputFile :boolean = false;
     productDialog: boolean = false;
     uploadFileExcel : boolean = false;
@@ -497,6 +498,8 @@ export class ProductsComponent implements OnInit {
     }
 
     exportPdf() {
+        this.loadingPDF = true;
+        const fecha = new Date();
         const pdf = new PdfMakeWrapper();
         pdf.info({
             title: 'PDF Productos',
@@ -505,26 +508,24 @@ export class ProductsComponent implements OnInit {
         });
         pdf.pageSize('A4');
         pdf.pageOrientation('landscape'); // 'portrait'
-        // pdf.pageMargins([ 40, 60, 40, 60 ]); //Top, right, botton, left
-        // pdf.header('This is a header');
+        pdf.header(fecha.toUTCString());
         pdf.add(
-            new Txt('Gestión de Productos').alignment('center').bold().fontSize(16).end
+            new Txt('Gestión de Productos').alignment('center').bold().fontSize(16).margin(10).end
         );   
         pdf.add(
             new Table([
                 [ 'Código','Nombre','Proveedor', 'Marca','Categoría','Medida','Stock','Estado',],
-            ]).widths([ '*','*','*','*','*','*','*',100 ]).bold().end
+            ]).widths([ 80,100,100,'*',100,100,80,80 ]).fontSize(14).bold().end
         );
         this.productsAux.forEach((item)=>{
             pdf.add(
                 new Table([
-                    [ item.product_code , item.product_name , item.provider.provider_name , item.brand.brand_name, item.category.category_name, item.product_unit.name_product_unit, item.product_stock , item.product_status],
-                ]).widths([ '*','*','*','*','*','*','*',100 ]).end
+                    [ item.product_code , item.product_name , item.provider.provider_name , item.brand.brand_name, item.category.category_name, item.product_unit.name_product_unit, item.product_stock , item.product_status == 1 ? 'Activo' : 'Inactivo' ],
+                ]).widths([ 80,100,100,'*',100,100,80,80 ]).end
             );
         })
-        // pdf.userPassword('123');
-        // pdf.footer('This is a footer');
-        pdf.create().open();        
+        pdf.create().open();
+        this.loadingPDF = false;    
     }
 
     deleteProduct(product: Product) {

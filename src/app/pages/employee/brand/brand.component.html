@@ -20,9 +20,6 @@
             </p-overlayPanel>
         </ng-template>
 
-        <ng-template pTemplate="right">
-            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
-        </ng-template>
     </p-toolbar>
 
     <p-table #dt [value]="brands" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"

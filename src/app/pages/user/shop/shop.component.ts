@@ -35,6 +35,8 @@ export class ShopComponent implements OnInit {
   fechaYHora : any ;
   user : User = {};
   isLogged?: boolean = false;
+  loadingShop : boolean = false;
+  i : number = 0;
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -220,4 +222,7 @@ export class ShopComponent implements OnInit {
     return 0;
   }
 
+  addProductoCart($event : any , product : Product){
+    
+  }
 }

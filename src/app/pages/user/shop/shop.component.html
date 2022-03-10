@@ -53,9 +53,8 @@
                             </div>
                             <div class="nav__user__option isActiveNavOption">
                                 <p>Opciones</p>
-                                <a href=""><i class="pi pi-user"></i> Perfil</a>
                                 <a href=""><i class="pi pi-shopping-bag"></i> Pedidos</a>
-                                <a href=""><i class="pi pi-th-large"></i> Configuración</a>
+                                <a href=""><i class="pi pi-cog"></i> Configuración</a>
                                 <p>Sesión</p>
                                 <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
                             </div>
@@ -93,7 +92,7 @@
                 </ng-template>
             </p-galleria>
         </div>
-        <!-- <div class="options__shop">
+        <div class="options__shop">
             <div class="options__shop__content">
                 <div class="flex justify-content-evenly align-items-center">
                     <div class="options__shop__content__card">
@@ -116,7 +115,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
         <div class="main__content">
             <p-fieldset legend="Categorías">
                 <div *ngIf="hide" class="flex align-items-center">
@@ -169,9 +168,6 @@
                         </div>
                     </ng-template>
                     <ng-template let-product pTemplate="gridItem">
-                        <!-- <div *ngIf="!completeProduct">
-                            <p-progressSpinner></p-progressSpinner>
-                        </div> -->
                         <div class="col-12 md:col-3">
                             <div class="product-grid-item card">
                                 <div class="product-grid-item-top">
@@ -188,7 +184,7 @@
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <span class="product-price">${{product.product_price}}</span>
-                                    <p-button styleClass="p-button-sm" icon="pi pi-shopping-cart"></p-button>
+                                    <p-button id="{{i+1}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
                                 </div>
                             </div>
                         </div>

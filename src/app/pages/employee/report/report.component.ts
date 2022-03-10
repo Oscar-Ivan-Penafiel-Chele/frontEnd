@@ -5,6 +5,10 @@ import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
 import { verificarRuc } from 'udv-ec';
+import { Cell, Columns, PdfMakeWrapper, QR, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
   selector: 'app-report',
@@ -77,8 +81,6 @@ export class ReportComponent implements OnInit {
     this.isVisible = false;
   }
 
-  exportPdf(){}
-
   hideDialog(){
     this.productDialog = false;
   }
@@ -87,6 +89,7 @@ export class ReportComponent implements OnInit {
     this.loading = true;
     this._rest.getEmployees().subscribe((response : User[])=>{
       this.userAux = Object.values(response);
+      console.log(response)
       if(this.stateCheckActive && !this.stateCheckInactive){
         this.users = this.userAux.filter(i => i.user_status == 1);
       }else if(!this.stateCheckActive && this.stateCheckInactive){
@@ -101,6 +104,51 @@ export class ReportComponent implements OnInit {
   getDataProfile(){
     const data = this._token.getTokenDataUser() as string;
     this.userLoged = JSON.parse(data);
+  }
+
+  exportPdf() {
+    const fecha = new Date();
+    const pdf = new PdfMakeWrapper();
+    pdf.info({
+        title: 'PDF Empleados',
+        author: '@Yebba',
+        subject: 'Mostrar los productos de la ferretería',
+    });
+    pdf.pageSize('A4');
+    pdf.pageOrientation('landscape'); // 'portrait'
+    pdf.header(fecha.toUTCString());
+    pdf.add(
+        new Txt('Nómina de Empleados').alignment('center').bold().fontSize(14).margin(10).end
+    );   
+    pdf.add(
+      new Table([
+        [
+            new Txt('Nombres').bold().end,
+            new Txt('Apellidos').bold().end,
+            new Txt('Identificación').bold().end,
+            new Txt('Rol').bold().end,
+            new Txt('Teléfono').bold().end,
+            new Txt('Correo Electrónico').bold().end,
+            new Txt('Estado').bold().end,
+        ],
+    ]).widths([ 70,70,80,80,100,'*',80]).fontSize(12).end
+    );
+    this.userAux.forEach((item)=>{
+        pdf.add(
+            new Table([
+                [
+                  new Txt(item.user_name!).end,
+                  new Txt(item.user_lastName!).end,
+                  new Txt(item.user_document!).end,
+                  new Txt(item.role_user.role_description).end,
+                  new Txt(item.user_phone!).end,
+                  new Txt(item.email!).end,
+                  new Txt(item.user_status == 1 ? 'Activo' : 'Inactivo').end,
+                ]
+            ]).widths([ 70,70,80,80,100,'*',80 ]).fontSize(10).end
+        );
+    })
+    pdf.create().open();    
   }
 
   createEmployee(){

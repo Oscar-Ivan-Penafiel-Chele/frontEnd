@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment.prod';
 import { UpperCasePipe } from '@angular/common';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { RestService } from 'src/app/services/rest.service';
@@ -8,6 +7,10 @@ import { Type_Provider } from 'src/app/models/type_provider';
 import { TokenService } from 'src/app/services/token.service';
 import { verificarRuc } from 'udv-ec';
 import { User } from 'src/app/models/user';
+import { Cell, Columns, PdfMakeWrapper, QR, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
   selector: 'app-provider',
@@ -129,7 +132,50 @@ export class ProviderComponent implements OnInit {
       }
   }
 
-  exportPdf(){}
+  exportPdf() {
+    const fecha = new Date();
+    const pdf = new PdfMakeWrapper();
+    pdf.info({
+        title: 'PDF Empleados',
+        author: '@Yebba',
+        subject: 'Mostrar los productos de la ferretería',
+    });
+    pdf.pageSize('A4');
+    pdf.pageOrientation('landscape'); // 'portrait'
+    pdf.header(fecha.toUTCString());
+    pdf.add(
+        new Txt('Nómina de Empleados').alignment('center').bold().fontSize(14).margin(10).end
+    );   
+    pdf.add(
+      new Table([
+        [
+            new Txt('Nombre').bold().end,
+            new Txt('Correo Electrónico').bold().end,
+            new Txt('Dirección').bold().end,
+            new Txt('Teléfono').bold().end,
+            new Txt('Celular').bold().end,
+            new Txt('Tiempo de Respuesta').bold().end,
+            new Txt('Estado').bold().end,
+        ],
+    ]).widths([ 80,'*','*',80,100,80,70]).fontSize(12).end
+    );
+    this.providersAux.forEach((item)=>{
+        pdf.add(
+            new Table([
+                [
+                  new Txt(item.provider_name!).end,
+                  new Txt(item.provider_email!).end,
+                  new Txt(item.provider_address!).end,
+                  new Txt(item.provider_landline!).end,
+                  new Txt(item.provider_phone!).end,
+                  new Txt(String(item.provider_response_time_day)+ ' Días y ' + String(item.provider_response_time_hour) + ' Horas').end,
+                  new Txt(item.provider_status == 1 ? 'Activo' : 'Inactivo').end,
+                ]
+            ]).widths([ 80,'*','*',80,100,80,70 ]).fontSize(10).end
+        );
+    })
+    pdf.create().open();    
+  }
 
   regexCode(event: any) {
     event.target.value = event.target.value.replace(/[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g, "");

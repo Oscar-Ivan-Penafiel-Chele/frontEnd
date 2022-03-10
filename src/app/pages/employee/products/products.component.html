@@ -23,7 +23,7 @@
 
         <ng-template pTemplate="right">
             <!-- <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2" pTooltip="Excel" tooltipPosition="left"></button> -->
-            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+            <button [disabled]="loading" type="button" pButton pRipple [loading]="loadingPDF" icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
         </ng-template>
     </p-toolbar>
 
@@ -219,34 +219,3 @@
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
-
-<!-- <div id="htmlCanvasData">
-    <table>
-        <tr>
-            <th>Código</th>
-            <th>Proveedor</th>
-            <th>Marca</th>
-            <th>Categoria</th>
-            <th>Medida</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Stock</th>
-            <th>Precio</th>
-            <th>Estado</th>
-            <th>Fecha de Creación</th>
-        </tr>
-        <tr *ngFor="let product of products">
-            <td>{{product.product_code}}</td>
-            <td>{{product.product_code}}</td>
-            <td>{{product.brand.brand_name}}</td>
-            <td>{{product.category.category_name}}</td>
-            <td>{{product.product_code}}</td>
-            <td>{{product.product_name}}</td>
-            <td>{{product.product_description}}</td>
-            <td>{{product.product_stock}}</td>
-            <td>{{product.product_price}}</td>
-            <td>{{product.product_status}}</td>
-            <td>{{product.create_date}}</td>
-        </tr>
-    </table>
-</div> -->
