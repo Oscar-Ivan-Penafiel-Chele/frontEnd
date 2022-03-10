@@ -184,7 +184,7 @@
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <span class="product-price">${{product.product_price}}</span>
-                                    <p-button id="{{i+1}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
+                                    <p-button id="{{product.id_product}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
                                 </div>
                             </div>
                         </div>

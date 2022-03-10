@@ -223,6 +223,14 @@ export class ShopComponent implements OnInit {
   }
 
   addProductoCart($event : any , product : Product){
+  //   this.loadingShop = true;
+
+  //   setTimeout(() => {
+  //     this.loadingShop = false;
+  //   }, 1000);
+  // }
+    //console.log($event.target.parentElement.id);  
+
     
   }
 }

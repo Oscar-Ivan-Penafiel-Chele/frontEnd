@@ -23,9 +23,21 @@
                             <i class="pi pi-inbox"></i>
                             <p [hidden]="isHidden">Ingresos</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Egresos" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Egresos" tooltipPosition="right">
                             <i class="pi pi-window-maximize"></i>
                             <p [hidden]="isHidden">Egresos</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Reporte de Ventas" tooltipPosition="right">
+                            <i class="pi pi-file-pdf"></i>
+                            <p [hidden]="isHidden">Reporte de Ventas</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Reporte de Ingresos" tooltipPosition="right">
+                            <i class="pi pi-file-pdf"></i>
+                            <p [hidden]="isHidden">Reporte de Ingresos</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Reporte de Egresos" tooltipPosition="right">
+                            <i class="pi pi-file-pdf"></i>
+                            <p [hidden]="isHidden">Reporte de Egresos</p>
                         </div>
                     </div>
                 </p-scrollPanel>
