@@ -1,4 +1,14 @@
 <div class="card">
+    <p-toolbar styleClass="mb-4">
+        <div class="flex flex-wrap align-items-center">
+            <label class="mr-2" for="fechaInicio">Fecha Inicio:</label>
+            <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+            <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
+            <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+            <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="exportPdf()" class="p-button" pTooltip="PDF" tooltipPosition="right"></button>
+        </div>
+    </p-toolbar>
+
     <p-table #dt [value]="ingresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">

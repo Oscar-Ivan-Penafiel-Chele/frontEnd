@@ -6,16 +6,10 @@ import {TooltipModule} from 'primeng/tooltip';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import { ReportIngresoComponent } from './report-ingreso/report-ingreso.component';
-import { ReportEgresoComponent } from './report-egreso/report-egreso.component';
-import { ReportSailComponent } from './report-sail/report-sail.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    ReportIngresoComponent,
-    ReportEgresoComponent,
-    ReportSailComponent,
   ],
   imports: [
     CommonModule,

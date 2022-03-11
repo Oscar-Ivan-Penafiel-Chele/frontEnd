@@ -136,7 +136,7 @@ export class ProviderComponent implements OnInit {
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
-        title: 'PDF Empleados',
+        title: 'PDF Proveedores',
         author: '@Yebba',
         subject: 'Mostrar los productos de la ferretería',
     });

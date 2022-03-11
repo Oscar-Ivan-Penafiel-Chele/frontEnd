@@ -11,6 +11,7 @@ const routes : Routes = [
       {path: 'chart', loadChildren : ()=> import('./charts/charts.module').then( m => m.ChartsModule)},
       {path: 'ingresos', loadChildren : ()=> import('./ingresos/ingresos.module').then( m => m.IngresosModule)},
       {path: 'egresos', loadChildren : ()=> import('./egresos/egresos.module').then( m => m.EgresosModule)},
+      {path: 'report-venta', loadChildren : ()=> import('./report-sail/report-sail.module').then( m => m.ReportSailModule)},
     ]
   },
   { path:'**' , redirectTo:''}

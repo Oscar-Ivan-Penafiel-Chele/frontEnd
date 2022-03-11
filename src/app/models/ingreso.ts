@@ -4,6 +4,7 @@ export interface Ingreso{
     inventory_movement_type : string,
     inventory_stock_amount : number,
     inventory_date : string, 
-    create_date : string,
-    update_date : string,
+    producto : any;
+    create_date : any,
+    update_date : any,
 }

@@ -8,6 +8,9 @@ import {TooltipModule} from 'primeng/tooltip';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {DialogModule} from 'primeng/dialog';
+import {CalendarModule} from 'primeng/calendar';
+import { FormsModule } from '@angular/forms';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import {DialogModule} from 'primeng/dialog';
     TooltipModule,
     InputTextModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    CalendarModule,
+    FormsModule,
+    OverlayPanelModule
   ]
 })
 export class IngresosModule { }
