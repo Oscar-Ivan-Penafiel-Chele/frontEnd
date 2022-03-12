@@ -12,6 +12,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {DropdownModule} from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import {CalendarModule} from 'primeng/calendar';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import {InputNumberModule} from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import {CalendarModule} from 'primeng/calendar';
     ConfirmDialogModule,
     DropdownModule,
     FormsModule,
-    CalendarModule
+    CalendarModule,
+    InputTextareaModule,
+    InputNumberModule
   ]
 })
 export class EgresosModule { }

@@ -101,7 +101,7 @@ export class IngresosComponent implements OnInit {
                 new Txt('Fecha: ').alignment('right').width(40).bold().end,
                 new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
                 new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
+                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
               ]).end,
             ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
           ]).end
