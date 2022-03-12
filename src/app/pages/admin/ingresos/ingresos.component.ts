@@ -68,7 +68,7 @@ export class IngresosComponent implements OnInit {
     })
   }
 
-  exportPdf(){
+  async exportPdf(){
     this.ingresosAux = [];
 
     this.ingresosAux = this.ingresos.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
@@ -82,46 +82,64 @@ export class IngresosComponent implements OnInit {
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('portrait'); // 'portrait'
-    new Img('assets/img/logo_app.svg').build().then( img => {
-      pdf.add(
-        img,
-      );
-      pdf.add(
-        new Stack([
-          new Columns([ 
-            new Txt('Reporte de Ingresos').fontSize(14).bold().end,
-          ]).color('#3f3f3f').end,
-          new Columns([ 
-            new Txt('Módulo de Ingresos').fontSize(11).end,
-          ]).color('#3f3f3f').end,
-          new Columns([ 
-            new Txt('').alignment('right').width('*').bold().end,
-            new Txt('Usuario: ').alignment('right').width(40).bold().end,
-            new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
-            new Txt('Fecha: ').alignment('right').width(40).bold().end,
-            new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
-            new Txt('Hora:').alignment('right').width(30).bold().end,
-            new Txt(`${fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n\n\n\n\n`).width(30).alignment('right').end,
-          ]).end,
-        ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
-      );
-      pdf.add(
-        this.createDetailsPDF()
-      );
-      pdf.add(
-        new Txt(`\n ${this.ingresosAux.length} ${this.ingresosAux.length < 2 ? 'Ingreso' : 'Ingresos'}`).alignment('right').bold().fontSize(10).margin(10).end
-      );  
-      pdf.add(this.createTable(this.ingresosAux));
-      pdf.create().open();
+    pdf.add(
+      new Stack([
+        new Columns([
+          await new Img('assets/img/log_app_pdf.svg').width(100).build(),
+          new Columns([
+            new Stack([
+              new Columns([ 
+                new Txt('Reporte de Ingresos').fontSize(14).bold().end,
+              ]).color('#3f3f3f').end,
+              new Columns([ 
+                new Txt('Módulo de Ingresos  \n\n').fontSize(11).end,
+              ]).color('#3f3f3f').end,
+              new Columns([ 
+                new Txt('').alignment('right').width('*').bold().end,
+                new Txt('Usuario: ').alignment('right').width('*').bold().end,
+                new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
+                new Txt('Fecha: ').alignment('right').width(40).bold().end,
+                new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
+                new Txt('Hora:').alignment('right').width(30).bold().end,
+                new Txt(`${fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
+              ]).end,
+            ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
+          ]).end
+        ]).end
+      ]).end
+    );
+    pdf.add(
+      '\n'
+    )
+    pdf.add(
+      new Columns([
+        new Canvas([
+            new Line([0,0], [515,0]).lineColor('#ccc').end
+        ]).end,
+      ]).width('*').end
+    );
+    pdf.add(
+      '\n\n'
+    )
+    pdf.add(
+      this.createDetailsPDF()
+    );
+    pdf.add(
+      new Txt(`\n ${this.ingresosAux.length} ${this.ingresosAux.length < 2 ? 'Ingreso' : 'Ingresos'}`).alignment('right').bold().fontSize(10).margin(10).end
+    );  
+    pdf.add(this.createTable(this.ingresosAux));
+    pdf.footer((currentPage : any, pageCount : any)=>{
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
     });
+    pdf.create().open();
   }
 
 
   createTable(data : any): ITable{
     return new Table([
-      [ 'Código Producto','Movimiento','Cantidad Ingresada', 'Stock','Fecha de Ingreso'],
+      [ 'Código Producto','Movimiento','Cantidad Ingresada', 'Descripción','Fecha de Ingreso'],
       ...this.extractData(data),
-    ]).widths([ 100,'*',90,60,'*']).layout('lightHorizontalLines').fontSize(10).end;
+    ]).widths([ 100,'*',90,60,'*']).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
   }
 
   createDetailsPDF(){
@@ -134,15 +152,13 @@ export class IngresosComponent implements OnInit {
         new Txt(`${this.fechaFin.getFullYear()}/${(this.fechaFin.getMonth()+1) < 10 ? '0'+(this.fechaFin.getMonth()+1) : (this.fechaFin.getMonth()+1)}/${this.fechaFin.getDate() < 10 ? '0'+this.fechaFin.getDate() : this.fechaFin.getDate()} `).width(65).alignment('center').end,
         new Txt('Movimiento: ').width(55).bold().alignment('center').end,
         new Txt('Ingresos').width(55).alignment('center').end,
-        new Txt('Usuario: ').bold().width(40).alignment('center').end,
-        new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('center').end,
         new Txt('').bold().width('*').alignment('center').end,
       ]).alignment('center').end,
     ]).color('#3f3f3f').alignment('center').fontSize(10).end
   }
 
   extractData(data : any) : TableRow{
-    return data.map((row : any) => [row.producto.product_code, row.inventory_movement_type , row.inventory_stock_amount , row.producto.product_stock, row.create_date])
+    return data.map((row : any) => [row.producto.product_code, row.inventory_movement_type , (row.inventory_stock_amount).split('.')[0] , row.inventory_description, row.create_date])
   }
 
 }
