@@ -80,10 +80,6 @@
     transition: all 0.4 ease-in-out;
 }
 
-.nav__aside__item:nth-last-child(1){
-
-}
-
 .nav__aside__item > i{
     font-size: 1rem;
     padding: 15px 0px;

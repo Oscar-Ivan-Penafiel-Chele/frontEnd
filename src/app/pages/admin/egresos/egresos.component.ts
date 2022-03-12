@@ -109,17 +109,19 @@ export class EgresosComponent implements OnInit {
     this.egresoAux.inventory_description = this.inventory_description;
     this.egresoAux.inventory_description_aux = this.inventory_description_aux;
     this.inventory_description == "Otro" ? this.egresoAux.inventory_description = null : this.egresoAux.inventory_description_aux = null;
-    
+    this.egresoAux.inventory_stock_amount = this.egresoAux.inventory_stock_amount.toFixed(2);
     this.saveData();
   }
 
   saveData(){
     this._rest.createEgreso(this.egresoAux).subscribe((response)=>{
-      if(response.status === 200 || response.message == "Exito"){
+      if(response.status === 200 || response.message == "Guardado con exito"){
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Registro creado exitosamente'});
-      }else if(response.status === 400 || response.message == "Fallido"){
+      }else if(response.status === 400 || response.message == "Ocurrio un error interno al crear la orden"){
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrió un error'});
       }
+    },(error)=>{
+      console.log(error);
     })
   }
 

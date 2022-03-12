@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-charts',
@@ -6,13 +7,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./charts.component.css']
 })
 export class ChartsComponent implements OnInit {
-  basicData: any;
   basicOptions: any;
+  dataSails : any;
+  dataProducts : any;
+  dataUsers : any;
+  dataStock : any;
+  actionSelect : string = "";
 
-  constructor() { }
+  constructor(private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
-    this.basicData = {
+    this.actionSelect = "sails"
+    this.primengConfig.ripple = true;
+    
+    this.getGraphycDataProducts();
+    this.getGraphycDataSails();
+    this.getGraphycDataStock();
+  }
+
+  getGraphycDataProducts(){
+    this.dataProducts = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
           {
@@ -26,8 +40,50 @@ export class ChartsComponent implements OnInit {
               data: [28, 48, 40, 19, 86, 27, 90]
           },
       ]
-  };
-
+    };
   }
 
+  getGraphycDataSails(){
+    this.dataSails = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+            label: 'Ventas',
+            data: [28, 48, 40, 19, 86, 27, 90],
+            fill: false,
+            borderColor: '#FFA726',
+            tension: .4
+        }
+      ]
+    };
+  }
+
+  getGraphycDataStock(){
+    this.dataStock = {
+      datasets: [{
+        data: [
+            11,
+            16,
+            7,
+            3,
+            14
+        ],
+        backgroundColor: [
+            "#42A5F5",
+            "#66BB6A",
+            "#FFA726",
+            "#26C6DA",
+            "#7E57C2"
+        ],
+        label: 'My dataset'
+        }],
+        labels: [
+            "Red",
+            "Green",
+            "Yellow",
+            "Grey",
+            "Blue"
+        ]
+    }
+  }
 }

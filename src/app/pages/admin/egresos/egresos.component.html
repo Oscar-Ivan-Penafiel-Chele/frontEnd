@@ -6,10 +6,10 @@
             <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
             <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
             <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
-            <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="exportPDF()" class="p-button" pTooltip="PDF" tooltipPosition="right"></button>
+            <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="exportPDF()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
         </div>
         <div class="flex flex-wrap justify-content-start align-items-center">
-            <p-button label="Nuevo" icon="pi pi-plus" (onClick)="openNewModal()"></p-button>
+            <button style="color: black;" pButton label="Nuevo" class="p-button-warning" icon="pi pi-plus" (click)="openNewModal()"></button>
         </div>
     </p-toolbar>
     <p-table #dt [value]="egresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
@@ -39,7 +39,7 @@
                 <td>{{egreso.order.voucher_number}}</td>
                 <td>{{egreso.create_date}}</td>
                 <td>
-                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="openModal(egreso)" class="p-button"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="openModal(egreso)" class="p-button-success"></button>
                 </td>
             </tr>
         </ng-template>
@@ -88,7 +88,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="optionAux">Descripción de Otro</label>
-                <textarea [disabled]="inventory_description != 'Otro'" id="optionAux" placeholder="Describa si el motivo del egreso es 'Otro'" [autoResize]="true" required pInputTextarea [(ngModel)]="inventory_description_aux" required rows="4" cols="30"></textarea>
+                <textarea [disabled]="inventory_description != 'Otro'" id="optionAux" placeholder='Describa si el motivo del egreso es "Otro"' [autoResize]="true" required pInputTextarea [(ngModel)]="inventory_description_aux" required rows="4" cols="30"></textarea>
                 <small class="p-error" *ngIf="submitted && (!inventory_description_aux && inventory_description == 'Otro') ">Descripción es requerido</small>
             </div>
         </div>
