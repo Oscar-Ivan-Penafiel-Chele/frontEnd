@@ -13,6 +13,7 @@ import { Banner } from '../models/banner';
 import { Promotion } from '../models/promotion';
 import { Ingreso } from '../models/ingreso';
 import { Egreso } from '../models/egreso';
+import { EgresoAux } from '../models/egresoAuxilia';
 
 
 @Injectable({
@@ -135,6 +136,9 @@ export class RestService {
 
   getEgresos() : Observable<Egreso[]>{
     return this._http.get<Egreso[]>(`${this.url}/inventories/egreso`);
+  }
+  createEgreso(data : EgresoAux) : Observable<any>{
+    return this._http.post<any>(`${this.url}/inventories/egreso`,data);
   }
 
   /* EGRESOS */

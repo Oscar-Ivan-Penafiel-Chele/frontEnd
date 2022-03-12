@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   itemNavigation : NavigationItem [] = [];
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.png";
+  loading : boolean = false;
 
   constructor(private primengConfig: PrimeNGConfig, private _rest : RestService , private _homeService : HomeService) { 
     this.responsiveOptions = [
@@ -80,11 +81,13 @@ export class HomeComponent implements OnInit {
   // }
 
   getAllCategories() {
+    this.loading = true;
     this._rest.getCategories()
     .subscribe((response : Category[]) =>{
       this.categories = Object.values(response);
       this.categories = this.categories.sort(this.sortCategories);
-      this.categories = this.categories.filter(i => i.category_status == 1);
+      this.categories = this.categories.filter(i => i.category_status == 1 && i.category_name !='NO DEFINIDO');
+      this.loading = false;
     });
   }
 
@@ -93,7 +96,7 @@ export class HomeComponent implements OnInit {
     .subscribe((response : Brand[]) => {
       this.brands = Object.values(response);
       console.log(this.brands);
-      this.brands = this.brands.filter(i => i.brand_status == 1);
+      this.brands = this.brands.filter(i => i.brand_status == 1 && i.brand_name != 'NO_DEFINIDO');
     })
   }
 

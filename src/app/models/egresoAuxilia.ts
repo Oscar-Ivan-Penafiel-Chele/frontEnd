@@ -1,6 +1,7 @@
 export interface EgresoAux{
     id_product : number;
-    inventory_stock_amount : string,
+    id_user : number;
+    inventory_stock_amount : number,
     inventory_description? : any,
     inventory_description_aux? : any;
     create_date : string,

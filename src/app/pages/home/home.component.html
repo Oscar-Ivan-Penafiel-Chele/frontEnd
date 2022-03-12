@@ -2,7 +2,7 @@
     <nav>
         <input type="checkbox" id="nav-toggle">
         <div class="logo">
-            <a href="/"><img loading="lazy" src="assets/img/logo_app.svg" alt="Logo" width="70px"><p>El Descanso</p></a>  
+            <a href="/home"><img loading="lazy" src="assets/img/logo_app.svg" alt="Logo" width="70px"><p>El Descanso</p></a>  
         </div>
         <ul class="links">
             <li *ngFor="let item of itemNavigation">
@@ -38,6 +38,12 @@
         <div id="products" class="stock-products header">
             <h1>Contamos con un amplio stock de:</h1>
             <div class="stock-content">
+                <div style="width: 100%;" *ngIf="loading" class="flex flex-wrap justify-content-between">
+                    <p-skeleton width="250px" height="300px" borderRadius="10"></p-skeleton>
+                    <p-skeleton width="250px" height="300px" borderRadius="10"></p-skeleton>
+                    <p-skeleton width="250px" height="300px" borderRadius="10"></p-skeleton>
+                    <p-skeleton width="250px" height="300px" borderRadius="10"></p-skeleton>
+                </div>
                 <div class="card-stock" data-aos="fade-up" *ngFor="let category of categories">
                     <figure>
                         <img [src]="category.category_thumbnail ? host+category.category_thumbnail : overImage" [alt]="category.category_thumbnail" width="100px">

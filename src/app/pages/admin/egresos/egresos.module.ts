@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import {CalendarModule} from 'primeng/calendar';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
     FormsModule,
     CalendarModule,
     InputTextareaModule,
-    InputNumberModule
+    InputNumberModule,
+    ToastModule
   ]
 })
 export class EgresosModule { }

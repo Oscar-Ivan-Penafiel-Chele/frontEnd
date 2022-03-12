@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <div class="flex flex-wrap align-items-center">
@@ -55,7 +56,7 @@
     <p>{{aud.audit_query}}</p>
 </p-dialog> -->
 
-<p-dialog header="Nuevo Egreso" [(visible)]="displayNewModal" [modal]="true" [style]="{width: '70vw'}" [maximizable]="true"
+<p-dialog header="Nuevo Egreso" [(visible)]="displayNewModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
     [draggable]="false" [resizable]="false" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="formgrid grid">
@@ -64,9 +65,11 @@
                 <p-dropdown [options]="products" [(ngModel)]="egresoAux.id_product" optionLabel="product_name" (onChange)="onChange($event)" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
                 <small class="p-error" *ngIf="submitted && !egresoAux.id_product">Nombre es requerido</small>
             </div>
+        </div>
+        <div class="formgrid grid">
             <div class="field col">
                 <label for="option">Descripción del Egreso</label>
-                <p-dropdown [disabled]="!egresoAux.id_product" [showClear]="true" [(ngModel)]="inventory_description" optionLabel="label" optionValue="label" inputId="option" [options]="descriptionOption" placeholder="Seleccionar Descripción">
+                <p-dropdown [disabled]="!egresoAux.id_product" (onChange)="onChangeDescription($event)" [showClear]="true" [(ngModel)]="inventory_description" optionLabel="label" optionValue="label" inputId="option" [options]="descriptionOption" placeholder="Seleccionar Descripción">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="{{option.icon}} mr-2"></i>
@@ -76,18 +79,17 @@
                 </p-dropdown>
                 <small class="p-error" *ngIf="submitted && !inventory_description">Descripción es requerido</small>
             </div>
+            <div class="field col">
+                <label for="minmax-buttons">Cantidad del Producto</label>
+                <p-inputNumber [disabled]="!egresoAux.id_product" [(ngModel)]="egresoAux.inventory_stock_amount" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="maxAmountProduct"></p-inputNumber>
+                <small class="p-error" *ngIf="submitted && egresoAux.inventory_stock_amount == null">Cantidad es requerido</small>
+            </div>
         </div>
-
         <div class="formgrid grid">
             <div class="field col">
                 <label for="optionAux">Descripción de Otro</label>
                 <textarea [disabled]="inventory_description != 'Otro'" id="optionAux" placeholder="Describa si el motivo del egreso es 'Otro'" [autoResize]="true" required pInputTextarea [(ngModel)]="inventory_description_aux" required rows="4" cols="30"></textarea>
                 <small class="p-error" *ngIf="submitted && (!inventory_description_aux && inventory_description == 'Otro') ">Descripción es requerido</small>
-            </div>
-            <div class="field col">
-                <label for="minmax-buttons">Cantidad del Producto</label>
-                <p-inputNumber [disabled]="!egresoAux.id_product" [(ngModel)]="egresoAux.inventory_stock_amount" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="maxAmountProduct"></p-inputNumber>
-                <small class="p-error" *ngIf="submitted && egresoAux.inventory_stock_amount == null">Cantidad es requerido</small>
             </div>
         </div>
     </ng-template>

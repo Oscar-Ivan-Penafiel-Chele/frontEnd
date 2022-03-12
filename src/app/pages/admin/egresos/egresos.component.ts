@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { TokenService } from 'src/app/services/token.service';
 import { Product } from 'src/app/models/product';
 import { EgresoAux } from 'src/app/models/egresoAuxilia';
+import { MessageService } from 'primeng/api';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 type TableRow = [];
@@ -14,7 +15,8 @@ type TableRow = [];
 @Component({
   selector: 'app-egresos',
   templateUrl: './egresos.component.html',
-  styleUrls: ['./egresos.component.css']
+  styleUrls: ['./egresos.component.css'],
+  providers: [MessageService]
 })
 export class EgresosComponent implements OnInit {
 
@@ -32,12 +34,13 @@ export class EgresosComponent implements OnInit {
   submitted : boolean = false;
   descriptionOption : any;
   maxAmountProduct : number = 0;
-  inventory_description : string = "";
-  inventory_description_aux : string ="";
+  inventory_description : any = "";
+  inventory_description_aux : any ="";
 
   constructor(
     private _rest : RestService,
-    private _token : TokenService
+    private _token : TokenService,
+    private messageService: MessageService
   ) { 
     this.descriptionOption = [
       {label : 'Regalo a Empleado' , icon : 'pi pi-user'},
@@ -89,6 +92,7 @@ export class EgresosComponent implements OnInit {
   }
 
   openNewModal(){
+    this.egresoAux = {} as EgresoAux;
     this.displayNewModal = true;
   }
 
@@ -100,10 +104,23 @@ export class EgresosComponent implements OnInit {
     this.submitted = true;
 
     if(!this.validateData()) return ;
-    
+
+    this.egresoAux.id_user = this.user.id_user!;
+    this.egresoAux.inventory_description = this.inventory_description;
+    this.egresoAux.inventory_description_aux = this.inventory_description_aux;
     this.inventory_description == "Otro" ? this.egresoAux.inventory_description = null : this.egresoAux.inventory_description_aux = null;
     
-    console.log(this.egresoAux);
+    this.saveData();
+  }
+
+  saveData(){
+    this._rest.createEgreso(this.egresoAux).subscribe((response)=>{
+      if(response.status === 200 || response.message == "Exito"){
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Registro creado exitosamente'});
+      }else if(response.status === 400 || response.message == "Fallido"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrió un error'});
+      }
+    })
   }
 
   onChange($event : any){
@@ -111,6 +128,10 @@ export class EgresosComponent implements OnInit {
     this.products.forEach((i)=>{
       if(i.id_product === $event.value) this.maxAmountProduct = i.product_stock!;
     });
+  }
+
+  onChangeDescription($event : any){
+    if($event.value != "Otro") this.inventory_description_aux = "";
   }
 
   validateData(){

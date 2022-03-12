@@ -1,25 +1,25 @@
 [
     {
         "id":1,
-        "url":"#home",
+        "url":"home#home",
         "icon":"pi pi-home",
         "description":"Inicio"
     },
     {
         "id":2,
-        "url":"#products",
+        "url":"home#products",
         "icon":"pi pi-slack",
         "description":"Categorías"
     },
     {
         "id":3,
-        "url":"#services",
+        "url":"home#services",
         "icon":"pi pi-th-large",
         "description":"Servicios"
     },
     {
         "id":4,
-        "url":"#brands",
+        "url":"home#brands",
         "icon":"pi pi-tags",
         "description":"Marcas"
     },
