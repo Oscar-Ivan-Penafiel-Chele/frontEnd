@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { Category } from 'src/app/models/category';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-charts',
@@ -13,10 +15,21 @@ export class ChartsComponent implements OnInit {
   dataUsers : any;
   dataStock : any;
   actionSelect : string = "";
+  labelsDataProducts : any[] = [];
+  dataProductsCount : any[] = [];
+  completeLoadingProducts : boolean = false;
+  completeLoadingSails : boolean = false;
+  completeLoadingSailsman: boolean = false;
 
-  constructor(private primengConfig: PrimeNGConfig) { }
+  categories : Category[] = [];
+
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private _rest : RestService,
+    ) { }
 
   ngOnInit(): void {
+    this.getCategoriesProducts();
     this.actionSelect = "sails"
     this.primengConfig.ripple = true;
     
@@ -25,21 +38,40 @@ export class ChartsComponent implements OnInit {
     this.getGraphycDataStock();
   }
 
+  getCategoriesProducts(){
+    this.completeLoadingProducts = true;
+    this.completeLoadingSails = true;
+    this.completeLoadingSailsman = true;
+    this._rest.getCategoriesProducts().subscribe((response)=>{
+      this.categories = Object.values(response);
+      this.categories.map((i : Category)=>{
+        if(i.category_name != 'NO DEFINIDO'){
+          this.labelsDataProducts.push(i.category_name); 
+          this.dataProductsCount.push(i.producto_count) ;
+        }
+      });
+      this.completeLoadingProducts = false;
+      this.completeLoadingSails = false;
+      this.completeLoadingSailsman = false;
+    });
+  }
+
+
   getGraphycDataProducts(){
     this.dataProducts = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-          {
-              label: 'My First dataset',
-              backgroundColor: '#42A5F5',
-              data: [65, 59, 80, 81, 56, 55, 40]
-          },
-          {
-              label: 'My Second dataset',
-              backgroundColor: '#FFA726',
-              data: [28, 48, 40, 19, 86, 27, 90]
-          },
-      ]
+      labels: this.labelsDataProducts,
+            datasets: [
+                {
+                    label: 'Categorías',
+                    backgroundColor: 'rgba(255,99,132,0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    pointBackgroundColor: 'rgba(255,99,132,1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(255,99,132,1)',
+                    data: this.dataProductsCount
+                }
+            ]
     };
   }
 
@@ -60,30 +92,22 @@ export class ChartsComponent implements OnInit {
 
   getGraphycDataStock(){
     this.dataStock = {
-      datasets: [{
-        data: [
-            11,
-            16,
-            7,
-            3,
-            14
-        ],
-        backgroundColor: [
-            "#42A5F5",
-            "#66BB6A",
-            "#FFA726",
-            "#26C6DA",
-            "#7E57C2"
-        ],
-        label: 'My dataset'
-        }],
-        labels: [
-            "Red",
-            "Green",
-            "Yellow",
-            "Grey",
-            "Blue"
-        ]
+      labels: ['A','B','C'],
+            datasets: [
+                {
+                    data: [300, 50, 100],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56"
+                    ]
+                }
+            ]
     }
   }
 }

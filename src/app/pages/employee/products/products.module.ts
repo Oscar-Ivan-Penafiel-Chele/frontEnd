@@ -17,6 +17,7 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {RatingModule} from 'primeng/rating';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     FileUploadModule,
     RatingModule,
     InputNumberModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TooltipModule
   ]
 })
 export class ProductsModule { }

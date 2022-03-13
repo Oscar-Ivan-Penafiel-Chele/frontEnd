@@ -134,6 +134,7 @@ export class RestService {
     return this._http.get<Ingreso[]>(`${this.url}/inventories/ingreso`);
   }
 
+    /* EGRESOS */
   getEgresos() : Observable<Egreso[]>{
     return this._http.get<Egreso[]>(`${this.url}/inventories/egreso`);
   }
@@ -141,7 +142,11 @@ export class RestService {
     return this._http.post<any>(`${this.url}/inventories/egreso`,data);
   }
 
-  /* EGRESOS */
+  /* GRAPHYCS */
+  getCategoriesProducts() : Observable<Category[]>{
+    return this._http.get<Category[]>(`${this.url}/categories/products`)
+  }
+
 
   /* PROVEEDOR */
   getProviders() : Observable<IProvider[]>{

@@ -4,6 +4,7 @@ export interface Category {
     category_descripcion : string;
     category_thumbnail : string;
     category_status?: number;
+    producto_count : any;
     create_date : Date;
     upload_date : Date;
 }

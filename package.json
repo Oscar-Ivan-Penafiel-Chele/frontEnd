@@ -21,6 +21,7 @@
     "@angular/router": "~12.2.0",
     "@types/aos": "^3.0.4",
     "@types/underscore": "^1.11.4",
+    "angular-csv-ext": "^1.0.5",
     "aos": "^2.3.4",
     "chart.js": "^3.7.1",
     "pdfmake": "^0.2.4",

@@ -5,7 +5,7 @@ import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
 import { verificarRuc } from 'udv-ec';
-import { Cell, Columns, PdfMakeWrapper, QR, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Cell, Columns, Img, Line, PdfMakeWrapper, QR, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 
 PdfMakeWrapper.setFonts(pdfFonts);
@@ -103,20 +103,68 @@ export class ReportComponent implements OnInit {
 
   getDataProfile(){
     const data = this._token.getTokenDataUser() as string;
-    this.userLoged = JSON.parse(data);
+    this.user = JSON.parse(data);
+    this.getRoleUser(this.user.id_role!);
   }
 
-  exportPdf() {
+  getRoleUser(id_role : number){
+    const roles : any= {
+      1 : 'Gerente',
+      2 : 'Administrador',
+      3 : 'Contable',
+      4 : 'Vendedor'
+    }
+  }
+
+  async exportPdf() {
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
         title: 'PDF Empleados',
         author: '@Yebba',
-        subject: 'Mostrar los productos de la ferretería',
+        subject: 'Mostrar los empleados de la ferretería',
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('landscape'); // 'portrait'
-    pdf.header(fecha.toUTCString());
+    pdf.add(
+      new Stack([
+        new Columns([
+          await new Img('assets/img/log_app_pdf.svg').width(100).build(),
+          new Columns([
+            new Stack([
+              new Columns([ 
+                new Txt('Nómina de Empleados').fontSize(14).bold().end,
+              ]).color('#3f3f3f').end,
+              new Columns([ 
+                new Txt('Módulo de Empleados  \n\n').fontSize(11).end,
+              ]).color('#3f3f3f').end,
+              new Columns([ 
+                new Txt('').alignment('right').width('*').bold().end,
+                new Txt('Usuario: ').alignment('right').width('*').bold().end,
+                new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
+                new Txt('Fecha: ').alignment('right').width(40).bold().end,
+                new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
+                new Txt('Hora:').alignment('right').width(30).bold().end,
+                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
+              ]).end,
+            ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
+          ]).end
+        ]).end
+      ]).end
+    );
+    pdf.add(
+      '\n'
+    )
+    pdf.add(
+      new Columns([
+        new Canvas([
+            new Line([0,0], [755,0]).lineColor('#ccc').end
+        ]).end,
+      ]).width('*').end
+    );
+    pdf.add(
+      '\n\n'
+    )
     pdf.add(
         new Txt('Nómina de Empleados').alignment('center').bold().fontSize(14).margin(10).end
     );   
@@ -148,6 +196,9 @@ export class ReportComponent implements OnInit {
             ]).widths([ 70,70,80,80,100,'*',80 ]).fontSize(10).end
         );
     })
+    pdf.footer((currentPage : any, pageCount : any)=>{
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+    });
     pdf.create().open();    
   }
 

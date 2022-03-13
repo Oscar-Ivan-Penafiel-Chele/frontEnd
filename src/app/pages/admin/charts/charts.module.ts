@@ -5,6 +5,7 @@ import { ChartsRoutingModule } from './charts-routing.module';
 import { ChartsComponent } from './charts.component';
 import {ChartModule} from 'primeng/chart';
 import {RippleModule} from 'primeng/ripple';
+import {SkeletonModule} from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {RippleModule} from 'primeng/ripple';
     CommonModule,
     ChartsRoutingModule,
     ChartModule,
-    RippleModule
+    RippleModule,
+    SkeletonModule
   ]
 })
 export class ChartsModule { }

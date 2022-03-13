@@ -15,7 +15,7 @@ export class MigrationComponent implements OnInit {
 
   uploadedFiles: any[] = [];
   invalidFileTypeMessageSummary : string = `Tipo de archivo inválido:`;
-  invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .xlsx`;
+  invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .csv`;
   user : User = {};
   visible : boolean = false;
   imageExcel = "assets/img/IconExcel.svg";

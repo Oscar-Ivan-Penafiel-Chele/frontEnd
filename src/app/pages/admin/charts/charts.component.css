@@ -98,3 +98,19 @@ section{
     color: #3f3f3f;
     font-weight: 600;
 }
+
+.skeleton{
+    display: flex;
+    flex-grow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.card__items{
+    display: flex;
+    flex-grow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}

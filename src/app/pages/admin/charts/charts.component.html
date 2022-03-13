@@ -1,39 +1,37 @@
 <section>
     <div class="cards__options">
-        <div class="card__option__item ventas" (click)="actionSelect = 'sails'" pRipple>
-            <div class="card__item">
-                <p>222</p>
-                <p>Ventas</p>
-            </div>
-            <div class="card__icon">
-                <i class="pi pi-shopping-cart"></i>
-            </div>
+        <div class="skeleton flex flex-wrap" *ngIf="completeLoadingProducts || completeLoadingSails || completeLoadingSailsman">
+            <p-skeleton class="mr-2" width="290px" height="6rem"></p-skeleton>
+            <p-skeleton class="mr-2" width="290px" height="6rem"></p-skeleton>
+            <p-skeleton width="290px" height="6rem"></p-skeleton>
         </div>
-        <div class="card__option__item productos" (click)="actionSelect = 'products'" pRipple>
-            <div class="card__item">
-                <p>222</p>
-                <p>Productos</p>
+        <div class="card__items flex flex-wrap justify-content-center alings-items-center" *ngIf="!completeLoadingProducts && !completeLoadingSails && !completeLoadingSailsman">
+            <div class="card__option__item ventas" (click)="actionSelect = 'sails'" pRipple>
+                <div class="card__item">
+                    <p>222</p>
+                    <p>Ventas</p>
+                </div>
+                <div class="card__icon">
+                    <i class="pi pi-shopping-cart"></i>
+                </div>
             </div>
-            <div class="card__icon">
-                <i class="pi pi-tags"></i>
+            <div class="card__option__item productos" (click)="actionSelect = 'products'" pRipple>
+                <div class="card__item">
+                    <p>222</p>
+                    <p>Productos</p>
+                </div>
+                <div class="card__icon">
+                    <i class="pi pi-tags"></i>
+                </div>
             </div>
-        </div>
-        <!-- <div class="card__option__item usuarios" (click)="actionSelect = 'users'" pRipple>
-            <div class="card__item">
-                <p>222</p>
-                <p>Usuarios</p>
-            </div>
-            <div class="card__icon">
-                <i class="pi pi-user"></i>
-            </div>
-        </div> -->
-        <div class="card__option__item stock" (click)="actionSelect = 'stock'" pRipple>
-            <div class="card__item">
-                <p>222</p>
-                <p>Stock</p>
-            </div>
-            <div class="card__icon">
-                <i class="pi pi-box"></i>
+            <div class="card__option__item stock" (click)="actionSelect = 'sailman'" pRipple>
+                <div class="card__item">
+                    <p>222</p>
+                    <p>Vendedores</p>
+                </div>
+                <div class="card__icon">
+                    <i class="pi pi-user"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -43,28 +41,24 @@
     <ng-template [ngIf]="actionSelect == 'sails'">
         <div class="titleGraphyc">
             <p class="titleGraphyc">Ventas</p>
-            <p-chart type="line" [data]="dataSails" width="70vw" [options]="basicOptions"></p-chart>
+            <p-skeleton *ngIf="completeLoadingSails" width="60vw" height="25rem"></p-skeleton>
+            <p-chart *ngIf="!completeLoadingSails" type="line" [data]="dataSails" width="60vw" [options]="basicOptions"></p-chart>
         </div>
     </ng-template>
 
     <ng-template [ngIf]="actionSelect == 'products'">
         <div class="titleGraphyc">
             <p class="titleGraphyc">Productos</p>
-            <p-chart type="bar" [data]="dataProducts" width="70vw" [options]="basicOptions"></p-chart>
+            <p-skeleton *ngIf="completeLoadingProducts" width="60vw" height="25rem"></p-skeleton>
+            <p-chart *ngIf="!completeLoadingProducts" type="radar" [data]="dataProducts" width="35vw" [options]="basicOptions"></p-chart>
         </div>
     </ng-template>
 
-    <!-- <ng-template [ngIf]="actionSelect == 'users'">
-        <div class="titleGraphyc">
-            <p class="titleGraphyc">Usuarios</p>
-            <p-chart type="bar" [data]="basicData" width="70vw" [options]="basicOptions"></p-chart>
-        </div>
-    </ng-template> -->
-
-    <ng-template [ngIf]="actionSelect == 'stock'">
+    <ng-template [ngIf]="actionSelect == 'sailman'">
         <div style="width: 40%;" class="flex flex-column justify-content-center">
-            <p class="parrafo">Stock</p>
-            <p-chart type="polarArea" [data]="dataStock"></p-chart>
+            <p class="parrafo">Vendedores</p>
+            <p-skeleton *ngIf="completeLoadingSailsman" height="25rem"></p-skeleton>
+            <p-chart *ngIf="!completeLoadingSailsman" type="doughnut" [data]="dataStock"></p-chart>
         </div>
     </ng-template>
 </div>

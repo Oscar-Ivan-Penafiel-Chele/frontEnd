@@ -43,10 +43,10 @@ export class EgresosComponent implements OnInit {
     private messageService: MessageService
   ) { 
     this.descriptionOption = [
-      {label : 'Regalo a Empleado' , icon : 'pi pi-user'},
-      {label : 'Donación a Fundación o Institución', icon : 'pi pi-building'},
-      {label : 'Mercadería Regalada', icon : 'pi pi-box'},
-      {label : 'Otro', icon : 'pi pi-paperclip'},
+      {label : 'REGALO A EMPLEADO' , icon : 'pi pi-user'},
+      {label : 'DONACIÓN A FUNDACIÓN O INSTITUCIÓN', icon : 'pi pi-building'},
+      {label : 'MERCADERÍA REGALADA', icon : 'pi pi-box'},
+      {label : 'OTRO', icon : 'pi pi-paperclip'},
     ]
   }
 
@@ -68,7 +68,6 @@ export class EgresosComponent implements OnInit {
     this._rest.getEgresos().subscribe((response : Egreso[])=>{
       this.egresos = Object.values(response);
       this.loading = false;
-      console.log(this.egresos);
     })
   }
 
@@ -96,10 +95,6 @@ export class EgresosComponent implements OnInit {
     this.displayNewModal = true;
   }
 
-  hideNewModal(){
-    this.displayNewModal = false;
-  }
-
   newEgreso(){
     this.submitted = true;
 
@@ -108,7 +103,7 @@ export class EgresosComponent implements OnInit {
     this.egresoAux.id_user = this.user.id_user!;
     this.egresoAux.inventory_description = this.inventory_description;
     this.egresoAux.inventory_description_aux = this.inventory_description_aux;
-    this.inventory_description == "Otro" ? this.egresoAux.inventory_description = null : this.egresoAux.inventory_description_aux = null;
+    this.inventory_description == "OTRO" ? this.egresoAux.inventory_description = null : this.egresoAux.inventory_description_aux = null;
     this.egresoAux.inventory_stock_amount = this.egresoAux.inventory_stock_amount.toFixed(2);
     this.saveData();
   }
@@ -116,13 +111,19 @@ export class EgresosComponent implements OnInit {
   saveData(){
     this._rest.createEgreso(this.egresoAux).subscribe((response)=>{
       if(response.status === 200 || response.message == "Guardado con exito"){
+        this.getEgresos();
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Registro creado exitosamente'});
+        this.hideNewModal();
       }else if(response.status === 400 || response.message == "Ocurrio un error interno al crear la orden"){
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrió un error'});
       }
     },(error)=>{
       console.log(error);
     })
+  }
+
+  hideNewModal(){
+    this.displayNewModal = false;
   }
 
   onChange($event : any){
@@ -133,11 +134,11 @@ export class EgresosComponent implements OnInit {
   }
 
   onChangeDescription($event : any){
-    if($event.value != "Otro") this.inventory_description_aux = "";
+    if($event.value != "OTRO") this.inventory_description_aux = "";
   }
 
   validateData(){
-    if(!this.egresoAux.id_product || !this.inventory_description || (this.inventory_description == 'Otro' && !this.inventory_description_aux) || this.egresoAux.inventory_stock_amount == null) return false;
+    if(!this.egresoAux.id_product || !this.inventory_description || (this.inventory_description == 'OTRO' && !this.inventory_description_aux) || this.egresoAux.inventory_stock_amount == null) return false;
 
     return true;
   }

@@ -130,8 +130,8 @@ export class DashboardComponent implements OnInit {
   getDateToday(){
     let hoy = new Date();
 
-    let fecha = hoy.getFullYear() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getDate();
-    let hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+    let fecha = hoy.getFullYear() + '-' + ( (hoy.getMonth() + 1) < 10 ? '0'+(hoy.getMonth() + 1) : (hoy.getMonth() + 1)) + '-' + (hoy.getDate() < 10 ? '0'+hoy.getDate() : hoy.getDate());
+    let hora = (hoy.getHours() < 10 ? '0'+hoy.getHours() : hoy.getHours()) + ':' + (hoy.getMinutes() < 10 ? '0'+hoy.getMinutes() : hoy.getMinutes()) + ':' + (hoy.getSeconds() < 10 ? '0'+hoy.getSeconds() : hoy.getSeconds());
 
     this.fechaYHora = fecha + ' ' + hora;
 

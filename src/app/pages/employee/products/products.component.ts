@@ -11,8 +11,9 @@ import { TokenService } from 'src/app/services/token.service';
 import { User } from 'src/app/models/user';
 import { environment } from 'src/environments/environment.prod';
 import { Measure } from 'src/app/models/measure';
-import { Cell, Columns, PdfMakeWrapper, QR, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -497,7 +498,7 @@ export class ProductsComponent implements OnInit {
         event.target.value = event.target.value.replace(/[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g, "");
     }
 
-    exportPdf() {
+    async exportPdf() {
         this.loadingPDF = true;
         const fecha = new Date();
         const pdf = new PdfMakeWrapper();
@@ -508,7 +509,45 @@ export class ProductsComponent implements OnInit {
         });
         pdf.pageSize('A4');
         pdf.pageOrientation('landscape'); // 'portrait'
-        pdf.header(fecha.toUTCString());
+        pdf.add(
+            new Stack([
+              new Columns([
+                await new Img('assets/img/log_app_pdf.svg').width(100).build(),
+                new Columns([
+                  new Stack([
+                    new Columns([ 
+                      new Txt('Reporte de Productos').fontSize(14).bold().end,
+                    ]).color('#3f3f3f').end,
+                    new Columns([ 
+                      new Txt('Módulo de Productos  \n\n').fontSize(11).end,
+                    ]).color('#3f3f3f').end,
+                    new Columns([ 
+                      new Txt('').alignment('right').width('*').bold().end,
+                      new Txt('Usuario: ').alignment('right').width('*').bold().end,
+                      new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
+                      new Txt('Fecha: ').alignment('right').width(40).bold().end,
+                      new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
+                      new Txt('Hora:').alignment('right').width(30).bold().end,
+                      new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
+                    ]).end,
+                  ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
+                ]).end
+              ]).end
+            ]).end
+          );
+          pdf.add(
+            '\n'
+          )
+          pdf.add(
+            new Columns([
+              new Canvas([
+                  new Line([0,0], [755,0]).lineColor('#ccc').end
+              ]).end,
+            ]).width('*').end
+          );
+          pdf.add(
+            '\n\n'
+          )
         pdf.add(
             new Txt('Gestión de Productos').alignment('center').bold().fontSize(16).margin(10).end
         );   
@@ -524,8 +563,15 @@ export class ProductsComponent implements OnInit {
                 ]).widths([ 80,100,100,'*',100,100,80,80 ]).end
             );
         })
+        pdf.footer((currentPage : any, pageCount : any)=>{
+            return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+          });
         pdf.create().open();
         this.loadingPDF = false;    
+    }
+
+    exportCSV(){
+        new AngularCsv(this.products, 'Productos');
     }
 
     deleteProduct(product: Product) {
