@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'about', loadChildren : ()=> import('./pages/about/about.module').then( m => m.AboutModule)}, 
   {path: 'shop', loadChildren : () => import('./pages/user/shop/shop.module').then( m => m.ShopModule)}, 
   {path: 'checkout/cart' , loadChildren : ()=> import('./pages/car/car.module').then( m => m.CarModule)},
+  {path: 'checkout/order' , loadChildren : ()=> import('./pages/order/order.module').then( m => m.OrderModule)},
   {path: 'terminos-y-condiciones', loadChildren : () => import('./pages/terms/terms.module').then(m => m.TermsModule)}, 
   {path: 'gerente', loadChildren : ()=> import('./pages/admin/admin.module').then( m => m.AdminModule)},
   {path: 'administrador', loadChildren : () => import('./pages/employee/employee.module').then( m => m.EmployeeModule)},

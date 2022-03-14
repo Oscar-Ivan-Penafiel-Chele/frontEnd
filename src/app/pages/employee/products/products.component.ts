@@ -587,7 +587,7 @@ export class ProductsComponent implements OnInit {
           };
 
         this.dataCVS = this.products.map(({product_code,product_unit,product_name,product_price,product_stock})=>{
-            return {product_code,product_unit : product_unit.description_product_unit,product_name,product_price,product_stock}
+            return {product_code,product_unit : product_unit.description_product_unit,product_name,product_price,product_stock : product_stock?.toString().split('.')[0]}
         })
 
         new AngularCsv(this.dataCVS, `INV ${dataNow}`, options);

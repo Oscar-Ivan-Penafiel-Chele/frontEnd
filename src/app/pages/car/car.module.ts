@@ -8,6 +8,9 @@ import { FormsModule } from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import {ToastModule} from 'primeng/toast';
+import {TableModule} from 'primeng/table';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { TagModule } from 'primeng/tag';
     FormsModule,
     InputTextModule,
     ButtonModule,
-    TagModule
+    TagModule,
+    ToastModule,
+    TableModule,
+    SharedModule
   ]
 })
 export class CarModule { }

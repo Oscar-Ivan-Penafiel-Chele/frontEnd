@@ -1,14 +1,6 @@
 section{
-    width: 100%;
     height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-main{
     width: 100%;
-    height: 100%;
-    min-height: 100vh;
     display: flex;
     flex-flow: column nowrap;
 }
@@ -24,12 +16,13 @@ main{
     background-color: #4F46E5;
     height: 60px;
     padding: 0px 5%;
+    
 }
 
 .nav__menu{
     height: 100%;
     margin: 0 -16px;
-    z-index: 2;
+    z-index: 1;
 }
 
 .nav__menu__content{
@@ -65,7 +58,6 @@ main{
     justify-content: center;
     align-items: center;
     margin-right: 10px;
-    z-index: 1;
 }
 
 .nav__menu__cart > button{
@@ -122,8 +114,8 @@ main{
     align-items: flex-start;
     border: 1px solid #ccc;
     border-radius: 5px;
-    z-index: 9;
     background-color: white;
+    z-index: 99;
 }
 
 .nav__user__option > p{
@@ -174,7 +166,7 @@ main{
 .hamburger{
     display: block;
     position: relative;
-    z-index: 3;
+    z-index: 1;
     
     user-select: none;
 
@@ -265,6 +257,7 @@ main{
         transform: translateX(-100%);
         transition: 0.4s ease-in-out;
         width: 100%;
+        
     }
 
     .nav__menu__content{
@@ -275,6 +268,7 @@ main{
         display: flex;
         flex-direction: column;
         padding: 40px 0px;
+        z-index: 999;
     }
 
     .nav__menu__content > a{
@@ -283,6 +277,7 @@ main{
         height: auto;
         padding: 15px 40px;
         font-size: 15px;
+        z-index: 9;
     }
 
     .nav__menu__content > a:hover{
@@ -504,233 +499,17 @@ main{
     }
 }
 
-/* BANNER SHOP */
-.banner__shop{
+
+/* MAIN */
+main{
     width: 100%;
     height: 100%;
-}
-
-.chips__categories{
-    width: 100%;
-}
-
-.chip__item{
-    border: 1px solid #ccc;
-    padding: 5px 15px;
-    border-radius: 50px; 
-    margin-right: 10px;
-    margin-bottom: 8px;
-    transition: all 0.2s;
-}
-
-.chip__item:hover{
-    cursor: pointer;
-    background-color: #8f94fb;
-    color: rgb(241, 241, 241);
-    border-color: #8f94fb;
-}
-
-.chip__item__active{
-    background-color: #4F46E5;
-    color: rgb(241, 241, 241);
-}
-
-.options__shop{
-    width: 85%;
-    padding: 30px 0px;
-    margin: auto;
-}
-
-.options__shop__content{
-    background: #FDC830;
-    /* background-image: url(./../../../../assets/img/back.svg); */
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    padding: 20px 0px;
-    border-radius: 5px;
-}
-
-.options__shop__content__card i {
-    color: #4F46E5;
-    font-size: 40px;
-}
-
-.options__shop__content__card p {
-    color: #495057;
-    font-size: 16px;
-    font-weight: 600;
-    padding-top: 15px;
-}
-
-.main__content{
-    padding: 30px 50px;
-}
-
-.card-template{
-    border: 1px solid #ccc;
+    min-height: 100vh;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    /* height: 100%; */
-    margin: auto;
-    padding: 15px;
-    z-index: 9;
 }
 
-.carousel__content{
-    margin-bottom: 80px;
-}
-
-.card-template:hover{
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    cursor: pointer;
-}
-
-
-.carousel__header > p{
-    margin-right: 10px;
-    color: #495057;
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 55px;
-}
-
-.carousel__mas > a{
-    text-decoration: none;
-    color: #4F46E5;
-}
-
-.carousel__mas > i{
-    padding-left: 5px;
-    color: #4F46E5;
-    font-size: 14px;
-}
-
-.carousel__mas > a:hover{
-    text-decoration: underline;
-}
-
-
-.carousel__header > a > i{
-    padding-left: 5px;
-}
-
-.card__description > p:first-of-type{
-    font-size: 16px;
-    color: #495057;
-    text-align: center;
-}
-
-.card__description > p:nth-child(2){
-    font-weight: bold;
-    font-size: 19px;
-    color: #495057;
-}
-
-
-:host ::ng-deep .product-name {
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-:host ::ng-deep .product-description {
-    margin: 0 0 1rem 0;
-}
-:host ::ng-deep .product-category-icon {
-    vertical-align: middle;
-    margin-right: 0.5rem;
-}
-:host ::ng-deep .product-category {
-    font-weight: 600;
-    vertical-align: middle;
-}
-
-/**/
-:host ::ng-deep .product-list-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
+.steps{
     width: 100%;
+    padding: 30px;
 }
-:host ::ng-deep .product-list-item img {
-    width: 100px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    margin-right: 2rem;
-}
-:host ::ng-deep .product-list-item .product-list-detail {
-    flex: 1 1 0;
-}
-:host ::ng-deep .product-list-item .p-rating {
-    margin: 0 0 0.5rem 0;
-}
-:host ::ng-deep .product-list-item .product-price {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    align-self: flex-end;
-}
-:host ::ng-deep .product-list-item .product-list-action {
-    display: flex;
-    flex-direction: column;
-}
-:host ::ng-deep .product-list-item .p-button {
-    margin-bottom: 0.5rem;
-}
-
-/**/
-:host ::ng-deep .product-grid-item {
-    margin: 0.5em;
-    border: 1px solid #dee2e6;
-}
-:host ::ng-deep .product-grid-item .product-grid-item-top, :host ::ng-deep .product-grid-item .product-grid-item-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-:host ::ng-deep .product-grid-item img {
-    width: 180px;
-    height: 150px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    margin: 2rem 0;
-}
-:host ::ng-deep .product-grid-item .product-grid-item-content {
-    text-align: center;
-}
-:host ::ng-deep .product-grid-item .product-price {
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-.card {
-    padding: 1rem;
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    margin-bottom: 1rem;
-}
-@media screen and (max-width: 576px) {
-    :host ::ng-deep .product-list-item {
-        flex-direction: column;
-        align-items: center;
-   }
-    :host ::ng-deep .product-list-item img {
-        width: 75%;
-        margin: 2rem 0;
-   }
-    :host ::ng-deep .product-list-item .product-list-detail {
-        text-align: center;
-   }
-    :host ::ng-deep .product-list-item .product-price {
-        align-self: center;
-   }
-    :host ::ng-deep .product-list-item .product-list-action {
-        display: flex;
-        flex-direction: column;
-   }
-    :host ::ng-deep .product-list-item .product-list-action {
-        margin-top: 2rem;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-   }
-}
-

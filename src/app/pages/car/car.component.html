@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <section>
     <nav>
         <div class="logout" *ngIf="overlayLogout">
@@ -76,97 +77,57 @@
     </nav>
 
     <main>
-        <p>Total de Items : {{products.length}}</p>
-        <div class="card__products__select">
-            <div class="cards__products__info " *ngFor="let product of products">
-                <div class="card__product__item" >
-                    <div class="img__product">
-                        <img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="90px">
+        <div class="table__item__cart">
+            <p-table #dt [value]="products" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id" 
+            currentPageReportTemplate="" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        <p>Total de Items : {{products.length}}</p>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto..." />
+                        </span>
                     </div>
-                    <div class="description__product">
-                        <p-tag styleClass="mr-2" icon="pi pi-info-circle" severity="info" [value]="'Disponible: '+ product.product_stock"></p-tag>
-                        <p>{{product.product_name}}</p>
-                        <div class="description__information">
-                            <p><span>Categoria</span>: {{product.category.category_name}}</p>
-                            <p><span>Marca</span>: {{product.brand.brand_name}}</p>
-                        </div>
-                        <div class="options__product flex align-items-center">
-                            <div class="amount__product">
-                                <div>
-                                    <p-inputNumber [size]="1" [(ngModel)]="product.product_amount_sail == null ? 1 : product.product_amount_sail" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [mode]="'decimal'" [min]="1" [max]="product.product_stock!" decrementButtonClass="p-button-primary" incrementButtonClass="p-button-primary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
-                                </div>
-                            </div>
-                            <div class="delete__product ml-2">
-                                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
-                            </div>
-                        </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th><i class="pi pi-image"></i> Imagen</th>
+                        <th pSortableColumn="product_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="product_name"></p-sortIcon></th>
+                        <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio Unitario <p-sortIcon field="product_price"></p-sortIcon></th>
+                        <th pSortableColumn="product_amount_sail"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="product_amount_sail"></p-sortIcon></th>
+                        <th pSortableColumn="product_price_total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="product_price_total"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-columns="columns" let-index="rowIndex">
+                    <tr [pReorderableRow]="index">
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text" (click)="deleteProductCart(product)"></button>
+                        </td>
+                        <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage :  host+product.product_image" [alt]="product.product_image" width="80" height="80" class="shadow-4" /></td>
+                        <td>{{product.product_name}}</td>
+                        <td>${{product.product_price}}</td>
+                        <td><p-inputNumber (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail == null ? 1 : product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
+                        <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>      
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-end justify-content-end">
+                        Subtotal a pagar: ${{(order.price_order_total).toFixed(2)}}
                     </div>
-                    <div class="price__product">
-                        <p>U$S {{product.product_price}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card__facture col">
-                <p>Resumen del Pedido</p>
-                <div class="flex flex-column">
-                    <button pButton pRipple type="button">
-                        <p>Finalizar Compra</p>
-                    </button>
-                    <button (click)="goHome()" pButton pRipple type="button" class="p-button-outlined mt-2">
-                        <p>Seguir Comprando</p>
-                    </button>
-                </div>
-            </div>
+                </ng-template>
+            </p-table>
         </div>
 
+        <div class="flex flex-wrap justify-content-between align-items-center" style="padding: 0px 30px;">
+            <button (click)="goHome()" pButton pRipple type="button" class="p-button-outlined">
+                <p>Seguir Comprando <i class="pi pi-shopping-cart"></i></p>
+            </button>
+            <button [routerLink]="'/checkout/order'" pButton pRipple type="button">
+                <p>Continuar Compra <i class="pi pi-arrow-right"></i></p>
+            </button>
+        </div>
     </main>
 
-    <footer>
-        <div class="box-content-main">
-            <div class="box-content">
-                <figure>
-                    <img loading="lazy" id="logo-img" src="assets/img/logo_app.svg" alt="Logo" width="65px">
-                    <p>Ferretería | El Descanso</p>
-                </figure>
-                <div class="box-content-social">
-                    <a href="#" class="facebook"><i class="pi pi-facebook " ></i></a>
-                    <a href="#" class="instagram"><i class="pi pi-instagram" ></i></a>
-                    <a href="#" class="twitter"><i class="pi pi-twitter" ></i></a>
-                    <a href="#" class="whatsapp"><i class="pi pi-whatsapp" ></i></a>
-                </div>
-            </div>
-            <div class="box-content shop">
-                <h3>Tienda</h3>
-                <div class="box-content-links">
-                    <a href="#">- Herramientas</a>
-                    <a href="#">- Pinturas</a>
-                    <a href="#">- Otros</a>
-                </div>
-            </div>
-            <div class="box-content company">
-                <h3>Compañia</h3>
-                <div class="box-content-links">
-                    <a href="/login">- Login</a>
-                    <a href="/signup">- Registro</a>
-                    <a href="/contact">- Contacto</a>
-                </div>
-            </div>
-          
-            <div class="box-content">
-                <h3>Subscripción</h3>
-                <div class="box-content-email">
-                    <p>Subscribete para estar al día con nuestras actualizaciones!</p>
-                        <div class="p-inputgroup"  style="height: 45px">
-                            <input type="email" pInputText placeholder="Email">   
-                            <button type="button" pButton pRipple icon="pi pi-send" style="background-color: #4F46E5;" styleClass="p-button-warn"></button>      
-                        </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="company">
-            <p class="copyright">© 2021 Ferretería | El Descanso . All right reserved</p>
-        </div>
-    </footer>
-   
+    <app-footer-shop></app-footer-shop>
 </section>

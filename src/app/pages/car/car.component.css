@@ -702,3 +702,12 @@ figure > p{
     color: #ccc;
     padding-top: 25px;
 }
+
+.table__item__cart{
+    padding: 30px;
+}
+
+
+.field > label{
+    font-weight: bold;
+}

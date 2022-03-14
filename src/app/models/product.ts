@@ -17,6 +17,7 @@ export interface Product {
     product_stock?:number;
     product_amount_sail? : number;
     product_price?:number;
+    product_price_total?:number;
     product_image?:string;
     product_status:number;
     product_rating?:number;

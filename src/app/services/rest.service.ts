@@ -52,6 +52,9 @@ export class RestService {
   getProductsCart(data : any) : Observable<Cart[]>{
     return this._http.post<Cart[]>(`${this.url}/shopping/card/get`,data); 
   }
+  deleteProductCart(data : any) : Observable<any>{
+    return this._http.post<any>(`${this.url}/shopping/card/delete`,data);
+  }
 
 
   /* CLIENT */

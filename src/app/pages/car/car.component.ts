@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PrimeNGConfig} from 'primeng/api'
+import { PrimeNGConfig, MessageService} from 'primeng/api'
 import { Cart } from 'src/app/models/cart';
+import { Order } from 'src/app/models/order';
 import { Product } from 'src/app/models/product';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,7 +14,8 @@ import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-car',
   templateUrl: './car.component.html',
-  styleUrls: ['./car.component.css']
+  styleUrls: ['./car.component.css'],
+  providers: [MessageService]
 })
 export class CarComponent implements OnInit {
 
@@ -25,6 +27,10 @@ export class CarComponent implements OnInit {
   products : Product[] = [];
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.jpg";
+  loadingDelete : boolean = false;
+  loading : boolean = false;
+  priceTotal : number = 0;
+  order : Order = {} as Order;
   
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -32,9 +38,10 @@ export class CarComponent implements OnInit {
     private _token : TokenService, 
     private _authService : AuthService,
     private _navigate : Router,
-    private _home : HomeService,
+    private messageService: MessageService
   ) { 
     this.overlayLogout = false;
+    this.order.price_order_total = 0;
   }
 
   ngOnInit(): void {
@@ -65,6 +72,7 @@ export class CarComponent implements OnInit {
   }
   
   async getAllProductsCart(id_user : number){
+    this.loading = true;
     const data = {
       id_user : id_user
     };
@@ -74,15 +82,40 @@ export class CarComponent implements OnInit {
     })
   }
 
-  extractData(data : Cart[]){
+  async extractData(data : Cart[]){
     this.products = data.map(({producto})=>{
       return producto;
     })
-    
-    console.log(this.products);
+    this.loading = false;
+    this.loadingDelete = false;
+    await this.getTotalPriceToPay();
   }
 
+  getTotalPriceForUnit($event : any, product : Product){
+    product.product_price_total! = product.product_price! * $event.value;
+    this.getTotalPriceForAmount();
+  }
 
+  async getTotalPriceToPay(){
+    this.products.forEach((i)=>{
+      if(i.product_price_total == undefined){
+        i.product_amount_sail = 1;
+        this.order.price_order_total += parseFloat(i.product_price!.toString());
+      }
+    })
+  }
+
+  getTotalPriceForAmount(){
+    let price : any ;
+    const reduce = (i : number,j : number) => i+j;
+
+    price = this.products.map((i)=>{
+      if(i.product_price_total == undefined) i.product_price_total = parseFloat(i.product_price!.toString())
+      return i.product_price_total;
+    })
+
+    this.order.price_order_total = price.reduce(reduce);
+  }
 
   displayOptions(){
     const menu = document.querySelector('.nav__user');
@@ -137,5 +170,23 @@ export class CarComponent implements OnInit {
           window.location.href = '/shop';
       }
     });
+  }
+
+  async deleteProductCart(product : Product){
+    this.loadingDelete = true;
+    const data = {
+      id_user : this.user.id_user,
+      id_product : product.id_product
+    }
+
+    this._rest.deleteProductCart(data).subscribe((response)=>{
+      if(response.status == 200 || response.message === "Eliminado con exito"){
+        this.getAllProductsCart(this.user.id_user!);
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue eliminado'});
+      }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor'});
+        this.loadingDelete = false;
+      }
+    })
   }
 }

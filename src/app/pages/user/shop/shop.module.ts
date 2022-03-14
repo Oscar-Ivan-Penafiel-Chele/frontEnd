@@ -36,7 +36,7 @@ import {ToastModule} from 'primeng/toast';
     ProgressSpinnerModule,
     InputTextModule,
     SharedModule,
-    ToastModule
+    ToastModule,
   ]
 })
 export class ShopModule { }

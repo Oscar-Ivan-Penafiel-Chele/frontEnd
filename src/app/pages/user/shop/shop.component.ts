@@ -37,7 +37,7 @@ export class ShopComponent implements OnInit {
   completeProduct : boolean = false;
   fechaYHora : any ;
   user : User = {};
-  isLogged?: boolean = false;
+  isLogged?: boolean = false; //
   loadingShop : boolean = false;
   i : number = 0;
 
