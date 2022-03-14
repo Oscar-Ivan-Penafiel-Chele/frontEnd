@@ -14,6 +14,7 @@ import { Promotion } from '../models/promotion';
 import { Ingreso } from '../models/ingreso';
 import { Egreso } from '../models/egreso';
 import { EgresoAux } from '../models/egresoAuxilia';
+import { Cart } from '../models/cart';
 
 
 @Injectable({
@@ -43,6 +44,15 @@ export class RestService {
       }
     });
   }
+
+  /* CAR */
+  addProductCart(data : any) : Observable<any>{
+    return this._http.post<any>(`${this.url}/shopping/card/add`,data);
+  }
+  getProductsCart(data : any) : Observable<Cart[]>{
+    return this._http.post<Cart[]>(`${this.url}/shopping/card/get`,data); 
+  }
+
 
   /* CLIENT */
   createClient(user : User) : Observable<any>{

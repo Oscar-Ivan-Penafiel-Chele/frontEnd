@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { PrimeNGConfig} from 'primeng/api';
+import { } from 'primeng/api';
+import { ConfirmationService, PrimeNGConfig, MessageService } from 'primeng/api';
 import { TokenService } from 'src/app/services/token.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,11 +9,13 @@ import { Product } from 'src/app/models/product';
 import { Category } from 'src/app/models/category';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment.prod';
+import { HomeService } from 'src/app/services/home.service';
 
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
-  styleUrls: ['./shop.component.css']
+  styleUrls: ['./shop.component.css'],
+  providers : [MessageService,ConfirmationService]
 })
 export class ShopComponent implements OnInit {
 
@@ -49,6 +52,8 @@ export class ShopComponent implements OnInit {
     private _token : TokenService, 
     private _authService : AuthService,
     private _navigate : Router,
+    private _home : HomeService,
+    private messageService: MessageService, 
   ) { 
     this.overlayLogout = false;
     this.responsiveOptions = [
@@ -223,14 +228,25 @@ export class ShopComponent implements OnInit {
   }
 
   addProductoCart($event : any , product : Product){
-  //   this.loadingShop = true;
 
-  //   setTimeout(() => {
-  //     this.loadingShop = false;
-  //   }, 1000);
-  // }
-    //console.log($event.target.parentElement.id);  
 
-    
+    const data = {
+      id_user : this.user.id_user,
+      id_product : product.id_product
+    }
+
+    this._rest.addProductCart(data).subscribe((response) =>{
+      if(response.status == 200 || response.message === "Guardado con exito"){
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
+      }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
+        this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
+      }
+    });
+  }
+
+  idLogAddCart(){
+    if(!this._token.getTokenDataUser()){
+      
+    }
   }
 }

@@ -16,11 +16,13 @@ section{
     background-color: #4F46E5;
     height: 60px;
     padding: 0px 5%;
+    
 }
 
 .nav__menu{
     height: 100%;
     margin: 0 -16px;
+    z-index: 1;
 }
 
 .nav__menu__content{
@@ -112,8 +114,8 @@ section{
     align-items: flex-start;
     border: 1px solid #ccc;
     border-radius: 5px;
-    z-index: 9;
     background-color: white;
+    z-index: 99;
 }
 
 .nav__user__option > p{
@@ -249,12 +251,13 @@ section{
         top: 0px;
         left: 0;
         right: 0;
-        position: absolute;
+        position: fixed;
         height: 100vh;
         align-items: center;
         transform: translateX(-100%);
         transition: 0.4s ease-in-out;
         width: 100%;
+        
     }
 
     .nav__menu__content{
@@ -265,6 +268,7 @@ section{
         display: flex;
         flex-direction: column;
         padding: 40px 0px;
+        z-index: 999;
     }
 
     .nav__menu__content > a{
@@ -273,6 +277,7 @@ section{
         height: auto;
         padding: 15px 40px;
         font-size: 15px;
+        z-index: 9;
     }
 
     .nav__menu__content > a:hover{
@@ -359,7 +364,7 @@ section{
     .nav__user__option{
         color: white;
         border: none;
-
+        background-color: #232526;
     }
 
     .nav__user{
@@ -513,14 +518,14 @@ main > p {
 }
 
 .card__products__select{
-    /* display: flex;
+    display: flex;
     flex-flow: row wrap;
-    justify-content: center; */
-    /* display: grid;
+    justify-content: center;
+    display: grid;
     padding: 20px;
     gap: 1.5em;
     max-width: 100%;
-    width: 100%; */
+    width: 100%;
     padding: 20px;
 }
 
@@ -533,6 +538,7 @@ main > p {
 
 .card__product__item{
     display: flex;
+    flex-wrap: wrap;
     border-radius: 10px;
     gap: 1.5em;
     max-width: 700px;

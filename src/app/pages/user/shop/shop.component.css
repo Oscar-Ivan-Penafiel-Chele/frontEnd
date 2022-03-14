@@ -29,6 +29,7 @@ main{
 .nav__menu{
     height: 100%;
     margin: 0 -16px;
+    z-index: 2;
 }
 
 .nav__menu__content{
@@ -64,6 +65,7 @@ main{
     justify-content: center;
     align-items: center;
     margin-right: 10px;
+    z-index: 1;
 }
 
 .nav__menu__cart > button{
@@ -172,7 +174,7 @@ main{
 .hamburger{
     display: block;
     position: relative;
-    z-index: 1;
+    z-index: 3;
     
     user-select: none;
 
@@ -257,7 +259,7 @@ main{
         top: 0px;
         left: 0;
         right: 0;
-        position: absolute;
+        position: fixed;
         height: 100vh;
         align-items: center;
         transform: translateX(-100%);
@@ -367,7 +369,7 @@ main{
     .nav__user__option{
         color: white;
         border: none;
-
+        background-color: #232526;
     }
 
     .nav__user{

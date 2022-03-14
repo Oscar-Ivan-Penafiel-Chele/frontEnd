@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimeNGConfig} from 'primeng/api'
+import { Cart } from 'src/app/models/cart';
+import { Product } from 'src/app/models/product';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { HomeService } from 'src/app/services/home.service';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-car',
@@ -18,6 +22,9 @@ export class CarComponent implements OnInit {
   isLogged?: boolean = false;
   overlayLogout : boolean;
   amount_product : number = 1;
+  products : Product[] = [];
+  host : string = environment.URL;
+  overImage : string = "assets/img/not_image.jpg";
   
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -25,22 +32,30 @@ export class CarComponent implements OnInit {
     private _token : TokenService, 
     private _authService : AuthService,
     private _navigate : Router,
+    private _home : HomeService,
   ) { 
     this.overlayLogout = false;
   }
 
   ngOnInit(): void {
-    this.isLog();
-    setInterval(()=>{
-      this.getDateToday();
-    },100); 
+    this.getData();
   }
 
+ 
   goCart(){
     this._navigate.navigate(["/checkout/cart"]);
   }
 
-  isLog(){
+  goHome(){
+    this._navigate.navigate(["/shop"]);
+  }
+
+  async getData(){
+    await this.isLog();
+    await this.getAllProductsCart(this.user.id_user!);
+  }
+
+  async isLog(){
     if(!this._token.getTokenDataUser()){
       return ;
     }
@@ -48,6 +63,26 @@ export class CarComponent implements OnInit {
     this.user = JSON.parse(this._token.getTokenDataUser()!);
     this.isLogged = true;
   }
+  
+  async getAllProductsCart(id_user : number){
+    const data = {
+      id_user : id_user
+    };
+
+    this._rest.getProductsCart(data).subscribe((response : Cart[])=>{
+      this.extractData(response);
+    })
+  }
+
+  extractData(data : Cart[]){
+    this.products = data.map(({producto})=>{
+      return producto;
+    })
+    
+    console.log(this.products);
+  }
+
+
 
   displayOptions(){
     const menu = document.querySelector('.nav__user');

@@ -9,4 +9,6 @@ export const environment = {
     4 : '/vendedor',
     5 : '/shop'
   },
+  AIRTM_API_KEY : '912cb4df-9214-4ea3-892b-9d9e650acc90',
+  AIRTM_API_SECRET : 'oIE9sqUelzEW01kgHq3mQnYq7orZ9KnIdY0jl8r07AU4oJrndi8tYcYHQI9TTqFejslo80ZdODQZb40c',
 };

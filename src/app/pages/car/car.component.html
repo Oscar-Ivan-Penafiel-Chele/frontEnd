@@ -51,7 +51,6 @@
                             </div>
                             <div class="nav__user__option isActiveNavOption">
                                 <p>Opciones</p>
-                                <a href=""><i class="pi pi-user"></i> Perfil</a>
                                 <a href=""><i class="pi pi-shopping-bag"></i> Pedidos</a>
                                 <a href=""><i class="pi pi-th-large"></i> Configuración</a>
                                 <p>Sesión</p>
@@ -77,32 +76,33 @@
     </nav>
 
     <main>
-        <p>Total de Items : 4</p>
-        <div class="card__products__select grid">
-            <div class="cards__products__info col">
-                <div class="card__product__item">
+        <p>Total de Items : {{products.length}}</p>
+        <div class="card__products__select">
+            <div class="cards__products__info " *ngFor="let product of products">
+                <div class="card__product__item" >
                     <div class="img__product">
-                        <img src="assets/img/not_image.jpg" alt="" width="90px">
+                        <img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="90px">
                     </div>
                     <div class="description__product">
-                        <p>Security Camera 2K, blurams Baby Monitor Dog Camera 360-degree for Home Security w/ Smart Motion Tracking, Phone App, IR Night Vision, Siren, Works with Alexa & Google Assistant & IFTTT, 2-Way Audio</p>
+                        <p-tag styleClass="mr-2" icon="pi pi-info-circle" severity="info" [value]="'Disponible: '+ product.product_stock"></p-tag>
+                        <p>{{product.product_name}}</p>
                         <div class="description__information">
-                            <p><span>Categoria</span>: Categoria</p>
-                            <p><span>Marca</span>: Marca</p>
+                            <p><span>Categoria</span>: {{product.category.category_name}}</p>
+                            <p><span>Marca</span>: {{product.brand.brand_name}}</p>
                         </div>
                         <div class="options__product flex align-items-center">
                             <div class="amount__product">
                                 <div>
-                                    <p-inputNumber [size]="1" [(ngModel)]="amount_product" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [mode]="'decimal'" [min]="1" [max]="100" decrementButtonClass="p-button-primary" incrementButtonClass="p-button-primary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+                                    <p-inputNumber [size]="1" [(ngModel)]="product.product_amount_sail == null ? 1 : product.product_amount_sail" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [mode]="'decimal'" [min]="1" [max]="product.product_stock!" decrementButtonClass="p-button-primary" incrementButtonClass="p-button-primary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
                                 </div>
                             </div>
                             <div class="delete__product ml-2">
-                                <button pButton pRipple class="p-button-lg" type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+                                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
                             </div>
                         </div>
                     </div>
                     <div class="price__product">
-                        <p>U$S 14.10</p>
+                        <p>U$S {{product.product_price}}</p>
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                     <button pButton pRipple type="button">
                         <p>Finalizar Compra</p>
                     </button>
-                    <button pButton pRipple type="button" class="p-button-outlined mt-2">
+                    <button (click)="goHome()" pButton pRipple type="button" class="p-button-outlined mt-2">
                         <p>Seguir Comprando</p>
                     </button>
                 </div>

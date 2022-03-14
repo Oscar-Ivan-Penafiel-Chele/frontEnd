@@ -34,6 +34,7 @@ export class ProductsComponent implements OnInit {
     measures : Measure[] = [];
     user : User = {};
    
+    dataCVS : any[] = [];
     
     brand : Brand = {} as Brand;
     product : Product = {} as Product;
@@ -187,7 +188,7 @@ export class ProductsComponent implements OnInit {
         .subscribe((response : Brand[]) => {
           this.brands = Object.values(response);
           this.brands = this.brands.sort(this.sortBrands);
-          this.brands = this.brands.filter((i)=> i.brand_status == 1);
+          this.brands = this.brands.filter((i)=> i.brand_status == 1 && i.brand_name != 'NO_DEFINIDO');
         })
     }
 
@@ -472,7 +473,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateData(){
-        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
+        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
             return false;
         }
       
@@ -480,7 +481,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_description || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
+        if(!this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
             return false;
         }
       
@@ -571,7 +572,25 @@ export class ProductsComponent implements OnInit {
     }
 
     exportCSV(){
-        new AngularCsv(this.products, 'Productos');
+        const fecha = new Date();
+        let dataNow = (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+(fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear());
+
+        const options = { 
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalseparator: '.',
+            showLabels: true, 
+            useBom: true,
+            headers: ["codigo", "medida", "articulo","precio1","tbodega"],
+            useHeader: false,
+            nullToEmptyString: true,
+          };
+
+        this.dataCVS = this.products.map(({product_code,product_unit,product_name,product_price,product_stock})=>{
+            return {product_code,product_unit : product_unit.description_product_unit,product_name,product_price,product_stock}
+        })
+
+        new AngularCsv(this.dataCVS, `INV ${dataNow}`, options);
     }
 
     deleteProduct(product: Product) {

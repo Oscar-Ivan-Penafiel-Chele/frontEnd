@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputTextModule} from 'primeng/inputtext';
 import { SharedModule } from '../../shared/shared.module';
+import {ToastModule} from 'primeng/toast';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SharedModule } from '../../shared/shared.module';
     RouterModule,
     ProgressSpinnerModule,
     InputTextModule,
-    SharedModule
+    SharedModule,
+    ToastModule
   ]
 })
 export class ShopModule { }
