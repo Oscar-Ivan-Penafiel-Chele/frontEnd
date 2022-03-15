@@ -11,6 +11,7 @@ import {DialogModule} from 'primeng/dialog';
 import {CalendarModule} from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     DialogModule,
     CalendarModule,
     FormsModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ToastModule
   ]
 })
 export class IngresosModule { }

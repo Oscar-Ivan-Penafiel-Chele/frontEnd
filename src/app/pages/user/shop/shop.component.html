@@ -47,14 +47,14 @@
                         <div class="nav__menu__cart">
                             <button pRipple (click)="goCart()"><i class="pi pi-shopping-cart"></i></button>
                         </div>
-                        <div class="nav__menu__option">
+                        <div class="nav__menu__option"> 
                             <div class="nav__user" pRipple (click)="displayOptions()">
                                 <p><i class="pi pi-user mr-1"></i>{{user?.user_name}} {{user?.user_lastName}}<i class="pi pi-angle-down ml-3"> </i></p>
                             </div>
                             <div class="nav__user__option isActiveNavOption">
                                 <p>Opciones</p>
-                                <a href=""><i class="pi pi-shopping-bag"></i> Pedidos</a>
-                                <a href=""><i class="pi pi-cog"></i> Configuración</a>
+                                <a href="/my-orders"><i class="pi pi-shopping-bag"></i> Pedidos</a>
+                                <a href="/configuración"><i class="pi pi-cog"></i> Configuración</a>
                                 <p>Sesión</p>
                                 <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
                             </div>
@@ -78,38 +78,18 @@
     <main>
         <div class="banner__shop">
            <!-- <p>Banner de Promociones</p> -->
-           <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%', 'z-index':'-999'}" [numVisible]="5"
+           <div *ngIf="bannerComplete">
+                <p-skeleton height="300px" styleClass="mb-2"></p-skeleton>
+           </div>
+           <p-galleria [value]="banners" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%','height':'300px'}" [numVisible]="5"
            [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showItemNavigatorsOnHover]="true"
            [showIndicatorsOnItem]="true"> 
                 <ng-template pTemplate="item" let-item>
-                    <img [src]="item.name" style="width: 100%; height: 100%; display: block;" />
+                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                    <img [src]="!item.banner_thumbnail || item.banner_thumbnail == null ? overImage : host+item.banner_thumbnail" [alt]="item.banner_thumbnail" height="300px"/>
                 </ng-template>
             </p-galleria>
         </div>
-        <!-- <div class="options__shop">
-            <div class="options__shop__content">
-                <div class="flex flex-wrap justify-content-evenly align-items-center">
-                    <div class="options__shop__content__card">
-                        <div class=" flex flex-column justify-content-center align-items-center">
-                            <i class="pi pi-shield"></i>
-                            <p>Uso fácil, rápido y seguro</p>
-                        </div>
-                    </div>
-                    <div class="options__shop__content__card">
-                        <div class=" flex flex-column justify-content-center align-items-center">
-                            <i class="pi pi-send"></i>
-                            <p>Envíos a Domicilio</p>
-                        </div>
-                    </div>
-                    <div class="options__shop__content__card">
-                        <div class=" flex flex-column justify-content-center align-items-center">
-                            <i class="pi pi-credit-card"></i>
-                            <p>Métodos de pagos online</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="main__content">
             <p-fieldset legend="Categorías">
                 <div *ngIf="hide && !loadingShop" class="flex align-items-center">
@@ -147,7 +127,7 @@
                     <ng-template let-product pTemplate="listItem">
                         <div class="col-12">
                             <div class="product-list-item">
-                                <img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_image"/>
+                                <img [src]="!product.product_image || product.product_image == null ? overImage : host+product.product_image" [alt]="product.product_image"/>
                                 <div class="product-list-detail">
                                     <div class="product-name">{{product.product_name}}</div>
                                     <div class="product-description">{{product.product_description}}</div>

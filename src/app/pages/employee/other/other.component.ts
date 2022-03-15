@@ -51,7 +51,8 @@ export class OtherComponent implements OnInit {
       1 : 'Gerente',
       2 : 'Administrador',
       3 : 'Contable',
-      4 : 'Vendedor'
+      4 : 'Vendedor',
+      5 : 'Cliente'
     }
 
     this.roleUser = roles[id_role];
@@ -106,6 +107,11 @@ export class OtherComponent implements OnInit {
   }
 
   goHome(){
+    if(this.roleUser == 'Cliente'){
+      this.roleUser = 'shop'
+    }else{  
+    }
+    
     this._navigation.navigate([`/${this.roleUser.toLowerCase()}`]);
   }
 }

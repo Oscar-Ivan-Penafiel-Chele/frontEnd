@@ -10,13 +10,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { SalesmanComponent } from './pages/salesman/salesman.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SortByOrderPipe,
-    SalesmanComponent,
   ],
   imports: [
     BrowserModule,

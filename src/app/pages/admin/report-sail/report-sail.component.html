@@ -1,1 +1,54 @@
-<p>report-sail works!</p>
+<p-toast></p-toast>
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <div class="flex flex-wrap align-items-center">
+            <label class="mr-2" for="fechaInicio">Fecha Inicio:</label>
+            <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+            <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
+            <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+            <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="exportPDF()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
+        </div>
+    </p-toolbar>
+    <p-table #dt [value]="sails" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Gestión de Ventas</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Nombre cliente o comprobante..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Cliente<p-sortIcon field="user.user_name"></p-sortIcon></th>
+                <th pSortableColumn="inventory_movement_type"><i class="pi pi-user"></i> Movimiento<p-sortIcon field="inventory_movement_type"></p-sortIcon></th>
+                <th pSortableColumn="order.voucher_number"><i class="pi pi-qrcode"></i> Número de comprobante <p-sortIcon field="order.voucher_number"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th><i class="pi pi-file-pdf"></i> Factura</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-egreso let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>{{egreso.order.user.user_name}} {{egreso.order.user.user_lastName}}</td>
+                <td>{{egreso.inventory_movement_type}}</td>
+                <td>{{egreso.order.voucher_number}}</td>
+                <td>{{egreso.create_date}}</td>
+                <td>
+                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="openModal(egreso)" class="p-button-success"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Registros Totales: {{sails ? sails.length : 0 }}
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- <p-dialog header="Query SQL" [(visible)]="displayModal" [modal]="true" [style]="{width: '70vw'}" [maximizable]="true"
+    [draggable]="false" [resizable]="false">
+    <p>{{aud.audit_query}}</p>
+</p-dialog> -->

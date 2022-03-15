@@ -10,6 +10,7 @@ import { Category } from 'src/app/models/category';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment.prod';
 import { HomeService } from 'src/app/services/home.service';
+import { Banner } from 'src/app/models/banner';
 
 @Component({
   selector: 'app-shop',
@@ -32,6 +33,7 @@ export class ShopComponent implements OnInit {
   sortOptions: any;
   sortOrder: number = 0;
   sortField: string = "";
+  banners : Banner[] = [];
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.jpg";
   completeProduct : boolean = false;
@@ -40,6 +42,7 @@ export class ShopComponent implements OnInit {
   isLogged?: boolean = false; //
   loadingShop : boolean = false;
   i : number = 0;
+  bannerComplete : boolean = false;
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -77,6 +80,7 @@ export class ShopComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLog();
+    this.getBanners();
     setInterval(()=>{
       this.getDateToday();
     },100); 
@@ -104,6 +108,14 @@ export class ShopComponent implements OnInit {
 
     this.user = JSON.parse(this._token.getTokenDataUser()!);
     this.isLogged = true;
+  }
+
+  getBanners(){
+    this.bannerComplete = true;
+    this._rest.getBanners().subscribe((response)=>{
+      this.banners = Object.values(response).filter((i)=> i.banner_status != 0);
+      this.bannerComplete = false;
+    });
   }
 
   displayOptions(){

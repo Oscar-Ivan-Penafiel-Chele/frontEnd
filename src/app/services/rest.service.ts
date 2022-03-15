@@ -15,6 +15,7 @@ import { Ingreso } from '../models/ingreso';
 import { Egreso } from '../models/egreso';
 import { EgresoAux } from '../models/egresoAuxilia';
 import { Cart } from '../models/cart';
+import { Sail } from '../models/sail';
 
 
 @Injectable({
@@ -151,6 +152,11 @@ export class RestService {
   }
   createEgreso(data : EgresoAux) : Observable<any>{
     return this._http.post<any>(`${this.url}/inventories/egreso`,data);
+  }
+
+  /* SAILS */
+  getSails() : Observable<Sail[]>{
+    return this._http.get<Sail[]>(`${this.url}/inventories/egreso`);
   }
 
   /* GRAPHYCS */

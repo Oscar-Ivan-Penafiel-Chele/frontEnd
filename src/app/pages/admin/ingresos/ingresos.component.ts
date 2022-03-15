@@ -14,7 +14,8 @@ type TableRow = [];
 @Component({
   selector: 'app-ingresos',
   templateUrl: './ingresos.component.html',
-  styleUrls: ['./ingresos.component.css']
+  styleUrls: ['./ingresos.component.css'],
+  providers: [MessageService]
 })
 export class IngresosComponent implements OnInit {
 
@@ -29,7 +30,8 @@ export class IngresosComponent implements OnInit {
   constructor(
     private _rest : RestService,
     private config: PrimeNGConfig,
-    private _token : TokenService
+    private _token : TokenService,
+    private messageService: MessageService
   ) {
     this.config.setTranslation({
       "clear" : "Vaciar",
@@ -73,6 +75,12 @@ export class IngresosComponent implements OnInit {
 
     this.ingresosAux = this.ingresos.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
       
+    if(this.ingresosAux.length == 0) {
+      this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
+      return ;
+    };
+
+
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
