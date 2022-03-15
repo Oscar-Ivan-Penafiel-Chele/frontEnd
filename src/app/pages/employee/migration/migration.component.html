@@ -1,4 +1,8 @@
 <p-toast></p-toast>
+<div class="overlayLoading" *ngIf="overlay">
+    <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+    <p> Actualizando Datos <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+</div>
 <h2>Actualización de Productos</h2>
 <br>
 <p-fileUpload [fileLimit]="1" [chooseLabel]="'Seleccionar'" [invalidFileTypeMessageSummary]="invalidFileTypeMessageSummary" [invalidFileTypeMessageDetail]="invalidFileTypeMessageDetail" [customUpload]="true" (uploadHandler)="upLoadFile($event)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" (onSelect)="onUpload($event)" accept=".xlsx , .csv" [maxFileSize]="1000000">
@@ -10,5 +14,3 @@
         </div>
     </ng-template>
 </p-fileUpload>
-
-<!-- <p-progressBar [value]="progress"></p-progressBar> -->

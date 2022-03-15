@@ -21,6 +21,7 @@ export class MigrationComponent implements OnInit {
   imageExcel = "assets/img/IconExcel.svg";
   descriptionSize : string = "";
   progress : number = 0;
+  overlay : boolean = false;
 
   constructor(
     private messageService: MessageService,
@@ -52,21 +53,15 @@ export class MigrationComponent implements OnInit {
     fileExcel.append('id_user',String(this.user.id_user));
     
     this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
-        // if (response.type === HttpEventType.UploadProgress) {
-        //   console.log(`Cargado: ${response.loaded}  Total : ${response.total}`)
-        //   this.progress = Math.round(100 * response.loaded / response.total!);
-        //   console.log(this.progress);
-        // } else if (response instanceof HttpResponse) {
-        //   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
-        //   $event=[];
-        //   setTimeout(() => {
-        //     window.location.reload();
-        //   }, 1500);
-        // }
-
-        if(response.status == 200 && response.message === "Excel subido con exito"){
+        this.overlay = true;
+        if(response.status == 200 || response.message === "Excel subido con exito"){
           this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
-        }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
+          this.overlay = false;
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+          this.overlay = false;
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor', life: 3000});
         }
     })

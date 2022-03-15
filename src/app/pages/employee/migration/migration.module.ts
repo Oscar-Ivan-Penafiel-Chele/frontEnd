@@ -5,6 +5,7 @@ import { MigrationComponent } from './migration.component';
 import {FileUploadModule} from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
 import {ToastModule} from 'primeng/toast';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {ToastModule} from 'primeng/toast';
     MigrationRoutingModule,
     FileUploadModule,
     HttpClientModule,
-    ToastModule
+    ToastModule,
+    ProgressSpinnerModule
   ]
 })
 export class MigrationModule { }
