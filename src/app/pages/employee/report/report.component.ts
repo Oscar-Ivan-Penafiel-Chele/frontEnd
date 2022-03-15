@@ -171,35 +171,43 @@ export class ReportComponent implements OnInit {
     pdf.add(
       new Table([
         [
-            new Txt('Nombres').bold().end,
-            new Txt('Apellidos').bold().end,
             new Txt('Identificación').bold().end,
+            new Txt('Apellidos').bold().end,
+            new Txt('Nombres').bold().end,
             new Txt('Rol').bold().end,
             new Txt('Teléfono').bold().end,
             new Txt('Correo Electrónico').bold().end,
             new Txt('Estado').bold().end,
         ],
-    ]).widths([ 70,70,80,80,100,'*',80]).fontSize(12).end
+    ]).widths([ 80,70,80,80,100,'*',80]).fontSize(12).end
     );
+
+    this.userAux.sort(this.sortEmployee);
     this.userAux.forEach((item)=>{
         pdf.add(
             new Table([
                 [
-                  new Txt(item.user_name!).end,
-                  new Txt(item.user_lastName!).end,
                   new Txt(item.user_document!).end,
+                  new Txt(item.user_lastName!).end,
+                  new Txt(item.user_name!).end,
                   new Txt(item.role_user.role_description).end,
                   new Txt(item.user_phone!).end,
                   new Txt(item.email!).end,
                   new Txt(item.user_status == 1 ? 'Activo' : 'Inactivo').end,
                 ]
-            ]).widths([ 70,70,80,80,100,'*',80 ]).fontSize(10).end
+            ]).widths([ 80,70,80,80,100,'*',80 ]).fontSize(10).end
         );
     })
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
     });
     pdf.create().open();    
+  }
+
+  sortEmployee(x:any , y:any){
+    if(x.user_lastName < y.user_lastName) return -1;
+    if(x.user_lastName > y.user_lastName) return 1;
+    return 0;
   }
 
   createEmployee(){

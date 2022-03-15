@@ -195,7 +195,7 @@ export class PromoComponent implements OnInit {
         if(response.status == 200 && response.message === "Promocion creada con exito"){
             this.getPromotions()
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue creado con éxito', life: 3000});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue creada con éxito', life: 3000});
         }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
           this.hideDialog();
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
@@ -219,7 +219,7 @@ export class PromoComponent implements OnInit {
         if(response.status == 200 && response.message === "Promoción actualizada con exito"){
             this.getPromotions();
             this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue actualizado con éxito', life:3000});
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue actualizada con éxito', life:3000});
         }else if((response.status == 400 || response.status == 500) && response.message === "Ocurrio un error interno en el servidor"){
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
@@ -236,7 +236,7 @@ export class PromoComponent implements OnInit {
 
   deletePromotion(promotion : Promotion){
     this.confirmationService.confirm({
-      message: '¿Estás seguro de eliminar la promoción?',
+      message: `¿Estás seguro de eliminar la promoción del producto: ${promotion.producto.product_name}, código: ${promotion.producto.product_code}?`,
       header: 'Eliminar Promoción',
       acceptLabel : 'Eliminar',
       rejectLabel : 'Cancelar',

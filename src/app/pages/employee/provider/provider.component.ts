@@ -191,6 +191,7 @@ export class ProviderComponent implements OnInit {
     pdf.add(
       new Table([
         [
+            new Txt('Código').bold().end,
             new Txt('Nombre').bold().end,
             new Txt('Correo Electrónico').bold().end,
             new Txt('Dirección').bold().end,
@@ -199,12 +200,15 @@ export class ProviderComponent implements OnInit {
             new Txt('Tiempo de Respuesta').bold().end,
             new Txt('Estado').bold().end,
         ],
-    ]).widths([ 80,'*','*',80,100,80,70]).fontSize(12).end
+    ]).widths([40,120,120,80,60,100,80,60]).fontSize(12).end
     );
+
+    this.providersAux.sort(this.sortProvider)
     this.providersAux.forEach((item)=>{
         pdf.add(
             new Table([
                 [
+                  new Txt(String(item.id_provider!)).end,
                   new Txt(item.provider_name!).end,
                   new Txt(item.provider_email!).end,
                   new Txt(item.provider_address!).end,
@@ -213,13 +217,19 @@ export class ProviderComponent implements OnInit {
                   new Txt(String(item.provider_response_time_day)+ ' Días y ' + String(item.provider_response_time_hour) + ' Horas').end,
                   new Txt(item.provider_status == 1 ? 'Activo' : 'Inactivo').end,
                 ]
-            ]).widths([ 80,'*','*',80,100,80,70 ]).fontSize(10).end
+            ]).widths([40,120,120,80,60,100,80,60]).fontSize(10).end
         );
     })
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
     });
     pdf.create().open();    
+  }
+
+  sortProvider(x:any , y:any){
+    if(x.provider_name < y.provider_name) return -1;
+    if(x.provider_name > y.provider_name) return 1;
+    return 0;
   }
 
   regexCode(event: any) {
