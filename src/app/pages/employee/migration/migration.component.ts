@@ -48,21 +48,28 @@ export class MigrationComponent implements OnInit {
 }
 
   upLoadFile($event : any){
+    this.overlay = true;
     const fileExcel = new FormData();
     fileExcel.append('excel',$event.files[0]);
     fileExcel.append('id_user',String(this.user.id_user));
     
     this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
-        this.overlay = true;
-        if(response.status == 200 || response.message === "Excel subido con exito"){
-          this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
+      console.log(response);
+        if(response.status === "200"){
           this.overlay = false;
+          this.messageService.add({severity:'success', summary: 'Completado', detail: `${response.message}`, life: 3000});
           setTimeout(() => {
             window.location.reload();
           }, 2000);
-        }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+          $event = [];
+        }else if(response.status === "500"){
           this.overlay = false;
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor', life: 3000});
+          $event = [];
+          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
+        }else if(response.status === "401"){
+          this.overlay = false;
+          $event = [];
+          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
         }
     })
   }
