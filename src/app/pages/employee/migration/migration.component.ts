@@ -15,7 +15,7 @@ export class MigrationComponent implements OnInit {
 
   uploadedFiles: any[] = [];
   invalidFileTypeMessageSummary : string = `Tipo de archivo inválido:`;
-  invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .csv`;
+  invalidFileTypeMessageDetail : string = `Tipo de archivo permitido: .xls y .csv`;
   user : User = {};
   visible : boolean = false;
   imageExcel = "assets/img/IconExcel.svg";
@@ -51,21 +51,24 @@ export class MigrationComponent implements OnInit {
     fileExcel.append('excel',$event.files[0]);
     fileExcel.append('id_user',String(this.user.id_user));
     
-    this._rest.uploadStock(fileExcel).subscribe((response : HttpEvent<any>)=>{
-        if (response.type === HttpEventType.UploadProgress) {
-          console.log(`Cargado: ${response.loaded}  Total : ${response.total}`)
-          this.progress = Math.round(100 * response.loaded / response.total!);
-          console.log(this.progress);
-        } else if (response instanceof HttpResponse) {
-          this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
-          $event=[];
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        }
-
-        // if(response.status == 200 ){
+    this._rest.uploadStock(fileExcel).subscribe((response : any)=>{
+        // if (response.type === HttpEventType.UploadProgress) {
+        //   console.log(`Cargado: ${response.loaded}  Total : ${response.total}`)
+        //   this.progress = Math.round(100 * response.loaded / response.total!);
+        //   console.log(this.progress);
+        // } else if (response instanceof HttpResponse) {
+        //   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
+        //   $event=[];
+        //   setTimeout(() => {
+        //     window.location.reload();
+        //   }, 1500);
         // }
+
+        if(response.status == 200 && response.message === "Excel subido con exito"){
+          this.messageService.add({severity:'success', summary: 'Completado', detail: 'Archivo subido con éxito', life: 3000});
+        }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor', life: 3000});
+        }
     })
   }
 }

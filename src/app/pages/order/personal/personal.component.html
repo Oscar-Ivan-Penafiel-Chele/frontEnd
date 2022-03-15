@@ -50,14 +50,7 @@
                 </div>
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="age">Cédula de Identidad</label>
-                        <input #age="ngModel" id="age" type="number" required pInputText [(ngModel)]="a" [ngClass]="{'ng-dirty': (age.invalid && submitted) || (age.dirty && age.invalid)}"> 
-                        <small class="p-error" *ngIf="(age.invalid && submitted) || (age.dirty && age.invalid)">Age is required.</small>
-                    </div>
-                </div>
-                <div class="field col">
-                    <div class="flex flex-column">
-                        <label for="age">Cédula de Identidad</label>
+                        <label for="age">Celular</label>
                         <input #age="ngModel" id="age" type="number" required pInputText [(ngModel)]="a" [ngClass]="{'ng-dirty': (age.invalid && submitted) || (age.dirty && age.invalid)}"> 
                         <small class="p-error" *ngIf="(age.invalid && submitted) || (age.dirty && age.invalid)">Age is required.</small>
                     </div>
@@ -68,7 +61,7 @@
         
         <ng-template pTemplate="footer">
             <div class="grid grid-nogutter justify-content-end">
-                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+                <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
             </div>
         </ng-template>
     </p-card>

@@ -136,7 +136,7 @@ export class RestService {
   }
  
   /* UPLOAD STOCK */
-  uploadStock(data : FormData) : Observable<HttpEvent<any>>{
+  uploadStock(data : FormData) : Observable<any>{
     return this._http.post<any>(`${this.url}/products/upload/excel`,data, {
       reportProgress: true, observe: "events"
     });
