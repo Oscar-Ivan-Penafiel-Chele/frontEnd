@@ -5,7 +5,7 @@
 </div>
 <h2>Actualización de Productos</h2>
 <br>
-<p-fileUpload [fileLimit]="1" [chooseLabel]="'Seleccionar'" [invalidFileTypeMessageSummary]="invalidFileTypeMessageSummary" [invalidFileTypeMessageDetail]="invalidFileTypeMessageDetail" [customUpload]="true" (uploadHandler)="upLoadFile($event)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" (onSelect)="onUpload($event)" accept=".xlsx , .csv" [maxFileSize]="1000000">
+<p-fileUpload #form [fileLimit]="1" [chooseLabel]="'Seleccionar'" (onRemove)="clear($event)" [invalidFileTypeMessageSummary]="invalidFileTypeMessageSummary" [invalidFileTypeMessageDetail]="invalidFileTypeMessageDetail" [customUpload]="true" (uploadHandler)="upLoadFile($event, form)" [uploadLabel]="'Subir'" [cancelLabel]="'Borrar'" [cancelIcon]="'pi pi-trash'" [showCancelButton]="true" (onSelect)="onUpload($event)" accept=".xlsx , .csv" [maxFileSize]="1000000">
     <ng-template let-file pTemplate="file">
         <div *ngIf="visible" class="flex justify-content-evenly align-items-center">
             <div><img [src]="imageExcel" alt="image" width="50px"></div>

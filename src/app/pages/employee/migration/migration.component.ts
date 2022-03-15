@@ -1,6 +1,7 @@
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
+import { FileUpload } from 'primeng/fileupload';
 import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -45,9 +46,13 @@ export class MigrationComponent implements OnInit {
     }else if($event.files[0].size >= 1048576){
         this.descriptionSize = "mb";
     }
-}
+  } 
 
-  upLoadFile($event : any){
+  clear($event : any){
+    console.log($event.file);
+  }
+
+  upLoadFile($event : any, form : FileUpload){
     this.overlay = true;
     const fileExcel = new FormData();
     fileExcel.append('excel',$event.files[0]);
@@ -58,24 +63,18 @@ export class MigrationComponent implements OnInit {
         if(response.status === "200"){
           this.overlay = false;
           this.messageService.add({severity:'success', summary: 'Completado', detail: `${response.message}`, life: 3000});
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-          $event = [];
+          form.clear();
+          form.uploadedFileCount = 0;
         }else if(response.status === "500"){
           this.overlay = false;
-          $event = [];
           this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          form.clear();
+          form.uploadedFileCount = 0;
         }else if(response.status === "401"){
           this.overlay = false;
-          $event = [];
           this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          form.clear();
+          form.uploadedFileCount = 0;
         }
     })
   }
