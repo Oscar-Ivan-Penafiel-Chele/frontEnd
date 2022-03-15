@@ -123,7 +123,7 @@
             <button (click)="goHome()" pButton pRipple type="button" class="p-button-outlined">
                 <p>Seguir Comprando <i class="pi pi-shopping-cart"></i></p>
             </button>
-            <button [routerLink]="'/checkout/order'" pButton pRipple type="button">
+            <button [disabled]="loading" [routerLink]="'/checkout/order'" pButton pRipple type="button">
                 <p>Continuar Compra <i class="pi pi-arrow-right"></i></p>
             </button>
         </div>
