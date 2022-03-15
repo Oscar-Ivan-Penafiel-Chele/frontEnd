@@ -66,10 +66,16 @@ export class MigrationComponent implements OnInit {
           this.overlay = false;
           $event = [];
           this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         }else if(response.status === "401"){
           this.overlay = false;
           $event = [];
           this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         }
     })
   }
