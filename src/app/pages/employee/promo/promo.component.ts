@@ -30,6 +30,7 @@ export class PromoComponent implements OnInit {
   states : any[] = [];
   stateCheckActive : boolean = true;
   stateCheckInactive : boolean = false;
+  disableButton : boolean = false;
 
   host : string = environment.URL;
 
@@ -135,11 +136,18 @@ export class PromoComponent implements OnInit {
   }
 
   onSelectDate($event : any){
+    let dateNow = new Date();
     try {
       let event = new Date($event);
       let date = JSON.stringify(event);
       date = date.slice(1,11);
       this.promotion.promotion_date_of_expiry = date;
+
+      if($event < dateNow){
+        this.disableButton = true;
+      }else{
+        this.disableButton = false;
+      } 
     } catch (error) {
      
     }
@@ -196,7 +204,7 @@ export class PromoComponent implements OnInit {
   }
 
   validateData(){
-    if(!this.promotion.id_product || !this.promotion.promotion_discount || !this.promotion.promotion_date_of_expiry ||this.promotion.promotion_status == null){
+    if(!this.promotion.id_product || !this.promotion.promotion_discount || this.disableButton == true || !this.promotion.promotion_date_of_expiry ||this.promotion.promotion_status == null){
         return false;
     }
   

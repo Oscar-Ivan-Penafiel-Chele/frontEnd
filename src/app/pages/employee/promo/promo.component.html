@@ -21,26 +21,32 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code','producto.product_name','promotion_discount']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Promociones</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código ..." />
+                </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th><i class="pi pi-tag"></i> Producto</th>
-                <th pSortableColumn="promotion_discount"><i class="pi pi-percentage"></i> Descuento <p-sortIcon field="banner_name"></p-sortIcon></th>
-                <th pSortableColumn="promotion_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="banner_status"></p-sortIcon></th>
-                <th pSortableColumn="promotion_date_of_expiry"><i class="pi pi-calendar"></i> Fecha de Caducidad <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="producto.product_code"><i class="pi pi-qrcode"></i> Código <p-sortIcon field="producto.product_code"></p-sortIcon></th>
+                <th pSortableColumn="producto.product_name"><i class="pi pi-tag"></i> Producto <p-sortIcon field="producto.product_name"></p-sortIcon></th>
+                <th pSortableColumn="promotion_discount"><i class="pi pi-percentage"></i> Descuento <p-sortIcon field="promotion_discount"></p-sortIcon></th>
+                <th pSortableColumn="promotion_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="promotion_status"></p-sortIcon></th>
+                <th pSortableColumn="promotion_date_of_expiry"><i class="pi pi-calendar"></i> Fecha de Culminación <p-sortIcon field="promotion_date_of_expiry"></p-sortIcon></th>
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-promotion let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
+                <td>{{promotion.producto.product_code}}</td>
                 <td>{{promotion.producto.product_name}}</td>
-                <td>{{'%'+promotion.promotion_discount}}</td>
+                <td>{{(promotion.promotion_discount).toString().split('.')[0]+'%'}}</td>
                 <td>{{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
                 <td>
@@ -84,13 +90,14 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="percent">Descuento</label>
-                <p-inputNumber [(ngModel)]="promotion.promotion_discount" inputId="percent" prefix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
+                <p-inputNumber [(ngModel)]="promotion.promotion_discount" inputId="percent" suffix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_discount == null">Descuento es requerido</small>
             </div>
             <div class="field col">
-                <label for="buttonbar">Fecha de Expiración</label>
+                <label for="buttonbar">Fecha de Culminación</label>
                 <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Campo es requerido</small>
+                <small class="p-error" *ngIf="disableButton">Fecha no válida</small>
             </div>
         </div>
 
@@ -104,7 +111,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple [label]="actionSelected =='new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="savePromotion()"></button>
+        <button [disabled]="disableButton" pButton pRipple [label]="actionSelected =='new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="savePromotion()"></button>
     </ng-template>
 </p-dialog>
 

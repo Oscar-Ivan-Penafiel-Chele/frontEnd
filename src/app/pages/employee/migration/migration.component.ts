@@ -48,10 +48,6 @@ export class MigrationComponent implements OnInit {
     }
   } 
 
-  clear($event : any){
-    console.log($event.file);
-  }
-
   upLoadFile($event : any, form : FileUpload){
     this.overlay = true;
     const fileExcel = new FormData();
@@ -62,17 +58,17 @@ export class MigrationComponent implements OnInit {
       console.log(response);
         if(response.status === "200"){
           this.overlay = false;
-          this.messageService.add({severity:'success', summary: 'Completado', detail: `${response.message}`, life: 3000});
+          this.messageService.add({severity:'success', summary: 'Completado', detail: `${response.message}`, life: 4000});
           form.clear();
           form.uploadedFileCount = 0;
         }else if(response.status === "500"){
           this.overlay = false;
-          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
+          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 6000});
           form.clear();
           form.uploadedFileCount = 0;
         }else if(response.status === "401"){
           this.overlay = false;
-          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 3000});
+          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message}`, life: 6000});
           form.clear();
           form.uploadedFileCount = 0;
         }

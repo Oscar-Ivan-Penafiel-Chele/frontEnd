@@ -9,6 +9,7 @@ import { verificarRuc } from 'udv-ec';
 import { User } from 'src/app/models/user';
 import { Canvas, Cell, Columns, Img, Line, PdfMakeWrapper, QR, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -25,6 +26,8 @@ export class ProviderComponent implements OnInit {
 
   provider : IProvider = {} as IProvider;
   user : User = {};
+
+  dataCVS : any[] = [];
 
   productDialog: boolean = false;
   submitted: boolean = false;
@@ -365,5 +368,28 @@ export class ProviderComponent implements OnInit {
       }
   });
     
+  }
+
+  exportCSV(){
+    const fecha = new Date();
+    const headers = Object.keys(this.providers[0]);
+    let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
+
+    const options = { 
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalseparator: '.',
+        showLabels: true, 
+        useBom: true,
+        headers: headers,
+        useHeader: false,
+        nullToEmptyString: true,
+      };
+
+    this.dataCVS = this.providers.map((i)=>{
+        return i;
+    })
+
+    new AngularCsv(this.dataCVS, `PROV ${dataNow}`, options);
   }
 }

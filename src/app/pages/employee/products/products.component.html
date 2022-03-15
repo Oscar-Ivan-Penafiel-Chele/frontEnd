@@ -3,7 +3,7 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
             <!-- <button pButton pRipple label="Actualizar Stock" icon="pi pi-cloud-upload" class="p-button-success mr-2" style="color: rgb(65, 65, 65);" (click)="openModalUpload()"></button> -->
 

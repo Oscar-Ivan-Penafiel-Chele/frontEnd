@@ -11,7 +11,7 @@ import { TokenService } from 'src/app/services/token.service';
 import { User } from 'src/app/models/user';
 import { environment } from 'src/environments/environment.prod';
 import { Measure } from 'src/app/models/measure';
-import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Toc, TocItem, Txt  } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
@@ -555,13 +555,13 @@ export class ProductsComponent implements OnInit {
         pdf.add(
             new Table([
                 [ 'Código','Nombre','Proveedor', 'Marca','Categoría','Medida','Stock','Estado',],
-            ]).widths([ 80,100,100,'*',100,100,80,80 ]).fontSize(14).bold().end
+            ]).widths([ 50,140,100,70,80,70,70,60 ]).fontSize(14).bold().end
         );
         this.productsAux.forEach((item)=>{
             pdf.add(
                 new Table([
                     [ item.product_code , item.product_name , item.provider.provider_name , item.brand.brand_name, item.category.category_name, item.product_unit.name_product_unit, item.product_stock , item.product_status == 1 ? 'Activo' : 'Inactivo' ],
-                ]).widths([ 80,100,100,'*',100,100,80,80 ]).end
+                ]).widths([ 50,140,100,70,80,70,70,60 ]).end
             );
         })
         pdf.footer((currentPage : any, pageCount : any)=>{
@@ -573,7 +573,7 @@ export class ProductsComponent implements OnInit {
 
     exportCSV(){
         const fecha = new Date();
-        let dataNow = (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+(fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear());
+        let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
 
         const options = { 
             fieldSeparator: ',',
