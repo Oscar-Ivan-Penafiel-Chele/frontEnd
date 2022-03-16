@@ -28,15 +28,16 @@
                 <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Código del Producto<p-sortIcon field="user.user_name"></p-sortIcon></th>
                 <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Movimiento<p-sortIcon field="user.user_name"></p-sortIcon></th>
                 <th pSortableColumn="order.voucher_number"><i class="pi pi-qrcode"></i> Cantidad egresada <p-sortIcon field="order.voucher_number"></p-sortIcon></th>
-                <th pSortableColumn="order.voucher_number"><i class="pi pi-qrcode"></i> Stock <p-sortIcon field="order.voucher_number"></p-sortIcon></th>
+                <th pSortableColumn="order.voucher_number"><i class="pi pi-qrcode"></i> Descripción<p-sortIcon field="order.voucher_number"></p-sortIcon></th>
                 <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-egreso let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <!-- <td>{{egreso.order.user.user_name}} {{egreso.order.user.user_lastName}}</td>
-                <td>{{egreso.inventory_movement_type}}</td>
-                <td>{{egreso.order.voucher_number}}</td>
+                <td>a</td>
+                <!-- <td>{{egreso.inventory_movement_type}}</td>
+                <td>{{(egreso.inventory_stock_amount).toString().split('.')[0]}}</td>
+                <td>{{egreso.inventory_description}}</td>
                 <td>{{egreso.create_date}}</td> -->
             </tr>
         </ng-template>

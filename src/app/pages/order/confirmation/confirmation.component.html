@@ -1,1 +1,36 @@
-<p>confirmation works!</p>
+<div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title">
+            Información del Pago
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Enter your card details
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12">
+                    <label for="class">Card Holder Name</label>
+                    <input type="text" required pInputText [(ngModel)]="a"> 
+                </div>
+                <div class="field col-8">
+                    <label id="number" for="lastname">Number</label>
+                    <p-inputMask inputId="number" mask="9999-9999-9999-9999" [(ngModel)]="a"></p-inputMask>
+                </div>
+                <div class="field col-2">
+                    <label id="date" for="date">Date</label>
+                    <p-inputMask inputId="date" mask="99/99" [(ngModel)]="a"></p-inputMask>
+                </div>
+                <div class="field col-2">
+                    <label for="cvv">CVV</label>
+                    <p-inputMask id="cvv" mask="999" [(ngModel)]="a"></p-inputMask>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="grid grid-nogutter justify-content-between">
+                <p-button label="Regresar" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
+                <p-button label="Siguiente" (onClick)="complete()" icon="pi pi-angle-right" iconPos="right"></p-button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

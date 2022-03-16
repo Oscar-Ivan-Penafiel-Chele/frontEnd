@@ -240,8 +240,6 @@ export class ShopComponent implements OnInit {
   }
 
   addProductoCart($event : any , product : Product){
-
-
     const data = {
       id_user : this.user.id_user,
       id_product : product.id_product

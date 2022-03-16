@@ -79,6 +79,9 @@
         <div class="banner__shop">
            <!-- <p>Banner de Promociones</p> -->
            <div *ngIf="bannerComplete">
+               <div class="progressBanner">
+                   <p-progressSpinner></p-progressSpinner>
+               </div>
                 <p-skeleton height="300px" styleClass="mb-2"></p-skeleton>
            </div>
            <p-galleria [value]="banners" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%','height':'300px'}" [numVisible]="5"

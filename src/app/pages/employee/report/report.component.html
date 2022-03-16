@@ -70,12 +70,12 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="name">Nombre del Empleado</label>
-                <input type="text" required pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" [pKeyFilter]="regexLetterSpace" required autofocus />
+                <input type="text" required pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" required autofocus />
                 <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requerido</small>
             </div>
             <div class="field col">
                 <label for="name">Apellidos del Empleado</label>
-                <input type="text" required pInputText id="name" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" [pKeyFilter]="regexLetterSpace" required  />
+                <input type="text" required pInputText id="name" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" required  />
                 <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requerido</small>
             </div>
         </div>

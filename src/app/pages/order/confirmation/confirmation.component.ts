@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { HomeService } from 'src/app/services/home.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmationComponent implements OnInit {
 
-  constructor() { }
+  a : any;
+
+  constructor(
+    private _router : Router,
+    private _home : HomeService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  prevPage() {
+    this._router.navigate(['checkout/order/payment']);
+  }
+
+  complete(){
+    
+  }
 }

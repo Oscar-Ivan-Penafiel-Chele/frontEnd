@@ -68,6 +68,7 @@ export class EgresosComponent implements OnInit {
     this._rest.getEgresos().subscribe((response : Egreso[])=>{
       this.egresos = Object.values(response);
       this.loading = false;
+      console.log(response);
     })
   }
 

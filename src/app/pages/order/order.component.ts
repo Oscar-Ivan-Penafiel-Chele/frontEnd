@@ -33,15 +33,15 @@ export class OrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [{
-      label: 'Personal',
+      label: 'Información',
       routerLink: 'checkout/order/personal'
       },
       {
-          label: 'Método de Pago',
+          label: 'Detalle de la compra',
           routerLink: 'checkout/order/payment'
       },
       {
-          label: 'Confirmación',
+          label: 'Pago',
           routerLink: 'checkout/order/confirmation'
       }
   ];

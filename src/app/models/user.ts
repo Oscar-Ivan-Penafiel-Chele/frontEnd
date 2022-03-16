@@ -7,6 +7,7 @@ export interface User {
       user_lastName?:string;
       email?:string;
       user_address?:string;
+      user_address_reference? : string;
       user_document?:string;
       password?:string;
       user_phone?:string;
@@ -14,4 +15,4 @@ export interface User {
       role_user?:any;
       create_date?: Date;
       updated_at?: Date;
-    }
+}
