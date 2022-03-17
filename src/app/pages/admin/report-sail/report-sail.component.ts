@@ -5,7 +5,7 @@ import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
-import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, QR, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, QR, Rect, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 type TableRow = [];
@@ -58,8 +58,128 @@ export class ReportSailComponent implements OnInit {
       4 : 'Vendedor'
     }
   }
-  openModal(sail : any){
 
+  async openModal(sail : any){
+    const fecha = new Date();
+    const pdf = new PdfMakeWrapper();
+    pdf.info({
+        title: 'PDF Proveedores',
+        author: '@Yebba',
+        subject: 'Mostrar los proveedores de la ferretería',
+    });
+    pdf.pageSize('A4');
+    pdf.pageOrientation('portrait'); // 'portrait'
+    pdf.add(
+      new Stack([
+        new Columns([
+          new Stack([
+            new Columns([
+              await new Img('assets/img/log_app_pdf.svg').width(100).build(),
+            ]).end,
+            new Columns([
+              new Stack([
+                new Canvas([
+                  new Rect([0, 0], [250, 60]).end,
+                ]).width('*').end,
+                new Columns([
+                  new Txt('EL DESCANSO').absolutePosition(120,110).bold().end,
+                  new Txt(' Durán - Ecuador').absolutePosition(50,125).fontSize(8).end,
+                  new Txt('Dirección Matriz:').absolutePosition(50,140).fontSize(9).bold().end,
+                  new Txt('Primavera 2').absolutePosition(120,140).fontSize(10).end,
+                ]).end,
+              ]).end
+            ]).margin([0,10,0,0]).end,
+          ]).end,
+          // new Txt('').width(100).end,
+          new Stack([
+            new Canvas([
+                new Rect([0, 0], [250, 125]).end,
+            ]).end,
+            new Columns([
+              new Txt('Ruc:').absolutePosition(310,50).end,
+              new Txt(' 0930421466').absolutePosition(340,50).end,
+            ]).end,
+            new Txt('FACTURA').absolutePosition(310,70).end,
+            new Columns([
+              new Txt('No:').absolutePosition(310,90).end,
+              new Txt(' 0930421466').absolutePosition(340,90).end,
+            ]).end,
+            new Columns([
+              new Txt('Fecha de autorización:').absolutePosition(310,110).end,
+              new Txt('2022-03-17').absolutePosition(440,110).end,
+            ]).end,
+          ]).end
+          
+        ]).end
+      ]).end
+    );
+
+    pdf.add(
+      '\n'
+    )
+    
+    pdf.add(new Stack([
+        new Canvas([
+          new Rect([0, 0], [510, 55 ]).end,
+        ]).end,
+        new Columns([
+          new Txt('RAZÓN SOCIAL / NOMBRES Y APELLIDOS:').absolutePosition(50,190).fontSize(8).bold().end,
+          new Txt(' 0930421466').absolutePosition(210,190).fontSize(8).end,
+        ]).end,
+        new Columns([
+          new Txt('DIRECCIÓN:').absolutePosition(50,200).fontSize(8).bold().end,
+          new Txt(' 0930421466').absolutePosition(100,200).fontSize(8).end,
+        ]).end,
+        new Columns([
+          new Txt('TELÉFONO:').absolutePosition(310,200).fontSize(8).bold().end,
+          new Txt(' 0930421466').absolutePosition(360,200).fontSize(8).end,
+        ]).end,
+        new Columns([
+          new Txt('FECHA DE EMISIÓN:').absolutePosition(50,210).fontSize(8).bold().end,
+          new Txt(' 0930421466').absolutePosition(130,210).fontSize(8).end,
+        ]).end,
+        new Txt('IDENTIFICACIÓN:').absolutePosition(310,210).fontSize(8).bold().end,
+        new Txt(' 0930421466').absolutePosition(380,210).fontSize(8).end,
+      ]).end  
+    );
+
+    pdf.add(
+      '\n'
+    )
+    pdf.add(
+      new Table([
+        [
+            new Txt('Cód. Principal').alignment('center').bold().end,
+            new Txt('Cód. Auxiliar').alignment('center').bold().end,
+            new Txt('Cant.').alignment('center').bold().end,
+            new Txt('Descripción').alignment('center').bold().end,
+            new Txt('Precio Unitario').alignment('center').bold().end,
+            new Txt('Descuento').alignment('center').bold().end,
+            new Txt('Precio Total').alignment('center').bold().end,
+        ],
+    ]).widths([45,45,30,178,50,50,50]).bold().fontSize(8).end
+    );
+
+    // this.providersAux.sort(this.sortProvider)
+    // this.providersAux.forEach((item)=>{
+        pdf.add(
+            new Table([
+                [
+                  new Txt('a').end,
+                  new Txt('a').end,
+                  new Txt('a').end,
+                  new Txt('a').end,
+                  new Txt('a').end,
+                  new Txt('a').end,
+                  new Txt('a').end,
+                ]
+            ]).widths([45,45,30,178,50,50,50]).fontSize(8).end
+        );
+    // })
+    pdf.footer((currentPage : any, pageCount : any)=>{
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+    });
+    pdf.create().open();  
   }
 
   async exportPDF(){

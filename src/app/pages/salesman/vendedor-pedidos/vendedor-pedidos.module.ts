@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PedidosComponent } from './pedidos.component';
-import { PedidosRoutingModule } from './pedidos-routing.module';
-import { SharedModule } from '../shared/shared.module';
+import { VendedorPedidosComponent } from './vendedor-pedidos.component';
+import { VendedorPedidosRoutingModule } from './vendedor-pedidos-routing.module';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
-    PedidosComponent
+    VendedorPedidosComponent
   ],
   imports: [
     CommonModule,
-    PedidosRoutingModule,
-    SharedModule,
+    VendedorPedidosRoutingModule,
     ProgressSpinnerModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    InputTextModule
   ]
 })
-export class PedidosModule { }
+export class VendedorPedidosModule { }

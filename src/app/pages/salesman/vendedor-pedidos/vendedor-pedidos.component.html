@@ -1,0 +1,35 @@
+<p-table #dt [value]="pedidos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['product_name', 'product_code']"
+currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]" responsiveLayout="scroll">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            Listado de Pedidos
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre y código..." />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th><i class="pi pi-file"></i> Orden</th>
+            <th><i class="pi pi-user"></i> Cliente</th>
+            <th><i class="pi pi-calendar"></i> Fecha de Pedido</th>
+            <th><i class="pi pi-dollar"></i> Precio Total</th>
+            <th><i class="pi pi-clock"></i> Estado</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{product.name}}</td>
+            <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
+            <td>{{product.price | currency:'USD'}}</td>
+            <td>{{product.category}}</td>
+            <td>{{product.category}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            En total hay {{pedidos ? pedidos.length : 0 }} pedidos.
+        </div>
+    </ng-template>
+</p-table>

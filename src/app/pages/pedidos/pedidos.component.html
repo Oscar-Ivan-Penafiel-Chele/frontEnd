@@ -71,8 +71,36 @@
     </nav>
 
     <main>
-        <div>
-
+        <div class="table__pedidos">
+            <p-table [value]="pedidos" responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Listado de Pedidos
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Orden</th>
+                        <th>Fecha de Pedido</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Observación</th>
+                        <th>Factura</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pedido>
+                    <tr>
+                        <td>{{pedido.orden}}</td>
+                        <td>{{pedido.orden}}</td>
+                        <td>{{pedido.orden}}</td>
+                        <td>{{pedido.orden}}</td>
+                        <td>{{pedido.orden}}</td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="viewPDF(pedido)" class="p-button-success"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </main>
 

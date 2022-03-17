@@ -14,6 +14,7 @@ const routes: Routes = [
   {path: 'terminos-y-condiciones', loadChildren : () => import('./pages/terms/terms.module').then(m => m.TermsModule)}, 
   {path: 'gerente', loadChildren : ()=> import('./pages/admin/admin.module').then( m => m.AdminModule)},
   {path: 'administrador', loadChildren : () => import('./pages/employee/employee.module').then( m => m.EmployeeModule)},
+  {path: 'vendedor', loadChildren : () => import('./pages/salesman/salesman.module').then( m => m.SalesmanModule)},
   {path: 'configuración', loadChildren : () => import('./pages/employee/other/other.module').then( m => m.OtherModule)},
   {path: 'my-orders', loadChildren : () => import('./pages/pedidos/pedidos.module').then( m => m.PedidosModule)},
   {path: '**', redirectTo: 'home', pathMatch : 'full'}, 
