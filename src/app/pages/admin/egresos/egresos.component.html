@@ -12,7 +12,7 @@
             <button style="color: black;" pButton label="Nuevo" class="p-button-warning" icon="pi pi-plus" (click)="openNewModal()"></button>
         </div>
     </p-toolbar>
-    <p-table #dt [value]="egresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="dataExtract" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -25,20 +25,20 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Código del Producto<p-sortIcon field="user.user_name"></p-sortIcon></th>
-                <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Movimiento<p-sortIcon field="user.user_name"></p-sortIcon></th>
-                <th pSortableColumn="order.voucher_number"><i class="pi pi-qrcode"></i> Cantidad egresada <p-sortIcon field="order.voucher_number"></p-sortIcon></th>
-                <th pSortableColumn="order.voucher_number"><i class="pi pi-qrcode"></i> Descripción<p-sortIcon field="order.voucher_number"></p-sortIcon></th>
+                <th pSortableColumn="product_code"><i class="pi pi-user"></i> Código<p-sortIcon field="product_code"></p-sortIcon></th>
+                <th pSortableColumn="product_name" style="width: 250px;"><i class="pi pi-user"></i> Producto<p-sortIcon field="product_name"></p-sortIcon></th>
+                <th pSortableColumn="inventory_description" style="width: 250px;"><i class="pi pi-qrcode"></i> Descripción<p-sortIcon field="inventory_description"></p-sortIcon></th>
+                <th pSortableColumn="inventory_stock_amount"><i class="pi pi-qrcode"></i> Cantidad egresada <p-sortIcon field="inventory_stock_amount"></p-sortIcon></th>
                 <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-egreso let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td>a</td>
-                <!-- <td>{{egreso.inventory_movement_type}}</td>
-                <td>{{(egreso.inventory_stock_amount).toString().split('.')[0]}}</td>
+                <td>{{egreso.product_code}}</td>
+                <td>{{egreso.product_name}}</td>
                 <td>{{egreso.inventory_description}}</td>
-                <td>{{egreso.create_date}}</td> -->
+                <td>{{(egreso.inventory_stock_amount).toString().split('.')[0]}}</td>
+                <td>{{egreso.create_date}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">

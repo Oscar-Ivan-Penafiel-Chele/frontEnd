@@ -96,6 +96,7 @@
                         <th pSortableColumn="product_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="product_name"></p-sortIcon></th>
                         <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio Unitario <p-sortIcon field="product_price"></p-sortIcon></th>
                         <th pSortableColumn="product_amount_sail"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="product_amount_sail"></p-sortIcon></th>
+                        <th pSortableColumn="product_offered"><i class="pi pi-box"></i> Descuento % <p-sortIcon field="product_offered"></p-sortIcon></th>
                         <th pSortableColumn="product_price_total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="product_price_total"></p-sortIcon></th>
                     </tr>
                 </ng-template>
@@ -106,8 +107,9 @@
                         </td>
                         <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage :  host+product.product_image" [alt]="product.product_image" width="80" height="80" class="shadow-4" /></td>
                         <td>{{product.product_name}}</td>
-                        <td>${{product.product_price}}</td>
-                        <td><p-inputNumber (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail == null ? 1 : product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
+                        <td>${{product.product_price_aux}}</td>
+                        <td><p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail == null ? 1 : product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
+                        <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
                         <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>      
                     </tr>
                 </ng-template>
@@ -119,11 +121,11 @@
             </p-table>
         </div>
 
-        <div class="flex flex-wrap justify-content-between align-items-center" style="padding: 0px 30px;">
+        <div class="flex flex-wrap justify-content-between align-items-center mb-6" style="padding: 0px 30px;">
             <button (click)="goHome()" pButton pRipple type="button" class="p-button-outlined">
                 <p>Seguir Comprando <i class="pi pi-shopping-cart"></i></p>
             </button>
-            <button [disabled]="loading" [routerLink]="'/checkout/order'" pButton pRipple type="button">
+            <button [disabled]="loading" (click)="next()" pButton pRipple type="button">
                 <p>Continuar Compra <i class="pi pi-arrow-right"></i></p>
             </button>
         </div>

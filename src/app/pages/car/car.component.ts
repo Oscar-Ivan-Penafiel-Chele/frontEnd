@@ -4,6 +4,7 @@ import { PrimeNGConfig, MessageService} from 'primeng/api'
 import { Cart } from 'src/app/models/cart';
 import { Order } from 'src/app/models/order';
 import { Product } from 'src/app/models/product';
+import { Promotion } from 'src/app/models/promotion';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { HomeService } from 'src/app/services/home.service';
@@ -31,6 +32,7 @@ export class CarComponent implements OnInit {
   loading : boolean = false;
   priceTotal : number = 0;
   order : Order = {} as Order;
+  promotions : Promotion[] = [];
   
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -60,6 +62,7 @@ export class CarComponent implements OnInit {
   async getData(){
     await this.isLog();
     await this.getAllProductsCart(this.user.id_user!);
+    await this.getPromotions();
   }
 
   async isLog(){
@@ -78,20 +81,37 @@ export class CarComponent implements OnInit {
     };
 
     this._rest.getProductsCart(data).subscribe((response : Cart[])=>{
+      response.forEach((i)=>{
+        i.producto.product_price_aux = i.producto.product_price;
+      })
       this.extractData(response);
     })
   }
 
   async extractData(data : Cart[]){
-    this.products = data.map(({producto})=>{
+    this.products = data.map(({producto, product_offered, product_offered_price_total})=>{
+      data.forEach((i)=>{
+        if(product_offered != null && product_offered_price_total != null){
+          producto.product_offered = product_offered;
+          producto.product_price = product_offered_price_total;
+        }
+      })
       return producto;
     })
+    console.log(this.products);
     this.loading = false;
     this.loadingDelete = false;
     await this.getTotalPriceToPay();
   }
 
+  async getPromotions(){
+    this._rest.getPromotions().subscribe((response : Promotion[])=>{
+      
+    });
+  }
+
   getTotalPriceForUnit($event : any, product : Product){
+    console.log(product);
     product.product_price_total! = product.product_price! * $event.value;
     this.getTotalPriceForAmount();
   }
@@ -170,6 +190,12 @@ export class CarComponent implements OnInit {
           window.location.href = '/shop';
       }
     });
+  }
+
+  next(){
+    localStorage.setItem('price_total',JSON.stringify(this.order));
+    localStorage.setItem('producto',JSON.stringify(this.products));
+    this._navigate.navigate(['/checkout/order']);
   }
 
   async deleteProductCart(product : Product){

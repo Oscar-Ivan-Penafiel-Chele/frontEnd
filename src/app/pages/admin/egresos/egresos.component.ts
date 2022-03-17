@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Egreso } from 'src/app/models/egreso';
 import { RestService } from 'src/app/services/rest.service';
+import { PrimeNGConfig, MessageService} from 'primeng/api';
 import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, QR, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { User } from 'src/app/models/user';
 import { TokenService } from 'src/app/services/token.service';
 import { Product } from 'src/app/models/product';
 import { EgresoAux } from 'src/app/models/egresoAuxilia';
-import { MessageService } from 'primeng/api';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 type TableRow = [];
@@ -30,6 +30,7 @@ export class EgresosComponent implements OnInit {
   loading : boolean = false;
   fechaInicio : any;
   fechaFin : any;
+  dataExtract : any;
   displayNewModal : boolean = false;
   submitted : boolean = false;
   descriptionOption : any;
@@ -40,6 +41,7 @@ export class EgresosComponent implements OnInit {
   constructor(
     private _rest : RestService,
     private _token : TokenService,
+    private config: PrimeNGConfig,
     private messageService: MessageService
   ) { 
     this.descriptionOption = [
@@ -51,6 +53,12 @@ export class EgresosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.config.setTranslation({
+      "clear" : "Vaciar",
+      "today" : "Hoy",
+      "dayNamesMin": ["D","L","M","X","J","V","S"],
+      "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    });
     this.getProducts();
     this.getEgresos();
     this.getDataProfile();
@@ -68,7 +76,12 @@ export class EgresosComponent implements OnInit {
     this._rest.getEgresos().subscribe((response : Egreso[])=>{
       this.egresos = Object.values(response);
       this.loading = false;
-      console.log(response);
+      
+      this.dataExtract = this.egresos.map(({order_detail, inventory_description, inventory_movement_type, inventory_stock_amount, create_date})=>{
+        return {product_code : order_detail.producto.product_code, product_name : order_detail.producto.product_name, inventory_description, inventory_movement_type, inventory_stock_amount, create_date};
+      })
+
+      console.log(this.dataExtract);
     })
   }
 
@@ -145,10 +158,16 @@ export class EgresosComponent implements OnInit {
   }
 
   async exportPDF(){
-    this.egresosAux = [];
+    this.egresosAux = this.dataExtract;
 
     this.egresosAux = this.egresos.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
     
+    if(this.egresosAux.length == 0) {
+      this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
+      return ;
+    };
+
+
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
@@ -212,9 +231,9 @@ export class EgresosComponent implements OnInit {
 
   createTable(data : any): ITable{
     return new Table([
-      [ 'N° Orden','Cliente','Descripción', 'Número De Comprobante','Total','Fecha de Creación'],
+      [ 'Fecha de Creación','Código del Producto','Producto','Descripción', 'Cantidad Egresada'],
       ...this.extractData(data),
-    ]).widths([ 55,100,80,70,'*',100]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
+    ]).widths([ 100,70,100,90,90]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
   }
 
   createDetailsPDF(){
@@ -234,7 +253,7 @@ export class EgresosComponent implements OnInit {
 
   extractData(data : any) : TableRow{
     return data.map((row : any) => [
-      row.id_order, row.order.user.user_name+" "+row.order.user.user_lastName, row.inventory_description , row.order.voucher_number, row.order.order_price_total, row.create_date
+      row.create_date, row.order_detail.producto.product_code, row.order_detail.producto.product_name ,row.inventory_description , row.inventory_stock_amount
     ])
   }
 }

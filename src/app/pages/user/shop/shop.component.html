@@ -136,9 +136,14 @@
                                     <div class="product-description">{{product.product_description}}</div>
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [ngModel]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>
                                     <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category.category_name}}</span>
+                                    <p *ngIf="product.product_offered != null" style="width: min-content;" class="product-offered"> -{{product.product_offered}}%</p>   
                                 </div>
                                 <div class="product-list-action">
-                                    <span class="product-price">${{product.product_price}}</span>
+                                    <div *ngIf="product.product_offered != null" class="flex flex-column">
+                                        <span class="product-price" style="text-decoration: line-through; font-size: 14px;">${{product.product_price}}</span>
+                                        <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
+                                    </div>
+                                    <span *ngIf="product.product_offered == null" class="product-price">${{product.product_price}}</span>
                                     <p-button  styleClass="p-button-sm" icon="pi pi-shopping-cart" label="Añadir al carrito"></p-button>
                                 </div>
                             </div>
@@ -152,6 +157,7 @@
                                         <i class="pi pi-tag product-category-icon"></i>
                                         <span class="product-category">{{product.category.category_name}}</span>
                                     </div>
+                                    <p *ngIf="product.product_offered != null" class="product-offered"> -{{product.product_offered}}%</p>
                                 </div>
                                 <div class="product-grid-item-content">
                                     <img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_image"/>
@@ -160,7 +166,11 @@
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [(ngModel)]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>
                                 </div>
                                 <div class="product-grid-item-bottom">
-                                    <span class="product-price">${{product.product_price}}</span>
+                                    <div *ngIf="product.product_offered != null" class="flex flex-column">
+                                        <span class="product-price" style="text-decoration: line-through; font-size: 14px;">${{product.product_price}}</span>
+                                        <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
+                                    </div>
+                                    <span *ngIf="product.product_offered == null" class="product-price">${{product.product_price}}</span>
                                     <p-button id="{{product.id_product}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
                                 </div>
                             </div>

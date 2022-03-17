@@ -67,6 +67,11 @@ export class ReportSailComponent implements OnInit {
 
     this.sailAux = this.sails.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
     
+    if(this.sailAux.length == 0){
+      this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
+      return ;
+    }
+
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
@@ -83,10 +88,10 @@ export class ReportSailComponent implements OnInit {
           new Columns([
             new Stack([
               new Columns([ 
-                new Txt('Reporte de Egresos').fontSize(14).bold().end,
+                new Txt('Reporte de Ventas').fontSize(14).bold().end,
               ]).color('#3f3f3f').end,
               new Columns([ 
-                new Txt('Módulo de Egresos  \n\n').fontSize(11).end,
+                new Txt('Módulo de Ventas  \n\n').fontSize(11).end,
               ]).color('#3f3f3f').end,
               new Columns([ 
                 new Txt('').alignment('right').width('*').bold().end,
@@ -130,9 +135,9 @@ export class ReportSailComponent implements OnInit {
 
   createTable(data : any): ITable{
     return new Table([
-      [ 'N° Orden','Cliente','Descripción', 'Número De Comprobante','Total','Fecha de Creación'],
+      [ 'Fecha de Creación','N° Orden','Cliente','Descripción', 'Número De Comprobante','Total'],
       ...this.extractData(data),
-    ]).widths([ 55,100,80,70,'*',100]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
+    ]).widths([ 100,45,100,100,'*',70]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
   }
 
   createDetailsPDF(){

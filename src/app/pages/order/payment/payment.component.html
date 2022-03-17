@@ -1,47 +1,82 @@
 <div class="stepsdemo-content">
     <p-card>
         <ng-template pTemplate="title">
-            Confirmación
-        </ng-template>
-        <ng-template pTemplate="subtitle">
             Detalles De La Compra
         </ng-template>
+        <ng-template pTemplate="subtitle">
+            Datos Personales
+        </ng-template>
         <ng-template pTemplate="content">
-            <div class="field col-12">
-                <label for="class">Name</label>
-                <b></b>
+            <div class="flex flex-column">
+                <div class="">
+                    <label for="name">Nombres y Apellidos: </label>
+                    <b> {{user.user_name}} {{user.user_lastName}}</b>
+                </div>
+                <div class="mt-2">
+                    <label for="Age">Cédula de Identidad:</label>
+                    <b> {{user.user_document}}</b>
+                </div>
+                <div class="mt-2">
+                    <label for="Age">Dirección:</label>
+                    <b> {{user.user_address}}</b>
+                </div>
+                <div class="mt-2">
+                    <label for="Age">Lugar de Referencia: </label>
+                    <b> {{user.user_address_reference}}</b>
+                </div>
+                <div class="mt-2">
+                    <label for="Age">Celular:</label>
+                    <b> {{user.user_phone}}</b>
+                </div>
             </div>
-            <div class="field col-12">
-                <label for="Age">Age</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">Seat Class</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">Wagon Number</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">Seat</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">Cardholder Name</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">Card Number</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">Date</label>
-                <b></b>
-            </div>
-            <div class="field col-12">
-                <label for="Age">CVV</label>
-                <b></b>
+            <p-divider></p-divider>
+
+            <div>
+                <p-table [value]="products" responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Precio Unitario</th>
+                            <th>Cantidad</th>
+                            <th>Descuento</th>
+                            <th>Precio Total</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td>
+                                <img [src]="product.product_image == null || !product.product_image ? overImage : host+product.product_image" [alt]="product.product_name" width="75px">
+                            </td>
+                            <td style="width: 250px;">{{product.product_name}}</td>
+                            <td>${{product.product_price_aux}}</td>
+                            <td>{{product.product_amount_sail}}</td>
+                            <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
+                            <td>${{product.product_price_total}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div class="flex flex-column align-items-end justify-content-end">
+                            <div class="flex">
+                                <p>Subtotal:</p>
+                                <span style="font-weight: lighter;" class="ml-2">${{order.price_order_total}}</span>
+                            </div>
+                            <div class="flex">
+                                <p>Iva 0%: </p>
+                                <span style="font-weight: lighter;" class="ml-2">$0.00</span>
+                            </div>
+                            <div class="flex">
+                                <p>Iva 12%: </p>
+                                <span style="font-weight: lighter;" class="ml-2">${{priceIva}}</span>
+                            </div>
+                            <div style="width: 150px;height: 2px; background-color: black;"></div>
+                            <div class="flex">
+                                <p>Precio Total: </p>
+                                <span style="font-weight: lighter;" class="ml-2">${{priceTotalOrder}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-table>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">

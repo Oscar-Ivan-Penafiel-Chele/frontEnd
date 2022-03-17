@@ -8,6 +8,8 @@ import {ButtonModule} from 'primeng/button';
 import {InputMaskModule} from 'primeng/inputmask';
 import { FormsModule } from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
+import {DividerModule} from 'primeng/divider';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import {CheckboxModule} from 'primeng/checkbox';
     ButtonModule,
     InputMaskModule,
     FormsModule,
-    CheckboxModule
+    CheckboxModule,
+    DividerModule,
+    TableModule
   ]
 })
 export class PaymentModule { }

@@ -6,5 +6,7 @@ export interface Cart{
     create_date : string,
     updated_at : string,
     producto : any,
+    product_offered : number,
+    product_offered_price_total : number,
     user : any,
 }

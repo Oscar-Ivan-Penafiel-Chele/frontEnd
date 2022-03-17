@@ -32,7 +32,7 @@ export class PersonalComponent implements OnInit {
 
   validateData(){
     if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.user.user_address && this.user.user_address.length > 5 && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.user.user_phone) {
-      this._home.setUser(this.user);
+      localStorage.setItem('information_sending',JSON.stringify(this.user));
       this.nextPage();
     }
 

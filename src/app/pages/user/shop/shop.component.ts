@@ -11,6 +11,7 @@ import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment.prod';
 import { HomeService } from 'src/app/services/home.service';
 import { Banner } from 'src/app/models/banner';
+import { Promotion } from 'src/app/models/promotion';
 
 @Component({
   selector: 'app-shop',
@@ -32,6 +33,7 @@ export class ShopComponent implements OnInit {
   responsiveOptions : any;
   sortOptions: any;
   sortOrder: number = 0;
+  promotions : Promotion[] = [];
   sortField: string = "";
   banners : Banner[] = [];
   host : string = environment.URL;
@@ -84,7 +86,7 @@ export class ShopComponent implements OnInit {
     setInterval(()=>{
       this.getDateToday();
     },100); 
-    this.getProducts();
+    this.getData();
     this.sortOptions = [
       {label: 'De mayor a menor', value: 'menor'},
       {label: 'De menor a mayor', value: 'mayor'}
@@ -95,6 +97,11 @@ export class ShopComponent implements OnInit {
     setTimeout(()=>{
       this.isActiveCategory();
     },3000)
+  }
+
+  async getData(){
+    await this.getProducts();
+    await this.getPromotions();
   }
 
   goCart(){
@@ -182,13 +189,29 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  getProducts(){
+  async getProducts(){
     this._rest.getProducts().subscribe((response : Product[]) =>{
       this.productAux = Object.values(response);
       this.products = this.productAux.filter(i=> i.product_status == 1)
       this.products.sort(this.sortProducts)
       this.completeProduct = true;
     });
+  }
+
+  async getPromotions(){
+    this._rest.getPromotions().subscribe((response : Promotion[])=>{
+      this.promotions = Object.values(response);
+
+      this.products.forEach((product)=>{
+        this.promotions.forEach((promotion)=>{
+          if(product.id_product == promotion.id_product){
+            product.product_offered = parseInt((promotion.promotion_discount)!.toString().split('.')[0]);
+            product.product_offered_price_total = product.product_price! - ((product.product_offered / 100) * product.product_price!);
+          }
+        })
+      })
+      
+    })
   }
 
   onSortChange(event : any) {
@@ -242,7 +265,9 @@ export class ShopComponent implements OnInit {
   addProductoCart($event : any , product : Product){
     const data = {
       id_user : this.user.id_user,
-      id_product : product.id_product
+      id_product : product.id_product,
+      product_offered : product.product_offered,
+      product_offered_price_total : product.product_offered_price_total
     }
 
     this._rest.addProductCart(data).subscribe((response) =>{
