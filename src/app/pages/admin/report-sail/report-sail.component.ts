@@ -74,7 +74,7 @@ export class ReportSailComponent implements OnInit {
         new Columns([
           new Stack([
             new Columns([
-              await new Img('assets/img/log_app_pdf.svg').width(100).build(),
+              await new Img('assets/img/log_app_pdf.svg').margin([80,0,0,0]).width(100).build(),
             ]).end,
             new Columns([
               new Stack([
@@ -84,29 +84,28 @@ export class ReportSailComponent implements OnInit {
                 new Columns([
                   new Txt('EL DESCANSO').absolutePosition(120,110).bold().end,
                   new Txt(' Durán - Ecuador').absolutePosition(50,125).fontSize(8).end,
-                  new Txt('Dirección Matriz:').absolutePosition(50,140).fontSize(9).bold().end,
-                  new Txt('Primavera 2').absolutePosition(120,140).fontSize(10).end,
+                  new Txt('Dirección Matriz:').absolutePosition(50,140).fontSize(8).bold().end,
+                  new Txt('Primavera 2').absolutePosition(120,140).fontSize(8).end,
                 ]).end,
               ]).end
             ]).margin([0,10,0,0]).end,
           ]).end,
-          // new Txt('').width(100).end,
           new Stack([
             new Canvas([
                 new Rect([0, 0], [250, 125]).end,
             ]).end,
             new Columns([
-              new Txt('Ruc:').absolutePosition(310,50).end,
-              new Txt(' 0930421466').absolutePosition(340,50).end,
+              new Txt('RUC:').absolutePosition(310,50).fontSize(8).end,
+              new Txt(' 0930421466').absolutePosition(330,50).fontSize(8).end,
             ]).end,
-            new Txt('FACTURA').absolutePosition(310,70).end,
+            new Txt('FACTURA').absolutePosition(310,70).fontSize(8).end,
             new Columns([
-              new Txt('No:').absolutePosition(310,90).end,
-              new Txt(' 0930421466').absolutePosition(340,90).end,
+              new Txt('No:').absolutePosition(310,90).fontSize(8).end,
+              new Txt(' 0930421466').absolutePosition(330,90).fontSize(8).end,
             ]).end,
             new Columns([
-              new Txt('Fecha de autorización:').absolutePosition(310,110).end,
-              new Txt('2022-03-17').absolutePosition(440,110).end,
+              new Txt('FECHA DE AUTORIZACIÓN:').absolutePosition(310,110).fontSize(8).end,
+              new Txt('2022-03-17').absolutePosition(410,110).fontSize(8).end,
             ]).end,
           ]).end
           
@@ -120,7 +119,7 @@ export class ReportSailComponent implements OnInit {
     
     pdf.add(new Stack([
         new Canvas([
-          new Rect([0, 0], [510, 55 ]).end,
+          new Rect([0, 0], [508, 55 ]).end,
         ]).end,
         new Columns([
           new Txt('RAZÓN SOCIAL / NOMBRES Y APELLIDOS:').absolutePosition(50,190).fontSize(8).bold().end,
@@ -157,7 +156,7 @@ export class ReportSailComponent implements OnInit {
             new Txt('Descuento').alignment('center').bold().end,
             new Txt('Precio Total').alignment('center').bold().end,
         ],
-    ]).widths([45,45,30,178,50,50,50]).bold().fontSize(8).end
+    ]).widths([45,45,30,174,50,50,50]).bold().fontSize(8).end
     );
 
     // this.providersAux.sort(this.sortProvider)
@@ -165,17 +164,93 @@ export class ReportSailComponent implements OnInit {
         pdf.add(
             new Table([
                 [
-                  new Txt('a').end,
-                  new Txt('a').end,
-                  new Txt('a').end,
-                  new Txt('a').end,
-                  new Txt('a').end,
-                  new Txt('a').end,
-                  new Txt('a').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                ],
+                [
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
+                  new Txt('a').alignment('center').end,
                 ]
-            ]).widths([45,45,30,178,50,50,50]).fontSize(8).end
+            ]).widths([45,45,30,174,50,50,50]).fontSize(8).end
         );
     // })
+    pdf.add(
+      '\n'
+    )
+
+    pdf.add(
+      new Stack([
+        new Columns([
+          new Table([
+            [ new Txt('INFORMACIÓN ADICIONAL').alignment('center').bold().end,],
+            [
+              new Stack([
+                new Columns([
+                  new Txt('Correo de Empresa: ').width(80).end,
+                  new Txt('el-descanso@gmail.com').width('*').end,
+                ]).end,
+                new Columns([
+                  new Txt('Correo de Cliente: ').width(80).end,
+                  new Txt('oscar@gmail.com').width('*').end,
+                ]).end,
+              ]).margin([0,10,0,24]).end,
+            ]
+          ]).widths([240]).fontSize(8).end,
+
+          new Table([
+            [ 
+              new Txt('SUBTOTAL').fontSize(8).alignment('center').bold().end,
+              new Txt('A').fontSize(8).alignment('right').end,
+            ],
+            [
+              new Txt('IVA 0%').fontSize(8).alignment('center').bold().end,
+              new Txt('A').fontSize(8).alignment('right').end,
+            ],
+            [
+              new Txt('IVA 12%').fontSize(8).alignment('center').bold().end,
+              new Txt('A').fontSize(8).alignment('right').end,
+            ],
+            [
+              new Txt('DESCUENTO 0%').fontSize(8).alignment('center').bold().end,
+              new Txt('A').fontSize(8).alignment('right').end,
+            ],
+            [
+              new Txt('TOTAL A PAGAR').fontSize(8).alignment('center').bold().end,
+              new Txt('A').fontSize(8).alignment('right').end,
+            ]
+
+          ]).widths([116,115]).fontSize(8).end,
+        ]).end,
+      ]).end,
+    ); 
+    
+    pdf.add(
+      '\n'
+    )
+
+    pdf.add(
+      new Table([
+        [ 
+          new Txt('Forma de Pago').fontSize(8).alignment('center').bold().end,
+          new Txt('Valor').fontSize(8).alignment('center').bold().end,
+        ],
+        [
+          new Txt('SIN UTILIZACIÓN DEL SISTEMA FINANCIERO').fontSize(8).end,
+          new Txt('Valor').fontSize(8).alignment('center').end,
+        ]
+      ]).widths([150,80]).end
+    );
+    
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
     });
