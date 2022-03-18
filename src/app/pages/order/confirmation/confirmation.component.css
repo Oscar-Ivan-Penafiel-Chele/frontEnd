@@ -1,0 +1,15 @@
+.button__paypal{
+    height: 100%;
+    width: 100%;
+   
+}
+.button__paypal__content{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ngx-paypal{
+    width: 30%;
+}

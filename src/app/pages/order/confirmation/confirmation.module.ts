@@ -8,7 +8,7 @@ import {ButtonModule} from 'primeng/button';
 import {InputMaskModule} from 'primeng/inputmask';
 import { FormsModule } from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
-
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,8 @@ import {CheckboxModule} from 'primeng/checkbox';
     ButtonModule,
     InputMaskModule,
     FormsModule,
-    CheckboxModule
+    CheckboxModule,
+    NgxPayPalModule
   ]
 })
 export class ConfirmationModule { }

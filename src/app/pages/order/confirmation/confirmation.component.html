@@ -1,28 +1,15 @@
 <div class="stepsdemo-content">
     <p-card>
         <ng-template pTemplate="title">
-            Información del Pago
+            Método de Pago
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Enter your card details
+            Seleccione el método de pago
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="p-fluid formgrid grid">
-                <div class="field col-12">
-                    <label for="class">Card Holder Name</label>
-                    <input type="text" required pInputText [(ngModel)]="a"> 
-                </div>
-                <div class="field col-8">
-                    <label id="number" for="lastname">Number</label>
-                    <p-inputMask inputId="number" mask="9999-9999-9999-9999" [(ngModel)]="a"></p-inputMask>
-                </div>
-                <div class="field col-2">
-                    <label id="date" for="date">Date</label>
-                    <p-inputMask inputId="date" mask="99/99" [(ngModel)]="a"></p-inputMask>
-                </div>
-                <div class="field col-2">
-                    <label for="cvv">CVV</label>
-                    <p-inputMask id="cvv" mask="999" [(ngModel)]="a"></p-inputMask>
+            <div class="button__paypal">
+                <div class="button__paypal__content">
+                    <ngx-paypal [config]="payPalConfig"></ngx-paypal>
                 </div>
             </div>
         </ng-template>
