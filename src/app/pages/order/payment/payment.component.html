@@ -52,7 +52,7 @@
                             <td>${{product.product_price_aux}}</td>
                             <td>{{product.product_amount_sail}}</td>
                             <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
-                            <td>${{product.product_price_total}}</td>
+                            <td>${{(product.product_price_total)}}</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
