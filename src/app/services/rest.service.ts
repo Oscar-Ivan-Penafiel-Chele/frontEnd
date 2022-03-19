@@ -164,6 +164,10 @@ export class RestService {
     return this._http.post<any>(`${this.url}/createOrder`,data);
   }
 
+  /* GET ORDERS CLIENT */
+  getOrdersCLient(data : any) : Observable<any>{
+    return this._http.post<any>(`${this.url}/order/user`, data);
+  }
 
   /* GRAPHYCS */
   getCategoriesProducts() : Observable<Category[]>{

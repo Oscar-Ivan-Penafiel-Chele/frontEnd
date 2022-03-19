@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {MessageService} from 'primeng/api';
+import {MessageService, Message} from 'primeng/api';
 import { HomeService } from 'src/app/services/home.service';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from 'src/environments/environment.prod';
@@ -20,11 +20,13 @@ export class ConfirmationComponent implements OnInit {
   public payPalConfig?: IPayPalConfig;
   user : User = {};
   showSuccess : boolean = false;
+  showMessage : boolean = false;
   clientID : string = environment.CLIENT_ID_PAYPAL;
   products : Product[] = [];
   items_products : any[] = [];
   order : Order = {} as Order;
   showOverlay : boolean = false;
+  msg : Message[] = [];
 
   constructor(
     private _router : Router,
@@ -58,11 +60,11 @@ export class ConfirmationComponent implements OnInit {
         {
           amount: {
             currency_code: 'USD',
-            value: (this.order.price_order_total).toString(),
+            value: (this.order.price_order_total).toFixed(2).toString(),
             breakdown: {
               item_total: {
                 currency_code: 'USD',
-                value: (this.order.price_order_total).toString()
+                value: (this.order.price_order_total).toFixed(2).toString()
               }
             }
           },
@@ -83,12 +85,18 @@ export class ConfirmationComponent implements OnInit {
     },
     onClientAuthorization: (data) => {
       if(data.status === "COMPLETED"){
-        this.showOverlay = true;
+        this.msg = [
+          {severity:'success', summary:'Completado', detail:'El pago se realizó con éxito'},
+        ];
         this.completProcess();
       }
     },
     onError: err => {
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo realizar el pago, verifique su cuenta'});
+      this.msg = [
+        {severity:'error', summary:'Error', detail:'No se pudo realizar el pago, verifique su cuenta'},
+      ];
+      this.showMessage = true;
+      //this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo realizar el pago, verifique su cuenta'});
       console.log('OnError', err);
     }
   };
@@ -96,24 +104,25 @@ export class ConfirmationComponent implements OnInit {
 
   async completProcess(){
     await this.addSail();
-    //await this.redirection();
+    await this.redirection();
   }
 
   async addSail(){
+    this.showOverlay = true;
     const data = {
       id_user : this.user.id_user,
       order_price_total : this.order.price_order_total,
       products : this.products,
     }
-
     this._rest.createOrder(data).subscribe((response : any)=>{
       if(response.status == 200 || response.message == "Guardado con exito"){
-        // localStorage.removeItem('information_sending');
-        // localStorage.removeItem('price_total');
-        // localStorage.removeItem('producto');
+        this.showMessage = true;
+        localStorage.removeItem('information_sending');
+        localStorage.removeItem('price_total');
+        localStorage.removeItem('producto');
         this.showSuccess = true;
-        this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
-        this.showOverlay = false;
+        //this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
+        
       }else if(response.status == 500){
         console.log(response.message);
         this.showOverlay = false;
@@ -127,7 +136,9 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async redirection(){
-    this._router.navigate(['/shop']);
+    setTimeout(() => {
+      this._router.navigate(['/my-orders']);
+    }, 5000);
   }
 
   async getProducts(){

@@ -11,6 +11,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import { NgxPayPalModule } from 'ngx-paypal';
 import {ToastModule} from 'primeng/toast';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     CheckboxModule,
     NgxPayPalModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    MessagesModule,
+    MessageModule
   ]
 })
 export class ConfirmationModule { }

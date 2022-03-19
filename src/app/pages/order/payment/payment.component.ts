@@ -20,7 +20,7 @@ export class PaymentComponent implements OnInit {
   host : string = environment.URL;
   order : Order = {} as Order;
   priceIva : any = 0;
-  priceTotalOrder : number = 0;
+  priceTotalOrder : any = 0;
 
   constructor(
     private _router : Router,
@@ -50,7 +50,7 @@ export class PaymentComponent implements OnInit {
     const data = localStorage.getItem('price_total');
     this.order = JSON.parse(data!);
     this.priceIva = (this.order.price_order_total * (12 / 100)).toFixed(2);
-    this.priceTotalOrder = this.order.price_order_total + parseFloat(this.priceIva);
+    this.priceTotalOrder = (this.order.price_order_total + parseFloat(this.priceIva)).toFixed(2);
   }
 
   nextPage() {

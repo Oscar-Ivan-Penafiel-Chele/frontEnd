@@ -72,31 +72,38 @@
 
     <main>
         <div class="table__pedidos">
-            <p-table [value]="pedidos" responsiveLayout="scroll">
+            <p-table #dt [value]="pedidos" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'order.order_status.order_status_description']"  responsiveLayout="scroll"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
                         Listado de Pedidos
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o estado..." />
+                        </span>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Orden</th>
-                        <th>Fecha de Pedido</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Observación</th>
-                        <th>Factura</th>
+                        <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> Orden <p-sortIcon field="id_order"></p-sortIcon></th>
+                        <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
+                        <th pSortableColumn="order.order_price_total"><i class="pi pi-dollar"></i> Total <p-sortIcon field="order.order_price_total"></p-sortIcon></th>
+                        <th pSortableColumn="order.order_status.order_status_description"><i class="pi pi-clock"></i> Estado <p-sortIcon field="order.order_status.order_status_description"></p-sortIcon></th>
+                        <th><i class="pi pi-th-large"></i> Ver Detalles</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-pedido>
                     <tr>
-                        <td>{{pedido.orden}}</td>
-                        <td>{{pedido.orden}}</td>
-                        <td>{{pedido.orden}}</td>
-                        <td>{{pedido.orden}}</td>
-                        <td>{{pedido.orden}}</td>
+                        <td>{{pedido.id_order}}</td>
+                        <td>{{pedido.create_date}}</td>
+                        <td>${{pedido.order.order_price_total}}</td>
                         <td>
-                            <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="viewPDF(pedido)" class="p-button-success"></button>
+                            <p [class]="'status__order__'+(pedido.order.order_status.order_status_description).toLowerCase()"> 
+                                {{pedido.order.order_status.order_status_description}}
+                            </p>
+                        </td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-eye" (click)="viewPDF(pedido)" class="p-button-info"></button>
                         </td>
                     </tr>
                 </ng-template>

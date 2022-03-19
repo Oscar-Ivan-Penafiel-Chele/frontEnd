@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {ButtonModule} from 'primeng/button';
     SharedModule,
     ProgressSpinnerModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    InputTextModule
   ]
 })
 export class PedidosModule { }
