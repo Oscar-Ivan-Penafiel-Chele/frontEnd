@@ -106,16 +106,16 @@ export class ConfirmationComponent implements OnInit {
       products : this.products,
     }
 
-    // this._rest.createOrder(data).subscribe((response : any)=>{
-    //   if(response.status === 200 || response.message === "Completado"){
-    //     localStorage.removeItem('information_sending');
-    //     localStorage.removeItem('price_total');
-    //     localStorage.removeItem('producto');
-    //     this.showSuccess = true;
-    //     this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
-    //     this.showOverlay = false;
-    //   }
-    // });
+    this._rest.createOrder(data).subscribe((response : any)=>{
+      if(response.status === 200 || response.message === "Completado"){
+        // localStorage.removeItem('information_sending');
+        // localStorage.removeItem('price_total');
+        // localStorage.removeItem('producto');
+        this.showSuccess = true;
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
+        this.showOverlay = false;
+      }
+    });
   }
 
   async getDataProfile(){
