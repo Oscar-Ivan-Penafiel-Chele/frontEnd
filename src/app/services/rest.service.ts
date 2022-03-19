@@ -159,6 +159,12 @@ export class RestService {
     return this._http.get<Sail[]>(`${this.url}/inventories/egreso`);
   }
 
+  /* ORDER */
+  createOrder(data : any) : Observable<any>{
+    return this._http.post<any>(`${this.url}/createOrder`,data);
+  }
+
+
   /* GRAPHYCS */
   getCategoriesProducts() : Observable<Category[]>{
     return this._http.get<Category[]>(`${this.url}/categories/products`)

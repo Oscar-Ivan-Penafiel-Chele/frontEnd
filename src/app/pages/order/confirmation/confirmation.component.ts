@@ -1,29 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {MessageService} from 'primeng/api';
 import { HomeService } from 'src/app/services/home.service';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from 'src/environments/environment.prod';
 import { Product } from 'src/app/models/product';
 import { Order } from 'src/app/models/order';
+import { User } from 'src/app/models/user';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
-  styleUrls: ['./confirmation.component.css']
+  styleUrls: ['./confirmation.component.css'],
+  providers: [MessageService]
 })
 export class ConfirmationComponent implements OnInit {
 
   public payPalConfig?: IPayPalConfig;
-  a : any;
+  user : User = {};
   showSuccess : boolean = false;
   clientID : string = environment.CLIENT_ID_PAYPAL;
   products : Product[] = [];
   items_products : any[] = [];
   order : Order = {} as Order;
+  showOverlay : boolean = false;
 
   constructor(
     private _router : Router,
-    private _home : HomeService
+    private _home : HomeService,
+    private messageService: MessageService,
+    private _rest : RestService,
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +38,7 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async orderFunctions(){
+    await this.getDataProfile();
     await this.getProducts();
     await this.getOrder();
     await this.initConfig();
@@ -38,10 +46,6 @@ export class ConfirmationComponent implements OnInit {
 
   prevPage() {
     this._router.navigate(['checkout/order/payment']);
-  }
-
-  complete(){
-    
   }
   
   async initConfig() {
@@ -62,7 +66,6 @@ export class ConfirmationComponent implements OnInit {
               }
             }
           },
-          items : this.items_products,
         }
       ]
     },
@@ -74,41 +77,59 @@ export class ConfirmationComponent implements OnInit {
       layout: 'vertical'
     },
     onApprove: (data, actions) => {
-      console.log('onApprove - transaction was approved, but not authorized', data, actions);
       actions.order.get().then((details : any) => {
-        console.log('onApprove - you can get full order details inside onApprove: ', details);
+        //console.log('onApprove - you can get full order details inside onApprove: ', details);
       });
     },
     onClientAuthorization: (data) => {
-      console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
-      this.showSuccess = true;
-    },
-    onCancel: (data, actions) => {
-      console.log('OnCancel', data, actions);
+      if(data.status === "COMPLETED"){
+        this.showOverlay = true;
+        this.completProcess();
+      }
     },
     onError: err => {
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo realizar el pago, verifique su cuenta'});
       console.log('OnError', err);
-    },
-    onClick: (data, actions) => {
-      console.log('onClick', data, actions);
-    },
+    }
   };
   }
 
+  async completProcess(){
+    await this.addSail();
+    //await this.redirection();
+  }
 
-  addSail(){
-    this.items_products
+  async addSail(){
+    const data = {
+      id_user : this.user.id_user,
+      order_price_total : this.order.price_order_total,
+      products : this.products,
+    }
+
+    // this._rest.createOrder(data).subscribe((response : any)=>{
+    //   if(response.status === 200 || response.message === "Completado"){
+    //     localStorage.removeItem('information_sending');
+    //     localStorage.removeItem('price_total');
+    //     localStorage.removeItem('producto');
+    //     this.showSuccess = true;
+    //     this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
+    //     this.showOverlay = false;
+    //   }
+    // });
+  }
+
+  async getDataProfile(){
+    let data = localStorage.getItem('user');
+    this.user = JSON.parse(data!);
+  }
+
+  async redirection(){
+    this._router.navigate(['/shop']);
   }
 
   async getProducts(){
     let data = localStorage.getItem('producto');
     this.products = JSON.parse(data!);
-
-    this.products.map((i)=>{
-      this.items_products.push({ name: i.product_name, quantity: (i.product_amount_sail)?.toString(), category : i.category.category_name, unit_amount :{ currency_code: 'USD', value: (i.product_price)?.toString(),}});
-    });
-
-    console.log(this.items_products);
   }
 
   async getOrder(){

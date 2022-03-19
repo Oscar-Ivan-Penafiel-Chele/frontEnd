@@ -1,3 +1,8 @@
+<p-toast></p-toast>
+<div *ngIf="showOverlay" class="overlayProcess">
+    <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+    <p> Generando Pedido <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+</div>
 <div class="stepsdemo-content">
     <p-card>
         <ng-template pTemplate="title">
@@ -16,7 +21,7 @@
         <ng-template pTemplate="footer">
             <div class="grid grid-nogutter justify-content-between">
                 <p-button label="Regresar" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-                <p-button label="Confirmar Compra" (onClick)="complete()" icon="pi pi-angle-right" iconPos="right" styleClass="p-button-success"></p-button>
+                <p-button [disabled]="!showSuccess" label="Finalizar" (onClick)="redirection()" icon="pi pi-angle-right" iconPos="right" styleClass="p-button-success"></p-button>
             </div>
         </ng-template>
     </p-card>
