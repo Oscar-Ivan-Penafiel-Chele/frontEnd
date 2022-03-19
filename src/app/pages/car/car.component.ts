@@ -91,6 +91,7 @@ export class CarComponent implements OnInit {
   async extractData(data : Cart[]){
     this.products = data.map(({producto, product_offered, product_offered_price_total})=>{
       data.forEach((i)=>{
+        i.producto.product_amount_sail = 1;
         if(product_offered != null && product_offered_price_total != null){
           producto.product_offered = product_offered;
           producto.product_price = product_offered_price_total;

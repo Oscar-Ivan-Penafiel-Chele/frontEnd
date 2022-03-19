@@ -108,7 +108,7 @@
                         <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage :  host+product.product_image" [alt]="product.product_image" width="80" height="80" class="shadow-4" /></td>
                         <td>{{product.product_name}}</td>
                         <td>${{product.product_price_aux}}</td>
-                        <td><p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail == null ? 1 : product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
+                        <td><p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
                         <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
                         <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>      
                     </tr>
@@ -126,7 +126,7 @@
                 <p>Seguir Comprando <i class="pi pi-shopping-cart"></i></p>
             </button>
             <button [disabled]="loading" (click)="next()" pButton pRipple type="button">
-                <p>Continuar Compra <i class="pi pi-arrow-right"></i></p>
+                <p>Siguiente<i class="pi pi-arrow-right"></i></p>
             </button>
         </div>
     </main>
