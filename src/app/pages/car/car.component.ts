@@ -194,7 +194,7 @@ export class CarComponent implements OnInit {
   }
 
   next(){
-    localStorage.setItem('price_total',JSON.stringify(this.order));
+    localStorage.setItem('subtotal',JSON.stringify(this.order));
     localStorage.setItem('producto',JSON.stringify(this.products));
     this._navigate.navigate(['/checkout/order']);
   }

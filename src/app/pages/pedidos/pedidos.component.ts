@@ -21,6 +21,10 @@ export class PedidosComponent implements OnInit {
   overlayLogout : boolean;
   pedidos : any;
   pedidosAux : any;
+  products : any = [];
+  subtotal : number = 0;
+  iva : number = 0;
+  total : number = 0;
 
   constructor(
     private _navigate : Router,
@@ -55,9 +59,24 @@ export class PedidosComponent implements OnInit {
     }
 
     this._rest.getOrdersCLient(data).subscribe((response) =>{
-      this.pedidos = response;
-      console.log(response);
+      this.groupOrderByIdOrder(response);
     });
+  }
+
+  groupOrderByIdOrder(response : any){
+    let data : any = {};
+
+    response.forEach((i : any)=>{
+      if(!data.hasOwnProperty(i.id_order)){
+        data[i.id_order] = {
+          orders : []
+        }
+      }
+
+      data[i.id_order].orders.push({i});
+    }); 
+
+    this.pedidos = Object.values(data)
   }
 
   goCart(){
@@ -110,15 +129,30 @@ export class PedidosComponent implements OnInit {
   }
 
   async viewPDF(pedido : any){
-    console.log(pedido);
     await this.extractData(pedido);
-    await this.getPDF();
+    await this.getDetailsSailTotal();
+    //await this.getPDF();
   }
 
   async extractData(pedido : any){
-    this.pedidosAux = pedido.map((i : any)=>{
-      return {voucher : i.order.voucher_number, create_date: i.create_date, name_user: i.order.user.user_name, lastName_user: i.order.user.user_lastName, address: i.order.user.user_address, phone: i.order.user.user_phone, document: i.order.user.user_document, products : i.order_detail.producto, email : i.order.user.email}
+    this.pedidosAux = pedido.orders.map((item : any)=>{
+      this.products.push({producto: item.i.order_detail.producto, order_detail_quantity: item.i.order_detail.order_detail_quantity, order_detail_total : item.i.order_detail.order_detail_total, order_detail_discount : item.i.order_detail.order_detail_discount})
+      return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order.user.user_address, phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
     });
+  }
+
+  async getDetailsSailTotal(){
+    let data : any = [];
+    this.subtotal = 0;
+    this.products.map((i : any)=>{
+      data.push(i.order_detail_total);
+    })
+
+    this.subtotal = data.reduce((i : any,j : any)=>{
+      return parseFloat(i) + parseFloat(j);
+      
+    })
+    console.log(this.subtotal.toFixed(2));
   }
 
   async getPDF(){
@@ -157,17 +191,17 @@ export class PedidosComponent implements OnInit {
                 new Rect([0, 0], [250, 125]).end,
             ]).end,
             new Columns([
-              new Txt('RUC:').absolutePosition(310,50).fontSize(8).end,
+              new Txt('RUC:').absolutePosition(310,50).bold().fontSize(8).end,
               new Txt(' 0930421466').absolutePosition(330,50).fontSize(8).end,
             ]).end,
-            new Txt('FACTURA').absolutePosition(310,70).fontSize(8).end,
+            new Txt('FACTURA').absolutePosition(310,70).bold().fontSize(8).end,
             new Columns([
-              new Txt('No:').absolutePosition(310,90).fontSize(8).end,
-              new Txt(' 0930421466').absolutePosition(330,90).fontSize(8).end,
+              new Txt('No:').absolutePosition(310,90).bold().fontSize(8).end,
+              new Txt(`${this.pedidosAux[0].voucher}`).absolutePosition(330,90).fontSize(8).end,
             ]).end,
             new Columns([
-              new Txt('FECHA DE AUTORIZACIÓN:').absolutePosition(310,110).fontSize(8).end,
-              new Txt('2022-03-17').absolutePosition(410,110).fontSize(8).end,
+              new Txt('FECHA DE AUTORIZACIÓN:').bold().absolutePosition(310,110).fontSize(8).end,
+              new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(410,110).fontSize(8).end,
             ]).end,
           ]).end
           
@@ -185,22 +219,22 @@ export class PedidosComponent implements OnInit {
         ]).end,
         new Columns([
           new Txt('RAZÓN SOCIAL / NOMBRES Y APELLIDOS:').absolutePosition(50,190).fontSize(8).bold().end,
-          new Txt(' 0930421466').absolutePosition(210,190).fontSize(8).end,
+          new Txt(`${this.pedidosAux[0].name_user} ${this.pedidosAux[0].lastName_user}`).absolutePosition(210,190).fontSize(8).end,
         ]).end,
         new Columns([
           new Txt('DIRECCIÓN:').absolutePosition(50,200).fontSize(8).bold().end,
-          new Txt(' 0930421466').absolutePosition(100,200).fontSize(8).end,
+          new Txt(`${this.pedidosAux[0].address}`).absolutePosition(100,200).fontSize(8).end,
         ]).end,
         new Columns([
           new Txt('TELÉFONO:').absolutePosition(310,200).fontSize(8).bold().end,
-          new Txt(' 0930421466').absolutePosition(360,200).fontSize(8).end,
+          new Txt(`${this.pedidosAux[0].phone}`).absolutePosition(360,200).fontSize(8).end,
         ]).end,
         new Columns([
           new Txt('FECHA DE EMISIÓN:').absolutePosition(50,210).fontSize(8).bold().end,
-          new Txt(' 0930421466').absolutePosition(130,210).fontSize(8).end,
+          new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(130,210).fontSize(8).end,
         ]).end,
         new Txt('IDENTIFICACIÓN:').absolutePosition(310,210).fontSize(8).bold().end,
-        new Txt(' 0930421466').absolutePosition(380,210).fontSize(8).end,
+        new Txt(`${this.pedidosAux[0].document}`).absolutePosition(380,210).fontSize(8).end,
       ]).end  
     );
 
@@ -214,29 +248,29 @@ export class PedidosComponent implements OnInit {
             new Txt('Cód. Auxiliar').alignment('center').bold().end,
             new Txt('Cant.').alignment('center').bold().end,
             new Txt('Descripción').alignment('center').bold().end,
-            new Txt('Precio Unitario').alignment('center').bold().end,
-            new Txt('Descuento').alignment('center').bold().end,
-            new Txt('Precio Total').alignment('center').bold().end,
+            new Txt('Precio Unitario (USD)').alignment('center').bold().end,
+            new Txt('Descuento (%)').alignment('center').bold().end,
+            new Txt('Precio Total (USD)').alignment('center').bold().end,
         ],
     ]).widths([45,45,30,174,50,50,50]).bold().fontSize(8).end
     );
 
     // this.providersAux.sort(this.sortProvider)
-    // this.providersAux.forEach((item)=>{
+     this.products.forEach((item : any)=>{
         pdf.add(
             new Table([
                 [
-                  new Txt('a').alignment('center').end,
-                  new Txt('a').alignment('center').end,
-                  new Txt('a').alignment('center').end,
-                  new Txt('a').alignment('center').end,
-                  new Txt('a').alignment('center').end,
-                  new Txt('a').alignment('center').end,
-                  new Txt('a').alignment('center').end,
+                  new Txt(`${item.producto.product_code}`).alignment('center').end,
+                  new Txt(`${item.producto.product_code}`).alignment('center').end,
+                  new Txt(`${(item.order_detail_quantity).toString().split('.')[0]}`).alignment('center').end,
+                  new Txt(`${item.producto.product_name}`).alignment('center').end,
+                  new Txt(`$ ${item.producto.product_price}`).alignment('center').end,
+                  new Txt(`${(item.order_detail_discount).toString().split('.')[0]}%`).alignment('center').end,
+                  new Txt(`$ ${item.order_detail_total}`).alignment('center').end,
                 ],
             ]).widths([45,45,30,174,50,50,50]).fontSize(8).end
         );
-    // })
+     })
     pdf.add(
       '\n'
     )
@@ -254,7 +288,7 @@ export class PedidosComponent implements OnInit {
                 ]).end,
                 new Columns([
                   new Txt('Correo de Cliente: ').width(80).end,
-                  new Txt('oscar@gmail.com').width('*').end,
+                  new Txt(`${this.pedidosAux[0].email}`).width('*').end,
                 ]).end,
               ]).margin([0,10,0,24]).end,
             ]
@@ -267,7 +301,7 @@ export class PedidosComponent implements OnInit {
             ],
             [
               new Txt('IVA 0%').fontSize(8).alignment('left').bold().end,
-              new Txt('A').fontSize(8).alignment('right').end,
+              new Txt('0.00').fontSize(8).alignment('right').end,
             ],
             [
               new Txt('IVA 12%').fontSize(8).alignment('left').bold().end,
@@ -275,7 +309,7 @@ export class PedidosComponent implements OnInit {
             ],
             [
               new Txt('DESCUENTO 0%').fontSize(8).alignment('left').bold().end,
-              new Txt('A').fontSize(8).alignment('right').end,
+              new Txt('0.00').fontSize(8).alignment('right').end,
             ],
             [
               new Txt('TOTAL A PAGAR').fontSize(8).alignment('left').bold().end,
@@ -305,7 +339,7 @@ export class PedidosComponent implements OnInit {
     );
     
     pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();  
   }

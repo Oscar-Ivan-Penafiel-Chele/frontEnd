@@ -85,7 +85,7 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> Orden <p-sortIcon field="id_order"></p-sortIcon></th>
+                        <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> N° Orden <p-sortIcon field="id_order"></p-sortIcon></th>
                         <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
                         <th pSortableColumn="order.order_price_total"><i class="pi pi-dollar"></i> Total <p-sortIcon field="order.order_price_total"></p-sortIcon></th>
                         <th pSortableColumn="order.order_status.order_status_description"><i class="pi pi-clock"></i> Estado <p-sortIcon field="order.order_status.order_status_description"></p-sortIcon></th>
@@ -94,12 +94,12 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-pedido>
                     <tr>
-                        <td>{{pedido.id_order}}</td>
-                        <td>{{pedido.create_date}}</td>
-                        <td>${{pedido.order.order_price_total}}</td>
+                        <td>{{pedido.orders[0].i.id_order}}</td>
+                        <td>{{pedido.orders[0].i.order.create_date}}</td>
+                        <td>${{pedido.orders[0].i.order.order_price_total}}</td>
                         <td>
-                            <p [class]="'status__order__'+(pedido.order.order_status.order_status_description).toLowerCase()"> 
-                                {{pedido.order.order_status.order_status_description}}
+                            <p [class]="'status__order__'+(pedido.orders[0].i.order.order_status.order_status_description).toLowerCase()"> 
+                                {{pedido.orders[0].i.order.order_status.order_status_description}}
                             </p>
                         </td>
                         <td>

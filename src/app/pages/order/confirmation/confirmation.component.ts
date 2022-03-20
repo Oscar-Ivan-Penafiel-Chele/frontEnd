@@ -118,7 +118,8 @@ export class ConfirmationComponent implements OnInit {
       if(response.status == 200 || response.message == "Guardado con exito"){
         this.showMessage = true;
         localStorage.removeItem('information_sending');
-        localStorage.removeItem('price_total');
+        localStorage.removeItem('subtotal');
+        localStorage.removeItem('total');
         localStorage.removeItem('producto');
         this.showSuccess = true;
         //this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
@@ -147,7 +148,8 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async getOrder(){
-    let data = localStorage.getItem('price_total');
-    this.order = JSON.parse(data!);
+    let data = localStorage.getItem('total');
+    this.order.price_order_total = JSON.parse(data!);
+    console.log(this.order.price_order_total);
   }
 }

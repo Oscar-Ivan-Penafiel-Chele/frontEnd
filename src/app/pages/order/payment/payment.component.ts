@@ -47,13 +47,14 @@ export class PaymentComponent implements OnInit {
   }
 
   getOrder(){
-    const data = localStorage.getItem('price_total');
+    const data = localStorage.getItem('subtotal');
     this.order = JSON.parse(data!);
     this.priceIva = (this.order.price_order_total * (12 / 100)).toFixed(2);
     this.priceTotalOrder = (this.order.price_order_total + parseFloat(this.priceIva)).toFixed(2);
   }
 
   nextPage() {
+    localStorage.setItem('total',this.priceTotalOrder);
     this._router.navigate(['checkout/order/confirmation']);
   }
 
