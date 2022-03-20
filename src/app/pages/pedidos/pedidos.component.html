@@ -72,7 +72,7 @@
 
     <main>
         <div class="table__pedidos">
-            <p-table #dt [value]="pedidos" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'order.order_status.order_status_description']"  responsiveLayout="scroll"
+            <p-table #dt [value]="pedidos" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['orders[0].i.id_order', 'order.order_status.order_status_description']"  responsiveLayout="scroll"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
@@ -85,7 +85,7 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> N° Orden <p-sortIcon field="id_order"></p-sortIcon></th>
+                        <th pSortableColumn="orders[0].i.id_order"><i class="pi pi-qrcode"></i> N° Orden <p-sortIcon field="orders[0].i.id_order"></p-sortIcon></th>
                         <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
                         <th pSortableColumn="order.order_price_total"><i class="pi pi-dollar"></i> Total <p-sortIcon field="order.order_price_total"></p-sortIcon></th>
                         <th pSortableColumn="order.order_status.order_status_description"><i class="pi pi-clock"></i> Estado <p-sortIcon field="order.order_status.order_status_description"></p-sortIcon></th>

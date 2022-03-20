@@ -159,6 +159,14 @@ export class RestService {
     return this._http.get<Sail[]>(`${this.url}/inventories/egreso`);
   }
 
+  /* SAILSMAN */
+  getPendingOrders() : Observable<any>{
+    return this._http.get<any>(`${this.url}/order/seller`);
+  }
+  changeStateOrder(data : any) : Observable<any>{
+    return this._http.post<any>(`${this.url}/order/change`,data);
+  }
+
   /* ORDER */
   createOrder(data : any) : Observable<any>{
     return this._http.post<any>(`${this.url}/createOrder`,data);

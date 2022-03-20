@@ -224,7 +224,7 @@ export class EgresosComponent implements OnInit {
     );  
     pdf.add(this.createTable(this.egresosAux));
     pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();
   }
@@ -233,7 +233,7 @@ export class EgresosComponent implements OnInit {
     return new Table([
       [ 'Fecha de Creación','Código del Producto','Producto','Descripción', 'Cantidad Egresada'],
       ...this.extractData(data),
-    ]).widths([ 100,70,100,90,90]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
+    ]).widths([ 100,60,120,80,80]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
   }
 
   createDetailsPDF(){

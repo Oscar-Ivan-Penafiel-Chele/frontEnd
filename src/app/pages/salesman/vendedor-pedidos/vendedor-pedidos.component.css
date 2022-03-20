@@ -1,0 +1,15 @@
+.status__order__pendiente, .status__order__completada{
+    width: min-content;
+    padding: 2px 8px;
+    font-weight: 600;
+}
+
+.status__order__pendiente{
+    background-color: #FEEDAF;
+    color: #8A5340;
+}
+
+.status__order__completada{
+    background-color: #C8E6C9;
+    color: #256029;
+}
