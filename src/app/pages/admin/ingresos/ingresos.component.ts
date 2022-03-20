@@ -137,7 +137,7 @@ export class IngresosComponent implements OnInit {
     );  
     pdf.add(this.createTable(this.ingresosAux));
     pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();
   }
@@ -147,7 +147,7 @@ export class IngresosComponent implements OnInit {
     return new Table([
       [ 'Código Producto','Movimiento','Cantidad Ingresada', 'Descripción','Fecha de Ingreso'],
       ...this.extractData(data),
-    ]).widths([ 100,'*',90,60,'*']).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
+    ]).widths([ 70,80,70,100,'*']).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
   }
 
   createDetailsPDF(){

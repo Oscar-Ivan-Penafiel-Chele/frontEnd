@@ -73,7 +73,7 @@ export class EgresosComponent implements OnInit {
 
   getEgresos(){
     this.loading = true;
-    this._rest.getEgresos().subscribe((response : Egreso[])=>{
+    this._rest.getEgresos().subscribe((response : any)=>{
       this.egresos = Object.values(response);
       this.loading = false;
       
@@ -81,7 +81,7 @@ export class EgresosComponent implements OnInit {
         return {product_code : order_detail.producto.product_code, product_name : order_detail.producto.product_name, inventory_description, inventory_movement_type, inventory_stock_amount, create_date};
       })
 
-      console.log(this.dataExtract);
+      console.log(response);
     })
   }
 

@@ -147,8 +147,8 @@ export class RestService {
   }
 
     /* EGRESOS */
-  getEgresos() : Observable<Egreso[]>{
-    return this._http.get<Egreso[]>(`${this.url}/inventories/egreso`);
+  getEgresos() : Observable<any>{
+    return this._http.get<any>(`${this.url}/inventories/egreso`);
   }
   createEgreso(data : EgresoAux) : Observable<any>{
     return this._http.post<any>(`${this.url}/inventories/egreso`,data);

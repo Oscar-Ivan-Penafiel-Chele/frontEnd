@@ -23,8 +23,9 @@ export class PedidosComponent implements OnInit {
   pedidosAux : any;
   products : any = [];
   subtotal : number = 0;
-  iva : number = 0;
-  total : number = 0;
+  iva : any = 0;
+  total : any = 0;
+  dataAux : any = [];
 
   constructor(
     private _navigate : Router,
@@ -131,10 +132,11 @@ export class PedidosComponent implements OnInit {
   async viewPDF(pedido : any){
     await this.extractData(pedido);
     await this.getDetailsSailTotal();
-    //await this.getPDF();
+    await this.getPDF();
   }
 
   async extractData(pedido : any){
+    this.products = [];
     this.pedidosAux = pedido.orders.map((item : any)=>{
       this.products.push({producto: item.i.order_detail.producto, order_detail_quantity: item.i.order_detail.order_detail_quantity, order_detail_total : item.i.order_detail.order_detail_total, order_detail_discount : item.i.order_detail.order_detail_discount})
       return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order.user.user_address, phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
@@ -142,17 +144,17 @@ export class PedidosComponent implements OnInit {
   }
 
   async getDetailsSailTotal(){
-    let data : any = [];
-    this.subtotal = 0;
+    this.dataAux = [];
     this.products.map((i : any)=>{
-      data.push(i.order_detail_total);
+      this.dataAux.push(i.order_detail_total);
+    })
+    
+    this.subtotal = this.dataAux.reduce((i : any,j : any)=>{
+      return parseFloat(i) + parseFloat(j);
     })
 
-    this.subtotal = data.reduce((i : any,j : any)=>{
-      return parseFloat(i) + parseFloat(j);
-      
-    })
-    console.log(this.subtotal.toFixed(2));
+    this.iva = (this.subtotal * (12/100));
+    this.total = (Number(this.subtotal) + Number(this.iva));
   }
 
   async getPDF(){
@@ -297,23 +299,23 @@ export class PedidosComponent implements OnInit {
           new Table([
             [ 
               new Txt('SUBTOTAL').fontSize(8).alignment('left').bold().end,
-              new Txt('A').fontSize(8).alignment('right').end,
+              new Txt(`$ ${this.subtotal}`).fontSize(8).alignment('right').end,
             ],
             [
               new Txt('IVA 0%').fontSize(8).alignment('left').bold().end,
-              new Txt('0.00').fontSize(8).alignment('right').end,
+              new Txt(`$ 0.00`).fontSize(8).alignment('right').end,
             ],
             [
               new Txt('IVA 12%').fontSize(8).alignment('left').bold().end,
-              new Txt('A').fontSize(8).alignment('right').end,
+              new Txt(`$ ${(this.iva).toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
             [
               new Txt('DESCUENTO 0%').fontSize(8).alignment('left').bold().end,
-              new Txt('0.00').fontSize(8).alignment('right').end,
+              new Txt('$ 0.00').fontSize(8).alignment('right').end,
             ],
             [
               new Txt('TOTAL A PAGAR').fontSize(8).alignment('left').bold().end,
-              new Txt('A').fontSize(8).alignment('right').end,
+              new Txt(`$ ${(this.total).toFixed(2)}`).fontSize(8).alignment('right').end,
             ]
 
           ]).widths([116,115]).fontSize(8).end,
@@ -329,11 +331,11 @@ export class PedidosComponent implements OnInit {
       new Table([
         [ 
           new Txt('Forma de Pago').fontSize(8).alignment('center').bold().end,
-          new Txt('Valor').fontSize(8).alignment('center').bold().end,
+          new Txt('Valor (USD)').fontSize(8).alignment('center').bold().end,
         ],
         [
           new Txt('SIN UTILIZACIÓN DEL SISTEMA FINANCIERO').fontSize(8).end,
-          new Txt('Valor').fontSize(8).alignment('center').end,
+          new Txt(`$ ${(this.total).toFixed(2)}`).fontSize(8).alignment('center').end,
         ]
       ]).widths([150,80]).end
     );
