@@ -95,7 +95,7 @@
         </div>
         <div class="main__content">
             <p-fieldset legend="Categorías">
-                <div *ngIf="hide && !loadingShop" class="flex align-items-center">
+                <div *ngIf="hide && !loadingShop" class="skeleton__categories">
                     <p-skeleton class="mr-2" height="2rem" width="8rem" styleClass="mb-2" borderRadius="16px"></p-skeleton>
                     <p-skeleton class="mr-2" height="2rem" width="8rem" styleClass="mb-2" borderRadius="16px"></p-skeleton>
                     <p-skeleton class="mr-2" height="2rem" width="8rem" styleClass="mb-2" borderRadius="16px"></p-skeleton>
@@ -103,7 +103,7 @@
                     <p-skeleton class="mr-2" height="2rem" width="8rem" styleClass="mb-2" borderRadius="16px"></p-skeleton>
                 </div>
                 
-                <div class="chips__categories flex flex-wrap justify-content-center">
+                <div class="chips__categories">
                     <div id="0" *ngIf="!hide" class="chip__item chip__item__active flex justify-content-center align-items-center" pRipple (click)="isActiveCategory()">
                         <i class="pi pi-th-large mr-2"></i>
                         <p>Todos</p>
@@ -171,7 +171,7 @@
                                         <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
                                     </div>
                                     <span *ngIf="product.product_offered == null" class="product-price">${{product.product_price}}</span>
-                                    <p-button id="{{product.id_product}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
+                                    <p-button class="button__cart" id="{{product.id_product}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
                                 </div>
                             </div>
                         </div>

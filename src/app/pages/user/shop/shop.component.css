@@ -628,6 +628,17 @@ main{
     color: #495057;
 }
 
+.chips__categories {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+.skeleton__categories > p-skeleton{
+    display: flex;
+    align-items: center;
+}
+
 
 :host ::ng-deep .product-name {
     font-size: 1.2rem;
@@ -732,6 +743,11 @@ main{
         align-items: center;
         width: 100%;
    }
+
+   .chips__categories{
+       flex-direction: column;
+   }
+
 }
 
 .progressBanner{

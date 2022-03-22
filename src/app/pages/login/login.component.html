@@ -31,14 +31,14 @@
 
                 <div class="link-forgot">
                     <div class="still-session">
-                        <p-checkbox [(ngModel)]="keepSession" [binary]="true" inputId="binary"></p-checkbox>
+                        <p-checkbox id="input-password" [(ngModel)]="keepSession" [binary]="true" inputId="binary"></p-checkbox>
                         <label for="binary">Mantener Sesión</label>
                     </div>
                     <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
                 </div>
                 <br>
                 <div class="btn-login">
-                    <button id="btnLogin" class="button-login" [loading]="loading" (click)="login()" pButton pRipple type="button">
+                    <button id="btnLogin" class="button-login" [loading]="loading" onkeypress="pressEnter($event)" (click)="login()" pButton pRipple type="button">
                         <p [hidden]="!isVisibleText" style="width: 100%;">INGRESAR</p>
                         <p [hidden]="isVisibleText" style="width: 48%;"></p>
                     </button>   

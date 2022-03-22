@@ -1,4 +1,4 @@
-import { Component, Host, OnInit } from '@angular/core';
+import { Component, Host, HostListener, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -112,5 +112,10 @@ export class ProfileComponent implements OnInit {
     });
 
     return ;
+  }
+
+  @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
+    if(event.key != "Enter") return;
+    this.changeInformation();
   }
 }

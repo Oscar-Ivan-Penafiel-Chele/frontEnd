@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
 import { User } from 'src/app/models/user';
@@ -55,13 +55,7 @@ export class LoginComponent implements OnInit {
       strong : 'Excelente',
       passwordPrompt : '',
     });
-  }
-
-  pressButton(e : any){
-    if(e.keyCode === 13 && !e.shiftKey){
-      const btn = document.getElementById('btnLogin');
-      btn?.click();
-    }
+    //this.pressEnter();
   }
 
   login(){
@@ -157,5 +151,10 @@ export class LoginComponent implements OnInit {
     setTimeout(()=>{
       this.msgs1 = []
     },3000);
+  }
+
+  @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
+    if(event.key != "Enter") return;
+    this.login();
   }
 }

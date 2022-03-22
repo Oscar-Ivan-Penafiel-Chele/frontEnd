@@ -19,7 +19,7 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
             <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
             <th pSortableColumn="order.order_price_total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="order.order_price_total"></p-sortIcon></th>
             <th pSortableColumn="order.order_status.order_status_description"><i class="pi pi-clock"></i> Estado <p-sortIcon field="order.order_status.order_status_description"></p-sortIcon></th> 
-            <th><i class="pi pi-sync"></i> Cambiar Estado</th> 
+            <th><i class="pi pi-share-alt"></i> Acciones</th> 
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
@@ -27,13 +27,14 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
             <td>{{pedido.orders[0].i.id_order}}</td>
             <td style="width: 250px;">{{pedido.orders[0].i.order.user.user_name}} {{pedido.orders[0].i.order.user.user_lastName}}</td>
             <td>{{pedido.orders[0].i.create_date}}</td>
-            <td>{{pedido.orders[0].i.order.order_price_total}}</td>
+            <td>$ {{pedido.orders[0].i.order.order_price_total}}</td>
             <td>
                 <p [class]="'status__order__'+(pedido.orders[0].i.order.order_status.order_status_description).toLowerCase()"> 
                     {{pedido.orders[0].i.order.order_status.order_status_description}}
                 </p>
             </td>
-            <td class="flex justify-content-center">
+            <td>
+                <button pButton pRipple type="button" icon="pi pi-eye" (click)="viewOrder(pedido)" class="p-button-info mr-2"></button>
                 <button pButton pRipple type="button" icon="pi pi-check" (click)="complete(pedido)" class="p-button-success"></button>
             </td>
         </tr>

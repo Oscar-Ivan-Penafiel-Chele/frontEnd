@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -110,5 +110,10 @@ export class ChangePasswordComponent implements OnInit {
         return;
       }
     });
+  }
+
+  @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
+    if(event.key != "Enter") return;
+    this.changePassword();
   }
 }

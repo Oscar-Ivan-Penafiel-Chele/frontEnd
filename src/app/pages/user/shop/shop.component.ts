@@ -195,6 +195,7 @@ export class ShopComponent implements OnInit {
       this.products = this.productAux.filter(i=> i.product_status == 1)
       this.products.sort(this.sortProducts)
       this.completeProduct = true;
+      this.changeButtonCart();
     });
   }
 
@@ -279,9 +280,12 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  idLogAddCart(){
-    if(!this._token.getTokenDataUser()){
-      
-    }
+  changeButtonCart(){
+    const buttons = document.querySelectorAll('.button__cart');
+    
+    console.log(buttons);
+    // buttons.forEach( l => l.addEventListener('click', () =>{
+    //   console.log(l);
+    // }));
   }
 }
