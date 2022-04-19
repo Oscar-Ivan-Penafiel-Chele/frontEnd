@@ -8,18 +8,24 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class ContactComponent implements OnInit {
   completeCharge: boolean = true;
-
+ 
   constructor(private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    setTimeout(() => {
-      this.completeCharge = false;
-    }, 2500);
+    this.delayCharge();
   }
 
   isActive(){
     const iconBurger = document.querySelector('.icon-burger');
     iconBurger?.classList.toggle("active");
+  }
+
+  delayCharge() : any{
+    const SET_TIME_OUT_DELAY= 3000;
+
+    setTimeout(() => {
+      this.completeCharge = false;
+    }, SET_TIME_OUT_DELAY);
   }
 }

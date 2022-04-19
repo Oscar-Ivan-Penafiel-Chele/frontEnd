@@ -12,6 +12,7 @@ import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/services/auth.interceptor';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { AuthInterceptor } from 'src/app/services/auth.interceptor';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     LoginRoutingModule,
     MessagesModule,
     MessageModule,
@@ -28,7 +30,7 @@ import { AuthInterceptor } from 'src/app/services/auth.interceptor';
     RouterModule,
     FormsModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
   ], providers: [
     {
       provide: HTTP_INTERCEPTORS,

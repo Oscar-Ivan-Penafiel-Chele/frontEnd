@@ -15,11 +15,12 @@ export class ScrollToUpComponent implements OnInit {
 
   buttonBackUp(){
     window.addEventListener("scroll",this.scrollFunction);
-    
   }
 
   scrollFunction(){
+    const SET_TIME_OUT = 250;
     const backToTopButton : any = document.querySelector('#back-up');
+
     if (window.pageYOffset > 300) { // Show backToTopButton
       if(!backToTopButton.classList.contains("btnEntrance")) {
         backToTopButton.classList.remove("btnExit");
@@ -33,7 +34,7 @@ export class ScrollToUpComponent implements OnInit {
         backToTopButton.classList.add("btnExit");
         setTimeout(function() {
           backToTopButton.style.display = "none";
-        }, 250);
+        },SET_TIME_OUT);
       }
     }
 

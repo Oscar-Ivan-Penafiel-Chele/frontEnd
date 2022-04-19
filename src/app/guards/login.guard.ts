@@ -20,9 +20,9 @@ export class LoginGuard implements CanActivate {
       if(this._token.getToken()){
         const  rol = (JSON.parse(this._token.getTokenDataUser()!)).id_role;
         if(route.data.role != rol){
-        this._router.navigate([this.data[rol]]);
-        return false;
-      }
+          this._router.navigate([this.data[rol]]);
+          return false;
+        }
         return false;
       }
 

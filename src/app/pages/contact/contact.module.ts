@@ -5,6 +5,9 @@ import { ContactComponent } from './contact.component';
 import {SkeletonModule} from 'primeng/skeleton';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {InputTextModule} from 'primeng/inputtext';
+import { SharedModule } from '../shared/shared.module';
+import {ButtonModule} from 'primeng/button';
+import {RippleModule} from 'primeng/ripple';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import {InputTextModule} from 'primeng/inputtext';
     ContactRoutingModule,
     SkeletonModule,
     InputTextareaModule,
-    InputTextModule
+    InputTextModule,
+    SharedModule,
+    ButtonModule,
+    RippleModule
   ]
 })
 export class ContactModule { }

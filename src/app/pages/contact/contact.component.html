@@ -14,105 +14,48 @@
             <div class="line"></div>
             <div class="line"></div>
         </label>
-    </nav>
+    </nav>  
 
-    <!-- <app-scroll-to-up></app-scroll-to-up> -->
+    <app-scroll-to-up></app-scroll-to-up>
 
     <div class="content-contact">
             <div class="form-contact">
                 <div class="flex-contact">
                     <h3>Contáctanos!</h3>
-                    <br>
-                        <span class="p-float-label">
-                            <input id="float-input" type="text" pInputText style="width: 100%; max-width: 400px;"> 
-                            <label for="float-input">Nombres</label>
-                        </span>
-                        <br>
-                        <span class="p-float-label">
-                            <input id="float-input" type="email" pInputText style="width: 100%; max-width: 400px;"> 
-                            <label for="float-input">Correo Electrónico</label>
-                        </span>
-                        <br>
-                        <span class="p-float-label">
-                            <textarea rows="5" cols="40" pInputTextarea [autoResize]="true" style="width: 100%; max-width: 400px;"></textarea>
-                            <label for="float-input">Comentario</label>
-                        </span>
-                        <br>
-                        <button class="button-contact" pButton pRipple type="button" label="Enviar"></button>
+                    <div class="inputs__form__contact">
+                        <div class="item__form__contact">
+                            <span class="p-float-label p-input-icon-left">
+                                <i class="pi pi-user"></i>
+                                <input id="float-input" type="text" pInputText style="width: 100%; max-width: 400px;"> 
+                                <label for="float-input">Nombres</label>
+                            </span>
+                        </div>
+                        <div class="item__form__contact">
+                            <span class="p-float-label  p-input-icon-left">
+                                <i class="pi pi-envelope"></i>
+                                <input id="float-input" type="email" pInputText style="width: 100%; max-width: 400px;"> 
+                                <label for="float-input">Correo Electrónico</label>
+                            </span>
+                        </div>
+                        <div class="item__form__contact">
+                            <span class="p-float-label">
+                                <textarea rows="5" cols="40" pInputTextarea [autoResize]="true" style="width: 100%; max-width: 400px;"></textarea>
+                                <label for="float-input"><i class="pi pi-paperclip"></i> Comentario</label>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button class="button-contact" pButton pRipple type="button" label="Enviar"></button>
                 </div>
             </div>
         <br>
         <div class="map-local">
             <h3>Ubicación</h3>
-            
             <p-skeleton *ngIf="completeCharge != false" width="100%" height="345px" styleClass="p-mb-2"></p-skeleton>
             <iframe *ngIf="completeCharge != true" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.9447523752383!2d-79.84906768524473!3d-2.1746925984148495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902d6c16aeac0f5d%3A0x5229822af35501b4!2sFerreteria%20El%20Descanso!5e0!3m2!1ses-419!2sec!4v1637011067359!5m2!1ses-419!2sec" width="600" height="345" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </div>
     
-    <footer>
-        <div class="flex-footer">
-                <div class="box-information">
-                    <div class="icon-title" >
-                        <i class="pi pi-map-marker" ></i>
-                        <p>Dirección</p>
-                    </div>
-                    <div class="description">
-                        <p>Peatonal 35, Primavera, Duran, Guayaquil 092409</p>
-                    </div>
-                </div>
-                <div class="box-information">
-                    <div class="icon-title">
-                        <i class="pi pi-phone"></i>
-                        <p>Teléfono</p>
-                    </div>
-                    <div class="description">
-                        <p>+59342805414</p>
-                    </div>
-                </div>
-                <div class="box-information">
-                    <div class="icon-title">
-                        <i class="pi pi-envelope"></i>
-                        <p>Email</p>
-                    </div>
-                    <div class="description">
-                        <p>eldescanso@info.com</p>
-                    </div>
-                </div>
-                <div class="box-information">
-                    <div class="icon-title">
-                        <i class="pi pi-calendar"></i>
-                        <p>Horarios</p>
-                    </div>
-                    <div class="description">
-                        <p>Lunes - Domingos <br>9:00 - 19:00</p>
-                    </div>
-                </div>
-                <div class="box-information">
-                    <div class="icon-title">
-                        <i class="pi pi-chart-line"></i>
-                        <p>Calificación</p>
-                    </div>
-                    <div class="description stars">
-                        <i class="pi pi-star-fill"></i>
-                        <i class="pi pi-star-fill"></i>
-                        <i class="pi pi-star-fill"></i>
-                        <i class="pi pi-star-fill"></i>
-                        <i class="pi pi-star-fill"></i>
-                    </div>
-                </div>
-        </div>
-        <hr>
-        <div class="social-media">
-            <a href="https://facebook.com" target="_blank" class="facebook" pTooltip="Facebook" tooltipPosition="top"><i class="pi pi-facebook" ></i></a>
-            <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
-            <a href="https://instagram.com" target="_blank" class="instagram" pTooltip="Instagram" tooltipPosition="top"><i class="pi pi-instagram" ></i></a>
-            <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
-        </div>
-        <div class="company">
-            <p class="copyright">© 2021 Ferretería | El Descanso . All right reserved</p>
-        </div>
-    </footer>
-
+    <app-footer-shop></app-footer-shop>
 </section>
 

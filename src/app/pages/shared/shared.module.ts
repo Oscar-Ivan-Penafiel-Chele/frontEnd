@@ -5,11 +5,13 @@ import { FooterShopComponent } from 'src/app/components/footer-shop/footer-shop.
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
+import { BackgroundAnimateComponent } from 'src/app/components/background-animate/background-animate.component';
 
 @NgModule({
   declarations: [
     ScrollToUpComponent,
-    FooterShopComponent
+    FooterShopComponent,
+    BackgroundAnimateComponent,
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,7 @@ import {ButtonModule} from 'primeng/button';
   exports : [
     ScrollToUpComponent,
     FooterShopComponent,
+    BackgroundAnimateComponent,
   ]
   
 })

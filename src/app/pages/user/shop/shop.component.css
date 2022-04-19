@@ -634,6 +634,10 @@ main{
     flex-flow: row wrap;
 }
 
+.skeleton__categories{
+    display: flex;
+}
+
 .skeleton__categories > p-skeleton{
     display: flex;
     align-items: center;
