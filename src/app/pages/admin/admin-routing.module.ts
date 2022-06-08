@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthGuard } from 'src/app/guards/auth.guard';
+import { AuthorizationGuard } from 'src/app/guards/authorization/authorization.guard';
+import { AuthenticationGuard } from 'src/app/guards/authentication/authentication.guard';
 
 const routes : Routes = [
-  { path:'', component: DashboardComponent, canActivate : [AuthGuard], data : { role : '1'},
+  { path:'', component: DashboardComponent, canActivate : [AuthenticationGuard, AuthorizationGuard], data : { role : '1'},
     children : [
       {path: '', redirectTo: 'chart', pathMatch : 'full'},
       {path: 'chart', loadChildren : ()=> import('./charts/charts.module').then( m => m.ChartsModule)},

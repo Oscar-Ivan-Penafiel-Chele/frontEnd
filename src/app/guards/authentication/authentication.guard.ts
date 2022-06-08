@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { TokenService } from '../services/token.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class IslogGuard implements CanActivate {
+export class AuthenticationGuard implements CanActivate {
 
-  constructor(private _rest : TokenService, private _router : Router){}
-
+  constructor(private _token : TokenService, private _router : Router){}
+  
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      
-      if(!this._rest.getToken()){
+    
+      if(!this._token.getToken()){
         this._router.navigate(['login']);
         return false;
       }
+
       return true;
   }
   

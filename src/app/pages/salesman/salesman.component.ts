@@ -118,11 +118,10 @@ export class SalesmanComponent implements OnInit {
 
   logOut(){
     this.overlayLogout = true;
-    this._authService.logout(this.user.id_user!)
-      .subscribe((response)=>{
-        if(response.status == 200 || response.message === "Sesión cerrada con éxito"){
-          this._token.removeToken();
-          this._routerNavigation.navigate(['login']);
+    this._authService.logout(this.user.id_user!).subscribe((response)=>{
+      if(response.status == 200 || response.message == "Sesión cerrada con éxito"){
+        this._token.removeToken();
+        this._routerNavigation.navigate(['login']);
       }
     });
   }
@@ -134,6 +133,5 @@ export class SalesmanComponent implements OnInit {
     let hora = (hoy.getHours() < 10 ? '0'+hoy.getHours() : hoy.getHours()) + ':' + (hoy.getMinutes() < 10 ? '0'+hoy.getMinutes() : hoy.getMinutes()) + ':' + (hoy.getSeconds() < 10 ? '0'+hoy.getSeconds() : hoy.getSeconds());
 
     this.fechaYHora = fecha + ' ' + hora;
-
   }
 }

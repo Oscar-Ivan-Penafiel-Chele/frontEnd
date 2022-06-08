@@ -95,7 +95,6 @@ export class HomeComponent implements OnInit {
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
       this.brands = Object.values(response);
-      console.log(this.brands);
       this.brands = this.brands.filter(i => i.brand_status == 1 && i.brand_name != 'NO_DEFINIDO');
     })
   }

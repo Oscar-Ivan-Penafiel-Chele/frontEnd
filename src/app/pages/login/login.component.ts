@@ -92,6 +92,7 @@ export class LoginComponent implements OnInit {
           this.closeMessage();
           return ;
         }
+
         this.selectedMessageStatus = this.optionsMessageStatus['valido'];
         this.responseHandle(response);
         this.redirectRoute();

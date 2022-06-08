@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { OrderComponent } from './order.component';
-import { AuthGuard } from 'src/app/guards/auth.guard';
+import { AuthorizationGuard } from 'src/app/guards/authorization/authorization.guard';
+import { AuthenticationGuard } from 'src/app/guards/authentication/authentication.guard';
 
 const routes : Routes = [
-  { path:'', component: OrderComponent, data: {role : 5}, canActivate : [AuthGuard],
+  { path:'', component: OrderComponent, data: {role : 5}, canActivate : [AuthenticationGuard, AuthorizationGuard],
     children : [
       {path: '', redirectTo: 'personal', pathMatch : 'full'},
       {path: 'personal', loadChildren : ()=> import('./personal/personal.module').then( m => m.PersonalModule)},

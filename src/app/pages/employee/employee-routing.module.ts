@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardEmployeeComponent } from './dashboard-employee/dashboard-employee.component';
-import { AuthGuard } from 'src/app/guards/auth.guard';
+import { AuthorizationGuard } from 'src/app/guards/authorization/authorization.guard';
+import { AuthenticationGuard } from 'src/app/guards/authentication/authentication.guard';
 
 const routes : Routes = [
-  { path:'', component: DashboardEmployeeComponent, canActivate : [AuthGuard], data : { role : '2'},
+  { path:'', component: DashboardEmployeeComponent, canActivate : [AuthenticationGuard, AuthorizationGuard], data : { role : '2'},
     children : [
       {path: '', redirectTo: 'products', pathMatch : 'full'},
       {path: 'auditory', loadChildren : ()=> import('./auditory/auditory.module').then( m => m.AuditoryModule)},

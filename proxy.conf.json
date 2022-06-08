@@ -1,7 +1,3 @@
 {
-    "payments.air-pay.io/*":{
-        "target" : "https://payments.air-pay.io/partners/me",
-        "secure" : "false",
-        "logLevel" : "debug"
-    }
+
 }
