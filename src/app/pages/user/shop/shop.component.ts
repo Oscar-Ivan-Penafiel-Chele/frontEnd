@@ -268,21 +268,31 @@ export class ShopComponent implements OnInit {
   addProductoCart($event : any , product : Product){
     if(!this.isAuthenticated()){
       this.showOverlayLogin = true;
+      return ;
     }
-    // const data = {
-    //   id_user : this.user.id_user,
-    //   id_product : product.id_product,
-    //   product_offered : product.product_offered,
-    //   product_offered_price_total : product.product_offered_price_total
-    // }
 
-    // this._rest.addProductCart(data).subscribe((response) =>{
-    //   if(response.status == 200 || response.message === "Guardado con exito"){
-    //     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
-    //   }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
-    //     this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
-    //   }
-    // });
+    this.addItem(product);
+  }
+
+  isAuthenticated(){
+    return this._token.getToken();
+  }
+
+  addItem(product : Product){
+    const data = {
+      id_user : this.user.id_user,
+      id_product : product.id_product,
+      product_offered : product.product_offered,
+      product_offered_price_total : product.product_offered_price_total
+    }
+
+    this._rest.addProductCart(data).subscribe((response) =>{
+      if(response.status == 200 || response.message === "Guardado con exito"){
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
+      }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
+        this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
+      }
+    });
   }
 
   changeButtonCart(){
@@ -294,7 +304,4 @@ export class ShopComponent implements OnInit {
     // }));
   }
 
-  isAuthenticated(){
-    return this._token.getToken();
-  }
 }
