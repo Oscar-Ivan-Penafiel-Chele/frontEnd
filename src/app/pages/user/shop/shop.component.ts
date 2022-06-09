@@ -43,8 +43,10 @@ export class ShopComponent implements OnInit {
   user : User = {};
   isLogged?: boolean = false; //
   loadingShop : boolean = false;
+  checked: boolean = true;
   i : number = 0;
   bannerComplete : boolean = false;
+  showOverlayLogin : boolean = false;
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -264,20 +266,23 @@ export class ShopComponent implements OnInit {
   }
 
   addProductoCart($event : any , product : Product){
-    const data = {
-      id_user : this.user.id_user,
-      id_product : product.id_product,
-      product_offered : product.product_offered,
-      product_offered_price_total : product.product_offered_price_total
+    if(!this.isAuthenticated()){
+      this.showOverlayLogin = true;
     }
+    // const data = {
+    //   id_user : this.user.id_user,
+    //   id_product : product.id_product,
+    //   product_offered : product.product_offered,
+    //   product_offered_price_total : product.product_offered_price_total
+    // }
 
-    this._rest.addProductCart(data).subscribe((response) =>{
-      if(response.status == 200 || response.message === "Guardado con exito"){
-        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
-      }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
-        this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
-      }
-    });
+    // this._rest.addProductCart(data).subscribe((response) =>{
+    //   if(response.status == 200 || response.message === "Guardado con exito"){
+    //     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
+    //   }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
+    //     this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
+    //   }
+    // });
   }
 
   changeButtonCart(){
@@ -287,5 +292,9 @@ export class ShopComponent implements OnInit {
     // buttons.forEach( l => l.addEventListener('click', () =>{
     //   console.log(l);
     // }));
+  }
+
+  isAuthenticated(){
+    return this._token.getToken();
   }
 }

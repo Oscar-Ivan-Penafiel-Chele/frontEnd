@@ -15,11 +15,15 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputTextModule} from 'primeng/inputtext';
 import { SharedModule } from '../../shared/shared.module';
 import {ToastModule} from 'primeng/toast';
+import {RippleModule} from 'primeng/ripple';
+import {DialogModule} from 'primeng/dialog';
+import { OverlayLoginComponent } from 'src/app/components/overlay-login/overlay-login.component';
 
 
 @NgModule({
   declarations: [
     ShopComponent,
+    OverlayLoginComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,8 @@ import {ToastModule} from 'primeng/toast';
     InputTextModule,
     SharedModule,
     ToastModule,
+    RippleModule,
+    DialogModule,
   ]
 })
 export class ShopModule { }

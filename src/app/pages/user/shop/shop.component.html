@@ -1,5 +1,10 @@
 <p-toast></p-toast>
 <section>
+    <!-- Overlay Login -->
+    <ng-template [ngIf]="showOverlayLogin">
+        <app-overlay-login></app-overlay-login>
+    </ng-template>
+
     <!-- Header -->
     <nav>
         <div class="logout" *ngIf="overlayLogout">
