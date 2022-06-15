@@ -47,6 +47,7 @@ export class ShopComponent implements OnInit {
   i : number = 0;
   bannerComplete : boolean = false;
   showOverlayLogin : boolean = false;
+  iconButton : string = "";
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -62,6 +63,7 @@ export class ShopComponent implements OnInit {
     private _home : HomeService,
     private messageService: MessageService, 
   ) { 
+    this.iconButton = "pi pi-shopping-cart"
     this.overlayLogout = false;
     this.responsiveOptions = [
       {
@@ -197,7 +199,6 @@ export class ShopComponent implements OnInit {
       this.products = this.productAux.filter(i=> i.product_status == 1)
       this.products.sort(this.sortProducts)
       this.completeProduct = true;
-      this.changeButtonCart();
     });
   }
 
@@ -270,8 +271,8 @@ export class ShopComponent implements OnInit {
       this.showOverlayLogin = true;
       return ;
     }
-
-    this.addItem(product);
+    //this.addItem(product);
+    this.changeIconButton($event);
   }
 
   isAuthenticated(){
@@ -295,13 +296,26 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  changeButtonCart(){
+  changeIconButton($event : any){
+    const buttonSelected = $event.composedPath()[1].id;
     const buttons = document.querySelectorAll('.button__cart');
-    
-    console.log(buttons);
-    // buttons.forEach( l => l.addEventListener('click', () =>{
-    //   console.log(l);
-    // }));
+    let indexIconCart = 0;
+    let indexIconTimes = 0;
+    let index = 0;
+
+    buttons.forEach( (l) => l.addEventListener('click', () =>{
+      let span = l.childNodes[0].childNodes[1] as HTMLElement;
+
+      if(span.classList.contains('pi-shopping-cart')){
+        console.log("Cambio a ❌");
+        span.classList.replace('pi-shopping-cart','pi-times');
+      }else{
+        console.log("Cambio a 🚗");
+        span.classList.replace('pi-times','pi-shopping-cart');
+      }
+
+    }
+    ));
   }
 
 }
