@@ -303,19 +303,25 @@ export class ShopComponent implements OnInit {
     let indexIconTimes = 0;
     let index = 0;
 
-    buttons.forEach( (l) => l.addEventListener('click', () =>{
-      let span = l.childNodes[0].childNodes[1] as HTMLElement;
+    let spanClassList = $event.composedPath()[0].childNodes[1].classList;
+    let buttonItem = $event.composedPath()[0];
 
-      if(span.classList.contains('pi-shopping-cart')){
-        console.log("Cambio a ❌");
-        span.classList.replace('pi-shopping-cart','pi-times');
-      }else{
-        console.log("Cambio a 🚗");
-        span.classList.replace('pi-times','pi-shopping-cart');
-      }
+    buttonItem.classList.add('p-disabled')
+    
+    console.log(buttonItem.classList)
 
-    }
-    ));
-  }
-
+    buttonItem.classList.remove('p-disabled')
+    console.log(buttonItem.classList)
+    // try {
+    //   if(spanClassList.contains('pi-shopping-cart')){
+        
+    //     spanClassList.replace('pi-shopping-cart','pi-times');
+    //   }else{
+    //     spanClassList.replace('pi-times','pi-shopping-cart');
+    //   }
+    // } catch (error) {
+    //   alert(error);
+    // }
+    
+  } 
 }
