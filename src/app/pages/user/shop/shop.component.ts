@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment.prod';
 import { HomeService } from 'src/app/services/home.service';
 import { Banner } from 'src/app/models/banner';
 import { Promotion } from 'src/app/models/promotion';
+import { Cart } from 'src/app/models/cart';
 
 @Component({
   selector: 'app-shop',
@@ -23,7 +24,6 @@ export class ShopComponent implements OnInit {
 
   products : Product[] = [];
   productAux : Product[] = [];
-  
   categories : Category[] = [];
   
   searchValue : string = "";
@@ -48,6 +48,7 @@ export class ShopComponent implements OnInit {
   bannerComplete : boolean = false;
   showOverlayLogin : boolean = false;
   iconButton : string = "";
+  arrayButtons : any = [];
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -94,18 +95,36 @@ export class ShopComponent implements OnInit {
     this.sortOptions = [
       {label: 'De mayor a menor', value: 'menor'},
       {label: 'De menor a mayor', value: 'mayor'}
-  ];
+    ];
     this._primengConfig.ripple = true;
     this.isHidden= true;
     this.getCategories();
-    setTimeout(()=>{
-      this.isActiveCategory();
-    },3000)
+    this.isActiveCategory();
   }
 
   async getData(){
     await this.getProducts();
-    await this.getPromotions();
+    await this.getPromotions(); 
+  }
+
+  isExistProduct($event : any, product : Product){
+    const buttonSelected = $event.composedPath()[1].id;
+
+    const data = {
+      id_user : this.user.id_user
+    };
+
+    this._rest.getProductsCart(data).subscribe((response : Cart[])=>{
+      let item = response.filter((i) => i.id_product == buttonSelected)
+
+      if(item.length > 0){
+        this.messageService.add({severity:'info', summary: 'Info', detail: 'El producto ya ha sido agregado', life: 3000});
+        return ;
+      }
+      
+      this.addItem(product);
+    })
+
   }
 
   goCart(){
@@ -196,7 +215,7 @@ export class ShopComponent implements OnInit {
   async getProducts(){
     this._rest.getProducts().subscribe((response : Product[]) =>{
       this.productAux = Object.values(response);
-      this.products = this.productAux.filter(i=> i.product_status == 1)
+      this.products = this.productAux.filter(i=> i.product_status == 1 && i.product_stock! > 0)
       this.products.sort(this.sortProducts)
       this.completeProduct = true;
     });
@@ -271,15 +290,17 @@ export class ShopComponent implements OnInit {
       this.showOverlayLogin = true;
       return ;
     }
+    this.isExistProduct($event, product);
+    
     //this.addItem(product);
-    this.changeIconButton($event);
+    //this.changeIconButton($event, product);
   }
 
   isAuthenticated(){
     return this._token.getToken();
   }
 
-  addItem(product : Product){
+  async addItem(product : Product){
     const data = {
       id_user : this.user.id_user,
       id_product : product.id_product,
@@ -296,32 +317,91 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  changeIconButton($event : any){
-    const buttonSelected = $event.composedPath()[1].id;
-    const buttons = document.querySelectorAll('.button__cart');
-    let indexIconCart = 0;
-    let indexIconTimes = 0;
-    let index = 0;
+  // async deleteItem(id_product : any){
+  //   const data = {
+  //     id_user : this.user.id_user,
+  //     id_product : id_product
+  //   }
 
-    let spanClassList = $event.composedPath()[0].childNodes[1].classList;
-    let buttonItem = $event.composedPath()[0];
+  //   this._rest.deleteProductCart(data).subscribe((response)=>{
+  //     if(response.status == 200 || response.message === "Eliminado con exito"){
+  //       this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue eliminado'});
+  //     }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+  //       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor'});
+  //     }
+  //   })
+  // }
 
-    buttonItem.classList.add('p-disabled')
-    
-    console.log(buttonItem.classList)
+  // async changeIconButton($event : any, product : Product){
+  //   const buttonSelected = $event.composedPath()[1].id;
 
-    buttonItem.classList.remove('p-disabled')
-    console.log(buttonItem.classList)
-    // try {
-    //   if(spanClassList.contains('pi-shopping-cart')){
+  //   let spanClassList = $event.composedPath()[0].childNodes[1].classList;
+  //   let buttonItem = $event.composedPath()[0];
+
+  //   this.saveButtonsLocalStorage(buttonSelected);
+  //   this.deleteButtonsLocalStorage(buttonSelected);
+  //   try {
+  //     if(spanClassList.contains('pi-shopping-cart')){
+  //       buttonItem.classList.add('p-disabled');
+  //       spanClassList.replace('pi-shopping-cart','pi-clock');
+
+  //       //añadir item
+  //       await this.addItem(product)
+  //       await this.changeButtonIconClock(spanClassList, buttonItem);
+  //       this.saveButtonsLocalStorage(buttonItem);
+
+  //     }else{
+  //       buttonItem.classList.add('p-disabled');
+  //       spanClassList.replace('pi-times','pi-clock');
         
-    //     spanClassList.replace('pi-shopping-cart','pi-times');
-    //   }else{
-    //     spanClassList.replace('pi-times','pi-shopping-cart');
-    //   }
-    // } catch (error) {
-    //   alert(error);
-    // }
-    
-  } 
+  //       //eliminar item 
+  //       await this.deleteItem(buttonSelected);
+  //       await this.changeButtonIconTimes(spanClassList, buttonItem);
+
+  //     }
+  //   } catch (error) {
+  //     console.log(`Error: ${error}`);
+  //   }
+  // } 
+
+  // async changeButtonIconClock(spanClassList : any, buttonItem : any){
+  //   setTimeout(() => {
+  //     spanClassList.replace('pi-clock','pi-times');
+  //     buttonItem.classList.remove('p-disabled');
+  //   }, 1000);
+  // }
+
+  // async changeButtonIconTimes(spanClassList : any, buttonItem : any){
+  //   setTimeout(() => {
+  //     spanClassList.replace('pi-clock','pi-shopping-cart');
+  //     buttonItem.classList.remove('p-disabled');
+  //   }, 1000);
+  // }
+
+  // saveButtonsLocalStorage(buttonSelected : any){
+  //   this.arrayButtons.push(buttonSelected);
+  //   localStorage.setItem('buttons',JSON.stringify(this.arrayButtons))
+  // }
+
+  // deleteButtonsLocalStorage(buttonSelected : any){
+  //   let data = JSON.parse(localStorage.getItem('buttons')!);
+
+  //   data.forEach((item : any, key : any)=>{
+  //     if(buttonSelected == item){
+  //       data.splice(key,1)
+  //     }
+  //   })
+
+  //   if(data.lenght == 0){
+  //     localStorage.removeItem('buttons')
+  //     return;
+  //   }
+
+  //   localStorage.setItem('buttons',JSON.stringify(data))
+  // }
+
+  // async currentButtonsChangeIcon(){
+  //   const buttonsCurrent = document.querySelectorAll('button__cart');
+  //   console.log(buttonsCurrent);
+  // } 
 }

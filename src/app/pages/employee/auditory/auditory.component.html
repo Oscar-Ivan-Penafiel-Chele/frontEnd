@@ -1,9 +1,9 @@
 <div class="card">
-    <p-toolbar styleClass="mb-4">
+    <!-- <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="right">
             <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="right"></button>
         </ng-template>
-    </p-toolbar>
+    </p-toolbar> -->
 
     <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">

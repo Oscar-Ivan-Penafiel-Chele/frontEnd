@@ -173,7 +173,7 @@
                                 <div class="product-grid-item-bottom">
                                     <div *ngIf="product.product_offered != null" class="flex flex-column">
                                         <span class="product-price" style="text-decoration: line-through; font-size: 14px;">${{product.product_price}}</span>
-                                        <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
+                                        <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total.toFixed(2)}}</span>
                                     </div>
                                     <span *ngIf="product.product_offered == null" class="product-price">${{product.product_price}}</span>
                                     <p-button class="button__cart" id="{{product.id_product}}" [loading]="loadingShop" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
