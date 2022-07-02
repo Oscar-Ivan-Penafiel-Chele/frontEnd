@@ -72,12 +72,12 @@
     <ng-template pTemplate="content">
         <div class="formgrid grid">
             <div class="field col">
-                <label for="name">Nombre del Proveedor</label>
+                <label for="name">Nombre del Proveedor <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_name" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_name">Nombre es requerido</small>
             </div>
             <div class="field col">    
-                <label for="productStatus">Tipo de Proveedor</label>
+                <label for="productStatus">Tipo de Proveedor <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="provider.id_type_provider" optionLabel="type_provider_name" optionValue="id_type_provider" inputId="productStatus" [options]="types_provider" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -86,13 +86,13 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && provider.id_type_provider == null">Tipo es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.id_type_provider == null">Tipo de proveedor es requerido</small>
             </div>
         </div>
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="productStatus">Calificado el Proveedor</label>
+                <label for="productStatus">Calificado el Proveedor <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="provider.provider_qualified" optionLabel="name" optionValue="id" inputId="productStatus" [options]="qualified" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -101,10 +101,10 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && provider.provider_qualified == null">Calificación es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_qualified == null">Calificación es requerida</small>
             </div>
             <div class="field col">
-                <label for="productStatus">Estado del Proveedor</label>
+                <label for="productStatus">Estado del Proveedor <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="provider.provider_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -119,7 +119,7 @@
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="identificationType">Tipo de Identificación</label>
+                <label for="identificationType">Tipo de Identificación <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="provider.id_identification_type" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" inputId="identificationType" [options]="identificationType" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -131,7 +131,7 @@
                 <small class="p-error" *ngIf="submitted && !provider.id_identification_type">Tipo de identificación es requerido</small>
             </div>
             <div class="field col">
-                <label for="code">Identificación del Proveedor</label>
+                <label for="code">Identificación del Proveedor <span class="inputs__required">*</span></label>
                 <input type="text" [disabled]="!provider.id_identification_type" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
                 <small class="p-error" *ngIf="(submitted && !provider.provider_identification) || (stateIdentification && provider.provider_identification)">{{!provider.provider_identification ? 'Identificación requerida' : messageIdentification}}</small>
             </div>
@@ -139,31 +139,31 @@
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="name">Dirección del Proveedor</label>
+                <label for="name">Dirección del Proveedor <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_address" placeholder="Ejemplo: Av. 9 De Octubre" required autofocus />
-                <small class="p-error" *ngIf="submitted && !provider.provider_address">Dirección es requerido</small>
+                <small class="p-error" *ngIf="submitted && !provider.provider_address">Dirección es requerida</small>
             </div>
             <div class="field col">
-                <label for="name">Correo Electrónico del Proveedor</label>
+                <label for="name">Correo Electrónico del Proveedor <span class="inputs__required">*</span></label>
                 <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="provider.provider_email" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_email">Nombre es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="description">Productos Ofertados por el Proveedor</label>
+                <label for="description">Productos Ofertados por el Proveedor <span class="inputs__required">*</span></label>
                 <textarea id="description" required pInputTextarea [(ngModel)]="provider.provider_products_offered" rows="5" cols="20" [autoResize]="true"></textarea>
-                <small class="p-error" *ngIf="submitted && !provider.provider_products_offered">Descripción es requerido</small>
+                <small class="p-error" *ngIf="submitted && !provider.provider_products_offered">Descripción es requerida</small>
             </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="phone">Celular del Proveedor</label>
+                <label for="phone">Celular del Proveedor <span class="inputs__required">*</span></label>
                 <p-inputMask id="phone" mask="(+999) 99 999 9999" [(ngModel)]="provider.provider_phone" placeholder="(+999) 99 999 9999"></p-inputMask>
                 <small class="p-error" *ngIf="submitted && !provider.provider_phone">Celular es requerido</small>
             </div>
             <div class="field col">
-                <label for="phone">Teléfono fijo del Proveedor</label>
+                <label for="phone">Teléfono fijo del Proveedor <span class="inputs__required">*</span></label>
                 <p-inputMask id="phone" mask="(99) 9999999" [(ngModel)]="provider.provider_landline" placeholder="(99) 9999999"></p-inputMask>
                 <small class="p-error" *ngIf="submitted && !provider.provider_landline">Teléfono es requerido</small>
             </div>
@@ -179,12 +179,12 @@
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="name">Nombres del Encargado</label>
+                <label for="name">Nombres del Encargado <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_person_name" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_person_name">Nombre es requerido</small>
             </div>
             <div class="field col">
-                <label for="name">Apellidos del Encargado</label>
+                <label for="name">Apellidos del Encargado <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_person_lastName" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_person_lastName">Apellido es requerido</small>
             </div>
@@ -193,14 +193,14 @@
             <p style="color: #495057; font-weight: bold; text-align: center;">Detalles del Tiempo de Respuesta del Proveedor</p>   
             <div class="formgrid grid" style="padding: 15px;">
                 <div class="field col">
-                    <label for="minmax-buttons">Tiempo en Días</label>
+                    <label for="minmax-buttons">Tiempo en Días <span class="inputs__required">*</span></label>
                     <p-inputNumber [(ngModel)]="provider.provider_response_time_day" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="365"></p-inputNumber>
-                    <small class="p-error" *ngIf="submitted && provider.provider_response_time_day == null">Tiempo es requerido</small>
+                    <small class="p-error" *ngIf="submitted && provider.provider_response_time_day == null">Tiempo de respuesta es requerido</small>
                 </div>
                 <div class="field col">
-                    <label for="minmax-buttons">Tiempo en Horas</label>
+                    <label for="minmax-buttons">Tiempo en Horas <span class="inputs__required">*</span></label>
                     <p-inputNumber [(ngModel)]="provider.provider_response_time_hour" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="24"></p-inputNumber>
-                    <small class="p-error" *ngIf="submitted && provider.provider_response_time_hour == null">Tiempo es requerido</small>
+                    <small class="p-error" *ngIf="submitted && provider.provider_response_time_hour == null">Tiempo en horas es requerido</small>
                 </div>
             </div>
         </div>

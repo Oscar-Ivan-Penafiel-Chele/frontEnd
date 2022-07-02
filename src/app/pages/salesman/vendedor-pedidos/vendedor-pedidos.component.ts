@@ -71,9 +71,9 @@ export class VendedorPedidosComponent implements OnInit {
       accept: () => {
           this._rest.changeStateOrder(data).subscribe((response)=>{
             if(response.status == 200 || response.message == "Orden completada"){
-              this.messageService.add({severity:'success', summary:'Completado', detail:`El pedido de : ${pedido.orders[0].i.order.user.user_name} ${pedido.orders[0].i.order.user.user_lastName} ha sido completado`});
+              this.messageService.add({severity:'success', summary:'Completado', detail:`El pedido de ${pedido.orders[0].i.order.user.user_name} ${pedido.orders[0].i.order.user.user_lastName} ha sido completado`, life: 3000});
             }else if(response.status == 500 && response.message == "Ocurrio un error interno en el servidor"){
-              this.messageService.add({severity:'error', summary:'Error', detail:`${response.message}`});
+              this.messageService.add({severity:'error', summary:'Error', detail:`${response.message}`,life : 3000});
             }else if(response.status == 500){
               console.log(response.message);
             }else if(response.status == 401){

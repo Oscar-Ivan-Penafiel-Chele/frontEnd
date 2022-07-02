@@ -89,12 +89,14 @@
                </div>
                 <p-skeleton height="300px" styleClass="mb-2"></p-skeleton>
            </div>
-           <p-galleria [value]="banners" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%','height':'300px'}" [numVisible]="5"
-           [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showItemNavigatorsOnHover]="true"
-           [showIndicatorsOnItem]="true"> 
+
+            <p-galleria [value]="banners" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%','height':'300px'}" [numVisible]="5"
+            [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showItemNavigatorsOnHover]="true"
+            [autoPlay]="true" [transitionInterval]="3000"
+            [showIndicatorsOnItem]="true"> 
                 <ng-template pTemplate="item" let-item>
                     <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
-                    <img [src]="!item.banner_thumbnail || item.banner_thumbnail == null ? overImage : host+item.banner_thumbnail" [alt]="item.banner_thumbnail" height="300px"/>
+                    <img class="image__carousel" [src]="!item.banner_thumbnail || item.banner_thumbnail == null ? overImage : host+item.banner_thumbnail" [alt]="item.banner_thumbnail" style="width: 100%; display: block;"/>
                 </ng-template>
             </p-galleria>
         </div>
@@ -127,7 +129,7 @@
                             <p-dropdown [options]="sortOptions" placeholder="Ordenar por precio" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
                             <span class="p-input-icon-left mb-2 md:mb-0">
                                 <i class="pi pi-search"></i>
-                                <input type="search" pInputText placeholder="Buscar Producto..." (input)="dv.filter($any($event.target).value)">
+                                <input type="search" class="input__Search" pInputText placeholder="Buscar Producto..." (input)="dv.filter($any($event.target).value)">
                             </span>
                             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
                         </div>
@@ -166,8 +168,8 @@
                                 </div>
                                 <div class="product-grid-item-content">
                                     <img [src]="product.product_image ? host+product.product_image : overImage" [alt]="product.product_image"/>
-                                    <div class="product-name">{{product.product_name}}</div>
-                                    <div class="product-description">{{product.product_description}}</div>
+                                    <div class="product-name text__name__product mb-2" [pTooltip]="product.product_name" tooltipPosition="top">{{product.product_name}}</div>
+                                    <!-- <div class="product-description">{{product.product_description}}</div> -->
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [(ngModel)]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>
                                 </div>
                                 <div class="product-grid-item-bottom">

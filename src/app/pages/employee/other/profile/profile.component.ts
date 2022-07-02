@@ -24,12 +24,12 @@ export class ProfileComponent implements OnInit {
   isVisibleText : boolean;
   loading : boolean = false;
   buttonCancel : boolean = false;
+  typeDocument : string = "";
   
   constructor(
     private _token : TokenService,
     private _rest : RestService,
     private messageService: MessageService,
-    //@Host() private _other : OtherComponent,
   ) { 
     this.isVisibleText = true;
   }
@@ -43,6 +43,20 @@ export class ProfileComponent implements OnInit {
     this.user = JSON.parse(data);
     this.getRoleUser(this.user.id_role!);
     this.completeData = true;
+    
+    switch (this.user.id_identification_type) {
+      case 1: this.typeDocument = "Cédula"
+        
+      break;
+      case 2: this.typeDocument = "Pasaporte"
+      
+      break;
+      case 3: this.typeDocument = "RUC"
+        
+      break;
+      default:
+        break;
+    }
   }
 
   getRoleUser(id_role : number){

@@ -721,6 +721,27 @@ main{
     border-radius: 4px;
     margin-bottom: 1rem;
 }
+
+.input__Search{
+    width: 400px;
+}
+
+.image__carousel{
+    object-fit: cover;
+    height: 300px;
+}
+
+.text__name__product{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    height: 56px;
+    max-height: 56px;      /* fallback */
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
 @media screen and (max-width: 576px) {
     :host ::ng-deep .product-list-item {
         flex-direction: column;
@@ -752,6 +773,9 @@ main{
        flex-direction: column;
    }
 
+   .input__Search{
+    width: 100%;
+   }
 }
 
 .progressBanner{
@@ -771,3 +795,4 @@ main{
     font-size: 20px;
     color: #C63737;
 }
+

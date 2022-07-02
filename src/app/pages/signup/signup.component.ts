@@ -55,11 +55,11 @@ export class SignupComponent implements OnInit {
     this.user.id_role = 5;
     this.user.user_status = 1;
 
-    !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico inválido' : this.messageEmail = "";
-    !this.validateIdentification() ? this.messageIdentification = 'Identificación inválida' : this.messageIdentification = '';
+    !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico no válido' : this.messageEmail = "";
+    !this.validateIdentification() ? this.messageIdentification = 'Identificación no válida' : this.messageIdentification = '';
     
     if(!this.validatePassword()){
-      this.msgs1 = [{severity:'info', summary:'Info', detail:'Contraseñas no coinciden'}];
+      this.msgs1 = [{severity:'error', summary:'Info', detail:'Contraseñas no coinciden'}];
       setTimeout(() => {
         this.msgs1 = [];
       }, 3000);
@@ -76,8 +76,8 @@ export class SignupComponent implements OnInit {
 
   changeIdentification($event : any){
     if($event.value == 1) this.maxLength = 10;
-    if($event.value == 2) this.maxLength = 10;
-    if($event.value == 3) this.maxLength = 20;
+    if($event.value == 2) this.maxLength = 20;
+    if($event.value == 3) this.maxLength = 13;
   }
 
   changeEmail($event : any){

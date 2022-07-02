@@ -18,6 +18,7 @@ import {ToastModule} from 'primeng/toast';
 import {RippleModule} from 'primeng/ripple';
 import {DialogModule} from 'primeng/dialog';
 import { OverlayLoginComponent } from 'src/app/components/overlay-login/overlay-login.component';
+import {TooltipModule} from 'primeng/tooltip';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { OverlayLoginComponent } from 'src/app/components/overlay-login/overlay-
     ToastModule,
     RippleModule,
     DialogModule,
+    TooltipModule
   ]
 })
 export class ShopModule { }

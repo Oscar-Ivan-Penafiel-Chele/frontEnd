@@ -6,6 +6,10 @@
     font-weight: bold;
 }
 
+.inputs__required{
+    color: red;
+}
+
 .imgSelected{
     height: 100%;
     display: flex;

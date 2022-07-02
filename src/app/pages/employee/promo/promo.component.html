@@ -68,13 +68,13 @@
         <div class="formgrid grid">
             <div class="field col">
                 <div class="field col">
-                    <label for="name">Nombre del Producto</label>
+                    <label for="name">Nombre del Producto <span class="inputs__required">*</span></label>
                     <p-dropdown [options]="products" [(ngModel)]="promotion.id_product" optionLabel="product_name" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
                     <small class="p-error" *ngIf="submitted && !promotion.id_product">Nombre es requerido</small>
                 </div>
             </div>
             <div class="field col">
-                <label for="productStatus">Estado del Promoción</label>
+                <label for="productStatus">Estado del Promoción <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="promotion.promotion_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -89,21 +89,21 @@
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="percent">Descuento</label>
+                <label for="percent">Descuento <span class="inputs__required">*</span></label>
                 <p-inputNumber [(ngModel)]="promotion.promotion_discount" inputId="percent" suffix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_discount == null">Descuento es requerido</small>
             </div>
             <div class="field col">
-                <label for="buttonbar">Fecha de Culminación</label>
+                <label for="buttonbar">Fecha de Culminación <span class="inputs__required">*</span></label>
                 <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
-                <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Campo es requerido</small>
+                <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Fecha culminación es requerido</small>
                 <small class="p-error" *ngIf="disableButton">Fecha no válida, debe ser mayor o igual a la fecha actual</small>
             </div>
         </div>
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="description">Descripción de la Promoción</label>
+                <label for="description">Descripción de la Promoción </label>
                 <textarea id="description" required pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
             </div>
         </div>

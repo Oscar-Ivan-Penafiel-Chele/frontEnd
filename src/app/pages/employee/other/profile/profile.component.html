@@ -83,23 +83,32 @@
             </div>
         </div>
         <div class="grid p-fluid justify-content-center">
-            <div class="input__item col-12 md:col-6 mb-4">
-                <span>Email</span>
+            <div class="input__item col-12 md:col-6 mb-1">
+                <span>Tipo de Identificación</span>
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
-                    <input type="text" [disabled]="true" [(ngModel)]="user.email" pInputText placeholder="Correo Electrónico">         
+                    <span class="p-inputgroup-addon"><i class="pi pi-flag"></i></span>
+                    <input type="text" [disabled]="true" [(ngModel)]="typeDocument" pInputText placeholder="Correo Electrónico">         
                 </div>
-                <small class="p-error" *ngIf="submitted && !user.email">Email es requerido</small>
             </div>
             
-            <div class="input__item col-12 md:col-6 mb-4">
+            <div class="input__item col-12 md:col-6 mb-1">
                 <span>Identificación</span>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
                     <input type="text" [disabled]="true" [(ngModel)]="user.user_document" pInputText placeholder="Identificación">         
                 </div>
-                <small class="p-error" *ngIf="submitted && !user.user_document">Identificación es requerido</small>
+                <small class="p-error" *ngIf="submitted && !user.user_document">Identificación es requerida</small>
             </div>
+        </div>
+        <div class="grid p-fluid justify-content-center">
+            <div class="input__item col-12 md:col-6 mb-4">
+                <span>Correo Electrónico</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                    <input type="text" [disabled]="true" [(ngModel)]="user.email" pInputText placeholder="Correo Electrónico">         
+                </div>
+                <small class="p-error" *ngIf="submitted && !user.email">Correo Electrónico es requerido</small>
+            </div> 
         </div>
         <div class="grid p-fluid justify-content-center">
             <div class="col-12 md:col-7"> 

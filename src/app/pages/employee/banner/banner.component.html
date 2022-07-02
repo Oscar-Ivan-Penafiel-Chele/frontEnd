@@ -41,7 +41,7 @@
             <tr [pReorderableRow]="index">
                 <td>{{banner.banner_name}}</td>
                 <td><img [src]="!banner.banner_thumbnail || banner.banner_thumbnail== null ? overImage : host+banner.banner_thumbnail" [alt]="banner.banner_thumbnail" width="80" height="80" class="shadow-4" /></td>
-                <td>{{banner.brand_status == 0 ? 'Inactivo' : 'Activo'}}</td>
+                <td>{{banner.banner_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{banner.create_date}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBanner(banner)"></button>
@@ -61,7 +61,7 @@
     <ng-template pTemplate="content">
         <div class="field">
             <input type="hidden" [(ngModel)]="actionSelected">
-            <label for="name">Imagen del Banner</label><br>
+            <label for="name">Imagen del Banner <span class="inputs__required">*</span></label><br>
             <div class="imageSelect" (click)="photoInput.click()">
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
@@ -81,7 +81,7 @@
             </div>
             <small class="p-error" *ngIf="fileExtensionValid"><i class="pi pi-exclamation-triangle"></i> Extensión no admitida</small>
             <small class="p-error" *ngIf="sizeFileValid"><i class="pi pi-exclamation-triangle"></i> Tamaño no adminido</small>
-            <small class="p-error" *ngIf="submitted && (!banner.banner_thumbnail || !photoSelected)">Imagen es requerido</small>
+            <small class="p-error" *ngIf="submitted && (!banner.banner_thumbnail || !photoSelected)">Imagen es requerida</small>
             <div *ngIf="isPhoto" class="infoPhoto">
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
@@ -99,13 +99,13 @@
         <div class="formgrid grid">
             <div class="field col">
                 <div class="field col">
-                    <label for="name">Nombre del Banner</label>
+                    <label for="name">Nombre del Banner <span class="inputs__required">*</span></label>
                     <input type="text" required pInputText id="name" [(ngModel)]="banner.banner_name" required autofocus />
                     <small class="p-error" *ngIf="submitted && !banner.banner_name">Nombre es requerido</small>
                 </div>
             </div>
             <div class="field col">
-                <label for="productStatus">Estado del Banner</label>
+                <label for="productStatus">Estado del Banner <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="banner.banner_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">

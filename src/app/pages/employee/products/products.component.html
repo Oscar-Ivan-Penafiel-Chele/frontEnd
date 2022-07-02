@@ -78,7 +78,7 @@
     <ng-template pTemplate="content">
         <div class="field">
             <input type="hidden" [(ngModel)]="actionSelected">
-            <label for="name">Imagen del Producto</label><br>
+            <label for="name">Imagen del Producto <span class="inputs__required">*</span> </label><br>
             <div class="imageSelect" (click)="photoInput.click()">
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
@@ -114,12 +114,12 @@
             </div>
         </div>
         <div class="field">
-            <label for="name">Nombre del Producto</label>
+            <label for="name">Nombre del Producto <span class="inputs__required">*</span></label>
             <input type="text" required pInputText id="name" [(ngModel)]="product.product_name" required autofocus />
             <small class="p-error" *ngIf="submitted && !product.product_name">Nombre es requerido</small>
         </div>
         <div class="field">
-            <label for="description">Descripción del Producto</label>
+            <label for="description">Descripción del Producto <span class="inputs__required">*</span></label>
             <textarea id="description" required pInputTextarea [(ngModel)]="product.product_description" required rows="3" cols="20"></textarea>
             <small class="p-error" *ngIf="submitted && !product.product_description">Descripción es requerido</small>
         </div>
@@ -130,12 +130,12 @@
                 <small class="p-error" *ngIf="submitted && !product.product_code">Código es requerido</small>
             </div>
             <div class="field col">
-                <label for="price">Precio del Producto</label>
+                <label for="price">Precio del Producto <span class="inputs__required">*</span></label>
                 <p-inputNumber [required]="true" id="price" [(ngModel)]="product.product_price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && !product.product_price">Precio es requerido</small>
             </div>
             <div class="field col">
-                <label for="productProvider">Proveedor del Producto</label>
+                <label for="productProvider">Proveedor del Producto <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="product.id_provider" optionLabel="provider_name" optionValue="id_provider" inputId="productProvider" [options]="providers" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -149,7 +149,7 @@
         </div>
         <div class="formgrid grid">
             <div class="field col">
-            <label for="productBrand">Marca del Producto</label>
+            <label for="productBrand">Marca del Producto <span class="inputs__required">*</span></label>
             <p-dropdown [showClear]="true" [(ngModel)]="product.id_brand" optionLabel="brand_name" optionValue="id_brand" inputId="productBrand" [options]="brands" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
@@ -158,10 +158,10 @@
                     </div>
                 </ng-template>
             </p-dropdown>
-            <small class="p-error" *ngIf="submitted && !product.id_brand">Marca es requerido</small>
+            <small class="p-error" *ngIf="submitted && !product.id_brand">Marca es requerida</small>
             </div>
             <div class="field col">
-            <label for="productStatus">Estado del Producto</label>
+            <label for="productStatus">Estado del Producto <span class="inputs__required">*</span></label>
             <p-dropdown [showClear]="true" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                 <ng-template let-option pTemplate="item">
                     <div class="flex flex-row justify-content-start align-items-center">
@@ -175,7 +175,7 @@
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="id_product_unit">Medida del Producto</label>
+                <label for="id_product_unit">Medida del Producto <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="product.id_product_unit" optionLabel="description_product_unit" optionValue="id_product_unit" inputId="id_product_unit" [options]="measures" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -187,12 +187,12 @@
                 <small class="p-error" *ngIf="submitted && !product.id_product_unit">Medida es requerida</small>
             </div>
             <div class="field col">
-                <label for="minmax-buttons">Cantidad del Producto</label>
+                <label for="minmax-buttons">Cantidad del Producto <span class="inputs__required">*</span></label>
                 <p-inputNumber [disabled]="!product.id_product_unit" [required]="true" [(ngModel)]="product.product_stock" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="10000"></p-inputNumber>
-                <small class="p-error" *ngIf="submitted && product.product_stock == null">Cantidad es requerido</small>
+                <small class="p-error" *ngIf="submitted && product.product_stock == null">Cantidad es requerida</small>
             </div>
             <div class="field col">
-                <label for="rating">Rating del Producto</label>
+                <label for="rating">Rating del Producto <span class="inputs__required">*</span></label>
                 <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
                     <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="product.product_rating" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
                 </div> 
@@ -201,14 +201,14 @@
         </div>
 
         <div class="field col">    
-            <label for="inventoryStatus">Categoría del Producto</label>
+            <label for="inventoryStatus">Categoría del Producto <span class="inputs__required">*</span></label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
                 <div class="field-checkbox mr-3" *ngFor="let category of categories">
                     <p-radioButton name="category" value={{category.id_category}} [(ngModel)]="product.id_category"></p-radioButton>
                     <label for="{{category.id_category}}">{{category.category_name}}</label>
                 </div>
             </div>
-            <small class="p-error" *ngIf="submitted && product.id_category == null">Categoría es requerido</small>
+            <small class="p-error" *ngIf="submitted && product.id_category == null">Categoría es requerida</small>
         </div>
     </ng-template>
 

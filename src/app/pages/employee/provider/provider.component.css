@@ -6,3 +6,7 @@
     font-weight: bold;
 }
 
+.inputs__required{
+    color: red;
+}
+

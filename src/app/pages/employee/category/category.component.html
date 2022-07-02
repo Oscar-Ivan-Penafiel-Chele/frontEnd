@@ -68,7 +68,7 @@
     <ng-template pTemplate="content">
         <div class="field">
             <input type="hidden" [(ngModel)]="actionSelected">
-            <label for="name">Imagen de la Categoría</label><br>
+            <label for="name">Imagen de la Categoría <span class="inputs__required">*</span></label><br>
             <div class="imageSelect" (click)="photoInput.click()">
                 <input [disabled]="inputFile" class="file-input" accept="image/png, .jpeg, .jpg," (change)="getPhotoSelected($event)" type="file" name="file" hidden #photoInput>
                 <ng-template [ngIf]="isPhoto" [ngIfElse]="desingImage" >
@@ -105,12 +105,12 @@
         
         <div class="formgrid grid">
             <div class="field col">
-                <label for="name">Nombre de la Categoría</label>
+                <label for="name">Nombre de la Categoría <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="category.category_name" required autofocus />
                 <small class="p-error" *ngIf="submitted && !category.category_name">Nombre es requerido</small>
             </div>
             <div class="field col">
-                <label for="productStatus">Estado de la Categoría</label>
+                <label for="productStatus">Estado de la Categoría <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="category.category_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
@@ -124,7 +124,7 @@
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="description">Descripción de la Categoría</label>
+                <label for="description">Descripción de la Categoría <span class="inputs__required">*</span></label>
                 <textarea id="description" required pInputTextarea [(ngModel)]="category.category_descripcion" required rows="3" cols="20"></textarea>
                 <small class="p-error" *ngIf="submitted && !category.category_descripcion">Descripción es requerido</small>
             </div>
