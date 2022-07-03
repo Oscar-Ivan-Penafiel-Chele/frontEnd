@@ -13,7 +13,7 @@
                     <b> {{user.user_name}} {{user.user_lastName}}</b>
                 </div>
                 <div class="mt-2">
-                    <label for="Age">Cédula de Identidad:</label>
+                    <label for="Age">{{typeDocument}}: </label>
                     <b> {{user.user_document}}</b>
                 </div>
                 <div class="mt-2">
@@ -38,8 +38,11 @@
                             <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Precio Unitario</th>
+                            <th>Descuento (%)</th>
+                            <th>P.U - descuento ($)</th>
                             <th>Cantidad</th>
-                            <th>Descuento</th>
+                            <th>P.U por cantidad</th>
+                            <th>Iva (12%)</th>
                             <th>Precio Total</th>
                         </tr>
                     </ng-template>
@@ -50,16 +53,19 @@
                             </td>
                             <td style="width: 250px;">{{product.product_name}}</td>
                             <td>${{product.product_price_aux}}</td>
-                            <td>{{product.product_amount_sail}}</td>
                             <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
-                            <td>${{(product.product_price_total)}}</td>
+                            <td>${{!product.productWithDiscount ? product.product_price_aux : product.productWithDiscount}}</td>
+                            <td>{{product.product_amount_sail}}</td>
+                            <td>${{product.product_price_amount.toFixed(2)}}</td>
+                            <td>${{product.product__price__iva}}</td>
+                            <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
                         <div class="flex flex-column align-items-end justify-content-end">
                             <div class="flex">
                                 <p>Subtotal:</p>
-                                <span style="font-weight: lighter;" class="ml-2">${{(order.price_order_total).toFixed(2)}}</span>
+                                <span style="font-weight: lighter;" class="ml-2">${{order.price_order_total}}</span>
                             </div>
                             <div class="flex">
                                 <p>Iva 0%: </p>
@@ -67,7 +73,7 @@
                             </div>
                             <div class="flex">
                                 <p>Iva 12%: </p>
-                                <span style="font-weight: lighter;" class="ml-2">${{priceIva}}</span>
+                                <span style="font-weight: lighter;" class="ml-2">${{priceIva.toFixed(2)}}</span>
                             </div>
                             <div style="width: 150px;height: 2px; background-color: black;"></div>
                             <div class="flex">

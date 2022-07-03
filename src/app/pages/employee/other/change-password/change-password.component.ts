@@ -1,9 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, Host, HostListener, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
 import {MessageService} from 'primeng/api';
 import { User } from 'src/app/models/user';
+import { OtherComponent } from '../other.component';
 
 @Component({
   selector: 'app-change-password',
@@ -21,6 +22,8 @@ export class ChangePasswordComponent implements OnInit {
   roleUser : string = "";
   isVisibleText : boolean;
   loading : boolean = false;
+  isLoading : boolean = false;
+  isShow : boolean = false;
   
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -75,18 +78,19 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   validatePassword(){
-    this.loading = true;
-    this.isVisibleText = false;
     const opc = {
       id_user : this.user.id_user,
       password : this.passwordCurrent,
     }
+
+    this.isLoading = true;
+    this.isShow = true;
+
     this._rest.validatePassword(opc).subscribe((response)=>{
       if(response.status == 200 && response.message === "Coincide"){
         this.changePasswordUser();
       }else  if(response.status == 200 && response.message === "No Coincide"){
-        this.loading = false;
-        this.isVisibleText = true;
+        this.isShow = false;
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Contraseña actual no coincide', life:3000});
         return;
       }
@@ -97,15 +101,12 @@ export class ChangePasswordComponent implements OnInit {
     const opc = {
       password : this.password
     }
+
     this._rest.changePasswordProfileEmployee(opc, this.user.id_user!).subscribe((response)=>{
       if(response.status == 200 || response.message === "Contraseña actualizado exitosamente"){
-        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Contraseña actualizada con éxito', life:3000});
-        setTimeout(() => {
-          window.location.reload();
-          this.loading = false;
-          this.isVisibleText = true;
-        }, 1000);
+        this.isLoading = false;
       }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+        this.isShow = false;
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al actualizar contraseña', life:3000});
         return;
       }

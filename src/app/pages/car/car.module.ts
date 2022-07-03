@@ -11,6 +11,7 @@ import { TagModule } from 'primeng/tag';
 import {ToastModule} from 'primeng/toast';
 import {TableModule} from 'primeng/table';
 import { SharedModule } from '../shared/shared.module';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SharedModule } from '../shared/shared.module';
     TagModule,
     ToastModule,
     TableModule,
-    SharedModule
+    SharedModule,
+    ConfirmDialogModule
   ]
 })
 export class CarModule { }

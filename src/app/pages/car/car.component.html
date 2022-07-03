@@ -97,6 +97,7 @@
                         <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio Unitario <p-sortIcon field="product_price"></p-sortIcon></th>
                         <th pSortableColumn="product_amount_sail"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="product_amount_sail"></p-sortIcon></th>
                         <th pSortableColumn="product_offered"><i class="pi pi-box"></i> Descuento % <p-sortIcon field="product_offered"></p-sortIcon></th>
+                        <th><i class="pi pi-box"></i> Iva (12%)</th>
                         <th pSortableColumn="product_price_total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="product_price_total"></p-sortIcon></th>
                     </tr>
                 </ng-template>
@@ -110,12 +111,13 @@
                         <td>${{product.product_price_aux}}</td>
                         <td><p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
                         <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
+                        <td>${{product.product__price__iva}}</td>
                         <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>      
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="flex align-items-end justify-content-end">
-                        Subtotal a pagar: ${{(order.price_order_total).toFixed(2)}}
+                        Total a pagar: ${{(order.price_order_total).toFixed(2)}}
                     </div>
                 </ng-template>
             </p-table>
@@ -133,3 +135,5 @@
 
     <app-footer-shop></app-footer-shop>
 </section>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

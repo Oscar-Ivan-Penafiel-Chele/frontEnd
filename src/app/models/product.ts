@@ -5,12 +5,12 @@ export interface Product {
     id_user?:number;
     id_provider?:number;
     id_brand?:number;
+    id_category?:any;
+    id_product_unit?:number;
     brand : any;
     category : any;
     provider : any;
     product_unit : Measure;
-    id_category?:any;
-    id_product_unit?:number;
     product_code?:number;
     product_name?:string;
     product_description?:string;
@@ -19,8 +19,11 @@ export interface Product {
     product_price?:number;
     product_price_aux?:number;
     product_offered? : number ;
+    product__price__iva : any;
+    productWithDiscount : any;
+    product_price_amount : any;
     product_offered_price_total? : number;
-    product_price_total?:number;
+    product_price_total?: any;
     product_image?:string;
     product_status:number;
     product_rating?:number;

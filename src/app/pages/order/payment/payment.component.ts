@@ -14,13 +14,13 @@ import { environment } from 'src/environments/environment.prod';
 export class PaymentComponent implements OnInit {
 
   user : User = {};
-  a : any;
   products : Product[] = [];
   overImage : string = "assets/img/not_image.jpg";
   host : string = environment.URL;
   order : Order = {} as Order;
   priceIva : any = 0;
   priceTotalOrder : any = 0;
+  typeDocument : string = "";
 
   constructor(
     private _router : Router,
@@ -30,27 +30,47 @@ export class PaymentComponent implements OnInit {
   ngOnInit(): void {
     this.getDataClient();
     this.getProducts();
-    this.getOrder();
   }
 
   getDataClient(){
     const data = localStorage.getItem('information_sending');
     this.user = JSON.parse(data!);
+
+    this.getTypeDocument(this.user.id_identification_type!);
+  }
+
+  getTypeDocument(idTypeDocument : number){
+    switch (idTypeDocument) {
+      case 1: this.typeDocument = "Cédula"
+        break;
+      case 2: this.typeDocument = "Pasaporte"
+        break;
+      case 3: this.typeDocument = "RUC"
+        break;
+      default:
+        break;
+    }
   }
 
   getProducts(){
+    let total = 0;
     const data = localStorage.getItem('producto');
+
     this.products = JSON.parse(data!);
+
     this.products.forEach((i)=>{
-      if(i.product_price_total == null || !i.product_price_total) i.product_price_total = i.product_price
+      this.priceIva += parseFloat(i.product__price__iva);
+      total += parseFloat(i.product_price_amount);
     })
+
+    this.order.price_order_total = total.toFixed(2);
+    this.getTotalPay()
   }
 
-  getOrder(){
-    const data = localStorage.getItem('subtotal');
-    this.order = JSON.parse(data!);
-    this.priceIva = (this.order.price_order_total * (12 / 100)).toFixed(2);
-    this.priceTotalOrder = (this.order.price_order_total + parseFloat(this.priceIva)).toFixed(2);
+  getTotalPay(){
+    const data = localStorage.getItem('total');
+
+    this.priceTotalOrder = parseFloat(data!).toFixed(2);
   }
 
   nextPage() {

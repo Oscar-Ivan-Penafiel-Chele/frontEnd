@@ -10,6 +10,8 @@ import {PasswordModule} from 'primeng/password';
 import { FormsModule } from '@angular/forms';
 import {DividerModule} from 'primeng/divider';
 import {ToastModule} from 'primeng/toast';
+import { OverlayChangePasswordModule } from 'src/app/components/overlay-change-password/overlay-change-password.module';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import {ToastModule} from 'primeng/toast';
     PasswordModule,
     FormsModule,
     DividerModule,
-    ToastModule
+    ToastModule,
+    OverlayChangePasswordModule
   ]
 })
 export class ChangePasswordModule { }

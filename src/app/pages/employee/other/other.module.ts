@@ -21,7 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RippleModule,
     ProgressSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class OtherModule { }

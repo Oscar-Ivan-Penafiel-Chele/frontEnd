@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PrimeNGConfig, MessageService} from 'primeng/api'
+import { PrimeNGConfig, ConfirmationService, MessageService} from 'primeng/api'
 import { Cart } from 'src/app/models/cart';
 import { Order } from 'src/app/models/order';
 import { Product } from 'src/app/models/product';
 import { Promotion } from 'src/app/models/promotion';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { HomeService } from 'src/app/services/home.service';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
 import { environment } from 'src/environments/environment.prod';
@@ -16,7 +15,7 @@ import { environment } from 'src/environments/environment.prod';
   selector: 'app-car',
   templateUrl: './car.component.html',
   styleUrls: ['./car.component.css'],
-  providers: [MessageService]
+  providers: [ConfirmationService,MessageService]
 })
 export class CarComponent implements OnInit {
 
@@ -40,13 +39,15 @@ export class CarComponent implements OnInit {
     private _token : TokenService, 
     private _authService : AuthService,
     private _navigate : Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) { 
     this.overlayLogout = false;
     this.order.price_order_total = 0;
   }
 
   ngOnInit(): void {
+    this._primengConfig.ripple = true;
     this.getData();
   }
 
@@ -99,11 +100,38 @@ export class CarComponent implements OnInit {
       })
       return producto;
     })
-    console.log(this.products);
+    
+    this.products = this.products.sort(this.sortProduct);
+    this.handleProduct(this.products);
+
     this.loading = false;
     this.loadingDelete = false;
     await this.getTotalPriceToPay();
   }
+
+  handleProduct(products : Product[]){
+    let x = 0;
+    products.forEach((i : Product)=>{
+      if(i.product_offered){ 
+        i.productWithDiscount = (i.product_price_aux! - (i.product_price_aux! * (i.product_offered! / 100))).toFixed(2);
+        i.product_price_amount =  i.productWithDiscount * i.product_amount_sail!;
+      }else{
+        i.product_price_amount =  i.product_price_aux! * i.product_amount_sail!;
+      }
+
+      i.product__price__iva = (i.product_price_amount! * 0.12).toFixed(2);
+      i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+    });
+
+    
+  }
+
+  sortProduct(x : any ,y : any){
+    if(x.product_name < y.product_name) return -1;
+    if(x.product_name > y.product_name) return 1;
+    return 0;
+  }
+
 
   async getPromotions(){
     this._rest.getPromotions().subscribe((response : Promotion[])=>{
@@ -112,26 +140,45 @@ export class CarComponent implements OnInit {
   }
 
   getTotalPriceForUnit($event : any, product : Product){
-    console.log(product);
+    if(product.product_offered){ 
+      product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
+      product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
+    }else{
+      product.product_price_amount =  product.product_price_aux! * product.product_amount_sail!;
+    }
+
+    product.product__price__iva = (product.product_price_amount! * 0.12).toFixed(2);
     product.product_price_total! = product.product_price! * $event.value;
+    
     this.getTotalPriceForAmount();
   }
 
   async getTotalPriceToPay(){
+    let totalIva = 0;
+    let totalPrecioSinIva = 0;
+
     this.products.forEach((i)=>{
       if(i.product_price_total == undefined){
-        i.product_amount_sail = 1;
-        this.order.price_order_total += parseFloat(i.product_price!.toString());
+
+      i.product_amount_sail = 1;
+      totalIva += parseFloat(i.product__price__iva); 
+      totalPrecioSinIva += parseFloat(i.product_price!.toString());
       }
     })
+    this.order.price_order_total = totalPrecioSinIva;
   }
 
   getTotalPriceForAmount(){
     let price : any ;
+
     const reduce = (i : number,j : number) => i+j;
 
     price = this.products.map((i)=>{
-      if(i.product_price_total == undefined) i.product_price_total = parseFloat(i.product_price!.toString())
+      if(i.product_price_total == undefined){
+        
+        i.product_price_total = parseFloat(i.product_price!.toString())
+      } 
+
       return i.product_price_total;
     })
 
@@ -194,8 +241,8 @@ export class CarComponent implements OnInit {
   }
 
   next(){
-    localStorage.setItem('subtotal',JSON.stringify(this.order));
     localStorage.setItem('producto',JSON.stringify(this.products));
+    localStorage.setItem('total',this.order.price_order_total)
     this._navigate.navigate(['/checkout/order']);
   }
 
@@ -206,6 +253,20 @@ export class CarComponent implements OnInit {
       id_product : product.id_product
     }
 
+    this.confirmationService.confirm({
+      message: `¿Estás seguro de eliminar el producto del carrito? `,
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel : 'Si',
+      acceptButtonStyleClass : '',
+      rejectButtonStyleClass : ' p-button-text p-button-danger',
+      accept: () => {
+         this.requestDelete(data)
+      },
+    });
+  }
+
+  requestDelete(data : any){
     this._rest.deleteProductCart(data).subscribe((response)=>{
       if(response.status == 200 || response.message === "Eliminado con exito"){
         this.getAllProductsCart(this.user.id_user!);
