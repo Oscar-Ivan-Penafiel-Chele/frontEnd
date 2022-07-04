@@ -4,6 +4,7 @@ export interface Promotion {
     id_product: number;
     producto : any;
     promotion_discount?:number;
+    promotion_date_of_init : string;
     promotion_date_of_expiry : string;
     promotion_status:number;
     promotion_description : string;

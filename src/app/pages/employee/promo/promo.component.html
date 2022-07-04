@@ -94,6 +94,12 @@
                 <small class="p-error" *ngIf="submitted && promotion.promotion_discount == null">Descuento es requerido</small>
             </div>
             <div class="field col">
+                <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
+                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_init" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_init == null">Fecha culminación es requerido</small>
+                <small class="p-error" *ngIf="disableButton">Fecha no válida, debe ser mayor o igual a la fecha actual</small>
+            </div>
+            <div class="field col">
                 <label for="buttonbar">Fecha de Culminación <span class="inputs__required">*</span></label>
                 <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Fecha culminación es requerido</small>
