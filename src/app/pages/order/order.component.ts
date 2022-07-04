@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cart } from 'src/app/models/cart';
 import { Product } from 'src/app/models/product';
@@ -128,5 +128,22 @@ export class OrderComponent implements OnInit {
           window.location.href = '/shop';
       }
     });
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event : any) {
+      if(!this.getKeepSession()){
+          localStorage.clear();
+      }
+  }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    if(data!.toString() == "true"){
+        return true;
+    }else{
+        return false;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Provider, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Provider, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService, Message, PrimeNGConfig } from 'primeng/api';
 import { Product } from 'src/app/models/product';
@@ -115,7 +115,7 @@ export class ProductsComponent implements OnInit {
         this.getAllProviders();
         this.getDataProfile();
         this.getMeasures();
-        this.fileTmp = {};
+        this.fileTmp = {};;
     }
 
     /* GET */
@@ -125,7 +125,6 @@ export class ProductsComponent implements OnInit {
         this._rest.getProducts()
         .subscribe((response : Product[]) =>{
             this.productsAux = response;
-            console.log(response);
             if(this.stateCheckActive && !this.stateCheckInactive){
                 this.products = this.productsAux.filter(i => i.product_status == 1)
               }else if(!this.stateCheckActive && this.stateCheckInactive){
@@ -623,4 +622,21 @@ export class ProductsComponent implements OnInit {
         //     console.log(response);
         // })
     }
+
+    @HostListener('window:beforeunload', ['$event'])
+    beforeunloadHandler(event : any) {
+        if(!this.getKeepSession()){
+            localStorage.clear();
+        }
+    }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    if(data!.toString() == "true"){
+        return true;
+    }else{
+        return false;
+    }
+  }
 }

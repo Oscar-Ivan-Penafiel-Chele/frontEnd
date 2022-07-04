@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { } from 'primeng/api';
 import { ConfirmationService, PrimeNGConfig, MessageService } from 'primeng/api';
@@ -86,6 +86,7 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getKeepSession();
     this.isLog();
     this.getBanners();
     setInterval(()=>{
@@ -317,6 +318,21 @@ export class ShopComponent implements OnInit {
     });
   }
 
+  // @HostListener('window:beforeunload', ['$event'])
+  // beforeunloadHandler(event : any) {
+  //   if(){
+
+  //   }
+
+  //     localStorage.clear();
+  // }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    console.log(data);
+  }
+
   // async deleteItem(id_product : any){
   //   const data = {
   //     id_user : this.user.id_user,
@@ -404,4 +420,6 @@ export class ShopComponent implements OnInit {
   //   const buttonsCurrent = document.querySelectorAll('button__cart');
   //   console.log(buttonsCurrent);
   // } 
+
+  
 }

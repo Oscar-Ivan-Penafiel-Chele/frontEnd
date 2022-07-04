@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         this.data = {};
         this.isVisibleText = true;
         this.optionsMessageStatus = {
-          'invalido' : { severity : 'error', message : "Credenciales Inválidas"},
+          'invalido' : { severity : 'error', message : "Credenciales No Válidas"},
           'valido' : {severity : 'success', message : "Credenciales Válidas"},
           'bloqueado' : {severity : 'error', message : "Demasiados intentos, intentalo más tarde"},
           'error' : {severity : 'error', message : "Error del servidor"}
@@ -115,6 +115,7 @@ export class LoginComponent implements OnInit {
     this._authService.profileUser(this._token.getToken())
     .subscribe((response) =>{
       localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('keepSession', JSON.stringify(this.keepSession));
        this.getProfileUser().then((r)=>{
           this.user = JSON.parse(r);
           this.getRoute(this.user.id_role!);

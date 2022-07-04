@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import * as AOS from 'aos';
 import { Brand } from 'src/app/models/brand';
@@ -103,5 +103,22 @@ export class HomeComponent implements OnInit {
     if(x.category_name < y.category_name) return -1;
     if(x.category_name > y.category_name) return 1;
     return 0;
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event : any) {
+      if(!this.getKeepSession()){
+          localStorage.clear();
+      }
+  }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    if(data!.toString() == "true"){
+        return true;
+    }else{
+        return false;
+    }
   }
 }

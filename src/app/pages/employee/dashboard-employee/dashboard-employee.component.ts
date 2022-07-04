@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { ConfirmationService, ConfirmEventType, MessageService, PrimeNGConfig } from 'primeng/api';
 import { User } from 'src/app/models/user';
@@ -146,5 +146,22 @@ export class DashboardEmployeeComponent implements OnInit {
 
     this.fechaYHora = fecha + ' ' + hora;
 
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event : any) {
+      if(!this.getKeepSession()){
+          localStorage.clear();
+      }
+  }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    if(data!.toString() == "true"){
+        return true;
+    }else{
+        return false;
+    }
   }
 }

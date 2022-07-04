@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -344,5 +344,22 @@ export class PedidosComponent implements OnInit {
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();  
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event : any) {
+      if(!this.getKeepSession()){
+          localStorage.clear();
+      }
+  }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    if(data!.toString() == "true"){
+        return true;
+    }else{
+        return false;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { User } from 'src/app/models/user';
@@ -133,5 +133,22 @@ export class SalesmanComponent implements OnInit {
     let hora = (hoy.getHours() < 10 ? '0'+hoy.getHours() : hoy.getHours()) + ':' + (hoy.getMinutes() < 10 ? '0'+hoy.getMinutes() : hoy.getMinutes()) + ':' + (hoy.getSeconds() < 10 ? '0'+hoy.getSeconds() : hoy.getSeconds());
 
     this.fechaYHora = fecha + ' ' + hora;
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event : any) {
+      if(!this.getKeepSession()){
+          localStorage.clear();
+      }
+  }
+
+  getKeepSession(){
+    const data = localStorage.getItem('keepSession');
+
+    if(data!.toString() == "true"){
+        return true;
+    }else{
+        return false;
+    }
   }
 }
