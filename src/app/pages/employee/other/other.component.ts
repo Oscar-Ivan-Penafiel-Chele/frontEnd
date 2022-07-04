@@ -88,7 +88,7 @@ export class OtherComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.item__option');
 
-    const opciones = ['perfil','change-password'];
+    const opciones = ['perfil','direcciones','change-password'];
     const route = window.location.pathname.split('/').pop();
 
 

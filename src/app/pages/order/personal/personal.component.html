@@ -36,7 +36,7 @@
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="address">Dirección</label>
-                        <input #age="ngModel" id="address" type="text" required pInputText [(ngModel)]="user.user_address"> 
+                        <p-dropdown [options]="user.user_address!" [(ngModel)]="user.user_address" placeholder="Seleccione una dirección" optionLabel="description" [showClear]="true"></p-dropdown>
                         <small class="p-error" *ngIf="submitted && !user.user_address">Dirección es requerida</small>
                     </div>
                 </div>

@@ -9,6 +9,8 @@ import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputMaskModule} from 'primeng/inputmask';
 import {KeyFilterModule} from 'primeng/keyfilter';
+import {DropdownModule} from 'primeng/dropdown';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {KeyFilterModule} from 'primeng/keyfilter';
     ButtonModule,
     InputTextModule,
     InputMaskModule,
-    KeyFilterModule
+    KeyFilterModule,
+    DropdownModule
   ]
 })
 export class PersonalModule { }

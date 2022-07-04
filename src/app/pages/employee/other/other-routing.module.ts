@@ -9,6 +9,7 @@ const routes : Routes = [
     children : [
       {path: '', redirectTo: 'perfil', pathMatch : 'full'},
       {path : 'perfil' , loadChildren : ()=> import('./profile/profile.module').then( m => m.ProfileModule)},
+      {path : 'direcciones' , loadChildren : ()=> import('./address/address.module').then( m => m.AddressModule)},
       {path : 'change-password' , loadChildren : ()=> import('./change-password/change-password.module').then( m => m.ChangePasswordModule)}
     ]
   },

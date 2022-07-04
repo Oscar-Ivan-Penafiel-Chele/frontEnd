@@ -1,0 +1,59 @@
+<section>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="createAddress()" ></button>
+        </ng-template>
+    </p-toolbar>
+    
+    <p-table #dt [value]="addressUser" [loading]="isLoading"  [globalFilterFields]="['description']" responsiveLayout="stack"
+    [rowHover]="true" dataKey="id">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h4 class="m-0">Administración de Direcciones (Máx.3)</h4>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+            <th>Acciones</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-address>
+        <tr>
+            <td style="width: 450px;">{{address.description}}</td>
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="updateAddress(address)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAddress(address)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</section>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+
+<p-toast></p-toast>
+
+
+<p-dialog [header]="textModal" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
+    [draggable]="false" [resizable]="false">
+        
+    <div class="grid p-fluid">
+        <div class="field col-12 ">
+            <span class="p-input-icon-left">
+                <i class="pi pi-map-marker"></i>
+                <input type="text" [(ngModel)]="address.description" placeholder="Ingrese una dirección" pInputText />
+            </span>
+            <small class="p-error" *ngIf="submitted && !address.description">Dirección es requerida</small>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" (click)="displayModal=false" label="Cancelar" styleClass="p-button-danger p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="displayModal=false" label="Actualizar" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
