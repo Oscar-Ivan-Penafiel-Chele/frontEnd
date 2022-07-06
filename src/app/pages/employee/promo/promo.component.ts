@@ -38,6 +38,10 @@ export class PromoComponent implements OnInit {
   selectedCountryAdvanced: Product = {} as Product;
   codeProducts : any = [];
   invalidDates: Array<Date> = [] ;
+  isShowMessageDateInit : boolean = false;
+  isShowMessageDateExpiry: boolean = false;
+  messageErrorDateInit: string = "";
+  messageErrorDateExpiry : string = "";
 
   constructor(
     private _rest : RestService,
@@ -68,7 +72,7 @@ export class PromoComponent implements OnInit {
   getProducts(){
     this._rest.getProducts().subscribe((response : Product[])=>{
       this.products = Object.values(response);
-      this.products = this.products.filter((i) => i.product_status == 1);
+      this.products = this.products.filter((i) => i.product_status == 1 && !i.product_offered);
     })
   }
 
@@ -135,40 +139,78 @@ export class PromoComponent implements OnInit {
       }
   }
 
-  onSelectDate($event : any){
+  getDateNow(){
     let dateNow = new Date();
-    try {
-      let event = new Date($event);
-      let date = JSON.stringify(event);
-      date = date.slice(1,11);
-      this.promotion.promotion_date_of_expiry = date;
 
-      if($event < dateNow){
-        this.disableButton = true;
-      }else{
-        this.disableButton = false;
-      } 
-    } catch (error) {
-     
+    let day = (dateNow.getDate()) < 10 ? '0'+(dateNow.getDate()) : dateNow.getDate();;
+    let month = (dateNow.getMonth() + 1) < 10 ? '0'+ (dateNow.getMonth() + 1) : dateNow.getMonth() + 1;
+    let year = dateNow.getFullYear();
+    let date = `${year}-${month}-${day}`;
+
+    return date;
+  }
+
+  onSelectDateExpiry($event : any){
+    const dateNow = this.getDateNow();
+    this.handleDate($event , dateNow, false );
+  }
+
+  onSelectDateInit($event : any){
+    const dateNow = this.getDateNow();
+    this.handleDate($event , dateNow, true );
+  }
+
+  handleDate($event : any , dateNow : string , isDateInit : boolean){
+    let date = new Date($event);
+    let day= (date.getDate()) < 10 ? '0'+(date.getDate()) : date.getDate();
+    let month = (date.getMonth() + 1) < 10 ? '0'+ (date.getMonth() + 1) : date.getMonth() + 1;
+    let year = date.getFullYear();
+    
+    let dateSelected = `${year}-${month}-${day}`
+
+    if(dateSelected < dateNow){
+      if(isDateInit) this.isShowMessageDateInit = true;
+      else this.isShowMessageDateExpiry = true;
+      
+      this.disableButton = true;
+      return ; 
+    }else{
+      if(isDateInit) {this.isShowMessageDateInit = false; this.promotion.promotion_date_of_init = dateSelected;}
+      else{ this.isShowMessageDateExpiry = false; this.promotion.promotion_date_of_expiry = dateSelected;}
+
+      this.disableButton = false;
+      
+      this.validateDatesSelected();
+    }
+  }
+
+  validateDatesSelected(){
+    if(this.promotion.promotion_date_of_expiry < this.promotion.promotion_date_of_init) {
+      this.messageErrorDateExpiry = "Fecha de expiración es menor a la fecha de inico" ; 
+      this.isShowMessageDateExpiry = true ; 
+      this.isShowMessageDateInit = false
+      return ;
+    }
+
+    if(this.promotion.promotion_date_of_init > this.promotion.promotion_date_of_expiry) {
+      this.messageErrorDateInit = "Fecha de inicio es mayor a la fecha de expiración" ; 
+      this.isShowMessageDateInit = true ; 
+      this.isShowMessageDateExpiry = false
+      return ;
     }
   }
 
   savePromotion(){
-    if(this.actionSelected === "new"){
-      this.submitted = true
+    this.submitted = true
 
-      if(!this.validateData()){
-          return ;
-      }
-      
+    if(!this.validateData()){
+        return ;
+    }
+
+    if(this.actionSelected === "new"){
       this.validatePromotionProduct();
 
     }else if(this.actionSelected === "edit"){
-      this.submitted = true
-      if(!this.validateData()){
-        return ;
-      }
-    
       this.updateData();
     }
   }
@@ -204,7 +246,13 @@ export class PromoComponent implements OnInit {
   }
 
   validateData(){
-    if(!this.promotion.id_product || !this.promotion.promotion_discount || this.disableButton == true || !this.promotion.promotion_date_of_expiry ||this.promotion.promotion_status == null){
+    if(
+      !this.promotion.id_product || 
+      !this.promotion.promotion_discount || 
+      this.disableButton == true || 
+      !this.promotion.promotion_date_of_init || this.isShowMessageDateInit ||
+      !this.promotion.promotion_date_of_expiry || this.isShowMessageDateExpiry ||
+      this.promotion.promotion_status == null){
         return false;
     }
   

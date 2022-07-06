@@ -3,8 +3,8 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+            <button pButton pRipple label="Nuevo" [disabled]="loading" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Estado" [disabled]="loading" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
             <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
                 <ng-template pTemplate>
@@ -38,7 +38,8 @@
                 <th pSortableColumn="producto.product_name"><i class="pi pi-tag"></i> Producto <p-sortIcon field="producto.product_name"></p-sortIcon></th>
                 <th pSortableColumn="promotion_discount"><i class="pi pi-percentage"></i> Descuento <p-sortIcon field="promotion_discount"></p-sortIcon></th>
                 <th pSortableColumn="promotion_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="promotion_status"></p-sortIcon></th>
-                <th pSortableColumn="promotion_date_of_expiry"><i class="pi pi-calendar"></i> Fecha de Culminación <p-sortIcon field="promotion_date_of_expiry"></p-sortIcon></th>
+                <th pSortableColumn="promotion_date_of_init"><i class="pi pi-calendar"></i> Fecha de Inicio <p-sortIcon field="promotion_date_of_init"></p-sortIcon></th>
+                <th pSortableColumn="promotion_date_of_expiry"><i class="pi pi-calendar"></i> Fecha de Fin <p-sortIcon field="promotion_date_of_expiry"></p-sortIcon></th>
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
@@ -48,6 +49,7 @@
                 <td>{{promotion.producto.product_name}}</td>
                 <td>{{(promotion.promotion_discount).toString().split('.')[0]+'%'}}</td>
                 <td>{{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
+                <td>{{promotion.promotion_date_of_init}}</td>
                 <td>{{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editPromotion(promotion)"></button>
@@ -95,22 +97,22 @@
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
-                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_init" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="promotion.promotion_date_of_init" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_init == null">Fecha culminación es requerido</small>
-                <small class="p-error" *ngIf="disableButton">Fecha no válida, debe ser mayor o igual a la fecha actual</small>
+                <small class="p-error" *ngIf="isShowMessageDateInit">{{!messageErrorDateInit ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateInit}}</small>
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Culminación <span class="inputs__required">*</span></label>
-                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDate($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Fecha culminación es requerido</small>
-                <small class="p-error" *ngIf="disableButton">Fecha no válida, debe ser mayor o igual a la fecha actual</small>
+                <small class="p-error" *ngIf="isShowMessageDateExpiry">{{!messageErrorDateExpiry ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateExpiry}}</small>
             </div>
         </div>
 
         <div class="formgrid grid">
             <div class="field col">
                 <label for="description">Descripción de la Promoción </label>
-                <textarea id="description" required pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
+                <textarea id="description" pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
             </div>
         </div>
     </ng-template>
