@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment.prod';
 export class LoginComponent implements OnInit {
   email : string = "";
   password : string = "";
-  keepSession : boolean = false;
+  keepSession : boolean = true;
 
   msgs1: Message[] = [];
   data:{};

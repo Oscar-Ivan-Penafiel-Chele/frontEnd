@@ -20,6 +20,7 @@ export class AddressUserComponent implements OnInit {
 
   address : Address = {} as Address;
   addressUser : Address[] = [];
+  textAction : string = "";
 
   constructor(
     private confirmationService: ConfirmationService, 
@@ -40,44 +41,90 @@ export class AddressUserComponent implements OnInit {
 
   getAddress(){
     this.addressService.getAddress(this.user.id_user!).subscribe((response : any)=>{
+      this.addressUser = response;
       this.isLoading= false;
-      console.log(response);
+      this.displayModal = false;
     })
   }
 
-  createAddress(){
-    this.address = {} as Address;
-    this.textModal = "Creación de dirección";
-    this.openModal();
-
+  selectedAction(){
+    this.submitted = true;
     
+    if(!this.address.user_address) return ;
+
+    if(this.textAction == "Crear"){
+      this.createAddress();
+      return ; 
+    }
+
+    this.updateAddress();
   }
 
-  updateAddress(address : Address){
-    this.textModal = "Actualización de dirección";
+  modalCreateAddress(){
+    this.address = {} as Address;
+    this.textModal = "Creación de dirección";
+    this.textAction = "Crear";
     this.openModal();
+  }
+
+  modalUpdateAddress(address : Address){
+    this.textModal = "Actualización de dirección";
+    this.textAction = "Actualizar";
     this.address = address;
+    this.openModal();
+  }
 
+  createAddress(){
+    this.addressService.createAddress(this.address, this.user.id_user!).subscribe((response : any)=>{
+      if(response.status == 200 && response.message == "Dirección guardada exitosamente"){
+        this.getAddress();
+        this.messageService.add({severity:'success', summary:'Completado', detail:'La dirección ha sido actualizada con éxito'});
+      }else{
+        this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
+        this.displayModal = false;
+      }
+    });
+  }
 
+  updateAddress(){
+ this.isLoading = true;
+    this.addressService.updateAddress(this.address.id_address , this.address.user_address).subscribe((response : any)=>{
+      if(response.status == 200 && response.message == "Dirección actualizada con éxito"){
+        this.getAddress();
+        this.messageService.add({severity:'success', summary:'Completado', detail:'La dirección ha sido actualizada con éxito'});
+      }else{
+        this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
+        this.displayModal = false;
+        this.isLoading = false;
+      }
+    })
   }
 
   deleteAddress(address : Address){
     this.confirmationService.confirm({
-      message: `¿Estas seguro de eliminar la dirección: ${address.description}?`,
+      message: `¿Estas seguro de eliminar la dirección: ${address.user_address}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass : 'p-button-danger p-button-text',
       acceptLabel : 'Aceptar',
       accept: () => {
-       this.requestDeleteAddress();     
+       this.requestDeleteAddress(address.id_address);     
       },
     });
   }
 
-  requestDeleteAddress(){
-    this.messageService.add({severity:'success', summary:'Completado', detail:'La dirección ha sido eliminada con éxito'});
-
-    
+  requestDeleteAddress(idAddress : number){
+    this.isLoading = true;
+    this.addressService.deleteAddress(idAddress).subscribe((response : any)=>{
+      if(response.status == 200 && response.message == "Eliminado correctamente"){
+        this.messageService.add({severity:'success', summary:'Completado', detail:'La dirección ha sido eliminada con éxito'});
+        this.getAddress();
+      }else{
+        this.displayModal = false;
+        this.isLoading = false;
+        this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
+      }
+    });
   }
 
   openModal(){

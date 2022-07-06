@@ -1,7 +1,7 @@
 <section>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="createAddress()" ></button>
+            <button pButton [disabled]="addressUser.length >=3" pRipple label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="modalCreateAddress()" ></button>
         </ng-template>
     </p-toolbar>
     
@@ -24,9 +24,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-address>
         <tr>
-            <td style="width: 450px;">{{address.description}}</td>
+            <td style="width: 450px;">{{address.user_address}}</td>
             <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="updateAddress(address)"></button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="modalUpdateAddress(address)"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAddress(address)"></button>
             </td>
         </tr>
@@ -46,14 +46,14 @@
         <div class="field col-12 ">
             <span class="p-input-icon-left">
                 <i class="pi pi-map-marker"></i>
-                <input type="text" [(ngModel)]="address.description" placeholder="Ingrese una dirección" pInputText />
+                <input type="text" [(ngModel)]="address.user_address" placeholder="Ingrese una dirección" pInputText />
             </span>
-            <small class="p-error" *ngIf="submitted && !address.description">Dirección es requerida</small>
+            <small class="p-error" *ngIf="submitted && !address.user_address">Dirección es requerida</small>
         </div>
     </div>
 
     <ng-template pTemplate="footer">
         <p-button icon="pi pi-times" (click)="displayModal=false" label="Cancelar" styleClass="p-button-danger p-button-text"></p-button>
-        <p-button icon="pi pi-check" (click)="displayModal=false" label="Actualizar" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="selectedAction()" [label]="textAction" styleClass="p-button-text"></p-button>
     </ng-template>
 </p-dialog>

@@ -6,7 +6,7 @@ export interface User {
       user_name?:string;
       user_lastName?:string;
       email?:string;
-      user_address?: Address[];
+      user_address?: any;
       user_address_reference? : string;
       user_document?:string;
       password?:string;
@@ -21,5 +21,8 @@ export interface User {
 export interface Address{
       id_address : number,
       id_user : number,
-      description : string
+      user_address : string,
+      address_status : number,
+      create_date : Date,
+      updated_at : Date,
 }

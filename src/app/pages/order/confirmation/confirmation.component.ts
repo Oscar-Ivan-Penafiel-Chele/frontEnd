@@ -122,7 +122,6 @@ export class ConfirmationComponent implements OnInit {
         localStorage.removeItem('total');
         localStorage.removeItem('producto');
         this.showSuccess = true;
-        //this.messageService.add({severity:'success', summary: 'Completado', detail: 'El pago se realizó con éxito'});
         
       }else if(response.status == 500){
         console.log(response.message);

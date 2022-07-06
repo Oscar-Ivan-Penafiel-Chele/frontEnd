@@ -47,6 +47,7 @@ export class ReportSailComponent implements OnInit {
     this._rest.getSails().subscribe((response : Sail[])=>{
       this.sails = Object.values(response);
       this.groupOrderByIdOrder(response);
+      console.log(this.sails)
     })
   }
 
@@ -64,8 +65,6 @@ export class ReportSailComponent implements OnInit {
     }); 
 
     this.sails = Object.values(data);
-
-    console.log(this.sails);
     this.loading = false;
   }
 

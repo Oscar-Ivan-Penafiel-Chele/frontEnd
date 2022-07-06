@@ -175,7 +175,7 @@ export class PromoComponent implements OnInit {
       this.disableButton = true;
       return ; 
     }else{
-      if(isDateInit) {this.isShowMessageDateInit = false; this.promotion.promotion_date_of_init = dateSelected;}
+      if(isDateInit) {this.isShowMessageDateInit = false; this.promotion.promotion_date_start = dateSelected;}
       else{ this.isShowMessageDateExpiry = false; this.promotion.promotion_date_of_expiry = dateSelected;}
 
       this.disableButton = false;
@@ -185,14 +185,14 @@ export class PromoComponent implements OnInit {
   }
 
   validateDatesSelected(){
-    if(this.promotion.promotion_date_of_expiry < this.promotion.promotion_date_of_init) {
+    if(this.promotion.promotion_date_of_expiry < this.promotion.promotion_date_start) {
       this.messageErrorDateExpiry = "Fecha de expiración es menor a la fecha de inico" ; 
       this.isShowMessageDateExpiry = true ; 
       this.isShowMessageDateInit = false
       return ;
     }
 
-    if(this.promotion.promotion_date_of_init > this.promotion.promotion_date_of_expiry) {
+    if(this.promotion.promotion_date_start > this.promotion.promotion_date_of_expiry) {
       this.messageErrorDateInit = "Fecha de inicio es mayor a la fecha de expiración" ; 
       this.isShowMessageDateInit = true ; 
       this.isShowMessageDateExpiry = false
@@ -234,6 +234,7 @@ export class PromoComponent implements OnInit {
         
     this._rest.createPromotion(this.promotion)
     .subscribe((response)=>{
+      console.log(response)
         if(response.status == 200 && response.message === "Promocion creada con exito"){
             this.getPromotions()
             this.hideDialog();
@@ -241,6 +242,8 @@ export class PromoComponent implements OnInit {
         }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
           this.hideDialog();
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
+        }else if(response.status == 400){
+          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message.promotion_date_start[0]}`, life: 3000});
         }
     });
   }
@@ -250,7 +253,7 @@ export class PromoComponent implements OnInit {
       !this.promotion.id_product || 
       !this.promotion.promotion_discount || 
       this.disableButton == true || 
-      !this.promotion.promotion_date_of_init || this.isShowMessageDateInit ||
+      !this.promotion.promotion_date_start || this.isShowMessageDateInit ||
       !this.promotion.promotion_date_of_expiry || this.isShowMessageDateExpiry ||
       this.promotion.promotion_status == null){
         return false;

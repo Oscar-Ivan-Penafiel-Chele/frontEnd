@@ -58,7 +58,7 @@
                             <td>{{product.product_amount_sail}}</td>
                             <td>${{product.product_price_amount.toFixed(2)}}</td>
                             <td>${{product.product__price__iva}}</td>
-                            <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>
+                            <td>${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">

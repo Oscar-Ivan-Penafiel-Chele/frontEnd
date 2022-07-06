@@ -49,6 +49,7 @@ export class ShopComponent implements OnInit {
   showOverlayLogin : boolean = false;
   iconButton : string = "";
   arrayButtons : any = [];
+  showPromotion : boolean = false;
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -89,9 +90,6 @@ export class ShopComponent implements OnInit {
     this.getKeepSession();
     this.isLog();
     this.getBanners();
-    setInterval(()=>{
-      this.getDateToday();
-    },100); 
     this.getData();
     this.sortOptions = [
       {label: 'De mayor a menor', value: 'menor'},
@@ -106,6 +104,49 @@ export class ShopComponent implements OnInit {
   async getData(){
     await this.getProducts();
     await this.getPromotions(); 
+  }
+
+  async getProducts(){
+    this._rest.getProducts().subscribe((response : Product[]) =>{
+      this.productAux = Object.values(response);
+      this.products = this.productAux.filter(i=> i.product_status == 1 && i.product_stock! > 0)
+      this.products.sort(this.sortProducts)
+      this.completeProduct = true;
+    });
+  }
+
+  async getPromotions(){
+    this._rest.getPromotions().subscribe((response : Promotion[])=>{
+      this.promotions = Object.values(response);
+
+      this.promotions = this.promotions.filter((i) => i.promotion_status == 1)
+
+      console.log(this.promotions)
+      this.products.forEach((product)=>{
+        this.handlePromotions(product);
+      })
+      
+    })
+  }
+
+  handlePromotions(product : Product){
+    const dateNow = this.getDateNow();
+
+    this.promotions.forEach((promotion)=>{
+      if(promotion.promotion_date_start.slice(0,10) <= dateNow){
+        if(promotion.promotion_date_of_expiry.slice(0,10) >= dateNow){
+          this.showPromotion = true;
+          if(product.id_product == promotion.id_product){
+            product.product_offered = parseInt((promotion.promotion_discount)!.toString().split('.')[0]);
+            product.product_offered_price_total = product.product_price! - ((product.product_offered / 100) * product.product_price!);
+            return ;
+          }
+        }
+      }
+
+      this.showPromotion = false;
+      return ;
+    })
   }
 
   isExistProduct($event : any, product : Product){
@@ -183,14 +224,15 @@ export class ShopComponent implements OnInit {
     // }
   }
 
-  getDateToday(){
-    let hoy = new Date();
+  getDateNow(){
+    let dateNow = new Date();
 
-    let fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
-    let hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+    let day = (dateNow.getDate()) < 10 ? '0'+(dateNow.getDate()) : dateNow.getDate();;
+    let month = (dateNow.getMonth() + 1) < 10 ? '0'+ (dateNow.getMonth() + 1) : dateNow.getMonth() + 1;
+    let year = dateNow.getFullYear();
+    let date = `${year}-${month}-${day}`;
 
-    this.fechaYHora = fecha + ' ' + hora;
-
+    return date;
   }
 
   logOut(){
@@ -213,30 +255,6 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  async getProducts(){
-    this._rest.getProducts().subscribe((response : Product[]) =>{
-      this.productAux = Object.values(response);
-      this.products = this.productAux.filter(i=> i.product_status == 1 && i.product_stock! > 0)
-      this.products.sort(this.sortProducts)
-      this.completeProduct = true;
-    });
-  }
-
-  async getPromotions(){
-    this._rest.getPromotions().subscribe((response : Promotion[])=>{
-      this.promotions = Object.values(response);
-
-      this.products.forEach((product)=>{
-        this.promotions.forEach((promotion)=>{
-          if(product.id_product == promotion.id_product){
-            product.product_offered = parseInt((promotion.promotion_discount)!.toString().split('.')[0]);
-            product.product_offered_price_total = product.product_price! - ((product.product_offered / 100) * product.product_price!);
-          }
-        })
-      })
-      
-    })
-  }
 
   onSortChange(event : any) {
     if(event.value == "mayor"){
@@ -318,19 +336,25 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // beforeunloadHandler(event : any) {
-  //   if(){
-
-  //   }
-
-  //     localStorage.clear();
-  // }
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event : any) {
+      if(!this.getKeepSession()){
+          localStorage.clear();
+      }
+  }
 
   getKeepSession(){
     const data = localStorage.getItem('keepSession');
 
-    console.log(data);
+    if(data){
+      if(data!.toString() == "true"){
+        return true;
+      }else{
+          return false;
+      }
+    }
+
+    return false;
   }
 
   // async deleteItem(id_product : any){

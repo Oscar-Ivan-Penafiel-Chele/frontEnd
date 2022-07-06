@@ -112,7 +112,7 @@
                         <td><p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
                         <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
                         <td>${{product.product__price__iva}}</td>
-                        <td>${{product.product_price_total == null ? product.product_price : product.product_price_total.toFixed(2)}}</td>      
+                        <td>${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}</td>      
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
