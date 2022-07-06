@@ -56,8 +56,11 @@ export class SignupComponent implements OnInit {
     this.user.user_status = 1;
 
     !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico no válido' : this.messageEmail = "";
+    if(!this.regexData(this.user.email!)) return ;
+
     !this.validateIdentification() ? this.messageIdentification = 'Identificación no válida' : this.messageIdentification = '';
-    
+    if(!this.validateIdentification()) return ;
+
     if(!this.validatePassword()){
       this.msgs1 = [{severity:'error', summary:'Info', detail:'Contraseñas no coinciden'}];
       setTimeout(() => {
@@ -75,9 +78,10 @@ export class SignupComponent implements OnInit {
   }
 
   changeIdentification($event : any){
-    if($event.value == 1) this.maxLength = 10;
-    if($event.value == 2) this.maxLength = 20;
-    if($event.value == 3) this.maxLength = 13;
+    if($event.value == 1) this.maxLength = 10 ; 
+    if($event.value == 2) this.maxLength = 20 ;
+    if($event.value == 3) this.maxLength = 13 ;
+    this.user.user_document = ""; 
   }
 
   changeEmail($event : any){
@@ -87,6 +91,7 @@ export class SignupComponent implements OnInit {
   }
 
   validateIdentification(){
+    this.stateIdentification = true;
     if(this.user.id_identification_type == 1) return this.validateCedula();
     if(this.user.id_identification_type == 2) return this.validatePasaporte();
     if(this.user.id_identification_type == 3) return verificarRuc(this.user.user_document!);
@@ -95,7 +100,6 @@ export class SignupComponent implements OnInit {
   }
 
   validateCedula(){
-    this.stateIdentification = true;
     let cedula = this.user.user_document!;
     let firsTwoDigits = parseInt(String(cedula?.slice(0,2)));
     let lastDigit = cedula.slice(9);
@@ -149,7 +153,18 @@ export class SignupComponent implements OnInit {
   }
 
   validateData(){
-    if(!this.user.user_name || !this.user.user_lastName || !this.user.email || !this.user.user_phone || !this.user.user_address ||!this.user.id_identification_type || !this.user.user_document || !this.user.password || !this.passwordConfirm || !this.checked){
+    if(
+      !this.user.user_name || 
+      !this.user.user_lastName || 
+      !this.user.email || 
+      !this.user.user_phone || this.user.user_phone.length < 10 ||
+      !this.user.user_address || this.user.user_address.length < 8 ||
+      !this.user.id_identification_type || 
+      !this.user.user_document || 
+      !this.user.password || this.user.password.length < 8 ||
+      !this.passwordConfirm || this.passwordConfirm.length < 8 ||
+      !this.checked
+    ){
       return false;
     }
 

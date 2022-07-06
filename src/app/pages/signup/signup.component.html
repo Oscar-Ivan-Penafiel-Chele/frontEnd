@@ -56,14 +56,15 @@
                             <input required type="text" [disabled]="!user.id_identification_type" [(ngModel)]="user.user_document" pInputText (input)="regexCedula($event)" id="float-input" [maxlength]="maxLength"  style="width: 100%;"> 
                             <label for="float-input"><i class="pi pi-id-card"></i> Identificación</label>
                         </span>
-                        <small class="p-error" *ngIf="(submitted && !user.user_document) || (stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación requerida' : messageIdentification}}</small>
+                        <small class="p-error" *ngIf="(submitted && !user.user_document) || (submitted && stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación requerida' : messageIdentification}}</small>
                     </div>
                     <div>
                         <span class="p-float-label">
                             <input required [(ngModel)]="user.user_address" id="float-input" type="text" pInputText style="width: 100%;"> 
                             <label for="float-input"><i class="pi pi-map-marker"></i> Dirección</label>
                         </span>
-                        <small class="p-error" *ngIf="(submitted && !user.user_address) || (submitted && user.user_address?.length! < 8)">Dirección es requerida</small>
+                        <small class="p-error" *ngIf="(submitted && !user.user_address)">Dirección es requerida</small>
+                        <small class="p-error" *ngIf="submitted && user.user_address?.length! < 8 && user.user_address">Colocar una dirección válida</small>
                     </div>
                     <div>
                         <span class="p-float-label">
@@ -84,7 +85,8 @@
                             </p-password>
                             <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
                         </span>
-                        <small class="p-error" *ngIf="(submitted && !user.password) || (user.password!.length < 8 && submitted)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="(submitted && !user.password)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="user.password!.length < 8 && submitted && user.password">Contraseña muy corta</small>
                     </div>
                     <div>
                         <span class="p-float-label">
@@ -95,7 +97,8 @@
                             </p-password>
                             <label for="float-input"><i class="pi pi-lock"></i> Confirmar Contraseña</label>
                         </span>
-                        <small class="p-error" *ngIf="(submitted && !passwordConfirm) || (passwordConfirm.length < 8 && submitted)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="(submitted && !passwordConfirm)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="passwordConfirm!.length < 8 && submitted && passwordConfirm">Contraseña muy corta</small>
                     </div>
                 </div>
                 <div class="terms-and-condicions">

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Address } from 'src/app/models/user';
+import { Address, User } from 'src/app/models/user';
 import {ConfirmationService, MessageService} from 'primeng/api';
+import { AddressUserService } from 'src/app/services/address-user.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-address-user',
@@ -10,38 +12,37 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 })
 export class AddressUserComponent implements OnInit {
 
-  isLoading : boolean = false;
+  isLoading : boolean = true;
   displayModal : boolean = false;
   submitted : boolean = false;
   textModal : string = "";
+  user : User = {};
 
   address : Address = {} as Address;
-  addressUser : Address[] = [
-    {
-      id_address : 1,
-      id_user : 1,
-      description : "FLORIDAD NORTE"
-    },
-    {
-      id_address : 2,
-      id_user : 1,
-      description : "ALGUNA DIRECCION"
-    },
-    {
-      id_address : 3,
-      id_user : 1,
-      description : "ADDRESS COMPONENT"
-    }
-  ];
+  addressUser : Address[] = [];
 
-  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService,
+    private addressService : AddressUserService,
+    private _token : TokenService,
+    ) { }
 
   ngOnInit(): void {
+    this.getDataProfile();
     this.getAddress();
   }
 
-  getAddress(){
+  getDataProfile(){
+    const data = this._token.getTokenDataUser() as string;
+    this.user = JSON.parse(data);
+  }
 
+  getAddress(){
+    this.addressService.getAddress(this.user.id_user!).subscribe((response : any)=>{
+      this.isLoading= false;
+      console.log(response);
+    })
   }
 
   createAddress(){
@@ -49,7 +50,7 @@ export class AddressUserComponent implements OnInit {
     this.textModal = "Creación de dirección";
     this.openModal();
 
-
+    
   }
 
   updateAddress(address : Address){
