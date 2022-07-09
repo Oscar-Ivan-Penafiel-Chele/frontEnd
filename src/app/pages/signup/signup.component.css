@@ -1,3 +1,7 @@
+.p-inputgroup-addon{
+    background-color: white;
+}
+
 /* Contenido General*/
 .content-signup{
     width: 100%;
@@ -70,7 +74,7 @@
     align-self: center;
 }
 
-.card-signup-contain span{
+.card-signup-contain .input__form{
     width: 250px;
     max-width: 500px;
 }
@@ -121,7 +125,6 @@
     justify-content: start;
     align-items: center;
     padding-top: 15px;
-    padding-left: 28px;
     gap: 0.3em;
 }
 

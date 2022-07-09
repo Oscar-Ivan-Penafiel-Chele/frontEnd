@@ -23,6 +23,7 @@
     "@types/aos": "^3.0.4",
     "@types/underscore": "^1.11.4",
     "angular-csv-ext": "^1.0.5",
+    "angular-imask": "^6.4.2",
     "aos": "^2.3.4",
     "chart.js": "^3.7.1",
     "ngx-paypal": "^9.0.0",

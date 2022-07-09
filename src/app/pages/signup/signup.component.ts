@@ -25,6 +25,8 @@ export class SignupComponent implements OnInit {
   messageEmail : string = "";
   loading : boolean = false;
   isVisibleText : boolean;
+  phoneUser : string = "";
+  urlImage : string  = "../../../assets/flags/ecuador.png";
 
   regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;  
 
@@ -50,6 +52,7 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser(){
+    this.user.user_phone = `(+593) ${this.phoneUser}`
     this.submitted = true;
     this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
     this.user.id_role = 5;
@@ -157,7 +160,7 @@ export class SignupComponent implements OnInit {
       !this.user.user_name || 
       !this.user.user_lastName || 
       !this.user.email || 
-      !this.user.user_phone || this.user.user_phone.length < 10 ||
+      !this.phoneUser || this.phoneUser.length < 10 ||
       !this.user.user_address || this.user.user_address.length < 8 ||
       !this.user.id_identification_type || 
       !this.user.user_document || 
@@ -233,10 +236,6 @@ export class SignupComponent implements OnInit {
        return;
       }
     })
-  }
-
-  saveAddress(){
-
   }
 
   @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){

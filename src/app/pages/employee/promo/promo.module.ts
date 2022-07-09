@@ -17,6 +17,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {CalendarModule} from 'primeng/calendar';
+import {KeyFilterModule} from 'primeng/keyfilter';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {CalendarModule} from 'primeng/calendar';
     InputTextareaModule,
     AutoCompleteModule,
     InputNumberModule,
-    CalendarModule
+    CalendarModule,
+    KeyFilterModule,
   ]
 })
 export class PromoModule { }

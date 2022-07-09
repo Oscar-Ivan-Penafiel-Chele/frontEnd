@@ -15,6 +15,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import {InputMaskModule} from 'primeng/inputmask';
 import {ToastModule} from 'primeng/toast';
 import { SharedModule } from '../shared/shared.module';
+import {IMaskModule} from 'angular-imask';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { SharedModule } from '../shared/shared.module';
     ButtonModule,
     InputTextModule,
     InputMaskModule,
-    ToastModule
+    ToastModule,
+    IMaskModule
   ]
 })
 export class SignupModule { }

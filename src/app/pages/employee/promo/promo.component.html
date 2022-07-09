@@ -71,7 +71,7 @@
             <div class="field col">
                 <div class="field col">
                     <label for="name">Nombre del Producto <span class="inputs__required">*</span></label>
-                    <p-dropdown [options]="products" [(ngModel)]="promotion.id_product" optionLabel="product_name" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
+                    <p-dropdown [options]="products" emptyFilterMessage="No se encontraron resultados" [(ngModel)]="promotion.id_product" optionLabel="product_name" optionValue="id_product" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
                     <small class="p-error" *ngIf="submitted && !promotion.id_product">Nombre es requerido</small>
                 </div>
             </div>
@@ -92,8 +92,9 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="percent">Descuento <span class="inputs__required">*</span></label>
-                <p-inputNumber [(ngModel)]="promotion.promotion_discount" inputId="percent" suffix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
+                <p-inputNumber [(ngModel)]="promotion.promotion_discount" [minFractionDigits]="2" inputId="percent" suffix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_discount == null">Descuento es requerido</small>
+                <small class="p-error" *ngIf="submitted && promotion.promotion_discount! < 1"> El descuento no puede ser menor a 1%</small>
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
