@@ -172,7 +172,7 @@ export class ProductsComponent implements OnInit {
         .subscribe((response) =>{
           this.categories = Object.values(response);
           this.categories = this.categories.sort(this.sortCategories);
-          this.categories = this.categories.filter((i)=> i.category_status == 1);
+          this.categories = this.categories.filter((i)=> i.category_status == 1 && i.category_name != 'NO DEFINIDO');
         });
     }
 
