@@ -21,6 +21,7 @@ export class AddressUserComponent implements OnInit {
   address : Address = {} as Address;
   addressUser : Address[] = [];
   textAction : string = "";
+  options : any[] = [];
 
   constructor(
     private confirmationService: ConfirmationService, 
@@ -32,6 +33,11 @@ export class AddressUserComponent implements OnInit {
   ngOnInit(): void {
     this.getDataProfile();
     this.getAddress();
+    this.options = [
+      {'name':'Casa', 'icon' : 'pi pi-home'},
+      {'name':'Trabajo', 'icon' : 'pi pi-building'},
+      {'name':'Otro', 'icon' : 'pi pi-inbox'},
+    ]
   }
 
   getDataProfile(){
@@ -50,7 +56,8 @@ export class AddressUserComponent implements OnInit {
   selectedAction(){
     this.submitted = true;
     
-    if(!this.address.user_address) return ;
+    if(!this.address.user_address && !this.address.address_description) return ;
+    if(this.address.address_description == 'Otro' && !this.address.address_description_aux) return ;
 
     if(this.textAction == "Crear"){
       this.createAddress();
@@ -87,8 +94,8 @@ export class AddressUserComponent implements OnInit {
   }
 
   updateAddress(){
- this.isLoading = true;
-    this.addressService.updateAddress(this.address.id_address , this.address.user_address).subscribe((response : any)=>{
+    this.isLoading = true;
+    this.addressService.updateAddress(this.address.id_address , this.address).subscribe((response : any)=>{
       if(response.status == 200 && response.message == "Dirección actualizada con éxito"){
         this.getAddress();
         this.messageService.add({severity:'success', summary:'Completado', detail:'La dirección ha sido actualizada con éxito'});

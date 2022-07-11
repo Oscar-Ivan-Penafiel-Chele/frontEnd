@@ -3,3 +3,28 @@
     color: #6C757D;
     margin: 25px 0px;
 }
+
+.item-option-address{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.address__detail{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-flow: column nowrap;
+}
+
+.address__description{
+    font-size: 12px;
+    font-style: italic;
+    color: #4F46E5;
+    font-weight: 600;
+}
+
+.p-inputgroup-addon{
+    background-color: white;
+    height: 46px;
+}

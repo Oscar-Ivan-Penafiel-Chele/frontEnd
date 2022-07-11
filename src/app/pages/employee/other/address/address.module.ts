@@ -11,6 +11,9 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
+import {DropdownModule} from 'primeng/dropdown';
+import {RadioButtonModule} from 'primeng/radiobutton';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { FormsModule } from '@angular/forms';
     ConfirmDialogModule,
     ToastModule,
     DialogModule,
-    FormsModule
+    FormsModule,
+    DropdownModule,
+    RadioButtonModule
   ]
 })
 export class AddressModule { }

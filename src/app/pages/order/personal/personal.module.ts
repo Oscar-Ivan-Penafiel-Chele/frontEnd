@@ -10,7 +10,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {InputMaskModule} from 'primeng/inputmask';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {DropdownModule} from 'primeng/dropdown';
-
+import {IMaskModule} from 'angular-imask';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import {DropdownModule} from 'primeng/dropdown';
     InputTextModule,
     InputMaskModule,
     KeyFilterModule,
-    DropdownModule
+    DropdownModule,
+    IMaskModule
   ]
 })
 export class PersonalModule { }

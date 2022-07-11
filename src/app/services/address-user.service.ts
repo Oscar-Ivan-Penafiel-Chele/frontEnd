@@ -20,18 +20,22 @@ export class AddressUserService {
   createAddress(address : Address , idUser : number) : Observable<any>{
     const data = {
       id_user : idUser,
-      user_address : address.user_address
+      user_address : address.user_address,
+      address_description : address.address_description
     }
 
     return this.http.post<any>(`${this.url}/address`,data);
   }
 
-  updateAddress(idAddress : number, user_address : string) :Observable<any>{
+  updateAddress(idAddress : number, address : Address) :Observable<any>{
+    console.log(address)
+
     const data = {
-      user_address : user_address
+      user_address : address.user_address,
+      address_description : address.address_description
     }
 
-    return this.http.put<any>(`${this.url}/address/${idAddress}`, data);
+    return this.http.put<any>(`${this.url}/address/${address.id_address}`, data);
   }
 
   deleteAddress(idAddress : number) :Observable<any>{

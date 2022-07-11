@@ -36,7 +36,25 @@
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="address">Dirección</label>
-                        <p-dropdown [options]="optionsAddress" [(ngModel)]="selectAddress" placeholder="Seleccione una dirección" optionLabel="user_address" optionValue="user_address" [showClear]="true"></p-dropdown>
+                        <p-dropdown [options]="optionsAddress" [(ngModel)]="selectAddress" placeholder="Seleccione una dirección" optionLabel="user_address" optionValue="user_address" [showClear]="true">
+                            <ng-template pTemplate="selectedItem">
+                                <div class="item-option-address" *ngIf="selectAddress">
+                                    <i class="pi pi-map-marker mr-2 mt-1"></i>
+                                    <div class="address__detail">
+                                        <p class="address">{{selectAddress}}</p>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-optionAddress pTemplate="item">
+                                <div class="item-option-address">
+                                    <i class="pi pi-map-marker mr-2 mt-2"></i>
+                                    <div class="address__detail">
+                                        <p class="address">{{optionAddress.user_address}}</p>
+                                        <p class="address__description">{{!optionAddress.address_description_aux ? optionAddress.address_description : optionAddress.address_description_aux}}</p>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
                         <small class="p-error" *ngIf="submitted && !selectAddress">Dirección es requerida</small>
                     </div>
                 </div>
@@ -44,15 +62,19 @@
                     <div class="flex flex-column">
                         <label for="reference">Lugar de Referencia</label>
                         <input #age="ngModel" id="reference" type="text" required pInputText [(ngModel)]="user.user_address_reference"> 
-                        <small class="p-error" *ngIf="submitted && !user.user_address_reference">Referencia es requerida</small>
-                        <small class="p-error" *ngIf="submitted && user.user_address_reference!.length < 5 && user.user_address_reference">Ingrese un lugar de referencia más largo</small>
+                        <small class="p-error" *ngIf="submitted">{{!user.user_address_reference ? 'Referencia es requerida' : user.user_address_reference && user.user_address_reference.length < 5 ? 'Referencia es muy corta' : ''}}</small>
                     </div>
                 </div>
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="age">Celular</label>
-                        <p-inputMask id="phone" mask="(+999) 99 999 9999" [(ngModel)]="user.user_phone" placeholder="(+999) 99 999 9999"></p-inputMask>
-                        <small class="p-error" *ngIf="submitted && !user.user_phone">Celular es requerido</small>
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon">
+                                <img class="mr-2" [src]="urlImage" width="30"> <p>(+593)</p>  
+                            </span>
+                            <input type="text" [(ngModel)]="phoneUser"  [imask]="{mask: '00 000 0000'}" pInputText placeholder="99 999 9999">      
+                        </div>
+                        <small class="p-error" *ngIf="submitted">{{!phoneUser ? 'Celular es requerido' : phoneUser && phoneUser.length < 11 ? 'Celular es requerido' : ''}}</small>
                     </div>
                 </div>
             </div>
