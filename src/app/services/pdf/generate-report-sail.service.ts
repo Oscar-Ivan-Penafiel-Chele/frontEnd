@@ -14,6 +14,7 @@ export class GenerateReportSailService {
   fechaFin : any;
   sailAux : any = [];
   user : User = {};
+  arrayAux : any[] = [];
 
   constructor(
   ) { }
@@ -81,18 +82,39 @@ export class GenerateReportSailService {
     pdf.add(
       new Txt(`\n ${this.sailAux.length} ${sails.length < 2 ? 'Egreso' : 'Egresos'}`).alignment('right').bold().fontSize(10).margin(10).end
     );  
-    pdf.add(this.createTable(this.sailAux));
+
+    pdf.add(
+      new Table([
+        [
+            new Txt('Fecha de Creación').alignment('center').bold().end,
+            new Txt('N° Orden').alignment('center').bold().end,
+            new Txt('Cliente').alignment('center').bold().end,
+            new Txt('Descripción').alignment('center').bold().end,
+            new Txt('Número De Comprobante').alignment('center').bold().end,
+            new Txt('Total').alignment('center').bold().end,
+        ],
+    ]).widths([90,40,100,80,100,50]).bold().fontSize(8).end
+    );
+
+    this.sailAux.forEach((row : any)=>{
+        pdf.add(
+            new Table([
+                [
+                  new Txt(`${row.orders[0].i.create_date}`).alignment('center').end,
+                  new Txt(`${(row.orders[0].i.id_order)}`).alignment('center').end,
+                  new Txt(`${row.orders[0].i.order.user.user_name+" "+row.orders[0].i.order.user.user_lastName}`).alignment('center').end,
+                  new Txt(`${row.orders[0].i.inventory_description}`).alignment('center').end,
+                  new Txt(`${row.orders[0].i.order.voucher_number}`).alignment('center').end,
+                  new Txt(`$ ${row.orders[0].i.order.order_price_total}`).alignment('center').end,
+                ],
+            ]).widths([90,40,100,80,100,50]).fontSize(8).end
+        );
+    });
+
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
     });
     pdf.create().open();
-  }
-
-  createTable(data : any): ITable{
-    return new Table([
-      [ 'Fecha de Creación','N° Orden','Cliente','Descripción', 'Número De Comprobante','Total'],
-      ...this.extractData(data),
-    ]).widths([ 100,45,100,100,'*',70]).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
   }
 
   createDetailsPDF(){
@@ -109,11 +131,5 @@ export class GenerateReportSailService {
       ]).alignment('center').end,
     ]).color('#3f3f3f').alignment('center').fontSize(10).end
   }
-
-  extractData(data : any) : TableRow{
-    return data.map((row : any) => [
-      '','','','','',''
-     // row.create_date, row.id_order, row.order.user.user_name+" "+row.order.user.user_lastName, row.inventory_description , row.order.voucher_number, row.order.order_price_total,
-    ])
-  }
+  
 }

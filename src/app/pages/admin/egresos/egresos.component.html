@@ -12,14 +12,14 @@
             <button style="color: black;" pButton label="Nuevo" class="p-button-warning" icon="pi pi-plus" (click)="openNewModal()"></button>
         </div>
     </p-toolbar>
-    <p-table #dt [value]="dataExtract" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="dataExtract" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_code','product_name','inventory_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Egresos</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Nombre cliente o comprobante..." />
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código..." />
                 </span>
             </div>
         </ng-template>

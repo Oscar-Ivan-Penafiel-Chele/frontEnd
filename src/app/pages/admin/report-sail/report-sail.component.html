@@ -9,14 +9,14 @@
             <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="generateReport()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
         </div>
     </p-toolbar>
-    <p-table #dt [value]="sails" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="prueba" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['voucher_sail']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Ventas</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Nombre cliente o comprobante..." />
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por comprobante..." />
                 </span>
             </div>
         </ng-template>
@@ -31,18 +31,18 @@
         </ng-template>
         <ng-template pTemplate="body" let-sail let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td style="width: 250px;">{{sail.orders[0].i.order.user.user_name}} {{sail.orders[0].i.order.user.user_lastName}}</td>
-                <td>{{sail.orders[0].i.inventory_description}}</td>
-                <td>{{sail.orders[0].i.order.voucher_number}}</td>
-                <td>{{sail.orders[0].i.create_date}}</td>
+                <td style="width: 250px;">{{sail.name_sail}} {{sail.lastName_sail}}</td>
+                <td>{{sail.description_sail}}</td>
+                <td>{{sail.voucher_sail}}</td>
+                <td>{{sail.date_creation}}</td>
                 <td>
-                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="generatePDF(sail)" class="p-button-success"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="generatePDF(sail.sail)" class="p-button-success"></button>
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-                Registros Totales: {{sails ? sails.length : 0 }}
+                Registros Totales: {{prueba ? prueba.length : 0 }}
             </div>
         </ng-template>
     </p-table>

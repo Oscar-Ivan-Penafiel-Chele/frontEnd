@@ -9,3 +9,12 @@ export interface Sail{
     create_date : string,
     update_at : string,
 }
+
+export interface ISailResponse{
+    name_sail : string,
+    lastName_sail : string,
+    description_sail : string,
+    voucher_sail : string,
+    date_creation : string,
+    sail : Sail[]
+}

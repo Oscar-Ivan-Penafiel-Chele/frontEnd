@@ -59,7 +59,6 @@ export class GeneratePdfFacturaService {
     })
     
     this.total = this.dataAux.reduce((i : any,j : any)=>{
-      console.log(`${i} - ${j}`)
       return (parseFloat(i) + parseFloat(j)).toFixed(2);
     })
 

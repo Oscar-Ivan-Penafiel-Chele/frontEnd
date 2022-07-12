@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Sail } from 'src/app/models/sail';
+import { ISailResponse, Sail } from 'src/app/models/sail';
 import { User } from 'src/app/models/user';
 import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -32,6 +32,8 @@ export class ReportSailComponent implements OnInit {
   iva : any = 0;
   total : any = 0;
   dataAux : any = [];
+  tableData : ISailResponse[] = [];
+  prueba : ISailResponse[] = [];
 
   constructor(
     private _rest : RestService,
@@ -69,8 +71,25 @@ export class ReportSailComponent implements OnInit {
 
     this.sails = Object.values(data);
     this.loading = false;
+    this.createInterfaceTable(this.sails)
   }
 
+  createInterfaceTable(sails : Sail[]){
+    sails.forEach((sail : any) =>{
+      this.tableData.push(
+        {
+          name_sail : sail.orders[0].i.order.user.user_name,
+          lastName_sail : sail.orders[0].i.order.user.user_lastName,
+          date_creation : sail.orders[0].i.create_date,
+          description_sail : sail.orders[0].i.inventory_description,
+          voucher_sail : sail.orders[0].i.order.voucher_number,
+          sail : sail.orders,
+        }
+      );
+    });
+
+    this.prueba = Object.values(this.tableData)
+  }
 
   getDataProfile(){
     const data = this._token.getTokenDataUser() as string;
@@ -88,15 +107,13 @@ export class ReportSailComponent implements OnInit {
   }
 
   async generatePDF(pedido : any){
-    this.generatePDFService.generateFacturePDF(pedido);
+    this.generatePDFService.generateFacturePDF({orders : pedido});
   }
 
   async generateReport(){
     this.sailAux = [];
 
     this.sailAux = this.sails.filter((i : any)=> new Date(i.orders[0].i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.orders[0].i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
-
-    console.log(this.sailAux)
 
     if(this.sailAux.length == 0){
       this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
