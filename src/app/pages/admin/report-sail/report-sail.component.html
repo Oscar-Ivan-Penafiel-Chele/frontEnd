@@ -6,7 +6,7 @@
             <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
             <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
             <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
-            <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="exportPDF()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
+            <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="generateReport()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
         </div>
     </p-toolbar>
     <p-table #dt [value]="sails" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['order.user.user_name','order.user.user_name','order.voucher_number']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
@@ -36,7 +36,7 @@
                 <td>{{sail.orders[0].i.order.voucher_number}}</td>
                 <td>{{sail.orders[0].i.create_date}}</td>
                 <td>
-                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="openModal(sail)" class="p-button-success"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="generatePDF(sail)" class="p-button-success"></button>
                 </td>
             </tr>
         </ng-template>
