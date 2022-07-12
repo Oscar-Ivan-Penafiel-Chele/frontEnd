@@ -38,12 +38,10 @@
                             <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Precio Unitario</th>
-                            <th>Descuento (%)</th>
-                            <th>P.U - descuento ($)</th>
+                            <th>Valor Descuento</th>
+                            <th>Parcial</th>
                             <th>Cantidad</th>
-                            <th>P.U por cantidad</th>
-                            <th>Iva (12%)</th>
-                            <th>Precio Total</th>
+                            <th>Subtotal</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-product>
@@ -51,14 +49,19 @@
                             <td>
                                 <img [src]="product.product_image == null || !product.product_image ? overImage : host+product.product_image" [alt]="product.product_name" width="75px">
                             </td>
-                            <td style="width: 250px;">{{product.product_name}}</td>
+                            <td style="width: 250px;">
+                                {{product.product_name}}
+                                <ng-template [ngIf]="product.product_offered">
+                                    <div class="discount__product">
+                                        <p>-{{product.product_offered}}%</p>
+                                    </div>
+                                </ng-template>
+                            </td>
                             <td>${{product.product_price_aux}}</td>
-                            <td>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
+                            <td>${{product.product_offered == null || !product.product_offered ? '0.00' : ( product.product_price_aux * (product.product_offered / 100)).toFixed(2)}}</td>
                             <td>${{!product.productWithDiscount ? product.product_price_aux : product.productWithDiscount}}</td>
                             <td>{{product.product_amount_sail}}</td>
                             <td>${{product.product_price_amount.toFixed(2)}}</td>
-                            <td>${{product.product__price__iva}}</td>
-                            <td>${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">

@@ -1,0 +1,8 @@
+.discount__product{
+    background-color: red;
+    width: min-content;
+    padding: 0px 10px;
+    border-radius: 50px;
+    color: whitesmoke;
+    font-size: 14px;
+}

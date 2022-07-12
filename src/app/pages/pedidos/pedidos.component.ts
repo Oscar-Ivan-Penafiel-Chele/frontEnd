@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
+import { Product } from 'src/app/models/product';
 import { TokenService } from 'src/app/services/token.service';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, QR, Rect, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
@@ -24,7 +25,7 @@ export class PedidosComponent implements OnInit {
   products : any = [];
   subtotal : number = 0;
   iva : any = 0;
-  total : any = 0;
+  total : number = 0;
   dataAux : any = [];
 
   constructor(
@@ -137,10 +138,35 @@ export class PedidosComponent implements OnInit {
 
   async extractData(pedido : any){
     this.products = [];
+    this.subtotal = 0;
     this.pedidosAux = pedido.orders.map((item : any)=>{
       this.products.push({producto: item.i.order_detail.producto, order_detail_quantity: item.i.order_detail.order_detail_quantity, order_detail_total : item.i.order_detail.order_detail_total, order_detail_discount : item.i.order_detail.order_detail_discount})
       return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order.user.user_address, phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
     });
+
+    this.handleProducts(this.products);
+  }
+
+  handleProducts(products : any){
+    products.forEach((product : any) =>{
+      product.producto.product_price_aux =  product.producto.product_price;
+      product.producto.product_amount_sail = product.order_detail_quantity;
+
+      if(parseInt(product.order_detail_discount) > 0){ 
+        product.producto.productWithDiscount = (product.producto.product_price_aux! - (product.producto.product_price_aux! * (parseInt(product.order_detail_discount) / 100))).toFixed(2);
+        product.producto.product_price_amount =  product.producto.productWithDiscount * product.producto.product_amount_sail!;
+      }else{
+        product.producto.productWithDiscount = product.producto.product_price_aux;
+        product.producto.product_price_amount =  (product.producto.product_price_aux! * product.producto.product_amount_sail!).toFixed(2);
+      }  
+
+      this.getSubtotal(product.producto.product_price_amount);
+    })
+  }
+
+
+  getSubtotal(price_amount : number){
+    this.subtotal += parseFloat(price_amount.toString());
   }
 
   async getDetailsSailTotal(){
@@ -149,12 +175,12 @@ export class PedidosComponent implements OnInit {
       this.dataAux.push(i.order_detail_total);
     })
     
-    this.subtotal = this.dataAux.reduce((i : any,j : any)=>{
-      return parseFloat(i) + parseFloat(j);
+    this.total = this.dataAux.reduce((i : any,j : any)=>{
+      console.log(`${i} - ${j}`)
+      return (parseFloat(i) + parseFloat(j)).toFixed(2);
     })
 
     this.iva = (this.subtotal * (12/100));
-    this.total = (Number(this.subtotal) + Number(this.iva));
   }
 
   async getPDF(){
@@ -247,30 +273,31 @@ export class PedidosComponent implements OnInit {
       new Table([
         [
             new Txt('Cód. Principal').alignment('center').bold().end,
-            new Txt('Cód. Auxiliar').alignment('center').bold().end,
             new Txt('Cant.').alignment('center').bold().end,
             new Txt('Descripción').alignment('center').bold().end,
-            new Txt('Precio Unitario (USD)').alignment('center').bold().end,
-            new Txt('Descuento (%)').alignment('center').bold().end,
-            new Txt('Precio Total (USD)').alignment('center').bold().end,
+            new Txt('Precio Unitario').alignment('center').bold().end,
+            new Txt('Descuento %').alignment('center').bold().end,
+            new Txt('Valor Descuento').alignment('center').bold().end,
+            new Txt('Parcial').alignment('center').bold().end,
+            new Txt('Subtotal').alignment('center').bold().end,
         ],
-    ]).widths([45,45,30,174,50,50,50]).bold().fontSize(8).end
+    ]).widths([40,20,130,50,50,50,40,55]).bold().fontSize(8).end
     );
 
-    // this.providersAux.sort(this.sortProvider)
      this.products.forEach((item : any)=>{
         pdf.add(
             new Table([
                 [
                   new Txt(`${item.producto.product_code}`).alignment('center').end,
-                  new Txt(`${item.producto.product_code}`).alignment('center').end,
                   new Txt(`${(item.order_detail_quantity).toString().split('.')[0]}`).alignment('center').end,
                   new Txt(`${item.producto.product_name}`).alignment('center').end,
                   new Txt(`$ ${item.producto.product_price}`).alignment('center').end,
                   new Txt(`${(item.order_detail_discount).toString().split('.')[0]}%`).alignment('center').end,
-                  new Txt(`$ ${item.order_detail_total}`).alignment('center').end,
+                  new Txt(`$ ${(item.order_detail_discount).toString().split('.')[0] > 0 ? (item.producto.product_price_aux * (item.order_detail_discount / 100)).toFixed(2) : item.order_detail_discount}`).alignment('center').end,
+                  new Txt(`$ ${item.producto.productWithDiscount}`).alignment('center').end,
+                  new Txt(`$ ${item.producto.product_price_amount}`).alignment('center').end,
                 ],
-            ]).widths([45,45,30,174,50,50,50]).fontSize(8).end
+            ]).widths([40,20,130,50,50,50,40,55]).fontSize(8).end
         );
      })
     pdf.add(
@@ -299,7 +326,7 @@ export class PedidosComponent implements OnInit {
           new Table([
             [ 
               new Txt('SUBTOTAL').fontSize(8).alignment('left').bold().end,
-              new Txt(`$ ${this.subtotal}`).fontSize(8).alignment('right').end,
+              new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
             [
               new Txt('IVA 0%').fontSize(8).alignment('left').bold().end,
@@ -310,12 +337,8 @@ export class PedidosComponent implements OnInit {
               new Txt(`$ ${(this.iva).toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
             [
-              new Txt('DESCUENTO 0%').fontSize(8).alignment('left').bold().end,
-              new Txt('$ 0.00').fontSize(8).alignment('right').end,
-            ],
-            [
               new Txt('TOTAL A PAGAR').fontSize(8).alignment('left').bold().end,
-              new Txt(`$ ${(this.total).toFixed(2)}`).fontSize(8).alignment('right').end,
+              new Txt(`$ ${(this.total)}`).fontSize(8).alignment('right').end,
             ]
 
           ]).widths([116,115]).fontSize(8).end,
@@ -335,7 +358,7 @@ export class PedidosComponent implements OnInit {
         ],
         [
           new Txt('SIN UTILIZACIÓN DEL SISTEMA FINANCIERO').fontSize(8).end,
-          new Txt(`$ ${(this.total).toFixed(2)}`).fontSize(8).alignment('center').end,
+          new Txt(`$ ${(this.total)}`).fontSize(8).alignment('center').end,
         ]
       ]).widths([150,80]).end
     );
