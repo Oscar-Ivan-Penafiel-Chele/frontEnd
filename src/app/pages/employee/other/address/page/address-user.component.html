@@ -56,18 +56,6 @@
             <small class="p-error" *ngIf="submitted && !address.address_description">Descripción es requerida</small>
         </div>
 
-        <ng-template [ngIf]="address.address_description == 'Otro'">
-            <div class="grid p-fluid dc">
-                <div class="field col-12 md:col-12">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-link"></i>
-                        <input type="text" [(ngModel)]="address.address_description_aux" placeholder="Ingrese una descripción breve" pInputText />
-                    </span>
-                    <small class="p-error" *ngIf="submitted && !address.address_description_aux">Descripción es requerida</small>
-                </div>
-            </div>
-        </ng-template>
-
         <div class="field col-12 md:col-12">
             <p class="tittle__descrp">Escribe una dirección</p>
             <span class="p-input-icon-left">

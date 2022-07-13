@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Order } from 'src/app/models/order';
 import { Product } from 'src/app/models/product';
-import { User } from 'src/app/models/user';
-import { HomeService } from 'src/app/services/home.service';
+import { Address, User } from 'src/app/models/user';
+import { AddressUserService } from 'src/app/services/address-user.service';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -21,15 +21,17 @@ export class PaymentComponent implements OnInit {
   priceIva : any = 0;
   priceTotalOrder : any = 0;
   typeDocument : string = "";
+  addressOrder : string = "";
 
   constructor(
     private _router : Router,
-    private _home : HomeService
+    private addressService : AddressUserService,
   ) { }
 
   ngOnInit(): void {
     this.getDataClient();
     this.getProducts();
+    this.getAddress();
   }
 
   getDataClient(){
@@ -80,5 +82,13 @@ export class PaymentComponent implements OnInit {
 
   prevPage() {
       this._router.navigate(['checkout/order/personal']);
+  }
+
+  getAddress(){
+    const data = localStorage.getItem('information_address');
+
+    this.addressService.getAddressByID(parseInt(data!)).subscribe((response : Address) =>{
+      this.addressOrder = response.user_address;
+    })
   }
 }

@@ -36,15 +36,7 @@
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="address">Dirección</label>
-                        <p-dropdown [options]="optionsAddress" [(ngModel)]="selectAddress" placeholder="Seleccione una dirección" optionLabel="user_address" optionValue="user_address" [showClear]="true">
-                            <ng-template pTemplate="selectedItem">
-                                <div class="item-option-address" *ngIf="selectAddress">
-                                    <i class="pi pi-map-marker mr-2 mt-1"></i>
-                                    <div class="address__detail">
-                                        <p class="address">{{selectAddress}}</p>
-                                    </div>
-                                </div>
-                            </ng-template>
+                        <p-dropdown [options]="optionsAddress" [(ngModel)]="idAddressSelected" placeholder="Seleccione una dirección" optionLabel="user_address" optionValue="id_address" [showClear]="true">
                             <ng-template let-optionAddress pTemplate="item">
                                 <div class="item-option-address">
                                     <i class="pi pi-map-marker mr-2 mt-2"></i>
@@ -55,7 +47,7 @@
                                 </div>
                             </ng-template>
                         </p-dropdown>
-                        <small class="p-error" *ngIf="submitted && !selectAddress">Dirección es requerida</small>
+                        <small class="p-error" *ngIf="submitted && !idAddressSelected">Dirección es requerida</small>
                     </div>
                 </div>
                 <div class="field col">

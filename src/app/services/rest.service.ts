@@ -163,6 +163,7 @@ export class RestService {
   getPendingOrders() : Observable<any>{
     return this._http.get<any>(`${this.url}/order/seller`);
   }
+  
   changeStateOrder(data : any) : Observable<any>{
     return this._http.post<any>(`${this.url}/order/change`,data);
   }

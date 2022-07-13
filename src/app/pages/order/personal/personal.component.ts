@@ -15,12 +15,12 @@ export class PersonalComponent implements OnInit {
   user : User = {} as User;
   regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;  
   optionsAddress : Address[] = [];
-  selectAddress : string = "" ;
   urlImage : string  = "../../../assets/flags/ecuador.png";
   phoneUser : string = "";
   phoneAux : string = "";
   messageError : string = "";
   messageErrorPhone : string = "";
+  idAddressSelected : number = 0;
 
   constructor(
     private _navigator : Router,
@@ -41,13 +41,13 @@ export class PersonalComponent implements OnInit {
 
   validateData(){
     this.submitted = true;
-    this.user.user_address = this.selectAddress;
 
     if(this.phoneUser == this.phoneAux) this.user.user_phone = `(+593) ${this.phoneUser}`;
     else this.user.user_phone = `(+593) ${this.phoneAux}`;
 
-    if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.user.user_address && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.phoneUser.length == 11) {
+    if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.idAddressSelected && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.phoneUser.length == 11) {
       localStorage.setItem('information_sending',JSON.stringify(this.user));
+      localStorage.setItem('information_address',JSON.stringify(this.idAddressSelected));
       this.nextPage();
       return ;
     }
@@ -65,4 +65,5 @@ export class PersonalComponent implements OnInit {
       console.log(response)
     })
   }
+
 }

@@ -57,7 +57,6 @@ export class AddressUserComponent implements OnInit {
     this.submitted = true;
     
     if(!this.address.user_address && !this.address.address_description) return ;
-    if(this.address.address_description == 'Otro' && !this.address.address_description_aux) return ;
 
     if(this.textAction == "Crear"){
       this.createAddress();
@@ -90,7 +89,10 @@ export class AddressUserComponent implements OnInit {
         this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
         this.displayModal = false;
       }
+
+      this.submitted = false;
     });
+   
   }
 
   updateAddress(){
@@ -104,6 +106,8 @@ export class AddressUserComponent implements OnInit {
         this.displayModal = false;
         this.isLoading = false;
       }
+
+      this.submitted = false;
     })
   }
 

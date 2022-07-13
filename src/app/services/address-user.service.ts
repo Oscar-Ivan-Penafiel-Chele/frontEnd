@@ -17,6 +17,10 @@ export class AddressUserService {
     return this.http.get<any>(`${this.url}/address/${idUser}`);
   }
 
+  getAddressByID(id : number) : Observable<Address>{
+    return this.http.post<Address>(`${this.url}/address/getById/${id}`,'');
+  }
+
   createAddress(address : Address , idUser : number) : Observable<any>{
     const data = {
       id_user : idUser,

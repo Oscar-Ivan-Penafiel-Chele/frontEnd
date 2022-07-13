@@ -27,6 +27,7 @@ export class ConfirmationComponent implements OnInit {
   order : Order = {} as Order;
   showOverlay : boolean = false;
   msg : Message[] = [];
+  idAddress : number = 0;
 
   constructor(
     private _router : Router,
@@ -113,7 +114,9 @@ export class ConfirmationComponent implements OnInit {
       id_user : this.user.id_user,
       order_price_total : this.order.price_order_total,
       products : this.products,
+      id_address : this.idAddress,
     }
+
     this._rest.createOrder(data).subscribe((response : any)=>{
       if(response.status == 200 || response.message == "Guardado con exito"){
         this.showMessage = true;
@@ -132,6 +135,9 @@ export class ConfirmationComponent implements OnInit {
 
   async getDataProfile(){
     let data = localStorage.getItem('user');
+
+    this.idAddress = parseInt(localStorage.getItem('information_address')!);
+
     this.user = JSON.parse(data!);
   }
 

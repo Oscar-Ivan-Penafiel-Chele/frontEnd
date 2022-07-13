@@ -23,7 +23,6 @@ export interface Address{
       id_user : number,
       user_address : string,
       address_description : string,
-      address_description_aux : string,
       address_status : number,
       create_date : Date,
       updated_at : Date,
