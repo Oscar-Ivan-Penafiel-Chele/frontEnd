@@ -11,6 +11,14 @@ import { GeneratePdfFacturaService } from 'src/app/services/pdf/generate-pdf-fac
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
+export interface IPedido{
+  id_order : number,
+  create_date : string,
+  total : number,
+  status : string,
+  pedido : any
+}
+
 @Component({
   selector: 'app-pedidos',
   templateUrl: './pedidos.component.html',
@@ -22,12 +30,8 @@ export class PedidosComponent implements OnInit {
   isLogged?: boolean = false;
   overlayLogout : boolean;
   pedidos : any;
-  pedidosAux : any;
-  products : any = [];
-  subtotal : number = 0;
-  iva : any = 0;
-  total : number = 0;
-  dataAux : any = [];
+  dataAux : IPedido[] = [];
+  isLoading : boolean = true;
 
   constructor(
     private _navigate : Router,
@@ -81,7 +85,26 @@ export class PedidosComponent implements OnInit {
     }); 
 
     this.pedidos = Object.values(data)
+    console.log(this.pedidos)
+    this.createInterfaceTable(this.pedidos)
   }
+
+  createInterfaceTable(pedidos : any[]){
+    pedidos.forEach((pedido : any) =>{
+      this.dataAux.push(
+        {
+          id_order : pedido.orders[0].i.order.id_order,
+          create_date : pedido.orders[0].i.create_date,
+          total : pedido.orders[0].i.order.order_price_total,
+          status : pedido.orders[0].i.order.order_status.order_status_description,
+          pedido : pedido.orders
+        }
+      );
+    });
+    this.isLoading = false;
+    this.dataAux = Object.values(this.dataAux);
+  }
+
 
   goCart(){
     this._navigate.navigate(["/checkout/cart"]);
@@ -121,7 +144,7 @@ export class PedidosComponent implements OnInit {
   }
 
   viewPDF(pedido : any){
-    this.generatePDF.generateFacturePDF(pedido);
+    this.generatePDF.generateFacturePDF({orders : pedido});
   }
 
   @HostListener('window:beforeunload', ['$event'])
