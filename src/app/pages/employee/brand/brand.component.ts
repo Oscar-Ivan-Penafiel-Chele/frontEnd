@@ -75,7 +75,6 @@ export class BrandComponent implements OnInit {
     this._rest.getBrands()
     .subscribe((response : Brand[]) => {
       this.brandsAux = Object.values(response);
-      console.log(response);
         if(this.stateCheckActive && !this.stateCheckInactive){
           this.brands = this.brandsAux.filter(i => i.brand_status == 1)
         }else if(!this.stateCheckActive && this.stateCheckInactive){

@@ -1,40 +1,56 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text" ></p-confirmDialog>
 
-<p-table #dt [value]="pedidos" [paginator]="true" [loading]="loading" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['i.id_order','order.order_status.order_status_description']"
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+        <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+            <ng-template pTemplate>
+                <div *ngFor="let option of options" class="field-checkbox">
+                    <p-radioButton [id]="option.id" id="option.id" [name]="option.id" name="option.name" [inputId]="option.id" [value]="option.id" (onClick)="change($event)" [(ngModel)]="selectedOptionFilter"></p-radioButton>
+                    <label [for]="option.id">{{option.name}}</label>
+                </div>
+            </ng-template>
+        </p-overlayPanel>
+
+    </ng-template>
+</p-toolbar>
+
+<p-table #dt [value]="dataAux" [paginator]="true" [loading]="loading" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['id_order','status']"
 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]" responsiveLayout="scroll">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Listado de Pedidos
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o nombre..." />
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o estatus..." />
             </span>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="i.id_order"><i class="pi pi-file"></i> Orden <p-sortIcon field="id_order"></p-sortIcon></th>
-            <th pSortableColumn="order.user.user_name"><i class="pi pi-user"></i> Cliente <p-sortIcon field="order.user.user_name"></p-sortIcon></th>
-            <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
-            <th pSortableColumn="order.order_price_total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="order.order_price_total"></p-sortIcon></th>
-            <th pSortableColumn="order.order_status.order_status_description"><i class="pi pi-clock"></i> Estado <p-sortIcon field="order.order_status.order_status_description"></p-sortIcon></th> 
+            <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> Orden <p-sortIcon field="id_order"></p-sortIcon></th>
+            <th pSortableColumn="name"><i class="pi pi-user"></i> Cliente <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="order_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="order_date"></p-sortIcon></th>
+            <th pSortableColumn="total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="total"></p-sortIcon></th>
+            <th pSortableColumn="status"><i class="pi pi-clock"></i> Estado <p-sortIcon field="status"></p-sortIcon></th> 
             <th><i class="pi pi-share-alt"></i> Acciones</th> 
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
         <tr>
-            <td>{{pedido.orders[0].i.id_order}}</td>
-            <td style="width: 250px;">{{pedido.orders[0].i.order.user.user_name}} {{pedido.orders[0].i.order.user.user_lastName}}</td>
-            <td>{{pedido.orders[0].i.create_date}}</td>
-            <td>$ {{pedido.orders[0].i.order.order_price_total}}</td>
+            <td>{{pedido.id_order}}</td>
+            <td style="width: 250px;">{{pedido.name}}</td>
+            <td>{{pedido.order_date}}</td>
+            <td>$ {{pedido.total}}</td>
             <td>
-                <p [class]="'status__order__'+(pedido.orders[0].i.order.order_status.order_status_description).toLowerCase()"> 
-                    {{pedido.orders[0].i.order.order_status.order_status_description}}
+                <p [class]="'status__order__'+(pedido.status).toLowerCase()"> 
+                    {{pedido.status}}
                 </p>
             </td>
             <td>
-                <button pButton pRipple type="button" icon="pi pi-eye" (click)="viewOrder(pedido)" class="p-button-info mr-2"></button>
+                <button pButton pRipple type="button" icon="pi pi-eye" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
                 <button pButton pRipple type="button" icon="pi pi-check" (click)="complete(pedido)" class="p-button-success"></button>
             </td>
         </tr>

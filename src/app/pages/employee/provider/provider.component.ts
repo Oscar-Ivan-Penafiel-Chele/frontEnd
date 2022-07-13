@@ -186,6 +186,9 @@ export class ProviderComponent implements OnInit {
       '\n\n'
     )
     pdf.add(
+      new Txt(`Total Proveedores: ${this.providersAux.length}`).alignment('right').bold().fontSize(10).margin(10).end
+  ); 
+    pdf.add(
         new Txt('Nómina de Proveedores').alignment('center').bold().fontSize(14).margin(10).end
     );   
     pdf.add(

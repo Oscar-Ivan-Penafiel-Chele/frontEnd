@@ -26,7 +26,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="providers" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name','provider_products_offered']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="providers" [rows]="5" styleClass="p-datatable-sm" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name','provider_products_offered']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -40,6 +40,7 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="provider_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="provider_name"></p-sortIcon></th>
+                <th pSortableColumn="id_type_provider"><i class="pi pi-globe"></i> Localidad<p-sortIcon field="id_type_provider"></p-sortIcon></th>
                 <th pSortableColumn="provider_address"><i class="pi pi-map-marker"></i> Dirección <p-sortIcon field="provider_address"></p-sortIcon></th>
                 <th pSortableColumn="provider_email"><i class="pi pi-envelope"></i> Correo Electrónico <p-sortIcon field="provider_email"></p-sortIcon></th>
                 <th pSortableColumn="provider_landline"><i class="pi pi-phone"></i> Teléfono fijo <p-sortIcon field="provider_landline"></p-sortIcon></th>
@@ -50,6 +51,7 @@
         <ng-template pTemplate="body" let-provider let-columns="columns" let-index="rowIndex">
             <tr>
                 <td>{{provider.provider_name}}</td>
+                <td>{{provider.id_type_provider == 1 ? 'Local' : provider.id_type_provider == 2 ? 'Nacional' : provider.id_type_provider == 3 ? 'Internacional' : ''}}</td>
                 <td>{{provider.provider_address}}</td>
                 <td>{{provider.provider_email}}</td>
                 <td>{{provider.provider_landline}}</td>
@@ -190,7 +192,7 @@
             </div>
         </div>
         <div class="flex flex-column" style="border: 2px solid #e9ecee; margin: 0px 1px; border-radius: 5px; padding: 10px;">
-            <p style="color: #495057; font-weight: bold; text-align: center;">Detalles del Tiempo de Respuesta del Proveedor</p>   
+            <p style="color: #495057; font-weight: bold; text-align: center;">Detalles del Tiempo de Entrega del Proveedor</p>   
             <div class="formgrid grid" style="padding: 15px;">
                 <div class="field col">
                     <label for="minmax-buttons">Tiempo en Días <span class="inputs__required">*</span></label>

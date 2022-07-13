@@ -85,7 +85,6 @@ export class PedidosComponent implements OnInit {
     }); 
 
     this.pedidos = Object.values(data)
-    console.log(this.pedidos)
     this.createInterfaceTable(this.pedidos)
   }
 
