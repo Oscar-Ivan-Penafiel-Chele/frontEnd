@@ -107,6 +107,7 @@ export class CarComponent implements OnInit {
     this.loading = false;
     this.loadingDelete = false;
     await this.getTotalPriceToPay();
+    console.log(this.products)
   }
 
   handleProduct(products : Product[]){

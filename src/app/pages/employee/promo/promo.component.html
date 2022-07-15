@@ -47,7 +47,7 @@
             <tr [pReorderableRow]="index">
                 <td>{{promotion.producto.product_code}}</td>
                 <td>{{promotion.producto.product_name}}</td>
-                <td>{{(promotion.promotion_discount).toString().split('.')[0]+'%'}}</td>
+                <td>{{(promotion.promotion_discount)+'%'}}</td>
                 <td>{{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
                 <td>{{promotion.promotion_date_start.slice(0,10)}}</td>
                 <td>{{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
@@ -112,7 +112,7 @@
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="description">Descripción de la Promoción </label>
+                <label for="description">Descripción de la Promoción <span class="inputs__required">*</span></label>
                 <textarea id="description" pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
             </div>
         </div>

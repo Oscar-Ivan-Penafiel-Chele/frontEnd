@@ -137,14 +137,13 @@ export class ShopComponent implements OnInit {
         if(promotion.promotion_date_of_expiry.slice(0,10) >= dateNow){
           this.showPromotion = true;
           if(product.id_product == promotion.id_product){
-            product.product_offered = parseInt((promotion.promotion_discount)!.toString().split('.')[0]);
-            product.product_offered_price_total = product.product_price! - ((product.product_offered / 100) * product.product_price!);
+            product.product_offered = promotion.promotion_discount!;
+            product.product_offered_price_total = parseFloat((product.product_price! - ((product.product_offered / 100) * product.product_price!))!.toFixed(2));
             return ;
           }
         }
       }
 
-      this.showPromotion = false;
       return ;
     })
   }
@@ -166,7 +165,6 @@ export class ShopComponent implements OnInit {
       
       this.addItem(product);
     })
-
   }
 
   goCart(){
@@ -310,9 +308,6 @@ export class ShopComponent implements OnInit {
       return ;
     }
     this.isExistProduct($event, product);
-    
-    //this.addItem(product);
-    //this.changeIconButton($event, product);
   }
 
   isAuthenticated(){
@@ -320,6 +315,7 @@ export class ShopComponent implements OnInit {
   }
 
   async addItem(product : Product){
+
     const data = {
       id_user : this.user.id_user,
       id_product : product.id_product,
@@ -327,6 +323,7 @@ export class ShopComponent implements OnInit {
       product_offered_price_total : product.product_offered_price_total
     }
 
+    console.log(data)
     this._rest.addProductCart(data).subscribe((response) =>{
       if(response.status == 200 || response.message === "Guardado con exito"){
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
