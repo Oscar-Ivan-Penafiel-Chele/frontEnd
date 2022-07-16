@@ -13,6 +13,14 @@ export class AddressUserService {
   
   constructor(private http : HttpClient) { }
 
+  sortAddress(address : Address[]) : Address[]{
+    const order : {[index : string] : any} = { Casa: 1 , Trabajo : 2, Otro : 3};
+    address = address.sort((x : any , y : any) => order[x.address_description] - order[y.address_description])
+
+    return address;
+  }
+
+
   getAddress(idUser : number) : Observable<any>{
     return this.http.get<any>(`${this.url}/address/${idUser}`);
   }

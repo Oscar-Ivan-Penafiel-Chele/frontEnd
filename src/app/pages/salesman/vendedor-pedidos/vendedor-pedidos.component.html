@@ -18,9 +18,9 @@
 </p-toolbar>
 
 <p-table #dt [value]="dataAux" [paginator]="true" [loading]="loading" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['id_order','status']"
-currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]" responsiveLayout="scroll">
+currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]" responsiveLayout="stack">
     <ng-template pTemplate="caption">
-        <div class="flex align-items-center justify-content-between">
+        <div class="flex flex-wrap align-items-center justify-content-between">
             Listado de Pedidos
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
@@ -40,18 +40,23 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
         <tr>
-            <td>{{pedido.id_order}}</td>
-            <td style="width: 250px;">{{pedido.name}}</td>
-            <td>{{pedido.order_date}}</td>
-            <td>$ {{pedido.total}}</td>
+            <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Orden: </span>{{pedido.id_order}}</td>
+            <td style="width: 250px;"><span class="p-column-title"> <i class="pi pi-user"></i>Cliente: </span> {{pedido.name}}</td>
+            <td><span class="p-column-title"><i class="pi pi-calendar"></i>  Fecha de Pedido: </span>{{pedido.order_date}}</td>
+            <td><span class="p-column-title"><i class="pi pi-dollar"></i> Precio Total: </span>$ {{pedido.total}}</td>
             <td>
+                <span class="p-column-title"><i class="pi pi-clock"></i> Estado: </span>
                 <p [class]="'status__order__'+(pedido.status).toLowerCase()"> 
                     {{pedido.status}}
                 </p>
             </td>
-            <td>
+            <td >
+                <span class="p-column-title"><i class="pi pi-share-alt"></i> Acciones: </span>
                 <button pButton pRipple type="button" icon="pi pi-eye" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
-                <button pButton pRipple type="button" icon="pi pi-check" (click)="complete(pedido)" class="p-button-success"></button>
+                <ng-template [ngIf]="pedido.status == 'Pendiente'">
+                    <button pButton pRipple type="button" icon="pi pi-check" (click)="complete(pedido)" class="p-button-success"></button>
+                </ng-template>
+                
             </td>
         </tr>
     </ng-template>

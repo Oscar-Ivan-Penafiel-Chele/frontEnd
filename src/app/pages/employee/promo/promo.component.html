@@ -21,10 +21,10 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code','producto.product_name','promotion_discount']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code','producto.product_name','promotion_discount']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Promociones</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
@@ -43,17 +43,20 @@
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-promotion let-columns="columns" let-index="rowIndex">
-            <tr [pReorderableRow]="index">
-                <td>{{promotion.producto.product_code}}</td>
-                <td>{{promotion.producto.product_name}}</td>
-                <td>{{(promotion.promotion_discount)+'%'}}</td>
-                <td>{{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
-                <td>{{promotion.promotion_date_start.slice(0,10)}}</td>
-                <td>{{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
+        <ng-template pTemplate="body" let-promotion >
+            <tr>
+                <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Código: </span> {{promotion.producto.product_code}}</td>
+                <td><span class="p-column-title"><i class="pi pi-tag"></i> Producto: </span> {{promotion.producto.product_name}}</td>
+                <td><span class="p-column-title"><i class="pi pi-percentage"></i> Descuento: </span> {{(promotion.promotion_discount)+'%'}}</td>
+                <td><span class="p-column-title"><i class="pi pi-box"></i> Estado: </span> {{promotion.promotion_status == 0 ? 'Inactivo' : 'Activo'}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Inicio: </span> {{promotion.promotion_date_start.slice(0,10)}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Fin: </span> {{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editPromotion(promotion)"></button>
-                    <button [disabled]="promotion.promotion_status == 0" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePromotion(promotion)"></button>
+                    <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
+                    <div class="flex justify-content-end align-items-end">       
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editPromotion(promotion)"></button>
+                        <button [disabled]="promotion.promotion_status == 0" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePromotion(promotion)"></button>
+                    </div>
                 </td>
             </tr>
         </ng-template>

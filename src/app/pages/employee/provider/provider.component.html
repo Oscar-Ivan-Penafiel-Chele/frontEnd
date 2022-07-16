@@ -21,12 +21,14 @@
         </ng-template>
 
         <ng-template pTemplate="right">
-            <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
-            <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
+            <div class="buttons__toolbar">
+                <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
+            </div>
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="providers" [rows]="5" styleClass="p-datatable-sm" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name','provider_products_offered']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="providers" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name','provider_products_offered']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -48,17 +50,26 @@
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-provider let-columns="columns" let-index="rowIndex">
+        <ng-template pTemplate="body" let-provider>
             <tr>
-                <td>{{provider.provider_name}}</td>
-                <td>{{provider.id_type_provider == 1 ? 'Local' : provider.id_type_provider == 2 ? 'Nacional' : provider.id_type_provider == 3 ? 'Internacional' : ''}}</td>
-                <td>{{provider.provider_address}}</td>
-                <td>{{provider.provider_email}}</td>
-                <td>{{provider.provider_landline}}</td>
-                <td>Días : {{provider.provider_response_time_day}} Horas : {{provider.provider_response_time_hour}}</td>
+                <td><span class="p-column-title"><i class="pi pi-book"></i> Nombre: </span>{{provider.provider_name}}</td>
                 <td>
-                    <button [disabled]="provider.provider_name ==='NO_DEFINIDO'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProvider(provider)"></button>
-                    <button [disabled]="provider.provider_status == 0 || provider.provider_name ==='NO_DEFINIDO'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProvider(provider)"></button>
+                    <span class="p-column-title"><i class="pi pi-globe"></i> Localidad: </span>
+                    {{provider.id_type_provider == 1 ? 'Local' : provider.id_type_provider == 2 ? 'Nacional' : provider.id_type_provider == 3 ? 'Internacional' : ''}}
+                </td>
+                <td><span class="p-column-title"><i class="pi pi-map-marker"></i> Dirección: </span>{{provider.provider_address}}</td>
+                <td><span class="p-column-title"><i class="pi pi-envelope"></i> Correo Electrónico: </span>{{provider.provider_email}}</td>
+                <td><span class="p-column-title"><i class="pi pi-phone"></i> Teléfono fijo: </span>{{provider.provider_landline}}</td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-history"></i> Tiempo de Respuesta: </span>
+                    Días : {{provider.provider_response_time_day}} Horas : {{provider.provider_response_time_hour}}
+                </td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
+                    <div class="flex justify-content-end align-items-end">
+                        <button [disabled]="provider.provider_name ==='NO_DEFINIDO'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProvider(provider)"></button>
+                        <button [disabled]="provider.provider_status == 0 || provider.provider_name ==='NO_DEFINIDO'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProvider(provider)"></button>
+                    </div>
                 </td>
             </tr>
         </ng-template>

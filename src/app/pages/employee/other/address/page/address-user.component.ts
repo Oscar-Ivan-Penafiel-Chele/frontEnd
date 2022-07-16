@@ -46,8 +46,9 @@ export class AddressUserComponent implements OnInit {
   }
 
   getAddress(){
-    this.addressService.getAddress(this.user.id_user!).subscribe((response : any)=>{
-      this.addressUser = response;
+    let ad = [];
+    this.addressService.getAddress(this.user.id_user!).subscribe((response : Address[])=>{
+      this.addressUser = this.addressService.sortAddress(response);
       this.isLoading= false;
       this.displayModal = false;
     })

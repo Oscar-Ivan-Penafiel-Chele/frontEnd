@@ -18,14 +18,14 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
-            <th pSortableColumn="description">Dirección <p-sortIcon field="description"></p-sortIcon></th>
+            <th pSortableColumn="address_description">Descripción <p-sortIcon field="address_description"></p-sortIcon></th>
+            <th pSortableColumn="user_address">Dirección <p-sortIcon field="user_address"></p-sortIcon></th>
             <th>Acciones</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-address>
         <tr>
-            <td style="width: 200px;">{{!address.address_description_aux ? address.address_description : address.address_description_aux}}</td>
+            <td style="width: 200px;">{{address.address_description}}</td>
             <td style="width: 450px;">{{address.user_address}}</td>
             <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="modalUpdateAddress(address)"></button>

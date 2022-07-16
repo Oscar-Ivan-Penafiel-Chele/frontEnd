@@ -10,3 +10,12 @@
     color: red;
 }
 
+.p-column-title{
+    font-weight: 600;
+}
+
+@media screen and (max-width: 526px){
+    .buttons__toolbar{
+        margin-top: 10px;
+    }
+}

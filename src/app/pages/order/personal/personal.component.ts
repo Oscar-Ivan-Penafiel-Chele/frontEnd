@@ -20,7 +20,7 @@ export class PersonalComponent implements OnInit {
   phoneAux : string = "";
   messageError : string = "";
   messageErrorPhone : string = "";
-  idAddressSelected : number = 0;
+  idAddressSelected : number| undefined;
 
   constructor(
     private _navigator : Router,
@@ -61,8 +61,7 @@ export class PersonalComponent implements OnInit {
   
   getAddress(){
     this.addressService.getAddress(this.user.id_user!).subscribe((response : any)=>{
-      this.optionsAddress = response;
-      console.log(response)
+      this.optionsAddress = this.addressService.sortAddress(response);
     })
   }
 

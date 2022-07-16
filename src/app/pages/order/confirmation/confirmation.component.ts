@@ -115,12 +115,14 @@ export class ConfirmationComponent implements OnInit {
       order_price_total : this.order.price_order_total,
       products : this.products,
       id_address : this.idAddress,
+      address_reference : this.user.user_address_reference
     }
 
     this._rest.createOrder(data).subscribe((response : any)=>{
       if(response.status == 200 || response.message == "Guardado con exito"){
         this.showMessage = true;
         localStorage.removeItem('information_sending');
+        localStorage.removeItem('information_address');
         localStorage.removeItem('subtotal');
         localStorage.removeItem('total');
         localStorage.removeItem('producto');

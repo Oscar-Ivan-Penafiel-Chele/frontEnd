@@ -24,8 +24,9 @@ export class GeneratePdfFacturaService {
     this.products = [];
     this.subtotal = 0;
     this.pedidosAux = pedido.orders.map((item : any)=>{
+      console.log(item)
       this.products.push({producto: item.i.order_detail.producto, order_detail_quantity: item.i.order_detail.order_detail_quantity, order_detail_total : item.i.order_detail.order_detail_total, order_detail_discount : item.i.order_detail.order_detail_discount})
-      return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order.user.user_address, phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
+      return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order_detail.address.user_address, phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
     });
 
     this.handleProducts(this.products);
@@ -69,7 +70,7 @@ export class GeneratePdfFacturaService {
     const pdf = new PdfMakeWrapper();
     
     pdf.info({
-        title: 'PDF Proveedores',
+        title: 'Orden de Pedido',
         author: '@Yebba',
         subject: 'Mostrar los proveedores de la ferretería',
     });
@@ -136,12 +137,16 @@ export class GeneratePdfFacturaService {
           new Txt(`${this.pedidosAux[0].address}`).absolutePosition(100,200).fontSize(8).end,
         ]).end,
         new Columns([
-          new Txt('TELÉFONO:').absolutePosition(310,200).fontSize(8).bold().end,
-          new Txt(`${this.pedidosAux[0].phone}`).absolutePosition(360,200).fontSize(8).end,
+          new Txt('Lugar de Referencia:').absolutePosition(50,210).fontSize(8).bold().end,
+          new Txt(`${this.pedidosAux[0].address}`).absolutePosition(130,210).fontSize(8).end,
         ]).end,
         new Columns([
-          new Txt('FECHA DE EMISIÓN:').absolutePosition(50,210).fontSize(8).bold().end,
-          new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(130,210).fontSize(8).end,
+          new Txt('FECHA DE EMISIÓN:').absolutePosition(310,190).fontSize(8).bold().end,
+          new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(390,190).fontSize(8).end,
+        ]).end,
+        new Columns([
+          new Txt('TELÉFONO:').absolutePosition(310,200).fontSize(8).bold().end,
+          new Txt(`${this.pedidosAux[0].phone}`).absolutePosition(360,200).fontSize(8).end,
         ]).end,
         new Txt('IDENTIFICACIÓN:').absolutePosition(310,210).fontSize(8).bold().end,
         new Txt(`${this.pedidosAux[0].document}`).absolutePosition(380,210).fontSize(8).end,
