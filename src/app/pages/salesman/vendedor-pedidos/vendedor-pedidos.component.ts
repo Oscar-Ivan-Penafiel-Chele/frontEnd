@@ -130,7 +130,7 @@ export class VendedorPedidosComponent implements OnInit {
     filter = $event.path[2].attributes[1].value
 
     if(filter == 1){
-      this.dataAux = this.dataAuxFilter.filter( i => i.status == 'Completado')
+      this.dataAux = this.dataAuxFilter.filter( i => i.status == 'Completada')
     }else if( filter == 2){
       this.dataAux = this.dataAuxFilter.filter( i => i.status == 'Pendiente')
     }else if(filter == 3){
