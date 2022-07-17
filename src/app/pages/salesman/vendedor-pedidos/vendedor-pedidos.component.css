@@ -7,13 +7,32 @@
 .status__order__pendiente{
     background-color: #FEEDAF;
     color: #8A5340;
+    border-radius: 50px;
+    padding: 5px 10px;
 }
 
 .status__order__completada{
     background-color: #C8E6C9;
     color: #256029;
+    border-radius: 50px;
+    padding: 5px 10px;
 }
 
 .p-column-title{
     font-weight: 600;
+}
+
+.dateOrder > div > span, article > div > span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.dateOrder > div > p, article > div > p{
+    text-align: center;
+}
+
+article > div:not(:first-of-type){
+   margin-top: 10px;
 }

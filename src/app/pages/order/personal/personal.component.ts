@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Address, User } from 'src/app/models/user';
 import { AddressUserService } from 'src/app/services/address-user.service';
+import { RestService } from 'src/app/services/rest.service';
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class PersonalComponent implements OnInit {
     private _navigator : Router,
     private _token : TokenService,
     private addressService : AddressUserService,
+    private restService : RestService
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +45,10 @@ export class PersonalComponent implements OnInit {
     this.submitted = true;
 
     if(this.phoneUser == this.phoneAux) this.user.user_phone = `(+593) ${this.phoneUser}`;
-    else this.user.user_phone = `(+593) ${this.phoneAux}`;
+    else{
+      this.user.user_phone = `(+593) ${this.phoneAux}`
+      this.restService.updateEmployee(this.user);
+    }
 
     if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.idAddressSelected && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.phoneUser.length == 11) {
       localStorage.setItem('information_sending',JSON.stringify(this.user));

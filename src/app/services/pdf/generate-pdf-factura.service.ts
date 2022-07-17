@@ -26,7 +26,7 @@ export class GeneratePdfFacturaService {
     this.pedidosAux = pedido.orders.map((item : any)=>{
       console.log(item)
       this.products.push({producto: item.i.order_detail.producto, order_detail_quantity: item.i.order_detail.order_detail_quantity, order_detail_total : item.i.order_detail.order_detail_total, order_detail_discount : item.i.order_detail.order_detail_discount})
-      return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order_detail.address.user_address, phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
+      return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order_detail.address.user_address, address_reference : item.i.order_detail.address_reference , phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
     });
 
     this.handleProducts(this.products);
@@ -137,8 +137,8 @@ export class GeneratePdfFacturaService {
           new Txt(`${this.pedidosAux[0].address}`).absolutePosition(100,200).fontSize(8).end,
         ]).end,
         new Columns([
-          new Txt('Lugar de Referencia:').absolutePosition(50,210).fontSize(8).bold().end,
-          new Txt(`${this.pedidosAux[0].address}`).absolutePosition(130,210).fontSize(8).end,
+          new Txt('LUGAR DE REFERENCIA:').absolutePosition(50,210).fontSize(8).bold().end,
+          new Txt(`${!this.pedidosAux[0].address_reference ? this.pedidosAux[0].address : this.pedidosAux[0].address_reference}`).absolutePosition(140,210).fontSize(8).end,
         ]).end,
         new Columns([
           new Txt('FECHA DE EMISIÓN:').absolutePosition(310,190).fontSize(8).bold().end,

@@ -52,9 +52,12 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
             </td>
             <td >
                 <span class="p-column-title"><i class="pi pi-share-alt"></i> Acciones: </span>
-                <button pButton pRipple type="button" icon="pi pi-eye" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
-                <ng-template [ngIf]="pedido.status == 'Pendiente'">
-                    <button pButton pRipple type="button" icon="pi pi-check" (click)="complete(pedido)" class="p-button-success"></button>
+                <button pButton pRipple type="button" icon="pi pi-file-pdf" pTooltip="PDF" tooltipPosition="top" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
+                <ng-template [ngIf]="pedido.status == 'Pendiente'" [ngIfElse]="completeOrder">
+                    <button pButton pRipple type="button" icon="pi pi-check" pTooltip="Completar" tooltipPosition="top" (click)="complete(pedido)" class="p-button-success"></button>
+                </ng-template>
+                <ng-template #completeOrder>
+                    <button pButton pRipple type="button" style="color: rgb(65, 65, 65);" pTooltip="Detalles" tooltipPosition="top" icon="pi pi-info-circle" (click)="showModal(pedido)" class="p-button-warning"></button>
                 </ng-template>
                 
             </td>
@@ -66,3 +69,29 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
         </div>
     </ng-template>
 </p-table>
+
+<ng-template [ngIf]="isShowModalDetail">
+    <p-dialog header="Detalles Avanzados del Pedido" [(visible)]="isShowModalDetail" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
+        [draggable]="false" [resizable]="false">
+    
+            <article>
+                <div class="dateOrder flex justify-content-center align-items-center">
+                    <div class="mr-4">
+                        <span><i class="pi pi-calendar mr-1"></i> Fecha de Pedido</span>
+                        <p>{{dataModal.order_date}}</p>
+                    </div>
+                    <div>
+                        <span><i class="pi pi-calendar mr-1"></i> Fecha de Despacho</span>
+                        <p>{{dataModal.update_date}}</p>
+                    </div>
+                </div>
+                <div>
+                    <span><i class="pi pi-clock mr-1"></i> Tiempo Total del Proceso</span>
+                    <p>{{dataModal.order_date}}</p>
+                </div>
+            </article>
+    
+            <ng-template pTemplate="footer">
+            </ng-template>
+    </p-dialog>
+</ng-template>

@@ -105,11 +105,11 @@ export class ConfirmationComponent implements OnInit {
 
   async completProcess(){
     await this.addSail();
-    await this.redirection();
   }
 
   async addSail(){
     this.showOverlay = true;
+
     const data = {
       id_user : this.user.id_user,
       order_price_total : this.order.price_order_total,
@@ -127,23 +127,26 @@ export class ConfirmationComponent implements OnInit {
         localStorage.removeItem('total');
         localStorage.removeItem('producto');
         this.showSuccess = true;
-        
-      }else if(response.status == 500){
-        console.log(response.message);
+        this.redirection();
+      }else if(response.status == 500 || response.status == 400){
+        this.msg = [
+          {severity:'error', summary:'Error', detail:`${response.message[0]}`},
+        ];
+        this.showMessage = true;
         this.showOverlay = false;
       }
     });
   }
 
   async getDataProfile(){
-    let data = localStorage.getItem('user');
+    let data = localStorage.getItem('information_sending');
 
     this.idAddress = parseInt(localStorage.getItem('information_address')!);
 
     this.user = JSON.parse(data!);
   }
 
-  async redirection(){
+  redirection(){
     setTimeout(() => {
       this._router.navigate(['/my-orders']);
     }, 5000);

@@ -11,6 +11,7 @@ export interface ISailOrder{
   id_order : number,
   name : string,
   order_date : number,
+  update_date : string,
   total : number,
   status : string,
   information : any
@@ -32,6 +33,8 @@ export class VendedorPedidosComponent implements OnInit {
   options : any [] = [];
   selectedOptionFilter : any;
   dataAuxFilter : ISailOrder[] = [];
+  isShowModalDetail : boolean = false;
+  dataModal : any;
 
   constructor(
     private _rest : RestService,
@@ -58,6 +61,8 @@ export class VendedorPedidosComponent implements OnInit {
   }
 
   groupOrderByIdOrder(response : any){
+    this.pedidos = {};
+
     let data : any = {};
 
     response.forEach((i : any)=>{
@@ -75,12 +80,15 @@ export class VendedorPedidosComponent implements OnInit {
   }
 
   createInterfaceTable(pedidos : any){
+    this.dataAux = [];
+    this.dataAuxFilter = [];
     pedidos.forEach((pedido : any) =>{
       this.dataAuxFilter.push(
         {
           id_order : pedido.orders[0].i.order.id_order,
           name : `${pedido.orders[0].i.order.user.user_name} ${pedido.orders[0].i.order.user.user_lastName}` ,
           order_date : pedido.orders[0].i.create_date,
+          update_date : pedido.orders[0].i.updated_at,
           total : pedido.orders[0].i.order.order_price_total,
           status : pedido.orders[0].i.order.order_status.order_status_description,
           information : pedido.orders
@@ -105,16 +113,11 @@ export class VendedorPedidosComponent implements OnInit {
       accept: () => {
           this._rest.changeStateOrder(data).subscribe((response)=>{
             if(response.status == 200 || response.message == "Orden completada"){
+              this.getPedidos();
               this.messageService.add({severity:'success', summary:'Completado', detail:`El pedido de ${pedido.name} ha sido completado`, life: 3000});
-            }else if(response.status == 500 && response.message == "Ocurrio un error interno en el servidor"){
+            }else if( response.status >= 400 && response.status <= 500 || response.message == "Ocurrio un error interno en el servidor"){
               this.messageService.add({severity:'error', summary:'Error', detail:`${response.message}`,life : 3000});
-            }else if(response.status == 500){
-              console.log(response.message);
-            }else if(response.status == 401){
-              console.log(response.message);
             }
-
-            this.getPedidos();
           })
       }
   });
@@ -136,5 +139,11 @@ export class VendedorPedidosComponent implements OnInit {
     }else if(filter == 3){
       this.dataAux = this.dataAuxFilter;
     }
+  }
+
+  showModal(pedido : any){
+    console.log(pedido)
+    this.dataModal = pedido;
+    this.isShowModalDetail = true
   }
 }

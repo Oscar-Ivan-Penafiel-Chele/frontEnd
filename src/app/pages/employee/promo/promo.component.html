@@ -68,7 +68,7 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="dialogBanner" [draggable]="false" [style]="{width: '1080px'}" header="Detalles de la Promoción" [closeOnEscape]="true" [maximizable]="true" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="dialogBanner" [draggable]="false" appendTo="body" [style]="{width: '1080px'}" header="Detalles de la Promoción" [closeOnEscape]="true" [maximizable]="true" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="formgrid grid">
             <div class="field col">
@@ -101,13 +101,13 @@
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
-                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="promotion.promotion_date_start" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar appendTo="body" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="promotion.promotion_date_start" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_start == null">Fecha culminación es requerido</small>
                 <small class="p-error" *ngIf="isShowMessageDateInit">{{!messageErrorDateInit ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateInit}}</small>
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Culminación <span class="inputs__required">*</span></label>
-                <p-calendar [style]="{'z-index':'9'}" [autoZIndex]="false" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar appendTo="body" [disabledDates]="invalidDates" dateFormat="yy-mm-dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="promotion.promotion_date_of_expiry" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_date_of_expiry == null">Fecha culminación es requerido</small>
                 <small class="p-error" *ngIf="isShowMessageDateExpiry">{{!messageErrorDateExpiry ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateExpiry}}</small>
             </div>
@@ -117,6 +117,7 @@
             <div class="field col">
                 <label for="description">Descripción de la Promoción <span class="inputs__required">*</span></label>
                 <textarea id="description" pInputTextarea [(ngModel)]="promotion.promotion_description" required rows="3" cols="20"></textarea>
+                <small class="p-error" *ngIf="submitted && !promotion.promotion_description">Descripción es requerida</small>
             </div>
         </div>
     </ng-template>

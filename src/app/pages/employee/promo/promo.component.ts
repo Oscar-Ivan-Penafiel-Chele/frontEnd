@@ -251,6 +251,7 @@ export class PromoComponent implements OnInit {
   validateData(){
     if(
       !this.promotion.id_product || 
+      !this.promotion.promotion_description ||
       !this.promotion.promotion_discount || this.promotion.promotion_discount < 1 ||
       this.disableButton == true || 
       !this.promotion.promotion_date_start || this.isShowMessageDateInit ||

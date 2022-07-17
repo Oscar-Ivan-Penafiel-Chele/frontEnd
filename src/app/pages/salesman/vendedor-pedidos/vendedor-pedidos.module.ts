@@ -13,6 +13,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {CheckboxModule} from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {TooltipModule} from 'primeng/tooltip';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     OverlayPanelModule,
     CheckboxModule,
     FormsModule,
-    RadioButtonModule
+    RadioButtonModule,
+    TooltipModule,
+    DialogModule
   ]
 })
 export class VendedorPedidosModule { }
