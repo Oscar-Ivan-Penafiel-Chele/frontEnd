@@ -1,8 +1,5 @@
 <p-toast></p-toast>
-<div *ngIf="showOverlay" class="overlayProcess">
-    <p-progressSpinner strokeWidth="3"></p-progressSpinner>
-    <p> Generando Pedido <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
-</div>
+
 <div class="stepsdemo-content">
     <p-messages *ngIf="showMessage" [(value)]="msg"></p-messages>
     <p-card>
@@ -27,3 +24,31 @@
         </ng-template>
     </p-card>
 </div>
+
+<ng-template [ngIf]="showOverlay">
+    <div class="overlayProcess">
+        <div class="styleOverlayProcess">
+            <ng-template [ngIf]="loadOrder" [ngIfElse]="completeOrder">
+                <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+                <p class="loadText"> {{textOverlay}} <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+            </ng-template>
+            
+            <ng-template #completeOrder>
+                <div class="complete__order flex flex-column justify-content-center align-items-center">
+                    <i [class]="iconResponse"></i>
+                    <p>{{textResponse}}</p>
+    
+                    <ng-template [ngIf]="showButtons">
+                        <div class="buttons__response">
+                            <button class="button__response" (click)="goHome()"><i class="pi pi-home mr-2"></i>Ir Home</button>
+                            <ng-template [ngIf]="showButtonOrders">
+                                <button class="button__response" (click)="redirection()"><i class="pi pi-shopping-bag mr-2" ></i>Ver Pedidos</button>
+                            </ng-template>
+                        </div>
+                    </ng-template>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    
+</ng-template>

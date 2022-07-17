@@ -28,6 +28,13 @@ export class ConfirmationComponent implements OnInit {
   showOverlay : boolean = false;
   msg : Message[] = [];
   idAddress : number = 0;
+  loadOrder : boolean = false;
+  completeOk : boolean = false;
+  iconResponse : string = "pi pi-times-circle response_error";
+  textResponse : string ="Ocurrió un error en el servidor!";
+  showButtonOrders : boolean = false;
+  textOverlay : string = "";
+  showButtons : boolean = false;
 
   constructor(
     private _router : Router,
@@ -38,6 +45,7 @@ export class ConfirmationComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderFunctions();
+    this.showOverlay = false;
   }
 
   async orderFunctions(){
@@ -52,6 +60,9 @@ export class ConfirmationComponent implements OnInit {
   }
   
   async initConfig() {
+    this.loadOrder = true;
+    this.textOverlay = "Realizando Pago"
+
     this.payPalConfig = {
     currency: 'USD',
     clientId: this.clientID,
@@ -108,8 +119,6 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async addSail(){
-    this.showOverlay = true;
-
     const data = {
       id_user : this.user.id_user,
       order_price_total : this.order.price_order_total,
@@ -127,7 +136,6 @@ export class ConfirmationComponent implements OnInit {
         localStorage.removeItem('total');
         localStorage.removeItem('producto');
         this.showSuccess = true;
-        this.redirection();
       }else if(response.status == 500 || response.status == 400){
         this.msg = [
           {severity:'error', summary:'Error', detail:`${response.message[0]}`},
@@ -147,9 +155,7 @@ export class ConfirmationComponent implements OnInit {
   }
 
   redirection(){
-    setTimeout(() => {
-      this._router.navigate(['/my-orders']);
-    }, 5000);
+    this._router.navigate(['/my-orders']);
   }
 
   async getProducts(){
@@ -161,5 +167,9 @@ export class ConfirmationComponent implements OnInit {
     let data = localStorage.getItem('total');
     this.order.price_order_total = JSON.parse(data!);
     console.log(this.order.price_order_total);
+  }
+
+  goHome(){
+    this._router.navigate(['/shop']);
   }
 }
