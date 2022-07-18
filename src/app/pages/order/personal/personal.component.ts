@@ -45,9 +45,9 @@ export class PersonalComponent implements OnInit {
     this.submitted = true;
 
     if(this.phoneUser.replace(/\s+/g, '') == this.phoneAux){ 
-      this.user.user_phone = `(+593) ${this.phoneUser}`
+      this.user.user_phone = `(+593)${this.phoneUser}`
     }else{
-      this.user.user_phone = `(+593) ${this.phoneUser.replace(/\s+/g, '')}`
+      this.user.user_phone = `(+593)${this.phoneUser.replace(/\s+/g, '')}`
       this.restService.updateEmployee(this.user);
     }
 

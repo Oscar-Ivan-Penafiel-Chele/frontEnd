@@ -101,14 +101,30 @@ ngx-paypal{
     gap: 1em;
 }
 
-.button__response{
+.button__home{
+    border: 2px solid #0b00e2;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #0b00e2;
+    opacity: 0.6;
+}
+
+.button__home, .button__response{
     padding: 10px 20px;
     font-size: 15px;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    font-weight: 600;
+}
+
+.button__response{
     background-color: #4F46E5;
     color: whitesmoke;
     border: none;
-    border-radius: 5px;
-    transition: all 0.2s ease-in-out;
+}
+
+.button__home:hover{
+    cursor: pointer;
+    opacity: 1;
 }
 
 .button__response:hover{

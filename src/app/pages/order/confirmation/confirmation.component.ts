@@ -30,8 +30,10 @@ export class ConfirmationComponent implements OnInit {
   idAddress : number = 0;
   loadOrder : boolean = false;
   completeOk : boolean = false;
-  iconResponse : string = "pi pi-times-circle response_error";
-  textResponse : string ="Ocurrió un error en el servidor!";
+  iconResponse : string = "";
+  iconOkResponse : string = "pi pi-check-circle response_ok";
+  iconErrorResponse : string = "pi pi-times-circle response_error";
+  textResponse : string ="";
   showButtonOrders : boolean = false;
   textOverlay : string = "";
   showButtons : boolean = false;
@@ -60,9 +62,6 @@ export class ConfirmationComponent implements OnInit {
   }
   
   async initConfig() {
-    this.loadOrder = true;
-    this.textOverlay = "Realizando Pago"
-
     this.payPalConfig = {
     currency: 'USD',
     clientId: this.clientID,
@@ -91,25 +90,38 @@ export class ConfirmationComponent implements OnInit {
       layout: 'vertical'
     },
     onApprove: (data, actions) => {
+      this.showOverlay = true;
+      this.loadOrder = true;
+      this.textOverlay = "Realizando Pago"
       actions.order.get().then((details : any) => {
         //console.log('onApprove - you can get full order details inside onApprove: ', details);
       });
     },
     onClientAuthorization: (data) => {
       if(data.status === "COMPLETED"){
-        this.msg = [
-          {severity:'success', summary:'Completado', detail:'El pago se realizó con éxito'},
-        ];
-        this.completProcess();
+        this.loadOrder = false;
+        this.iconResponse = this.iconOkResponse;
+        this.textResponse = "Pago realizado con éxito!";
+        this.showButtons = false;
+
+        setTimeout(() => {
+          this.loadOrder = true;
+          this.textOverlay = "Generando pedido"
+          this.completProcess();
+        }, 2000);
       }
     },
     onError: err => {
-      this.msg = [
-        {severity:'error', summary:'Error', detail:'No se pudo realizar el pago, verifique su cuenta'},
-      ];
-      this.showMessage = true;
-      //this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo realizar el pago, verifique su cuenta'});
+      this.loadOrder = false;
+      this.iconResponse = this.iconErrorResponse;
+      this.textResponse = "No se pudo realizar el pago, verifique el estado de su cuenta";
+      this.showButtons = true;
+      this.showButtonOrders = false;
+      
       console.log('OnError', err);
+    },
+    onClick: (data, actions) => {
+      console.log('onClick', data, actions);
     }
   };
   }
@@ -128,20 +140,24 @@ export class ConfirmationComponent implements OnInit {
     }
 
     this._rest.createOrder(data).subscribe((response : any)=>{
+      this.loadOrder = false;
+      this.showButtons = true;
+
       if(response.status == 200 || response.message == "Guardado con exito"){
-        this.showMessage = true;
+        this.iconResponse = this.iconOkResponse;
+        this.textResponse = "Pedido realizado con éxito!";
+        this.showButtonOrders = true;
+
         localStorage.removeItem('information_sending');
         localStorage.removeItem('information_address');
         localStorage.removeItem('subtotal');
         localStorage.removeItem('total');
         localStorage.removeItem('producto');
-        this.showSuccess = true;
+
       }else if(response.status == 500 || response.status == 400){
-        this.msg = [
-          {severity:'error', summary:'Error', detail:`${response.message[0]}`},
-        ];
-        this.showMessage = true;
-        this.showOverlay = false;
+        this.iconResponse = this.iconErrorResponse;
+        this.textResponse = "Ocurrio un problema en el servidor";
+        this.showButtonOrders = false;
       }
     });
   }
