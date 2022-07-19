@@ -120,7 +120,8 @@ export class AddressUserComponent implements OnInit {
       rejectButtonStyleClass : 'p-button-danger p-button-text',
       acceptLabel : 'Aceptar',
       accept: () => {
-       this.requestDeleteAddress(address.id_address);     
+        this.validateDeleteAddress(address.id_address);
+       //this.requestDeleteAddress(address.id_address);     
       },
     });
   }
@@ -137,6 +138,24 @@ export class AddressUserComponent implements OnInit {
         this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
       }
     });
+  }
+
+  validateDeleteAddress(id_address : number){
+    this.isLoading = true;
+
+    this.addressService.validateDelete(id_address).subscribe((response : any)=>{
+      console.log(response);
+
+      if(response.status == 200 && response.message == "no existe"){
+        //this.requestDeleteAddress(id_address);
+      }else if(response.status == 200 && response.message == "existe"){
+        this.messageService.add({severity:'warn', summary:'Advertencia', detail:'La dirección no se puede eliminar porque se encuentra en un pedido', life : 5000});
+      }else if(response.status >= 400){
+        this.messageService.add({severity:'error', summary:'Error', detail:'Ha ocurrido un problema en el servidor'});
+      }
+
+      this.isLoading = false;
+    })
   }
 
   openModal(){

@@ -53,4 +53,8 @@ export class AddressUserService {
   deleteAddress(idAddress : number) :Observable<any>{
     return this.http.delete<any>(`${this.url}/address/${idAddress}`);
   }
+
+  validateDelete(id_address : number) : Observable<any>{
+    return this.http.post<any>(`${this.url}/validate/address/order`, {id_address});
+  }
 }
