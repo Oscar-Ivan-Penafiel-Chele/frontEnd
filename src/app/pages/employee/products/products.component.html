@@ -22,21 +22,23 @@
         </ng-template>
 
         <ng-template pTemplate="right">
-            <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
-            <button [disabled]="loading" type="button" pButton pRipple [loading]="loadingPDF" icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+            <div class="buttons__toolbar">
+                <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                <button [disabled]="loading" type="button" pButton pRipple [loading]="loadingPDF" icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+            </div>
         </ng-template>
     </p-toolbar>
 
     <div id="htmlData">
-        <p-table #dt [value]="products" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name', 'product_code']" responsiveLayout="scroll"
-            [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+        <p-table #dt [value]="products" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name', 'product_code']" responsiveLayout="stack"
+            [(selection)]="selectedProducts" [rowHover]="true"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
             <ng-template pTemplate="caption">
-                <div class="flex align-items-center justify-content-between">
+                <div class="flex flex-wrap align-items-center justify-content-between">
                     <h5 class="m-0">Gestión de Productos</h5>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre o código..." />
+                        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre o código" />
                     </span>
                 </div>
             </ng-template>
@@ -53,15 +55,21 @@
             </ng-template>
             <ng-template pTemplate="body" let-product>
                 <tr>
-                    <td>{{product.product_code}}</td>
-                    <td>{{product.product_name}}</td>
-                    <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="80" height="80" class="shadow-4" /></td>
-                    <td>{{product.product_price | currency:'USD'}}</td>
-                    <td>{{product.product_stock}}</td>
-                    <td>{{product.create_date}}</td>
+                    <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Código: </span>{{product.product_code}}</td>
+                    <td><span class="p-column-title mr-7">Nombre: </span> <p style="text-align: justify;">{{product.product_name}}</p></td>
                     <td>
-                        <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
-                        <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock != 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                        <span class="p-column-title"><i class="pi pi-image"></i> Imagen: </span>
+                        <img [src]="!product.product_image || product.product_image == 'null' ? overImage : host+product.product_image" [alt]="product.product_name" width="80" height="80" class="shadow-4" />
+                    </td>
+                    <td><span class="p-column-title"><i class="pi pi-dollar"></i> Precio: </span>{{product.product_price | currency:'USD'}}</td>
+                    <td><span class="p-column-title"><i class="pi pi-box"></i> Stock: </span>{{product.product_stock}}</td>
+                    <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{product.create_date}}</td>
+                    <td>
+                        <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
+                        <div class="flex justify-content-end align-items-end">
+                            <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editProduct(product)"></button>
+                            <button pButton [style]="{'width':'45px', 'height':'45px'}" pRipple [disabled]="product.product_stock != 0 || product.product_status == 0" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                        </div>
                     </td>
                 </tr>
             </ng-template>

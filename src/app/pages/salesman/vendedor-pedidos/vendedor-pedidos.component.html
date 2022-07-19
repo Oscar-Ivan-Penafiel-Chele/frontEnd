@@ -41,7 +41,7 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
     <ng-template pTemplate="body" let-pedido>
         <tr>
             <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Orden: </span>{{pedido.id_order}}</td>
-            <td style="width: 250px;"><span class="p-column-title"> <i class="pi pi-user"></i>Cliente: </span> {{pedido.name}}</td>
+            <td style="width: 250px;"><span class="p-column-title mr-2"> <i class="pi pi-user"></i> Cliente: </span> {{pedido.name}}</td>
             <td><span class="p-column-title"><i class="pi pi-calendar"></i>  Fecha de Pedido: </span>{{pedido.order_date}}</td>
             <td><span class="p-column-title"><i class="pi pi-dollar"></i> Precio Total: </span>$ {{pedido.total}}</td>
             <td>
@@ -52,13 +52,15 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
             </td>
             <td >
                 <span class="p-column-title"><i class="pi pi-share-alt"></i> Acciones: </span>
-                <button pButton pRipple type="button" icon="pi pi-file-pdf" pTooltip="PDF" tooltipPosition="top" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
-                <ng-template [ngIf]="pedido.status == 'Pendiente'" [ngIfElse]="completeOrder">
-                    <button pButton pRipple type="button" icon="pi pi-check" pTooltip="Completar" tooltipPosition="top" (click)="complete(pedido)" class="p-button-success"></button>
-                </ng-template>
-                <ng-template #completeOrder>
-                    <button pButton pRipple type="button" style="color: rgb(65, 65, 65);" pTooltip="Detalles" tooltipPosition="top" icon="pi pi-info-circle" (click)="showModal(pedido)" class="p-button-warning"></button>
-                </ng-template>
+                <div class="flex justify-content-end align-items-end">
+                    <button pButton pRipple type="button" icon="pi pi-file-pdf" pTooltip="PDF" tooltipPosition="top" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
+                    <ng-template [ngIf]="pedido.status == 'Pendiente'" [ngIfElse]="completeOrder">
+                        <button pButton pRipple type="button" icon="pi pi-check" pTooltip="Completar" tooltipPosition="top" (click)="complete(pedido)" class="p-button-success"></button>
+                    </ng-template>
+                    <ng-template #completeOrder>
+                        <button pButton pRipple type="button" style="color: rgb(65, 65, 65);" pTooltip="Detalles" tooltipPosition="top" icon="pi pi-info-circle" (click)="showModal(pedido)" class="p-button-warning"></button>
+                    </ng-template>
+                </div>
                 
             </td>
         </tr>

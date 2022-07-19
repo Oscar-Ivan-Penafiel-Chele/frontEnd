@@ -141,13 +141,13 @@
                                 <div class="product-list-detail">
                                     <div class="product-name">{{product.product_name}}</div>
                                     <div class="product-description">{{product.product_description}}</div>
+                                    <p *ngIf="product.product_offered != null" style="width: min-content;" class="product-offered mb-3"> -{{product.product_offered}}%</p>   
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [ngModel]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>
                                     <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category.category_name}}</span>
-                                    <p *ngIf="product.product_offered != null" style="width: min-content;" class="product-offered"> -{{product.product_offered}}%</p>   
                                 </div>
                                 <div class="product-list-action">
                                     <div *ngIf="product.product_offered != null" class="flex flex-column">
-                                        <span class="product-price" style="text-decoration: line-through; font-size: 14px;">${{product.product_price}}</span>
+                                        <span class="product-price" style="text-decoration: line-through; font-size: 14px; color: rgb(255, 78, 78);">${{product.product_price}}</span>
                                         <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
                                     </div>
                                     <span *ngIf="product.product_offered == null" class="product-price">${{product.product_price}}</span>
@@ -174,9 +174,9 @@
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <ng-template [ngIf]="product.product_offered != null && showPromotion" [ngIfElse]="notPromotion">
-                                        <div class="flex flex-column">
-                                            <span class="product-price" style="text-decoration: line-through; font-size: 14px;">${{product.product_price}}</span>
-                                            <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
+                                        <div class="flex flex-row-reverse align-items-center">
+                                            <span class="product-price" style="text-decoration: line-through; font-size: 14px; margin-left: 5px; color: rgb(255, 78, 78);">${{product.product_price}}</span>
+                                            <span class="product-price" style="font-size: 19px;">${{product.product_offered_price_total}}</span>
                                         </div>
                                     </ng-template>
 

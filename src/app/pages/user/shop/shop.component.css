@@ -543,7 +543,6 @@ main{
 
 .options__shop__content{
     background: #FDC830;
-    /* background-image: url(./../../../../assets/img/back.svg); */
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     padding: 20px 0px;
     border-radius: 5px;
@@ -649,7 +648,7 @@ main{
     font-weight: 700;
 }
 :host ::ng-deep .product-description {
-    margin: 0 0 1rem 0;
+    margin: 0 0 0 0;
 }
 :host ::ng-deep .product-category-icon {
     vertical-align: middle;
@@ -790,9 +789,10 @@ main{
 }
 
 .product-offered{
-    background-color: #FFCDD2;
-    padding: 2px 20px;
-    font-size: 20px;
-    color: #C63737;
+    background-color: rgb(255, 78, 78);
+    padding: 2px 15px;
+    font-size: 16px;
+    border-radius: 50px;
+    color: whitesmoke;
 }
 

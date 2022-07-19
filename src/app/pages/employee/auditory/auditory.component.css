@@ -5,3 +5,7 @@
 .field > label{
     font-weight: bold;
 }
+
+.p-column-title{
+    font-weight: 600;
+}

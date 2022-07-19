@@ -323,7 +323,6 @@ export class ShopComponent implements OnInit {
       product_offered_price_total : product.product_offered_price_total
     }
 
-    console.log(data)
     this._rest.addProductCart(data).subscribe((response) =>{
       if(response.status == 200 || response.message === "Guardado con exito"){
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});

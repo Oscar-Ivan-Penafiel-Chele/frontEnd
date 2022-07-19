@@ -146,4 +146,6 @@ export class VendedorPedidosComponent implements OnInit {
     this.dataModal = pedido;
     this.isShowModalDetail = true
   }
+
+  
 }

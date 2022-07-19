@@ -9,3 +9,7 @@
 .inputs__required{
     color: red;
 }
+
+.p-column-title{
+    font-weight: 600;
+}

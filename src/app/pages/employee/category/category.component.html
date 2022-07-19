@@ -22,10 +22,10 @@
 
     </p-toolbar>
 
-    <p-table #dt [value]="categories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['category_name']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="categories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['category_name']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Categorías</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
@@ -35,7 +35,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="category_name"><i class="pi pi-book"></i> Nombre<p-sortIcon field="category_name"></p-sortIcon></th>
+                <th pSortableColumn="category_name"><i class="pi pi-tag"></i> Nombre<p-sortIcon field="category_name"></p-sortIcon></th>
                 <th pSortableColumn="category_descripcion"><i class="pi pi-book"></i> Descripción<p-sortIcon field="category_descripcion"></p-sortIcon></th>
                 <th><i class="pi pi-image"></i> Imagen</th>
                 <th pSortableColumn="category_status"><i class="pi pi-box"></i> Estado <p-sortIcon field="category_status"></p-sortIcon></th>
@@ -45,14 +45,17 @@
         </ng-template>
         <ng-template pTemplate="body" let-category let-columns="columns" let-index="rowIndex">
             <tr>
-                <td>{{category.category_name}}</td>
-                <td>{{category.category_descripcion}}</td>
-                <td><img [src]="!category.category_thumbnail || category.category_thumbnail=='null' ? overImage : host+category.category_thumbnail" [alt]="category.category_thumbnail" width="80" height="80" class="shadow-4" /></td>
-                <td>{{category.category_status == 0 ? 'Inactivo' : 'Activo'}}</td>
-                <td>{{category.create_date}}</td>
+                <td><span class="p-column-title"><i class="pi pi-tag"></i> Nombre: </span>{{category.category_name}}</td>
+                <td><span class="p-column-title"><i class="pi pi-book"></i> Descripción: </span>{{category.category_descripcion}}</td>
+                <td><span class="p-column-title"><i class="pi pi-image"></i> Imagen: </span><img [src]="!category.category_thumbnail || category.category_thumbnail=='null' ? overImage : host+category.category_thumbnail" [alt]="category.category_thumbnail" width="80" height="80" class="shadow-4" /></td>
+                <td><span class="p-column-title"><i class="pi pi-box"></i> Estado: </span>{{category.category_status == 0 ? 'Inactivo' : 'Activo'}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{category.create_date}}</td>
                 <td>
-                    <button [disabled]="category.category_name === 'NO DEFINIDO'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editCategory(category)"></button>
-                    <button [disabled]="category.category_status == 0 || category.category_name === 'NO DEFINIDO'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCategory(category)"></button>
+                    <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
+                    <div class="flex justify-content-end align-items-end"> 
+                        <button [disabled]="category.category_name === 'NO DEFINIDO'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editCategory(category)"></button>
+                        <button [disabled]="category.category_status == 0 || category.category_name === 'NO DEFINIDO'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCategory(category)"></button>
+                    </div>
                 </td>
             </tr>
         </ng-template>

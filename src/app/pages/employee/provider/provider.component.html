@@ -31,7 +31,7 @@
     <p-table #dt [value]="providers" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['provider_name','provider_products_offered']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Proveedores</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>

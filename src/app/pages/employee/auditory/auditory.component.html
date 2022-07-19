@@ -1,12 +1,8 @@
 <div class="card">
-    <!-- <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="right">
-            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="right"></button>
-        </ng-template>
-    </p-toolbar> -->
 
-    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" 
+    responsiveLayout="stack" [rowHover]="true"  [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Auditoría</h5>
@@ -27,11 +23,12 @@
         </ng-template>
         <ng-template pTemplate="body" let-auditory let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td>{{auditory.user.user_name}} {{auditory.user.user_lastName}}</td>
-                <td>{{auditory.audit_module}}</td>
-                <td>{{auditory.audit_description}}</td>
-                <td>{{auditory.create_date}}</td>
+                <td><span class="p-column-title"><i class="pi pi-user"></i> Nombre: </span>{{auditory.user.user_name}} {{auditory.user.user_lastName}}</td>
+                <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Módulo: </span>{{auditory.audit_module}}</td>
+                <td><span class="p-column-title pr-7">Descripción: </span> <p style="text-align:justify;">{{auditory.audit_description}}</p></td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{auditory.create_date}}</td>
                 <td>
+                    <span class="p-column-title"><i class="pi pi-database"></i> Query: </span>
                     <button pButton pRipple type="button" icon="pi pi-eye" (click)="openModal(auditory)" class="p-button-info"></button>
                 </td>
             </tr>
