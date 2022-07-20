@@ -85,7 +85,7 @@ export class ProductsComponent implements OnInit {
     overImage : string = "assets/img/not_image.jpg";
     invalidFileTypeMessageSummary : string = `Tipo de archivo inválido:`;
     invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .xlsx`;
-    
+    optionsIVA : any[] = [];
 
     constructor(
         private _rest : RestService,
@@ -108,6 +108,10 @@ export class ProductsComponent implements OnInit {
             {name: 'Activo', id: 1, icon : 'pi pi-thumbs-up'},
             {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
         ]
+        this.optionsIVA = [
+            {label:'Si', icon : 'pi pi-check', value : 1},
+            {label:'No', icon : 'pi pi-times', value : 0}
+        ];
         this.getAllProducts();
         this.getCodeProduct();
         this.getAllCategories();
@@ -406,7 +410,6 @@ export class ProductsComponent implements OnInit {
     }
 
     validateNameProduct(){
-        console.log(this.product.product_name);
         this._rest.validateNameProduct(this.product.product_name!).subscribe((response)=>{
             if(response.status == 200 && response.message == "No existe"){
                 if(this.actionSelected == "new"){
@@ -472,7 +475,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateData(){
-        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
+        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_IVA == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
             return false;
         }
       
@@ -480,7 +483,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
+        if(!this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_IVA == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
             return false;
         }
       

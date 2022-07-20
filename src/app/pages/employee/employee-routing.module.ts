@@ -13,6 +13,7 @@ const routes : Routes = [
       {path: 'brand', loadChildren : ()=> import('./brand/brand.module').then( m => m.BrandModule)},
       {path: 'banner', loadChildren : ()=> import('./banner/banner.module').then( m => m.BannerModule)},
       {path: 'category', loadChildren : () => import('./category/category.module').then( m => m.CategoryModule)},
+      {path: 'manage-iva', loadChildren : () => import('./manage-iva/manage-iva.module').then(m => m.ManageIvaModule)},
       {path: 'employee', loadChildren : () => import('./report/report.module').then(m => m.ReportModule)},
       {path: 'migration', loadChildren : () => import('./migration/migration.module').then(m => m.MigrationModule)},
       {path: 'products', loadChildren : () => import('./products/products.module').then(m => m.ProductsModule)},

@@ -147,7 +147,7 @@ export class AddressUserComponent implements OnInit {
       console.log(response);
 
       if(response.status == 200 && response.message == "no existe"){
-        //this.requestDeleteAddress(id_address);
+        this.requestDeleteAddress(id_address);
       }else if(response.status == 200 && response.message == "existe"){
         this.messageService.add({severity:'warn', summary:'Advertencia', detail:'La dirección no se puede eliminar porque se encuentra en un pedido', life : 5000});
       }else if(response.status >= 400){

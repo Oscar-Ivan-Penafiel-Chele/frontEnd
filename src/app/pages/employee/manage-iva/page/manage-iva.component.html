@@ -1,0 +1,31 @@
+<div class="card">
+    <p-table #dt [value]="data" [rows]="5" [loading]="isLoading" 
+    responsiveLayout="stack" [rowHover]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h4 class="m-0">Gestión del IVA</h4>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th><i class="pi pi-percentage"></i> Porcentaje</th>
+                <th><i class="pi pi-folder-open"></i> Indefinido</th>
+                <th><i class="pi pi-calendar"></i> Fecha de Inicio</th>
+                <th><i class="pi pi-calendar"></i> Fecha Fin</th>
+                <th><i class="pi pi-inbox"></i> Acción</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-iva>
+            <tr>
+                <td><span class="p-column-title"><i class="pi pi-percentage"></i> Porcentaje: </span>{{iva.porcent}}</td>
+                <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Indefinido: </span>{{iva.ivaUndefined}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Inicio: </span> {{iva.date_start}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha Fin: </span>{{iva.date_end}}</td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-database"></i> Acción: </span>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" (click)="editIva(iva)" class="p-button-warning"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

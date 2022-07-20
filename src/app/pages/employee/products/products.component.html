@@ -168,17 +168,30 @@
             </p-dropdown>
             <small class="p-error" *ngIf="submitted && !product.id_brand">Marca es requerida</small>
             </div>
+
             <div class="field col">
-            <label for="productStatus">Estado del Producto <span class="inputs__required">*</span></label>
-            <p-dropdown [showClear]="true" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
-                <ng-template let-option pTemplate="item">
-                    <div class="flex flex-row justify-content-start align-items-center">
-                        <i class="{{option.icon}} mr-2"></i>
-                        <span>{{option.name}}</span>
-                    </div>
-                </ng-template>
-            </p-dropdown>
-            <small class="p-error" *ngIf="submitted && product.product_status == null">Estado es requerido</small>
+                <label for="productStatus">Estado del Producto <span class="inputs__required">*</span></label>
+                <p-dropdown [showClear]="true" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && product.product_status == null">Estado es requerido</small>
+            </div>
+            <div class="field col">
+                <label for="productStatus">Aplica IVA <span class="inputs__required">*</span></label>
+                <p-dropdown [showClear]="true" [(ngModel)]="product.product_IVA" optionLabel="label" optionValue="value" inputId="label" [options]="optionsIVA" placeholder="Seleccionar">
+                    <ng-template let-option pTemplate="item">
+                        <div class="flex flex-row justify-content-start align-items-center">
+                            <i class="{{option.icon}} mr-2"></i>
+                            <span>{{option.label}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error" *ngIf="submitted && product.product_IVA == null">Campo es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
