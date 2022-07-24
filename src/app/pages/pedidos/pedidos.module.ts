@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PedidosComponent } from './pedidos.component';
+import { PedidosComponent } from './page/pedidos.component';
 import { PedidosRoutingModule } from './pedidos-routing.module';
-import { SharedModule } from '../shared/shared.module';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {TableModule} from 'primeng/table';
-import {ButtonModule} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
+import { FooterModule } from 'src/app/shared/components/footer/footer.module';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -15,11 +12,8 @@ import {InputTextModule} from 'primeng/inputtext';
   imports: [
     CommonModule,
     PedidosRoutingModule,
-    SharedModule,
-    ProgressSpinnerModule,
-    TableModule,
-    ButtonModule,
-    InputTextModule
+    FooterModule,
+    PrimengComponentsModule
   ]
 })
 export class PedidosModule { }

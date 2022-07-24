@@ -9,7 +9,7 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { SortByOrderPipe } from './pipes/sort-by-order.pipe';
-import { AuthInterceptor } from './services/auth.interceptor';
+import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [

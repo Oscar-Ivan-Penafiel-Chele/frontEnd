@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { AboutRoutingModule } from './about-routing.module';
 
-import { AboutComponent } from './about.component';
-import { SharedModule } from '../shared/shared.module';
+import { AboutComponent } from './pages/about.component';
+import { NavAboutContactModule } from 'src/app/shared/components/nav-about-contact/nav-about-contact/nav-about-contact.module';
+import { FooterModule } from 'src/app/shared/components/footer/footer.module';
+import { ButtonUpModule } from 'src/app/shared/components/button-up/button-up.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     AboutRoutingModule,
-    SharedModule
+    NavAboutContactModule,
+    FooterModule,
+    ButtonUpModule
   ]
 })
 

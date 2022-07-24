@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Category } from '../models/category';
 import * as _ from 'underscore';
 
 @Pipe({

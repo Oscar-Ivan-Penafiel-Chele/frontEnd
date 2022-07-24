@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SalesmanComponent } from './salesman.component';
+import { SalesmanComponent } from './page/salesman.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthorizationGuard } from 'src/app/guards/authorization/authorization.guard';
-import { AuthenticationGuard } from 'src/app/guards/authentication/authentication.guard';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication/authentication.guard';
+import { AuthorizationGuard } from 'src/app/auth/guards/authorization/authorization.guard';
 
 const routes : Routes = [
   { path:'', component: SalesmanComponent, canActivate : [AuthenticationGuard, AuthorizationGuard], data : { role : '4'},

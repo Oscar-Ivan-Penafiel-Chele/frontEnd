@@ -1,0 +1,127 @@
+<p-toast></p-toast>
+<section>
+    <p-card header="Información Personal">
+        <div *ngIf="!completeData" class="grid p-fluid justify-content-center">
+            <div class="input__item col-12 md:col-6 mb-1">
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <div class="p-inputgroup">
+                    <p-skeleton width="20rem" height="3rem"></p-skeleton>
+                </div>
+            </div>
+            <div class="input__item col-12 md:col-6 mb-1">
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <div class="p-inputgroup">
+                    <p-skeleton width="20rem" height="3rem"></p-skeleton>
+                </div>
+            </div>
+            <div class="input__item col-12 md:col-6 mb-1">
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <div class="p-inputgroup">
+                    <p-skeleton width="20rem" height="3rem"></p-skeleton>
+                </div>
+            </div>
+            <div class="input__item col-12 md:col-6 mb-1">
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <div class="p-inputgroup">
+                    <p-skeleton width="20rem" height="3rem"></p-skeleton>
+                </div>
+            </div>
+            <div class="input__item col-12 md:col-6 mb-1">
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <div class="p-inputgroup">
+                    <p-skeleton width="20rem" height="3rem"></p-skeleton>
+                </div>
+            </div>
+            <div class="input__item col-12 md:col-6 mb-1">
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <div class="p-inputgroup">
+                    <p-skeleton width="20rem" height="3rem"></p-skeleton>
+                </div>
+            </div>
+        </div>
+    
+        <div class="grid p-fluid justify-content-center">
+            <div class="input__item col-12 md:col-6 mb-1">
+                <span>Nombres</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" [disabled]="true" #input_name [(ngModel)]="user.user_name" pInputText placeholder="Nombres">   
+                    <button type="button" (click)="input_name.disabled=false" pButton pRipple icon="pi pi-pencil" styleClass="p-button-danger"></button>            
+                </div>
+                <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requeridos</small>
+            </div>
+            
+            <div class="input__item col-12 md:col-6 mb-1">
+                <span>Apellidos</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" [disabled]="true" #input_lastName [(ngModel)]="user.user_lastName" pInputText placeholder="Apellidos"> 
+                    <button type="button" pButton pRipple (click)="input_lastName.disabled=false" icon="pi pi-pencil" styleClass="p-button-warn"></button>              
+                </div>
+                <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requeridos</small>
+            </div>
+        </div>
+        <div class="grid p-fluid justify-content-center">
+            <div class="input__item col-12 md:col-6 mb-1">
+                <span>Celular</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-phone"></i></span>
+                    <p-inputMask [disabled]="input_phone" [style]="{'min-width':'100%','height':'100%'}" id="phone" mask="(+999) 99 999 9999" [(ngModel)]="user.user_phone" placeholder="(+999) 99 999 9999"></p-inputMask>
+                    <button type="button" pButton pRipple (click)="input_phone = false" icon="pi pi-pencil" styleClass="p-button-warn"></button>            
+                </div>
+                <small class="p-error" *ngIf="submitted && !user.user_phone">Celular es requerido</small>
+            </div>
+            <div class="input__item col-12 md:col-6 mb-4">
+                <span>Correo Electrónico</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                    <input type="text" [disabled]="true" [(ngModel)]="user.email" pInputText placeholder="Correo Electrónico">         
+                </div>
+                <small class="p-error" *ngIf="submitted && !user.email">Correo Electrónico es requerido</small>
+            </div> 
+        </div>
+        <div class="grid p-fluid justify-content-center">
+            <div class="input__item col-12 md:col-6 mb-1">
+                <span>Tipo de Identificación</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-flag"></i></span>
+                    <input type="text" [disabled]="true" [(ngModel)]="typeDocument" pInputText placeholder="Correo Electrónico">         
+                </div>
+            </div>
+            
+            <div class="input__item col-12 md:col-6 mb-1">
+                <span>Identificación</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
+                    <input type="text" [disabled]="true" [(ngModel)]="user.user_document" pInputText placeholder="Identificación">         
+                </div>
+                <small class="p-error" *ngIf="submitted && !user.user_document">Identificación es requerida</small>
+            </div>
+        </div>
+      
+        <div class="grid p-fluid justify-content-center">
+            <div class="col-12 md:col-7"> 
+                <button id="btnLogin" class="button-login" [loading]="loading" (click)="changeInformation()" pButton pRipple type="button">
+                    <p [hidden]="!isVisibleText" style="width: 100%;">Actualizar</p>
+                    <p [hidden]="isVisibleText" style="width: 48%;"></p>
+                </button>   
+            </div>
+        </div>
+    </p-card>
+    
+    <p-dialog header="Confirmar Contraseña" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
+        [draggable]="false" [resizable]="false">
+            <p style="font-size: 15px; font-weight: 600;" class="mb-2">* Para realizar los cambios es necesaria la contraseña</p>
+            <div class="grid p-fluid">
+                <div class="col-12">
+                    <p-password [(ngModel)]="confirmPassword" [inputStyle]="{'wdith':'100%'}" [feedback]="false" [toggleMask]="true"></p-password>
+                    <small class="p-error" *ngIf="submitted && !confirmPassword">Contraseña es requerida</small>
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+                <button [disabled]="buttonCancel" pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="displayModal=false"></button>
+                <p-button icon="pi pi-check" [loading]="loading" (click)="validatePassword()" label="Confirmar" styleClass="p-button-text"></p-button>
+            </ng-template>
+    </p-dialog>
+
+</section>

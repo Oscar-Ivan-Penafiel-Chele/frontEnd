@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SalesmanComponent } from './salesman.component';
+import { SalesmanComponent } from './page/salesman.component';
 import { SalesmanRoutingModule } from './salesman-routing.module';
 import {TooltipModule} from 'primeng/tooltip';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';

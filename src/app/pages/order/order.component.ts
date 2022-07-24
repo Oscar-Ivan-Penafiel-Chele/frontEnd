@@ -1,12 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cart } from 'src/app/models/cart';
-import { Product } from 'src/app/models/product';
-import { User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { RestService } from 'src/app/services/rest.service';
-import { TokenService } from 'src/app/services/token.service';
+import { Cart, Product, User} from '@models/interfaces';
+import { AuthService } from 'src/app/auth/service/auth.service';
 import {MenuItem} from 'primeng/api';
+import { CartServiceService } from '../cart/service/cart-service.service';
+import { TokenService } from 'src/app/auth/service/token.service';
 
 @Component({
   selector: 'app-order',
@@ -26,7 +24,7 @@ export class OrderComponent implements OnInit {
     private _navigate : Router,
     private _authService : AuthService,
     private _token : TokenService, 
-    private _rest : RestService,
+    private cartService : CartServiceService
   ) { 
     this.overlayLogout = false;
   }
@@ -68,7 +66,7 @@ export class OrderComponent implements OnInit {
       id_user : id_user
     };
 
-    this._rest.getProductsCart(data).subscribe((response : Cart[])=>{
+    this.cartService.getProductsCart(data).subscribe((response : Cart[])=>{
       this.extractData(response);
     })
   }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaymentComponent } from './payment.component';
+import { PaymentComponent } from './page/payment.component';
 import { PaymentRoutingModule } from './payment-routing.module';
 import {InputTextModule} from 'primeng/inputtext';
 import {CardModule} from 'primeng/card';

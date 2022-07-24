@@ -1,0 +1,55 @@
+<section>
+    <div class="content-login">
+        <div class="content-login-header">
+            <figure>
+                <a href="/home"><img class="img-log" src="assets/img/logo_app.svg" alt="Logo de la Ferreteria"></a> 
+            </figure>
+            <p>Ferretería | El Descanso</p>
+        </div>
+      
+        <div class="content-login-main">
+            <div class="card-login">
+                <p class="mb-2">Inicio de Sesión</p>
+                <div *ngIf="displayMessage" class="mb-3" style="width: 100%;">
+                    <p-message [severity]="selectedMessageStatus.severity" [style]="{'width':'100%'}" [text]="selectedMessageStatus.message"></p-message>
+                </div>
+                <br>
+                <span class="p-float-label">
+                    <input required id="float-input" [(ngModel)]="email" type="text" autofocus pInputText style="width: 100%;"> 
+                    <label for="float-input"><i class="pi pi-user mr-2"></i>Correo Electrónico</label>
+                </span>
+                <small class="p-error" style="float: right;" *ngIf="submitted && email==''">Correo electrónico es requerido</small>
+                <br>
+                <div class="input-password">
+                    <span class="p-float-label">
+                        <p-password required [(ngModel)]="password" [toggleMask]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
+                        </p-password>
+                        <label for="float-input"><i class="pi pi-lock mr-2"></i>Contraseña</label>
+                    </span>
+                    <small class="p-error" style="float: right;" *ngIf="submitted && password==''">Contraseña es requerida</small>
+                </div>
+
+                <div class="link-forgot">
+                    <div class="still-session">
+                        <p-checkbox id="input-password" [(ngModel)]="keepSession" [binary]="true" inputId="binary"></p-checkbox>
+                        <label for="binary">Mantener Sesión</label>
+                    </div>
+                    <a href="#" class="link-forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+                <br>
+                <div class="btn-login">
+                    <button id="btnLogin" class="button-login" [loading]="loading" onkeypress="pressEnter($event)" (click)="login()" pButton pRipple type="button">
+                        <p [hidden]="!isVisibleText" style="width: 100%;">INGRESAR</p>
+                        <p [hidden]="isVisibleText" style="width: 48%;"></p>
+                    </button>   
+                </div>
+            </div>  
+            <br>
+            <div class="text-register">
+                <p>Aún no tienes cuenta, <a [routerLink]="['/signup']" class="link-signup">¡Registrate!</a></p>
+            </div>
+        </div>
+    </div>
+
+   <app-background-animate></app-background-animate>
+</section>

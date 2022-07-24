@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home.component';
+import { HomeComponent } from './page/home.component';
 import { HomeRoutingModule } from './home-routing.module';
-import {CarouselModule} from 'primeng/carousel';
+
 import { RouterModule } from '@angular/router';
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import { SharedModule } from '../shared/shared.module';
-import {SkeletonModule} from 'primeng/skeleton';
+import { ButtonUpModule } from 'src/app/shared/components/button-up/button-up.module';
+import { FooterModule } from 'src/app/shared/components/footer/footer.module';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -16,12 +15,10 @@ import {SkeletonModule} from 'primeng/skeleton';
   imports: [
     CommonModule,
     HomeRoutingModule,
-    CarouselModule,
     RouterModule,
-    InputTextModule,
-    ButtonModule,  
-    SharedModule,
-    SkeletonModule
+    ButtonUpModule,
+    FooterModule,
+    PrimengComponentsModule
   ]
 })
 export class HomeModule { }

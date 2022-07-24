@@ -1,0 +1,154 @@
+<p-toast></p-toast>
+<section>
+    <nav>
+        <div class="logout" *ngIf="overlayLogout">
+            <p-progressSpinner strokeWidth="3"></p-progressSpinner>
+            <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
+        </div>
+        
+        <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
+           <div class="nav__container">
+                <div class="nav__logo">
+                    <a href="/shop"><img src="assets/img/logo_app.svg" alt="" width="60px">El Descanso</a>
+                </div>
+                <div class="nav__menu">
+                    <div class="nav__menu__content">
+                        <a href="/login"><i class="pi pi-sign-in"> </i>Iniciar Sesión</a>
+                        <a href="/signup"><i class="pi pi-user-plus"> </i>Registrar</a>
+    
+                        <div class="nav__menu__content_social">
+                            <div class="nav__menu__content_social__icons">
+                                <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
+                                <a href="https://facebook.com" target="_blank" class="facebook" pTooltip="Facebook" tooltipPosition="top"><i class="pi pi-facebook" ></i></a>
+                                <a href="https://instagram.com" target="_blank" class="instagram" pTooltip="Instagram" tooltipPosition="top"><i class="pi pi-instagram" ></i></a>
+                                <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <button class="hamburger" (click)="isActive()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+           </div>
+    
+        </ng-template>
+    
+        <ng-template #logged>
+            <div class="nav__container">
+                <div class="nav__logo">
+                    <a href="/shop"><img src="assets/img/logo_app.svg" alt="" width="60px">El Descanso</a>
+                </div>
+                <div class="nav__menu">
+                    <div class="nav__menu__content">
+                        <div class="nav__menu__cart">
+                            <button pRipple (click)="goCart()"><i class="pi pi-shopping-cart"></i></button>
+                        </div>
+                        <div class="nav__menu__option">
+                            <div class="nav__user" pRipple (click)="displayOptions()">
+                                <p><i class="pi pi-user mr-1"></i>{{user.user_name}} {{user.user_lastName}}<i class="pi pi-angle-down ml-3"> </i></p>
+                            </div>
+                            <div class="nav__user__option isActiveNavOption">
+                                <p>Opciones</p>
+                                <a href="/my-orders"><i class="pi pi-shopping-bag"></i> Pedidos</a>
+                                <a href="/configuración"><i class="pi pi-cog"></i> Configuración</a>
+                                <p>Sesión</p>
+                                <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
+                            </div>
+                        </div>
+                        
+                        <div class="nav__menu__content__date">
+                            <div class="menu__social__date">
+                                <p>{{fechaYHora}}</p>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <button class="hamburger" (click)="isActive()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+           </div>
+        </ng-template>
+    </nav>
+
+    <main>
+        <div class="table__item__cart">
+            <p-table #dt [value]="products" styleClass="p-datatable-sm" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name']"
+            currentPageReportTemplate="" [showCurrentPageReport]="true" responsiveLayout="stack">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                        <p>Total de Items : {{products.length}}</p>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th><i class="pi pi-image"></i> Imagen</th>
+                        <th pSortableColumn="product_name"><i class="pi pi-book"></i> Producto<p-sortIcon field="product_name"></p-sortIcon></th>
+                        <th pSortableColumn="product_price"><i class="pi pi-dollar"></i> Precio Unitario <p-sortIcon field="product_price"></p-sortIcon></th>
+                        <th pSortableColumn="product_amount_sail"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="product_amount_sail"></p-sortIcon></th>
+                        <th pSortableColumn="product_offered"><i class="pi pi-tag"></i> Descuento % <p-sortIcon field="product_offered"></p-sortIcon></th>
+                        <th><i class="pi pi-percentage"></i> IVA 12%</th>
+                        <th pSortableColumn="product_price_total"><i class="pi pi-dollar"></i>Total <p-sortIcon field="product_price_total"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">Eliminar</span>
+                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text" (click)="deleteProductCart(product)"></button>
+                        </td>
+                        <!-- <td><img [src]="!product.product_image || product.product_image == 'null' ? overImage :  host+product.product_image" [alt]="product.product_image" width="80" height="80" class="shadow-4" /></td> -->
+                        <td>
+                            <span class="p-column-title">Imagen: </span>
+                            <img [src]="overImage" [alt]="product.product_image" width="80" height="80" class="shadow-4" />
+                        </td>
+                        <td>
+                            <span class="p-column-title">Producto: </span>
+                            <div class="flex flex-column">
+                                {{product.product_name}}
+                                <ng-template [ngIf]="product.product_offered">
+                                    <div class="discount__product">
+                                        <p>-{{product.product_offered}}%</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </td>
+                        <td><span class="p-column-title">Precio Unitario: </span>${{product.product_price_aux}}</td>
+                        <td><span class="p-column-title">Cantidad: </span> <p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
+                        <td><span class="p-column-title">Descuento %: </span>{{product.product_offered == null || !product.product_offered ? 0 : product.product_offered}}%</td>
+                        <td><span class="p-column-title">IVA 12%: </span>${{product.product__price__iva}}</td>
+                        <td><span class="p-column-title">Total: </span>${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}</td>      
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-end justify-content-end">
+                        Total a pagar: ${{(order.price_order_total).toFixed(2)}}
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="flex flex-wrap justify-content-between align-items-center mb-6" style="padding: 0px 30px;">
+            <button (click)="goHome()" pButton pRipple type="button" class="p-button-outlined">
+                <p>Seguir Comprando <i class="pi pi-shopping-cart"></i></p>
+            </button>
+            <button [disabled]="loading" (click)="next()" pButton pRipple type="button">
+                <p>Siguiente<i class="ml-1 pi pi-angle-right"></i></p>
+            </button>
+        </div>
+    </main>
+
+    <app-footer></app-footer>
+</section>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

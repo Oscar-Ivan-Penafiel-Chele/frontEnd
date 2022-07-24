@@ -1,0 +1,75 @@
+section{
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+/* Contenido */
+
+.form-contact{
+    width: 100%;
+    padding: 20px;
+}
+
+.inputs__form__contact > .item__form__contact{
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.content-contact{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    overflow-y: auto;
+    padding: 0 5%;
+    height: 90vh;
+    overflow: auto;
+    position: relative;
+}
+
+.button-contact{
+    width: 100%; 
+    max-width: 400px; 
+    background-color: #4F46E5; 
+    border: none;
+    transition: 0.3s;
+}
+
+.button-contact:hover{
+    background-color: #8f94fb; 
+}
+
+.map-local{
+    width: 100%;
+}
+
+.map-local > iframe{
+    width: 100%;
+}
+
+@media screen and (max-width: 1040px){
+     .content-contact{
+        display: block;
+        height: max-content;
+    }
+
+    .form-contact{
+        display: flex;
+        justify-content: center;
+    }
+
+    .flex-contact, .map-local > h3{
+        text-align: center;
+    }
+
+    .map-local {
+        margin-bottom: 50px;
+    }
+
+    .map-local > h3 {
+       padding: 10px;
+    }
+}

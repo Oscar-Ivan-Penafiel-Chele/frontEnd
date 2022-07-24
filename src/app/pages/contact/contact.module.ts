@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactRoutingModule } from './contact-routing.module';
-import { ContactComponent } from './contact.component';
-import {SkeletonModule} from 'primeng/skeleton';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {InputTextModule} from 'primeng/inputtext';
-import { SharedModule } from '../shared/shared.module';
-import {ButtonModule} from 'primeng/button';
-import {RippleModule} from 'primeng/ripple';
+import { ContactComponent } from './pages/contact.component';
+import { ButtonUpModule } from 'src/app/shared/components/button-up/button-up.module';
+import { FooterModule } from 'src/app/shared/components/footer/footer.module';
+import { NavAboutContactModule } from 'src/app/shared/components/nav-about-contact/nav-about-contact/nav-about-contact.module';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -16,12 +14,10 @@ import {RippleModule} from 'primeng/ripple';
   imports: [
     CommonModule,
     ContactRoutingModule,
-    SkeletonModule,
-    InputTextareaModule,
-    InputTextModule,
-    SharedModule,
-    ButtonModule,
-    RippleModule
+    ButtonUpModule,
+    FooterModule,
+    NavAboutContactModule,
+    PrimengComponentsModule
   ]
 })
 export class ContactModule { }

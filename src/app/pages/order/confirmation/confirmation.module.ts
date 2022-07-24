@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfirmationComponent } from './confirmation.component';
+import { ConfirmationComponent } from './page/confirmation.component';
 import { ConfirmationRoutingModule } from './confirmation-routing.module';
 import {InputTextModule} from 'primeng/inputtext';
 import {CardModule} from 'primeng/card';
