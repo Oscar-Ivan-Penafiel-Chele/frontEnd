@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MigrationRoutingModule } from './migration-routing.module';
 import { MigrationComponent } from './page/migration.component';
-import {FileUploadModule} from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
-import {ToastModule} from 'primeng/toast';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +12,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
   imports: [
     CommonModule,
     MigrationRoutingModule,
-    FileUploadModule,
     HttpClientModule,
-    ToastModule,
-    ProgressSpinnerModule
+    PrimengComponentsModule
   ]
 })
 export class MigrationModule { }

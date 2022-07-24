@@ -2,12 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuditoryComponent } from './page/auditory.component';
 import { AuditoryRoutingModule } from './auditory-routing.module';
-import {TableModule} from 'primeng/table';
-import {ToolbarModule} from 'primeng/toolbar';
-import {TooltipModule} from 'primeng/tooltip';
-import {ButtonModule} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {DialogModule} from 'primeng/dialog';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -16,12 +11,7 @@ import {DialogModule} from 'primeng/dialog';
   imports: [
     CommonModule,
     AuditoryRoutingModule,
-    TableModule,
-    ToolbarModule,
-    TooltipModule,
-    ButtonModule,
-    InputTextModule,
-    DialogModule,
+    PrimengComponentsModule
   ]
 })
 export class AuditoryModule { }

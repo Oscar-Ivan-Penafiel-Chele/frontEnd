@@ -22,11 +22,20 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {DialogModule} from 'primeng/dialog';
 import {TooltipModule} from 'primeng/tooltip';
 import {InputNumberModule} from 'primeng/inputnumber';
-import { TagModule } from 'primeng/tag';
+import {TagModule} from 'primeng/tag';
 import {TableModule} from 'primeng/table';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {StepsModule} from 'primeng/steps';
 import {CardModule} from 'primeng/card';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
+import {ToolbarModule} from 'primeng/toolbar';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {InputMaskModule} from 'primeng/inputmask';
+import {FileUploadModule} from 'primeng/fileupload';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {CalendarModule} from 'primeng/calendar';
+import {ChartModule} from 'primeng/chart';
 
 @NgModule({
   declarations: [],
@@ -60,7 +69,16 @@ import {CardModule} from 'primeng/card';
     TableModule,
     ConfirmDialogModule,
     StepsModule,
-    CardModule
+    CardModule,
+    ScrollPanelModule,
+    ToolbarModule,
+    OverlayPanelModule,
+    InputMaskModule,
+    FileUploadModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    ChartModule,
   ]
 })
 export class PrimengComponentsModule { }

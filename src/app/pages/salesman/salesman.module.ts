@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SalesmanComponent } from './page/salesman.component';
 import { SalesmanRoutingModule } from './salesman-routing.module';
-import {TooltipModule} from 'primeng/tooltip';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {ScrollPanelModule} from 'primeng/scrollpanel';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +11,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
   imports: [
     CommonModule,
     SalesmanRoutingModule,
-    TooltipModule,
-    ProgressSpinnerModule,
-    ScrollPanelModule,
-    ConfirmDialogModule
+    PrimengComponentsModule
   ]
 })
 export class SalesmanModule { }

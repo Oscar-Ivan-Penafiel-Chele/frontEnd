@@ -1,22 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { BannerRoutingModule } from './banner-routing.module';
-import {TableModule} from 'primeng/table';
-import {ToolbarModule} from 'primeng/toolbar';
-import {ToastModule} from 'primeng/toast';
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import { FormsModule } from '@angular/forms';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {DialogModule} from 'primeng/dialog';
-import {DropdownModule} from 'primeng/dropdown';
-import {OverlayPanelModule} from 'primeng/overlaypanel';
-import {CheckboxModule} from 'primeng/checkbox';
-import {InputTextareaModule} from 'primeng/inputtextarea';
 import { BannerComponent } from './page/banner.component';
-
-
+import { FormsModule } from '@angular/forms';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -25,18 +12,8 @@ import { BannerComponent } from './page/banner.component';
   imports: [
     CommonModule,
     BannerRoutingModule,
-    TableModule,
-    ToolbarModule,
-    ToastModule,
-    InputTextModule,
     FormsModule,
-    ButtonModule,
-    ConfirmDialogModule,
-    DialogModule,
-    DropdownModule,
-    OverlayPanelModule,
-    CheckboxModule,
-    InputTextareaModule
+    PrimengComponentsModule
   ]
 })
 export class BannerModule { }

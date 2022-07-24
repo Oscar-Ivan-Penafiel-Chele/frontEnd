@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ManageIvaRoutingModule } from './manage-iva-routing.module';
 import { ManageIvaComponent } from './page/manage-iva.component';
-import {TableModule} from 'primeng/table';
-
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,7 @@ import {TableModule} from 'primeng/table';
   imports: [
     CommonModule,
     ManageIvaRoutingModule,
-    TableModule
+    PrimengComponentsModule
   ]
 })
 export class ManageIvaModule { }

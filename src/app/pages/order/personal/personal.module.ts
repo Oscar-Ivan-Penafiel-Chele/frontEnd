@@ -3,14 +3,9 @@ import { CommonModule } from '@angular/common';
 import { PersonalComponent } from './page/personal.component';
 import { PersonalRoutingModule } from './personal-routing.module';
 import { FormsModule } from '@angular/forms';
-import {StepsModule} from 'primeng/steps';
-import {CardModule} from 'primeng/card';
-import {ButtonModule} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {InputMaskModule} from 'primeng/inputmask';
-import {KeyFilterModule} from 'primeng/keyfilter';
-import {DropdownModule} from 'primeng/dropdown';
+
 import {IMaskModule} from 'angular-imask';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -20,14 +15,8 @@ import {IMaskModule} from 'angular-imask';
     CommonModule,
     PersonalRoutingModule,
     FormsModule,
-    StepsModule,
-    CardModule,
-    ButtonModule,
-    InputTextModule,
-    InputMaskModule,
-    KeyFilterModule,
-    DropdownModule,
-    IMaskModule
+    IMaskModule,
+    PrimengComponentsModule
   ]
 })
 export class PersonalModule { }

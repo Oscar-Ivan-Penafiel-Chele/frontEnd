@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TermsRoutingModule } from './terms-routing.module';
-import { TermsComponent } from './terms.component';
-
-
+import { TermsComponent } from './page/terms.component';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +10,8 @@ import { TermsComponent } from './terms.component';
   ],
   imports: [
     CommonModule,
-    TermsRoutingModule
+    TermsRoutingModule,
+    PrimengComponentsModule
   ]
 })
 export class TermsModule { }

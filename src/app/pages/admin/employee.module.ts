@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { DashboardEmployeeComponent } from './dashboard-employee/page/dashboard-employee.component';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {TooltipModule} from 'primeng/tooltip';
-import {ScrollPanelModule} from 'primeng/scrollpanel';
+import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +11,7 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
   imports: [
     CommonModule,
     EmployeeRoutingModule,
-    ConfirmDialogModule,
-    ProgressSpinnerModule,
-    TooltipModule,
-    ScrollPanelModule
+    PrimengComponentsModule
   ]
 })
 export class EmployeeModule { }
