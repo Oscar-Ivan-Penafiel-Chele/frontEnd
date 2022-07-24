@@ -99,7 +99,6 @@ export class ProductsComponent implements OnInit {
         private providerService : ProviderService,
         private _token : TokenService
         ) { 
-
             this.isPhotoEdit = false;
             this.isError = false;
 
@@ -298,6 +297,7 @@ export class ProductsComponent implements OnInit {
         this.isPhotoEdit = false; // LE decimos que no es una imagen a editar
         this.product.product_status = 1;  // asignamos el status por defecto a : Activo
         this.product.product_code = this.codeProduct;
+        this.product.product_iva = 1;
     }
 
     openModalUpload(){
@@ -342,6 +342,8 @@ export class ProductsComponent implements OnInit {
         this.productDialog = true; // abrimos modal
         this.nameProd = product.product_name!;
         this.fileTmp = {};
+
+        console.log(product)
       }
 
     saveProduct() {
@@ -456,13 +458,14 @@ export class ProductsComponent implements OnInit {
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue actualizado con éxito', life: 3000});
             }else if(response.status == 400 || response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
                 this.hideDialog();
+                console.log(response)
                 this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', life: 3000});
             }
         });
     }
 
     validateData(){
-        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_IVA == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
+        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_iva == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
             return false;
         }
       
@@ -470,7 +473,7 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_IVA == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
+        if(!this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_iva == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
             return false;
         }
       
@@ -607,12 +610,6 @@ export class ProductsComponent implements OnInit {
         this.productDialog = false;
     }
 
-    exportExcel(){
-        // this._rest.downloadExcel().subscribe((response)=>{
-        //     console.log(response);
-        // })
-    }
-
     @HostListener('window:beforeunload', ['$event'])
     beforeunloadHandler(event : any) {
         if(!this.getKeepSession()){
@@ -620,13 +617,13 @@ export class ProductsComponent implements OnInit {
         }
     }
 
-  getKeepSession(){
-    const data = localStorage.getItem('keepSession');
+    getKeepSession(){
+        const data = localStorage.getItem('keepSession');
 
-    if(data!.toString() == "true"){
-        return true;
-    }else{
-        return false;
+        if(data!.toString() == "true"){
+            return true;
+        }else{
+            return false;
+        }
     }
-  }
 }

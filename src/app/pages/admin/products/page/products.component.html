@@ -183,7 +183,7 @@
             </div>
             <div class="field col">
                 <label for="productStatus">Aplica IVA <span class="inputs__required">*</span></label>
-                <p-dropdown [showClear]="true" [(ngModel)]="product.product_IVA" optionLabel="label" optionValue="value" inputId="label" [options]="optionsIVA" placeholder="Seleccionar">
+                <p-dropdown [showClear]="true" [(ngModel)]="product.product_iva" optionLabel="label" optionValue="value" inputId="label" [options]="optionsIVA" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="{{option.icon}} mr-2"></i>
@@ -191,7 +191,7 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
-                <small class="p-error" *ngIf="submitted && product.product_IVA == null">Campo es requerido</small>
+                <small class="p-error" *ngIf="submitted && product.product_iva == null">Campo es requerido</small>
             </div>
         </div>
         <div class="formgrid grid">

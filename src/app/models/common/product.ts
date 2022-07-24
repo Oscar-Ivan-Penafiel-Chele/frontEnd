@@ -15,7 +15,7 @@ export interface Product {
     product_name?:string;
     product_description?:string;
     product_stock?:number;
-    product_IVA : number;
+    product_iva : number;
     product_IVA_porcent : number ;
     product_amount_sail? : number;
     product_price?:number;
