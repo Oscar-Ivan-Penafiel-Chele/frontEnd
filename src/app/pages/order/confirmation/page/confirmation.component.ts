@@ -114,10 +114,10 @@ export class ConfirmationComponent implements OnInit {
       this.showButtons = true;
       this.showButtonOrders = false;
       
-      console.log('OnError', err);
+      //console.log('OnError', err);
     },
     onClick: (data, actions) => {
-      console.log('onClick', data, actions);
+      //console.log('onClick', data, actions);
     }
   };
   }
@@ -140,15 +140,21 @@ export class ConfirmationComponent implements OnInit {
       this.showButtons = true;
 
       if(response.status == 200 || response.message == "Guardado con exito"){
+        this.confirmationOrderService.sendEmail(this.user.email!).subscribe((r : any)=>{
+          if(r.status >= 400){
+            console.log(r);
+          }
+        })
         this.iconResponse = this.iconOkResponse;
         this.textResponse = "Pedido realizado con éxito!";
         this.showButtonOrders = true;
 
-        localStorage.removeItem('information_sending');
+
         localStorage.removeItem('information_address');
         localStorage.removeItem('subtotal');
         localStorage.removeItem('total');
         localStorage.removeItem('producto');
+        localStorage.removeItem('iva');
 
       }else if(response.status == 500 || response.status == 400){
         this.iconResponse = this.iconErrorResponse;
@@ -159,7 +165,7 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async getDataProfile(){
-    let data = localStorage.getItem('information_sending');
+    let data = localStorage.getItem('user');
 
     this.idAddress = parseInt(localStorage.getItem('information_address')!);
 

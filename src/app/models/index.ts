@@ -5,6 +5,7 @@ export * from './common/cart';
 export * from './common/category';
 export * from './common/egreso';
 export * from './common/egresoAuxilia';
+export * from './common/IContact';
 export * from './common/ingreso';
 export * from './common/manageIVA';
 export * from './common/measure';

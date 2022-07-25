@@ -1,5 +1,6 @@
 export interface IManageIVA {
     id_iva : number ;
+    id_user : number;
     porcent : number;
     undefined_date : number ;
     date_start : string;

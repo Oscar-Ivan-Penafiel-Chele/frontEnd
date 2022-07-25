@@ -6,6 +6,7 @@ import { ButtonUpModule } from 'src/app/shared/components/button-up/button-up.mo
 import { FooterModule } from 'src/app/shared/components/footer/footer.module';
 import { NavAboutContactModule } from 'src/app/shared/components/nav-about-contact/nav-about-contact/nav-about-contact.module';
 import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
     ButtonUpModule,
     FooterModule,
     NavAboutContactModule,
-    PrimengComponentsModule
+    PrimengComponentsModule,
+    FormsModule
   ]
 })
 export class ContactModule { }

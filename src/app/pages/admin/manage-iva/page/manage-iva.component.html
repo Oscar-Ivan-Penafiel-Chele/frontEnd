@@ -19,7 +19,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-iva>
             <tr>
-                <td><span class="p-column-title"><i class="pi pi-percentage"></i> Porcentaje: </span>{{iva.porcent}}</td>
+                <td><span class="p-column-title"><i class="pi pi-percentage"></i> Porcentaje: </span>{{iva.porcent}}%</td>
                 <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Fecha Indefinida: </span>{{iva.undefined_date == 1 ? 'Si' : 'No'}}</td>
                 <td [style]="iva.undefined_date == 1 ? 'color:#ccc;' : ''"><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Inicio: </span> {{iva.date_start.slice(0,10)}}</td>
                 <td [style]="iva.undefined_date == 1 ? 'color:#ccc;' : ''"><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha Fin: </span>{{iva.date_end.slice(0,10)}}</td>

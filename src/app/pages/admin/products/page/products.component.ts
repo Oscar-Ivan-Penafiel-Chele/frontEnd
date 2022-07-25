@@ -342,8 +342,6 @@ export class ProductsComponent implements OnInit {
         this.productDialog = true; // abrimos modal
         this.nameProd = product.product_name!;
         this.fileTmp = {};
-
-        console.log(product)
       }
 
     saveProduct() {
@@ -465,7 +463,18 @@ export class ProductsComponent implements OnInit {
     }
 
     validateData(){
-        if(this.isObjEmpty(this.fileTmp) || !this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_iva == null || !this.product.id_provider || !this.product.id_brand || this.product.product_status == null || !this.product.product_rating || this.product.id_category == null){
+        if(
+            this.isObjEmpty(this.fileTmp) || 
+            !this.product.product_name || 
+            !this.product.product_code || 
+            !this.product.product_price || 
+            this.product.product_stock == null || 
+            this.product.product_iva == null || 
+            !this.product.id_provider || 
+            !this.product.id_brand || 
+            this.product.product_status == null || 
+            !this.product.product_rating || 
+            this.product.id_category == null){
             return false;
         }
       
@@ -473,7 +482,18 @@ export class ProductsComponent implements OnInit {
     }
 
     validateDataNoImage(){
-        if(!this.product.product_name || !this.product.product_code || !this.product.product_price || this.product.product_stock == null || this.product.product_iva == null || !this.product.id_provider || !this.product.id_brand || !this.product.product_rating || !this.product.id_category || this.product.product_status == null){
+        if(
+            !this.product.product_name || 
+            !this.product.product_code || 
+            !this.product.product_price || 
+            this.product.product_stock == null || 
+            this.product.product_iva == null || 
+            !this.product.id_provider || 
+            !this.product.id_brand || 
+            !this.product.product_rating || 
+            !this.product.id_category || 
+            this.product.product_status == null
+            ){
             return false;
         }
       

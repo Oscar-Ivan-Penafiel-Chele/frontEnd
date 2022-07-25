@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IManageIVA } from '@models/interfaces';
+import { IManageIVA, User } from '@models/interfaces';
 import { ManageIvaService } from '../service/manage-iva.service';
 import {MessageService} from 'primeng/api';
+import { TokenService } from 'src/app/auth/service/token.service';
 
 @Component({
   selector: 'app-manage-iva',
@@ -16,12 +17,23 @@ export class ManageIvaComponent implements OnInit {
   displayModal : boolean = false;
   manageIva : IManageIVA = {} as IManageIVA;
   submitted : boolean = false;
+  user : User = {};
 
-  constructor(private manageIvaService : ManageIvaService, private messageService: MessageService) { }
+  constructor(
+    private manageIvaService : ManageIvaService, 
+    private messageService: MessageService,
+    private _token : TokenService
+    ) { }
 
   ngOnInit(): void {
     this.submitted = false;
     this.getIva();
+    this.getUser();
+  }
+
+  getUser(){
+    const data = localStorage.getItem('user');
+    this.user = JSON.parse(data!);
   }
 
   getIva(){
@@ -32,7 +44,9 @@ export class ManageIvaComponent implements OnInit {
   }
 
   updateIva( iva : IManageIVA){
-    console.log(iva)
+    iva.id_user = this.user.id_user!;
+    this.isLoading = true;
+
     this.manageIvaService.updateIva(iva).subscribe((response : any)=>{
       if(response.status == 200 && response.message == "Iva actualizado con éxito"){
         this.getIva();
@@ -42,7 +56,7 @@ export class ManageIvaComponent implements OnInit {
       }
 
       this.displayModal = false;
-      this.isLoading = true;
+      this.isLoading = false;
     })
   }
 

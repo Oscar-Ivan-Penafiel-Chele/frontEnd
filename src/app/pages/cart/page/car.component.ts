@@ -61,9 +61,8 @@ export class CarComponent implements OnInit {
   }
 
   async getData(){
-    await this.getIva();
     await this.isLog();
-    await this.getAllProductsCart(this.user.id_user!);
+    await this.getIva();
   }
 
   async isLog(){
@@ -78,10 +77,11 @@ export class CarComponent implements OnInit {
   async getIva(){
     this.manageIvaService.getManageIva().subscribe((response : any) =>{
       this.manageIva = response[0];
+      this.getAllProductsCart(this.user.id_user!);
     });
   }
   
-  async getAllProductsCart(id_user : number){
+  getAllProductsCart(id_user : number){
     this.loading = true;
     const data = {
       id_user : id_user
@@ -108,6 +108,7 @@ export class CarComponent implements OnInit {
     })
     
     this.products = this.products.sort(this.sortProduct);
+
     this.handleProduct(this.products);
 
     this.loading = false;
@@ -116,6 +117,8 @@ export class CarComponent implements OnInit {
   }
 
   handleProduct(products : Product[]){
+    const dateNow = this.getDateToday();
+
     let x = 0;
     products.forEach((i : Product)=>{
       if(i.product_offered){ 
@@ -125,11 +128,33 @@ export class CarComponent implements OnInit {
         i.product_price_amount =  i.product_price_aux! * i.product_amount_sail!;
       }
 
-      i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-      i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
-    });
+      if(i.product_iva == 0){
+        i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
+        i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
 
-    
+        return;
+
+      }else if(i.product_iva == 1){
+
+        if(this.manageIva.undefined_date == 1){
+          i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+          i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+        }else{
+          if(this.manageIva.date_start.slice(0,10) <= dateNow){
+            if(this.manageIva.date_end.slice(0,10) >= dateNow){
+              i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+              i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+            }else{
+              i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
+              i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+            }
+          }else{
+            i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
+            i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+          }
+        }
+      }
+    });
   }
 
   sortProduct(x : any ,y : any){
@@ -139,6 +164,8 @@ export class CarComponent implements OnInit {
   }
 
   getTotalPriceForUnit($event : any, product : Product){
+    const dateNow = this.getDateToday();
+
     if(product.product_offered){ 
       product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
       product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
@@ -146,7 +173,28 @@ export class CarComponent implements OnInit {
       product.product_price_amount =  product.product_price_aux! * product.product_amount_sail!;
     }
 
-    product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+    if(product.product_iva == 0){
+      product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
+      product.product_price_total! = product.product_price! * $event.value;
+      return;
+
+    }else if(product.product_iva == 1){
+
+      if(this.manageIva.undefined_date == 1){
+        product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+      }else{
+        if(this.manageIva.date_start.slice(0,10) <= dateNow){
+          if(this.manageIva.date_end.slice(0,10) >= dateNow){
+            product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+          }else{
+            product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
+          }
+        }else{
+          product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
+        }
+      }
+    }
+
     product.product_price_total! = product.product_price! * $event.value;
     
     this.getTotalPriceForAmount();
@@ -219,13 +267,14 @@ export class CarComponent implements OnInit {
   }
 
   getDateToday(){
-    let hoy = new Date();
+    let dateNow = new Date();
 
-    let fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
-    let hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+    let day = (dateNow.getDate()) < 10 ? '0'+(dateNow.getDate()) : dateNow.getDate();;
+    let month = (dateNow.getMonth() + 1) < 10 ? '0'+ (dateNow.getMonth() + 1) : dateNow.getMonth() + 1;
+    let year = dateNow.getFullYear();
+    let date = `${year}-${month}-${day}`;
 
-    this.fechaYHora = fecha + ' ' + hora;
-
+    return date;
   }
 
   logOut(){

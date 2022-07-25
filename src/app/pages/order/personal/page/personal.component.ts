@@ -48,7 +48,7 @@ export class PersonalComponent implements OnInit {
       this.user.user_phone = `(+593)${this.phoneUser}`
     }else{
       this.user.user_phone = `(+593)${this.phoneUser.replace(/\s+/g, '')}`
-      this.employeeService.updateEmployee(this.user);
+      this.employeeService.updateEmployee(this.user).subscribe((r : any) => r);
     }
 
     if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.idAddressSelected && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.phoneUser.length == 11) {

@@ -18,14 +18,14 @@
                                 <input required [(ngModel)]="user.user_name" id="float-input" type="text" pInputText autofocus [pKeyFilter]="regexLetterSpace" style="width: 100%; padding-bottom: 23px;"> 
                                 <label for="float-input"><i class="pi pi-user"></i> Nombres</label>
                             </span>
-                            <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requerido</small>
+                            <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requeridos</small>
                         </div>
                         <div class="col-12 md:col-6">
                             <span class="p-float-label">
                                 <input required [(ngModel)]="user.user_lastName" id="float-input" type="text" pInputText [pKeyFilter]="regexLetterSpace" style="width: 100%; padding-bottom: 23px;"> 
                                 <label for="float-input"><i class="pi pi-user"></i> Apellidos</label>
                             </span>
-                            <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requerido</small>
+                            <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requeridos</small>
                         </div>
 
                         <div class="col-12 md:col-6">

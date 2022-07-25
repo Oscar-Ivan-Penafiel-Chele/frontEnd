@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <section>
     <!-- Navigation -->
    <app-nav-simple></app-nav-simple>
@@ -11,28 +12,32 @@
                     <h3>Contáctanos!</h3>
                     <div class="inputs__form__contact">
                         <div class="item__form__contact">
-                            <span class="p-float-label p-input-icon-left">
+                            <span [style]="{width : '100%'}" class="p-float-label p-input-icon-left">
                                 <i class="pi pi-user"></i>
-                                <input id="float-input" type="text" pInputText style="width: 100%; max-width: 400px;"> 
+                                <input id="float-input"  [(ngModel)]="data.nombres" type="text" pInputText style="width: 100%; max-width: 400px;"> 
                                 <label for="float-input">Nombres</label>
                             </span>
                         </div>
+                        <small class="p-error" *ngIf="submitted && !data.nombres">Nombres son requeridos</small>
                         <div class="item__form__contact">
-                            <span class="p-float-label  p-input-icon-left">
+                            <span [style]="{width : '100%'}"  class="p-float-label  p-input-icon-left">
                                 <i class="pi pi-envelope"></i>
-                                <input id="float-input" type="email" pInputText style="width: 100%; max-width: 400px;"> 
+                                <input id="float-input" [(ngModel)]="data.email" type="email" pInputText style="width: 100%; max-width: 400px;"> 
                                 <label for="float-input">Correo Electrónico</label>
                             </span>
                         </div>
+                        <small class="p-error" *ngIf="submitted && !data.email">Correo Electrónico es requerido</small>
+                        <small class="p-error" *ngIf="data.email && !regexData(data.email)">Correo Electrónico no es válido</small>
                         <div class="item__form__contact">
                             <span class="p-float-label">
-                                <textarea rows="5" cols="40" pInputTextarea [autoResize]="true" style="width: 100%; max-width: 400px;"></textarea>
-                                <label for="float-input"><i class="pi pi-paperclip"></i> Comentario</label>
+                                <textarea rows="5" cols="40" [(ngModel)]="data.comentario" pInputTextarea [autoResize]="true" style="width: 100%; max-width: 400px;"></textarea>
+                                <label for="float-input"><i class="pi pi-comments mr-1"></i> Comentario</label>
                             </span>
+                            <small class="p-error" *ngIf="submitted && !data.comentario">Comentario es requerido</small>
                         </div>
                     </div>
 
-                    <button class="button-contact" pButton pRipple type="button" label="Enviar"></button>
+                    <button class="button-contact" icon="pi pi-send" [loading]="isLoading" (click)="sendComments()" pButton pRipple type="button" label="Enviar Comentario"></button>
                 </div>
             </div>
         <br>
