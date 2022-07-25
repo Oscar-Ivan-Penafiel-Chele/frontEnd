@@ -1,9 +1,9 @@
 export interface IManageIVA {
     id_iva : number ;
     porcent : number;
-    ivaUndefined : boolean ;
-    date_start : Date;
-    date_end : Date;
+    undefined_date : number ;
+    date_start : string;
+    date_end : string;
     create_date : Date;
-    upload_date : Date;
+    updated_date : Date;
 }

@@ -1,9 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IManageIVA } from '@models/interfaces';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ManageIvaService {
+  manageIva : IManageIVA = {} as IManageIVA;
+  url : string = environment.API;
+  
+  constructor(private _http : HttpClient) { }
 
-  constructor() { }
+  getManageIva() : Observable<IManageIVA>{
+    return this._http.get<IManageIVA>(`${this.url}/iva`);
+  }
+
+  updateIva(iva : IManageIVA) : Observable<any>{
+    return this._http.put<any>(`${this.url}/iva/${iva.id_iva}`, iva);
+  }
 }
