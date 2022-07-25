@@ -22,4 +22,5 @@ export class CartServiceService {
   deleteProductCart(data : any) : Observable<any>{
     return this._http.post<any>(`${this.url}/shopping/card/delete`,data);
   }
+
 }

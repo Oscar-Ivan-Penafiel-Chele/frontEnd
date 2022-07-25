@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="card">
     <p-table #dt [value]="data" [rows]="5" [loading]="isLoading" 
     responsiveLayout="stack" [rowHover]="true">
@@ -19,11 +21,11 @@
             <tr>
                 <td><span class="p-column-title"><i class="pi pi-percentage"></i> Porcentaje: </span>{{iva.porcent}}</td>
                 <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Fecha Indefinida: </span>{{iva.undefined_date == 1 ? 'Si' : 'No'}}</td>
-                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Inicio: </span> {{iva.date_start.slice(0,10)}}</td>
-                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha Fin: </span>{{iva.date_end.slice(0,10)}}</td>
+                <td [style]="iva.undefined_date == 1 ? 'color:#ccc;' : ''"><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Inicio: </span> {{iva.date_start.slice(0,10)}}</td>
+                <td [style]="iva.undefined_date == 1 ? 'color:#ccc;' : ''"><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha Fin: </span>{{iva.date_end.slice(0,10)}}</td>
                 <td>
                     <span class="p-column-title"><i class="pi pi-database"></i> Acción: </span>
-                    <button pButton pRipple type="button" icon="pi pi-pencil" (click)="openModal(iva)" class="p-button-warning"></button>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" (click)="openModal(iva)" class="p-button-info"></button>
                 </td>
             </tr>
         </ng-template>

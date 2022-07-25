@@ -52,7 +52,6 @@ export class PersonalComponent implements OnInit {
     }
 
     if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.idAddressSelected && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.phoneUser.length == 11) {
-      localStorage.setItem('information_sending',JSON.stringify(this.user));
       localStorage.setItem('information_address',JSON.stringify(this.idAddressSelected));
       localStorage.setItem('user', JSON.stringify(this.user))
       this.nextPage();

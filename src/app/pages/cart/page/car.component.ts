@@ -1,12 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimeNGConfig, ConfirmationService, MessageService} from 'primeng/api'
-import { Cart, Order, Product, Promotion, User } from '@models/interfaces';
+import { Cart, IManageIVA, Order, Product, Promotion, User } from '@models/interfaces';
 import { AuthService } from 'src/app/auth/service/auth.service';
 
 import { environment } from 'src/environments/environment.prod';
 import { CartServiceService } from '../service/cart-service.service';
 import { TokenService } from 'src/app/auth/service/token.service';
+import { ManageIvaService } from '../../admin/manage-iva/service/manage-iva.service';
 
 @Component({
   selector: 'app-car',
@@ -29,6 +30,7 @@ export class CarComponent implements OnInit {
   priceTotal : number = 0;
   order : Order = {} as Order;
   promotions : Promotion[] = [];
+  manageIva : IManageIVA = {} as IManageIVA;
   
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -38,6 +40,7 @@ export class CarComponent implements OnInit {
     private _navigate : Router,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private manageIvaService : ManageIvaService, 
   ) { 
     this.overlayLogout = false;
     this.order.price_order_total = 0;
@@ -58,6 +61,7 @@ export class CarComponent implements OnInit {
   }
 
   async getData(){
+    await this.getIva();
     await this.isLog();
     await this.getAllProductsCart(this.user.id_user!);
   }
@@ -69,6 +73,12 @@ export class CarComponent implements OnInit {
 
     this.user = JSON.parse(this._token.getTokenDataUser()!);
     this.isLogged = true;
+  }
+
+  async getIva(){
+    this.manageIvaService.getManageIva().subscribe((response : any) =>{
+      this.manageIva = response[0];
+    });
   }
   
   async getAllProductsCart(id_user : number){
@@ -115,7 +125,7 @@ export class CarComponent implements OnInit {
         i.product_price_amount =  i.product_price_aux! * i.product_amount_sail!;
       }
 
-      i.product__price__iva = (i.product_price_amount! * 0.12).toFixed(2);
+      i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
       i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
     });
 
@@ -136,7 +146,7 @@ export class CarComponent implements OnInit {
       product.product_price_amount =  product.product_price_aux! * product.product_amount_sail!;
     }
 
-    product.product__price__iva = (product.product_price_amount! * 0.12).toFixed(2);
+    product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
     product.product_price_total! = product.product_price! * $event.value;
     
     this.getTotalPriceForAmount();
@@ -232,6 +242,7 @@ export class CarComponent implements OnInit {
   next(){
     localStorage.setItem('producto',JSON.stringify(this.products));
     localStorage.setItem('total',this.order.price_order_total)
+    localStorage.setItem('iva',JSON.stringify(this.manageIva.porcent));
     this._navigate.navigate(['/checkout/order']);
   }
 

@@ -19,13 +19,13 @@
             </div>
             <div class="col-12 md:col-6 lg:col-6">
                 <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
-                <p-calendar appendTo="body" [style]="{width : '100%'}" dateFormat="yy-mm-dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="data.date_start" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar appendTo="body" [disabled]="data.undefined_date == 1" [style]="{width : '100%'}" dateFormat="yy-mm-dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="data.date_start" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && data.date_start == null">Fecha de inicio es requerido</small>
                 <small class="p-error" *ngIf="isShowMessageDateInit">{{!messageErrorDateInit ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateInit}}</small>
             </div>
             <div class="col-12 md:col-6 lg:col-6">
                 <label for="buttonbar">Fecha Fin <span class="inputs__required">*</span></label>
-                <p-calendar appendTo="body" [style]="{width : '100%'}" dateFormat="yy-mm-dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="data.date_end" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+                <p-calendar appendTo="body" [disabled]="data.undefined_date == 1" [style]="{width : '100%'}" dateFormat="yy-mm-dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="data.date_end" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
                 <small class="p-error" *ngIf="submitted && data.date_end == null">Fecha culminación es requerido</small>
                 <small class="p-error" *ngIf="isShowMessageDateExpiry">{{!messageErrorDateExpiry ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateExpiry}}</small>
             </div>

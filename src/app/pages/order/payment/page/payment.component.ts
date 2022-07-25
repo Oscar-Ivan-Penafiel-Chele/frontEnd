@@ -20,6 +20,7 @@ export class PaymentComponent implements OnInit {
   priceTotalOrder : any = 0;
   typeDocument : string = "";
   addressOrder : string = "";
+  iva : string = "";
 
   constructor(
     private _router : Router,
@@ -30,10 +31,11 @@ export class PaymentComponent implements OnInit {
     this.getDataClient();
     this.getProducts();
     this.getAddress();
+    this.getIva();
   }
 
   getDataClient(){
-    const data = localStorage.getItem('information_sending');
+    const data = localStorage.getItem('user');
     this.user = JSON.parse(data!);
 
     this.getTypeDocument(this.user.id_identification_type!);
@@ -88,5 +90,9 @@ export class PaymentComponent implements OnInit {
     this.addressService.getAddressByID(parseInt(data!)).subscribe((response : Address) =>{
       this.addressOrder = response.user_address;
     })
+  }
+
+  getIva(){
+    this.iva = localStorage.getItem('iva')!;
   }
 }

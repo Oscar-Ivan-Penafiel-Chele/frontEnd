@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, QR, Rect, Stack, Table, Toc, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Columns, Img, PdfMakeWrapper, Rect, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { ManageIvaService } from 'src/app/pages/admin/manage-iva/service/manage-iva.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,17 @@ export class GeneratePdfFacturaService {
   subtotal : any;
   iva : any;
   total : any;
+  percentIva : number = 0;
 
-  constructor() { }
+  constructor(private manageIvaService : ManageIvaService) {
+    this.getIva();
+   }
+
+   getIva(){
+    this.manageIvaService.getManageIva().subscribe((response : any)=>{
+      this.percentIva = response[0].porcent; 
+    })
+   }
 
   async generateFacturePDF(pedido : any){
     await this.extractData(pedido);
@@ -39,7 +49,7 @@ export class GeneratePdfFacturaService {
 
       if(parseInt(product.order_detail_discount) > 0){ 
         product.producto.productWithDiscount = (product.producto.product_price_aux! - (product.producto.product_price_aux! * (parseInt(product.order_detail_discount) / 100))).toFixed(2);
-        product.producto.product_price_amount =  product.producto.productWithDiscount * product.producto.product_amount_sail!;
+        product.producto.product_price_amount =  (product.producto.productWithDiscount * product.producto.product_amount_sail!).toFixed(2);
       }else{
         product.producto.productWithDiscount = product.producto.product_price_aux;
         product.producto.product_price_amount =  (product.producto.product_price_aux! * product.producto.product_amount_sail!).toFixed(2);
@@ -63,7 +73,7 @@ export class GeneratePdfFacturaService {
       return (parseFloat(i) + parseFloat(j)).toFixed(2);
     })
 
-    this.iva = (this.subtotal * (12/100));
+    this.iva = (this.subtotal * (this.percentIva/100));
   }
 
   async getPDF(){
@@ -179,7 +189,7 @@ export class GeneratePdfFacturaService {
                   new Txt(`${(item.order_detail_quantity).toString().split('.')[0]}`).alignment('center').end,
                   new Txt(`${item.producto.product_name}`).alignment('center').end,
                   new Txt(`$ ${item.producto.product_price}`).alignment('center').end,
-                  new Txt(`${(item.order_detail_discount).toString().split('.')[0]}%`).alignment('center').end,
+                  new Txt(`${(item.order_detail_discount)}%`).alignment('center').end,
                   new Txt(`$ ${(item.order_detail_discount).toString().split('.')[0] > 0 ? (item.producto.product_price_aux * (item.order_detail_discount / 100)).toFixed(2) : item.order_detail_discount}`).alignment('center').end,
                   new Txt(`$ ${item.producto.productWithDiscount}`).alignment('center').end,
                   new Txt(`$ ${item.producto.product_price_amount}`).alignment('center').end,
@@ -220,7 +230,7 @@ export class GeneratePdfFacturaService {
               new Txt(`$ 0.00`).fontSize(8).alignment('right').end,
             ],
             [
-              new Txt('IVA 12%').fontSize(8).alignment('left').bold().end,
+              new Txt(`IVA ${this.percentIva}%`).fontSize(8).alignment('left').bold().end,
               new Txt(`$ ${(this.iva).toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
             [
