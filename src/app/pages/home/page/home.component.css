@@ -412,8 +412,13 @@ main{
       flex-direction: column;
     }
 
+    .card-contact figure{
+        width: 100%;
+    }
+
     .card-contact > section{
         display: flex;
+        justify-content: center;
         flex-direction: column;
         align-items: center;
         width: 100%;
@@ -510,6 +515,8 @@ main{
 
     .img-shop{
         width: 100%;
+        display: flex;
+       justify-content: center;
     }
 
     .img-shop figure img{
