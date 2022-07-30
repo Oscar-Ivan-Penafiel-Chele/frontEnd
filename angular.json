@@ -20,6 +20,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "pdfmake",
+              "pdfmake-wrapper"
+            ],
             "outputPath": "dist/frontEnd",
             "index": "src/index.html",
             "main": "src/main.ts",

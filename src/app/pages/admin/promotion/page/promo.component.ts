@@ -235,17 +235,18 @@ export class PromoComponent implements OnInit {
         
     this.promotionService.createPromotion(this.promotion)
     .subscribe((response)=>{
+      console.log("PRUEBAS DEL ERROR")
       console.log(response)
-        if(response.status == 200 && response.message === "Promocion creada con exito"){
-            this.getPromotions()
-            this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue creada con éxito', life: 3000});
-        }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
-          this.hideDialog();
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
-        }else if(response.status == 400){
-          this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message.promotion_date_start[0]}`, life: 3000});
-        }
+        // if(response.status == 200 && response.message === "Promocion creada con exito"){
+        //     this.getPromotions()
+        //     this.hideDialog();
+        //     this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue creada con éxito', life: 3000});
+        // }else if(response.status == 500 && response.message === "Ocurrio un error interno en el servidor"){
+        //   this.hideDialog();
+        //   this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
+        // }else if(response.status == 400){
+        //   this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message.promotion_date_start[0]}`, life: 3000});
+        // }
     });
   }
 
@@ -267,16 +268,18 @@ export class PromoComponent implements OnInit {
 
   updateData(){
     this.promotion.id_user = this.user.id_user!;
-    this.promotionService.updatePromotion(this.promotion)
-    .subscribe((response)=>{
-        if(response.status == 200 && response.message === "Promoción actualizada con exito"){
-            this.getPromotions();
-            this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue actualizada con éxito', life:3000});
-        }else if((response.status == 400 || response.status == 500) && response.message === "Ocurrio un error interno en el servidor"){
-            this.hideDialog();
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
-        }
+    this.promotionService.updatePromotion(this.promotion).subscribe((response)=>{
+      console.log("HOLA SERVICE")
+      console.log("PRUEBAS DEL ERROR")
+      console.log(response)
+        // if(response.status == 200 && response.message === "Promoción actualizada con exito"){
+        //     this.getPromotions();
+        //     this.hideDialog();
+        //     this.messageService.add({severity:'success', summary: 'Completado', detail: 'La promoción fue actualizada con éxito', life:3000});
+        // }else if(response.status >= 400){
+        //     this.hideDialog();
+        //     this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
+        // }
     });
   }
 

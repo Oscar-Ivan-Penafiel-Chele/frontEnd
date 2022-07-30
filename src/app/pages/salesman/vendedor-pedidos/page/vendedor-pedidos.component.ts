@@ -35,6 +35,7 @@ export class VendedorPedidosComponent implements OnInit {
   dataAuxFilter : ISailOrder[] = [];
   isShowModalDetail : boolean = false;
   dataModal : any;
+  timeResponse : any = {};
 
   constructor(
     private vendedorService : VendedorServiceService,
@@ -114,6 +115,7 @@ export class VendedorPedidosComponent implements OnInit {
           this.vendedorService.changeStateOrder(data).subscribe((response)=>{
             if(response.status == 200 || response.message == "Orden completada"){
               this.getPedidos();
+              this.timeResponse = response.tiempo_despacho;
               this.messageService.add({severity:'success', summary:'Completado', detail:`El pedido de ${pedido.name} ha sido completado`, life: 3000});
             }else if( response.status >= 400 && response.status <= 500 || response.message == "Ocurrio un error interno en el servidor"){
               this.messageService.add({severity:'error', summary:'Error', detail:`${response.message}`,life : 3000});
@@ -142,7 +144,6 @@ export class VendedorPedidosComponent implements OnInit {
   }
 
   showModal(pedido : any){
-    console.log(pedido)
     this.dataModal = pedido;
     this.isShowModalDetail = true
   }

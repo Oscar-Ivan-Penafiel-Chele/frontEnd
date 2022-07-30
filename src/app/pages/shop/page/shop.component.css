@@ -141,7 +141,7 @@ main{
    font-size: 14px;
    display: flex;
    flex-flow: row nowrap;
-   justify-content: start;
+   justify-content: flex-start;
    align-items: center;
    gap: 0.5em;
 }

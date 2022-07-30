@@ -94,6 +94,7 @@ export class ConfirmationComponent implements OnInit {
       });
     },
     onClientAuthorization: (data) => {
+      // console.log(data);
       if(data.status === "COMPLETED"){
         this.loadOrder = false;
         this.iconResponse = this.iconOkResponse;

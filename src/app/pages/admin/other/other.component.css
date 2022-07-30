@@ -134,7 +134,7 @@
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: flex-start;
     border: 1px solid #ccc;
     background-color: white;
@@ -157,7 +157,7 @@
     font-size: 14px;
     display: flex;
     flex-flow: row nowrap;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     gap: 0.5em;
  }
@@ -210,7 +210,6 @@ background-color: rgb(238, 238, 238);
 }
 
 .item__active{
-    /* background-color: rgb(240, 240, 240); */
     background-color: #4F46E5;
     color: white;
 }

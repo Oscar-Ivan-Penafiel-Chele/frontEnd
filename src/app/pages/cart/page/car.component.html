@@ -101,7 +101,7 @@
                         <th pSortableColumn="product_price_total"><i class="pi pi-dollar"></i>Total <p-sortIcon field="product_price_total"></p-sortIcon></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-product | async>
                     <tr>
                         <td>
                             <span class="p-column-title">Eliminar</span>
