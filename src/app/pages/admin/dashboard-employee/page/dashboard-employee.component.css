@@ -28,7 +28,7 @@
     right: 0;
     padding: 0px 0px 0px 0px;
     gap: 1em;
-    transition: all 0.4 ease-in-out;
+    transition: all 0.3 ease-in-out;
 }
 
 .nav__header__content > img{
@@ -270,6 +270,7 @@
         justify-content: center;
         align-items: center;
         background-color: rgba(0, 0, 0, 0.6);
+        z-index: 999999;
     }
 
     .logout > p {
@@ -325,3 +326,38 @@
             opacity: 1;
         }
     }
+
+
+@media screen and (max-width: 960px) {   
+    .show, .hide{
+        position: absolute; 
+        transition: all 0.3s ease-in-out;
+        z-index: 999;
+    }
+
+    .nav__aside{
+        width: 0px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .show{
+        width: 268px;
+    }
+
+    .hide{
+        width: 0px;
+    }
+
+    .header__main__content{
+        flex-direction: row-reverse;
+    }
+
+    .header_profile_time{
+        flex-direction: row-reverse;
+    }
+
+    .profile__options{
+        left: 0;
+        right: 100px;
+    }
+}

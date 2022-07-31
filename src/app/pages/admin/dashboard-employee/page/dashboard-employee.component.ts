@@ -22,6 +22,7 @@ export class DashboardEmployeeComponent implements OnInit {
   isSignedIn?: boolean;
   roleUser : string = "";
   overlayLogout : boolean = false;
+  cont : number;
  
   constructor(
     private primengConfig: PrimeNGConfig, 
@@ -29,7 +30,7 @@ export class DashboardEmployeeComponent implements OnInit {
     private _authService : AuthService,
     private _token : TokenService,
     ) { 
-     
+     this.cont = 0;
     }
     
   ngOnInit(): void {

@@ -140,7 +140,7 @@
                                 <img [src]="!product.product_image || product.product_image == null ? overImage : host+product.product_image" [alt]="product.product_image"/>
                                 <div class="product-list-detail">
                                     <div class="product-name">{{product.product_name}}</div>
-                                    <div class="product-description">{{product.product_description}}</div>
+                                    <!-- <div class="product-description">{{product.product_description}}</div> -->
                                     <p *ngIf="product.product_offered != null" style="width: min-content;" class="product-offered mb-3"> -{{product.product_offered}}%</p>   
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [ngModel]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>
                                     <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category.category_name}}</span>
