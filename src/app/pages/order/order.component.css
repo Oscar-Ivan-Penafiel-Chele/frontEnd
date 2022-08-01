@@ -513,3 +513,7 @@ main{
     width: 100%;
     padding: 30px;
 }
+
+:host ::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-number{
+    z-index: 0;
+}

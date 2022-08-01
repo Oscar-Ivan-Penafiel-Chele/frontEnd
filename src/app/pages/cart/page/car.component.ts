@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimeNGConfig, ConfirmationService, MessageService} from 'primeng/api'
 import { Cart, IManageIVA, Order, Product, Promotion, User } from '@models/interfaces';
@@ -31,7 +31,7 @@ export class CarComponent implements OnInit {
   order : Order = {} as Order;
   promotions : Promotion[] = [];
   manageIva : IManageIVA = {} as IManageIVA;
-  
+
   constructor(
     private _primengConfig : PrimeNGConfig, 
     private cartService : CartServiceService,
@@ -50,7 +50,6 @@ export class CarComponent implements OnInit {
     this._primengConfig.ripple = true;
     this.getData();
   }
-
  
   goCart(){
     this._navigate.navigate(["/checkout/cart"]);
@@ -252,18 +251,7 @@ export class CarComponent implements OnInit {
 
     hamburger?.classList.toggle('is-active');
     menu?.classList.toggle('display');
-    
-    // if(menu?.classList.contains("display")){
-    //  content?.addEventListener('click',function(e){
-    //      let isClickInside = menu.contains(e.target as Node);
 
-    //      if(!isClickInside){
-    //        console.log("Fuera");
-    //        hamburger?.classList.remove("is-active"); 
-    //        menu.classList.remove('display');  
-    //      }
-    //  })
-    // }
   }
 
   getDateToday(){

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Address, User, Product, Order } from '@models/interfaces';
 import { AddressUserService } from 'src/app/pages/admin/other/address/service/address-user.service';
+import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -22,9 +23,24 @@ export class PaymentComponent implements OnInit {
   addressOrder : string = "";
   iva : string = "";
 
+  showOverlay: boolean = false;
+  loadRequest: boolean = false;
+  iconResponse : string = "";
+  textResponse: string = "";
+  showButtons: boolean = false;
+  showButtonDynamic: boolean = false;
+  url: string = "";
+  iconButton: string = "";
+  productsError : any[]= [];
+  textOverlay: string = "";
+  simpletText: string = "Los productos no cuentan con un stock disponible";
+  compuestText: string = "El producto no cuenta con un stock disponible";
+  textButton: string = "";
+
   constructor(
     private _router : Router,
     private addressService : AddressUserService,
+    private validationService : ValidationsService
   ) { }
 
   ngOnInit(): void {
@@ -76,8 +92,51 @@ export class PaymentComponent implements OnInit {
   }
 
   nextPage() {
-    localStorage.setItem('total',this.priceTotalOrder);
-    this._router.navigate(['checkout/order/confirmation']);
+    let data: any = {};
+    const sizeProducts = this.products.length;
+
+    this.products.forEach((product: Product, index)=>{
+      data = {
+        id_product : product.id_product,
+        quantity : product.product_amount_sail
+      };
+      
+      this.showOverlay = true;
+      this.loadRequest = true;
+      this.textOverlay = "Comprobando stock disponible";
+      
+      this.validationService.validateStockProduct(data).subscribe((response : any)=>{
+        if(response.message == "Stock no disponible"){
+          this.productsError.push(response.product_stock);
+        }
+
+        if( index == (sizeProducts - 1)){
+          this.handleResponse();
+        }
+      });
+    })
+  }
+
+  handleResponse(){
+    this.showButtons = true;
+    this.showButtonDynamic = true;
+    this.loadRequest = false;
+
+    if(this.productsError.length > 0){
+      this.iconResponse= "pi pi-times-circle response_error"
+      this.textResponse = this.products.length == 1 ? this.simpletText : this.compuestText;
+      this.url = "/checkout/cart";
+      this.textButton = "Ir al carrito";
+      this.iconButton = "pi pi-shopping-bag mr-2";
+    }else if (this.productsError.length == 0 ) {
+      // localStorage.setItem('total',this.priceTotalOrder);
+      this.iconResponse = "pi pi-check-circle response_ok";
+      this.textResponse = "Todos los productos cuentan con un stock disponible!"
+      this.url = "/checkout/order/confirmation";
+      this.textButton = "Realizar pago";
+      this.iconButton = "pi pi-credit-card mr-2";
+    }
+
   }
 
   prevPage() {

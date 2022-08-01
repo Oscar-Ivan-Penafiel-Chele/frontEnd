@@ -4,6 +4,7 @@ import { PaymentComponent } from './page/payment.component';
 import { PaymentRoutingModule } from './payment-routing.module';
 import { FormsModule } from '@angular/forms';
 import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
+import { OverlayRequestModule } from 'src/app/shared/components/overlay_request/overlay-request.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
     CommonModule,
     PaymentRoutingModule,
     FormsModule,
-    PrimengComponentsModule
+    PrimengComponentsModule,
+    OverlayRequestModule
   ]
 })
 export class PaymentModule { }

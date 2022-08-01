@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable} from 'rxjs';
 import { Promotion } from '@models/interfaces';
 import { environment } from 'src/environments/environment.prod';
 
@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class PromotionService {
   url : string = environment.API;
-  
+
   constructor(private _http : HttpClient) { }
 
   getPromotions() : Observable<Promotion[]>{

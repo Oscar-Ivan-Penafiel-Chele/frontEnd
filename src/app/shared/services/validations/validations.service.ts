@@ -36,4 +36,8 @@ export class ValidationsService {
   validateAddressDelete(id_address : number) : Observable<any>{
     return this._http.post<any>(`${this.url}/validate/address/order`, {id_address});
   }
+
+  validateStockProduct(data: any): Observable<any>{
+    return this._http.post<any>(`${this.url}/validate/product/stock`,data);
+  }
 }
