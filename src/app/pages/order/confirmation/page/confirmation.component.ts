@@ -16,24 +16,23 @@ export class ConfirmationComponent implements OnInit {
 
   public payPalConfig?: IPayPalConfig;
   user : User = {};
-  showSuccess : boolean = false;
-  showMessage : boolean = false;
   clientID : string = environment.CLIENT_ID_PAYPAL;
   products : Product[] = [];
   items_products : any[] = [];
   order : Order = {} as Order;
   showOverlay : boolean = false;
-  msg : Message[] = [];
   idAddress : number = 0;
-  loadOrder : boolean = false;
-  completeOk : boolean = false;
+  loadRequest : boolean = false;
   iconResponse : string = "";
   iconOkResponse : string = "pi pi-check-circle response_ok";
   iconErrorResponse : string = "pi pi-times-circle response_error";
   textResponse : string ="";
-  showButtonOrders : boolean = false;
+  showButtonDynamic : boolean = false;
   textOverlay : string = "";
   showButtons : boolean = false;
+  url : string = "";
+  iconButton: string ="";
+  textButton: string = "";
 
   constructor(
     private _router : Router,
@@ -87,7 +86,7 @@ export class ConfirmationComponent implements OnInit {
     },
     onApprove: (data, actions) => {
       this.showOverlay = true;
-      this.loadOrder = true;
+      this.loadRequest = true;
       this.textOverlay = "Realizando Pago"
       actions.order.get().then((details : any) => {
         //console.log('onApprove - you can get full order details inside onApprove: ', details);
@@ -96,24 +95,24 @@ export class ConfirmationComponent implements OnInit {
     onClientAuthorization: (data) => {
       // console.log(data);
       if(data.status === "COMPLETED"){
-        this.loadOrder = false;
+        this.loadRequest = false;
         this.iconResponse = this.iconOkResponse;
         this.textResponse = "Pago realizado con éxito!";
         this.showButtons = false;
 
         setTimeout(() => {
-          this.loadOrder = true;
+          this.loadRequest = true;
           this.textOverlay = "Generando pedido"
           this.completProcess();
         }, 2000);
       }
     },
     onError: err => {
-      this.loadOrder = false;
+      this.loadRequest = false;
       this.iconResponse = this.iconErrorResponse;
       this.textResponse = "No se pudo realizar el pago, verifique el estado de su cuenta";
       this.showButtons = true;
-      this.showButtonOrders = false;
+      this.showButtonDynamic = false;
       
       //console.log('OnError', err);
     },
@@ -137,7 +136,7 @@ export class ConfirmationComponent implements OnInit {
     }
 
     this.confirmationOrderService.createOrder(data).subscribe((response : any)=>{
-      this.loadOrder = false;
+      this.loadRequest = false;
       this.showButtons = true;
 
       if(response.status == 200 || response.message == "Guardado con exito"){
@@ -148,7 +147,10 @@ export class ConfirmationComponent implements OnInit {
         })
         this.iconResponse = this.iconOkResponse;
         this.textResponse = "Pedido realizado con éxito!";
-        this.showButtonOrders = true;
+        this.url = "/my-orders";
+        this.iconButton = "pi pi-shopping-bag mr-2";
+        this.textButton = "Ir a Pedidos";
+        this.showButtonDynamic = true;
 
 
         localStorage.removeItem('information_address');
@@ -160,7 +162,7 @@ export class ConfirmationComponent implements OnInit {
       }else if(response.status == 500 || response.status == 400){
         this.iconResponse = this.iconErrorResponse;
         this.textResponse = "Ocurrio un problema en el servidor";
-        this.showButtonOrders = false;
+        this.showButtonDynamic = false;
       }
     });
   }
@@ -185,7 +187,6 @@ export class ConfirmationComponent implements OnInit {
   async getOrder(){
     let data = localStorage.getItem('total');
     this.order.price_order_total = JSON.parse(data!);
-    console.log(this.order.price_order_total);
   }
 
   goHome(){

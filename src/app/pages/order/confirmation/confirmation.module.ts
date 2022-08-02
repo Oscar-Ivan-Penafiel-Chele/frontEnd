@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NgxPayPalModule } from 'ngx-paypal';
 import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
+import { OverlayRequestModule } from 'src/app/shared/components/overlay_request/overlay-request.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
     ConfirmationRoutingModule,
     FormsModule,
     NgxPayPalModule,
-    PrimengComponentsModule
+    PrimengComponentsModule,
+    OverlayRequestModule
   ]
 })
 export class ConfirmationModule { }

@@ -9,11 +9,15 @@
             <ng-template #completeRequest>
                 <div class="complete__order flex flex-column justify-content-center align-items-center">
                     <i [class]="iconResponse"></i>
-                    <p>{{textResponse}}</p>
+                    <p class="text__response">{{textResponse}}</p>
     
+                    <ng-template [ngIf]="existProducstError">
+                        <p class="text__more__detail flex justify-content-center align-items-center" (click)="showDetails()">Mostrar Detalles <i class="icon__detail pi pi-arrow-up-right"></i></p>
+                    </ng-template>
+
                     <ng-template [ngIf]="showButtons">
                         <div class="buttons__response">
-                            <button class="button__home" (click)="goHome()"><i class="pi pi-home mr-2"></i>Ir Tienda</button>
+                            <button *ngIf="isButtonHome" class="button__home" (click)="goHome()"><i class="pi pi-home mr-2"></i>Ir Tienda</button>
                             <ng-template [ngIf]="showButtonDynamic">
                                 <button class="button__response" (click)="redirection()"><i [class]="iconButton" ></i>{{textButton}}</button>
                             </ng-template>
@@ -25,3 +29,30 @@
     </div>
     
 </ng-template>
+
+<p-dialog header="Detalles Avanzados" [(visible)]="display" [modal]="true" [breakpoints]="{'960px': '80vw'}" [style]="{width: '50vw'}" [maximizable]="true"
+    [draggable]="false" [resizable]="false">
+
+        <div class="detil__products__error">
+            <p-table #dt [value]="productsError" [rowHover]="true" responsiveLayout="stack" [rows]="5" [paginator]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Stock Disponible</th>
+                        <th>Cantidad Elegida</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td><span class="p-column-title">Producto: </span> {{product.name}}</td>
+                        <td><span class="p-column-title">Stock Disponible: </span> {{product.stock.split('.')[0]}}</td>
+                        <td><span class="p-column-title">Cantidad Elegida: </span> {{product.quantity}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <ng-template pTemplate="footer">
+        </ng-template>
+</p-dialog>

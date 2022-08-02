@@ -68,7 +68,7 @@
     color: #FF5757;
 }
 
-.complete__order > p, .loadText{
+.complete__order, .text__response, .loadText{
     color: whitesmoke;
     font-size: 20px;
     padding-top: 10px;
@@ -135,4 +135,27 @@
     100% {
         opacity: 1;
     }
+}
+
+.text__more__detail, .icon__detail{
+    font-size: 12px;
+}
+
+.text__more__detail:hover{
+    cursor: pointer;
+    color: #251be4;
+}
+
+.icon__detail{
+    margin-left: 3px;
+}
+
+.detil__products__error{
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.p-column-title{
+    font-weight: 600;
 }

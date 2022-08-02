@@ -33,9 +33,11 @@ export class PaymentComponent implements OnInit {
   iconButton: string = "";
   productsError : any[]= [];
   textOverlay: string = "";
-  simpletText: string = "Los productos no cuentan con un stock disponible";
-  compuestText: string = "El producto no cuenta con un stock disponible";
+  simpletText: string = "Algunos productos no cuentan con un stock disponible";
+  compuestText: string = "Un producto no cuenta con un stock disponible";
   textButton: string = "";
+  isButtonHome: boolean = false;
+  existProducstError: boolean = false;
 
   constructor(
     private _router : Router,
@@ -106,8 +108,15 @@ export class PaymentComponent implements OnInit {
       this.textOverlay = "Comprobando stock disponible";
       
       this.validationService.validateStockProduct(data).subscribe((response : any)=>{
+        if(response.status >= 400 || response.status == 0){
+          console.log(response);
+          return;
+        }
+
         if(response.message == "Stock no disponible"){
-          this.productsError.push(response.product_stock);
+          this.productsError.push({id: product.id_product, name: response.product_name, stock : response.product_stock, quantity : product.product_amount_sail });
+          this.productsError = Object.values(this.productsError);
+          console.log(this.productsError)
         }
 
         if( index == (sizeProducts - 1)){
@@ -123,11 +132,12 @@ export class PaymentComponent implements OnInit {
     this.loadRequest = false;
 
     if(this.productsError.length > 0){
+      this.existProducstError = true;
       this.iconResponse= "pi pi-times-circle response_error"
       this.textResponse = this.products.length == 1 ? this.simpletText : this.compuestText;
       this.url = "/checkout/cart";
-      this.textButton = "Ir al carrito";
-      this.iconButton = "pi pi-shopping-bag mr-2";
+      this.textButton = "Volver al carrito";
+      this.iconButton = "pi pi-shopping-cart mr-2";
     }else if (this.productsError.length == 0 ) {
       // localStorage.setItem('total',this.priceTotalOrder);
       this.iconResponse = "pi pi-check-circle response_ok";
