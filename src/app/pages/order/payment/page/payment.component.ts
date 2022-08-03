@@ -26,18 +26,22 @@ export class PaymentComponent implements OnInit {
   showOverlay: boolean = false;
   loadRequest: boolean = false;
   iconResponse : string = "";
-  textResponse: string = "";
+  textResponse: string| undefined = "";
   showButtons: boolean = false;
   showButtonDynamic: boolean = false;
   url: string = "";
   iconButton: string = "";
   productsError : any[]= [];
-  textOverlay: string = "";
+  textOverlay: string = "Comprobando información";
   simpletText: string = "Algunos productos no cuentan con un stock disponible";
   compuestText: string = "Un producto no cuenta con un stock disponible";
   textButton: string = "";
   isButtonHome: boolean = false;
   existProducstError: boolean = false;
+  isStockError: boolean = false;
+  isChangePromotion: boolean = false;
+  isCompleteRequest: boolean = false;
+  textHeaderModal: string = "";
 
   constructor(
     private _router : Router,
@@ -94,59 +98,111 @@ export class PaymentComponent implements OnInit {
   }
 
   nextPage() {
-    let data: any = {};
-    const sizeProducts = this.products.length;
+    let dataPromotion: any = {};
+    this.productsError = [];
+    let simpletText = "";
+    let compuestText = "";
 
     this.products.forEach((product: Product, index)=>{
-      data = {
+      if(product.product_offered && product.product_offered != 0){
+        dataPromotion = {
+          id_product : product.id_product
+        };
+        
+        this.showOverlay = true;
+        this.loadRequest = true;
+
+        this.validationService.validatePromotionProduct(dataPromotion).subscribe((response : any)=>{
+          this.isStockError = false;
+
+          if(response.status == 200 || response.status == "No tiene promocion"){
+            this.textHeaderModal = "Productos sin promoción";
+            this.isChangePromotion = false;
+            simpletText = "Lo sentimos, un producto ya no cuenta con una promoción!";
+            compuestText = "Lo sentimos, algunos productos ya no cuentan con la promoción!";
+            this.productsError.push({name: product.product_name, image: product.product_image});
+            this.productsError = Object.values(this.productsError);
+
+            this.handleResponse(this.productsError, simpletText, compuestText);
+            return;
+          }else if(response.status == 200 || response.status == "Tiene promocion"){
+            if(product.product_offered != response.promotion_discount){
+              this.textHeaderModal = "Productos con nuevas promociones";
+              simpletText = "Un producto tiene una nueva promoción!";
+              compuestText = "Algunos productos tienen nuevas promociones!";
+              this.isChangePromotion = true;
+              this.productsError.push({name: product.product_name, image: product.product_image, promotion_previous: product.product_offered, promotion_currenty: response.promotion_discount});
+              this.productsError = Object.values(this.productsError);
+
+              this.handleResponse(this.productsError, simpletText, compuestText);
+            }
+            return;
+          }else if(response.status >= 400){
+            console.log(response);
+            return ;
+          }
+        });
+
+        return;
+      }
+      
+      //this.validateStockProduct(product, index);
+    });
+  }
+
+  validateStockProduct(product: Product, index: number){  
+    let simpleText = "";
+    let compuestText = "";
+    let dataStock: any = {};
+    const sizeProducts = this.products.length;
+
+      dataStock = {
         id_product : product.id_product,
         quantity : product.product_amount_sail
       };
       
-      this.showOverlay = true;
-      this.loadRequest = true;
-      this.textOverlay = "Comprobando stock disponible";
-      
-      this.validationService.validateStockProduct(data).subscribe((response : any)=>{
+      this.validationService.validateStockProduct(dataStock).subscribe((response : any)=>{
         if(response.status >= 400 || response.status == 0){
           console.log(response);
           return;
         }
 
         if(response.message == "Stock no disponible"){
-          this.productsError.push({id: product.id_product, name: response.product_name, stock : response.product_stock, quantity : product.product_amount_sail });
+          this.textHeaderModal = "Productos sin stock disponible";
+          simpleText = "Lo sentimos, un producto no cuenta con stock disponible!";
+          compuestText = "Lo sentimos, algunos productos no cuentan con un stock disponible!";
+          this.productsError.push({id: product.id_product, name: response.product_name, image: product.product_image, stock : response.product_stock, quantity : product.product_amount_sail });
           this.productsError = Object.values(this.productsError);
-          console.log(this.productsError)
         }
 
         if( index == (sizeProducts - 1)){
-          this.handleResponse();
+          this.handleResponse(this.productsError);
+          this.isCompleteRequest = true;
         }
       });
-    })
   }
 
-  handleResponse(){
+  handleResponse(productsError: any[], simpleText?:string, compuestText?: string){
     this.showButtons = true;
     this.showButtonDynamic = true;
     this.loadRequest = false;
 
-    if(this.productsError.length > 0){
+    if(productsError.length > 0){
       this.existProducstError = true;
       this.iconResponse= "pi pi-times-circle response_error"
-      this.textResponse = this.products.length == 1 ? this.simpletText : this.compuestText;
+      this.textResponse = productsError.length == 1 ? simpleText : compuestText;
       this.url = "/checkout/cart";
       this.textButton = "Volver al carrito";
       this.iconButton = "pi pi-shopping-cart mr-2";
-    }else if (this.productsError.length == 0 ) {
+    }else if (productsError.length == 0 ) {
+      if(!this.isCompleteRequest) return ;
       // localStorage.setItem('total',this.priceTotalOrder);
       this.iconResponse = "pi pi-check-circle response_ok";
-      this.textResponse = "Todos los productos cuentan con un stock disponible!"
+      this.textResponse = "Validación completada con éxito!";
       this.url = "/checkout/order/confirmation";
       this.textButton = "Realizar pago";
       this.iconButton = "pi pi-credit-card mr-2";
     }
-
   }
 
   prevPage() {

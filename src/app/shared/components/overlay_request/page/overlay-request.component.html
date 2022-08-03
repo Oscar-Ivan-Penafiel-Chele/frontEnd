@@ -30,24 +30,43 @@
     
 </ng-template>
 
-<p-dialog header="Detalles Avanzados" [(visible)]="display" [modal]="true" [breakpoints]="{'960px': '80vw'}" [style]="{width: '50vw'}" [maximizable]="true"
+<p-dialog [header]="textHeaderModal" styleClass="p-datatable-sm" [(visible)]="display" [modal]="true" [breakpoints]="{'960px': '80vw'}" [style]="{width: '50vw'}" [maximizable]="true"
     [draggable]="false" [resizable]="false">
 
         <div class="detil__products__error">
-            <p-table #dt [value]="productsError" [rowHover]="true" responsiveLayout="stack" [rows]="5" [paginator]="true"
+            <p-table #dt [value]="productsError" [rowHover]="true" responsiveLayout="stack" [rows]="3" [paginator]="true"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>Imagen</th>
                         <th>Producto</th>
-                        <th>Stock Disponible</th>
-                        <th>Cantidad Elegida</th>
+                        <ng-template [ngIf]="isChangePromotion">
+                            <th>Promoción Anterior</th>
+                            <th>Promoción Actual</th>
+                        </ng-template>
+
+                        <ng-template [ngIf]="isStockError">
+                            <th>Stock Disponible</th>
+                            <th>Cantidad Elegida</th>
+                        </ng-template>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product>
                     <tr>
+                        <td>
+                            <span class="p-column-title">Imagen: </span>
+                            <img [src]="product.product_image == null || !product.product_image ? overImage : host+product.product_image" [alt]="product.product_name" width="75px">
+                        </td>
                         <td><span class="p-column-title">Producto: </span> {{product.name}}</td>
-                        <td><span class="p-column-title">Stock Disponible: </span> {{product.stock.split('.')[0]}}</td>
-                        <td><span class="p-column-title">Cantidad Elegida: </span> {{product.quantity}}</td>
+                        <ng-template [ngIf]="isChangePromotion">
+                            <td><span class="p-column-title">Promoción Anterior: </span> {{product.promotion_previous}}</td>
+                            <td><span class="p-column-title">Promoción Actual: </span> {{product.promotion_currenty}}</td>
+                        </ng-template>
+
+                        <ng-template [ngIf]="isStockError">
+                            <td><span class="p-column-title">Stock Disponible: </span> {{product.stock.split('.')[0]}}</td>
+                            <td><span class="p-column-title">Cantidad Elegida: </span> {{product.quantity}}</td>
+                        </ng-template>
                     </tr>
                 </ng-template>
             </p-table>

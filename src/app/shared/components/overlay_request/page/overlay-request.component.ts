@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@models/interfaces';
 import { CartServiceService } from 'src/app/pages/cart/service/cart-service.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-overlay-request',
@@ -23,10 +24,16 @@ export class OverlayRequestComponent implements OnInit {
   @Input() productsError : any[] = [];
   @Input() isButtonHome : boolean = false;
   @Input() existProducstError: boolean = false;
+  @Input() isChangePromotion: boolean = false;
+  @Input() isStockError: boolean = false;
+  @Input() textHeaderModal: string = "";
 
   display : boolean = false;
   iconDetail: string = "";
   user : User = {};
+
+  overImage : string = "assets/img/not_image.jpg";
+  host : string = environment.URL;
 
   constructor(private router : Router, private cartService : CartServiceService) { }
 

@@ -86,19 +86,19 @@ export class ShopComponent implements OnInit {
           numScroll: 1
       }
   ];
-  }
-
-  ngOnInit(): void {
-    this.getKeepSession();
-    this.isLog();
-    this.getBanners();
-    this.getData();
     this.sortOptions = [
       {label: 'De mayor a menor', value: 'menor'},
       {label: 'De menor a mayor', value: 'mayor'}
     ];
+  }
+
+  ngOnInit(): void {
     this._primengConfig.ripple = true;
     this.isHidden= true;
+    this.getKeepSession();
+    this.isLog();
+    this.getBanners();
+    this.getData();
     this.getCategories();
     this.isActiveCategory();
   }
