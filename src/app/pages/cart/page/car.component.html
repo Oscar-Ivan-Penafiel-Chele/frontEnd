@@ -82,11 +82,17 @@
             currentPageReportTemplate="" [showCurrentPageReport]="true" responsiveLayout="stack">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
-                        <p>Total de Items : {{products.length}}</p>
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
-                        </span>
+                        <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                            <p-button [style]="{width : '42px', height : '42px'}" pTooltip="Recargar tabla" tooltipPosition="top" class="mr-2" styleClass="p-button-sm" icon="pi pi-refresh" (onClick)="getData();"></p-button>
+                            <p>Total de Items : {{products.length}}</p>
+                        </div>
+
+                        <div>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
+                            </span>
+                        </div>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">

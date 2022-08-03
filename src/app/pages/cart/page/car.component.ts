@@ -26,7 +26,7 @@ export class CarComponent implements OnInit {
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.jpg";
   loadingDelete : boolean = false;
-  loading : boolean = false;
+  loading : boolean = true;
   priceTotal : number = 0;
   order : Order = {} as Order;
   promotions : Promotion[] = [];
@@ -123,15 +123,9 @@ export class CarComponent implements OnInit {
       if(i.product_offered && i.product_offered != 0.00){ 
         i.productWithDiscount = (i.product_price_aux! - (i.product_price_aux! * (i.product_offered! / 100))).toFixed(2);
         i.product_price_amount =  i.productWithDiscount * i.product_amount_sail!;
-
-        //console.log(`${i.product_price_amount} : ${i.productWithDiscount} ${i.product_amount_sail!}`)
       }else{
         i.product_price_amount =  i.product_price_aux! * i.product_amount_sail!;
-        //console.log(i)
-        //console.log(`${i.product_price_amount} : ${i.productWithDiscount} ${i.product_amount_sail!}`)
       }
-      //console.log(`${i.product_price_amount}`)
-
 
       if(i.product_iva == 0){
         i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
@@ -143,7 +137,6 @@ export class CarComponent implements OnInit {
         if(this.manageIva.undefined_date == 1){
           i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
           i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
-          console.log(`${i.product_price}: ${i.product__price__iva} ${i.product__price__iva}`)
         }else{
           if(this.manageIva.date_start.slice(0,10) <= dateNow){
             if(this.manageIva.date_end.slice(0,10) >= dateNow){
@@ -158,7 +151,6 @@ export class CarComponent implements OnInit {
             i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
           }
         }
-        //console.log(`${i.product_price}`)
       }
     });
   }
