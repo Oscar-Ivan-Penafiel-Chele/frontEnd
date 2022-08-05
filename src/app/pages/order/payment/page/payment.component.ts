@@ -42,6 +42,9 @@ export class PaymentComponent implements OnInit {
   isChangePromotion: boolean = false;
   isCompleteRequest: boolean = false;
   textHeaderModal: string = "";
+  first: number = 0;
+  rows: number = 3;
+  cont: number = 0;
 
   constructor(
     private _router : Router,
@@ -98,49 +101,9 @@ export class PaymentComponent implements OnInit {
   }
 
   nextPage() {
-    let dataPromotion: any = {};
-    this.productsError = [];
-    let simpletText = "";
-    let compuestText = "";
-    const sizeProducts = this.products.length;
-
     this.showOverlay = true;
     this.loadRequest = true;
-
-    this.products.forEach((product: Product, index)=>{
-      if(product.product_offered && product.product_offered != 0){
-        dataPromotion = {
-          id_product : product.id_product
-        };
-
-        this.validationService.validatePromotionProduct(dataPromotion).subscribe((response : any)=>{
-          this.isStockError = false;
-
-          if(response.message == "No tiene promocion"){
-            this.productsError.push({name: product.product_name, image: product.product_image});
-            this.productsError = Object.values(this.productsError);
-
-          }else if(response.status >= 400){
-            console.log(response);
-            return ;
-          }else if(response.message == "Tiene promocion"){
-            this.productsError = [];
-          }
-
-          if( index == (sizeProducts - 1)){
-            this.textHeaderModal = "Productos sin promoción";
-            this.isChangePromotion = false;
-            simpletText = "Lo sentimos, un producto ya no cuenta con una promoción!";
-            compuestText = "Lo sentimos, algunos productos ya no cuentan con la promoción!";
-            this.isCompleteRequest = false;
-
-            this.handleResponse(this.productsError, simpletText, compuestText, true);
-          }
-        });
-
-        return;
-      }
-    });
+    this.validateStockProduct();
   }
 
   validateStockProduct(){  
@@ -158,8 +121,7 @@ export class PaymentComponent implements OnInit {
       };
       
       this.validationService.validateStockProduct(dataStock).subscribe((response : any)=>{
-
-        if(response.status >= 400 || response.status == 0){
+        if(response.status >= 400 || response.status === 0){
           console.log(response);
           return;
         }
@@ -168,20 +130,21 @@ export class PaymentComponent implements OnInit {
           this.productsError.push({id: product.id_product, name: response.product_name, image: product.product_image, stock : response.product_stock, quantity : product.product_amount_sail });
           this.productsError = Object.values(this.productsError);
         }
-
+        
         if( index == (sizeProducts - 1)){
           this.textHeaderModal = "Productos sin stock disponible";
           simpleText = "Lo sentimos, un producto no cuenta con stock disponible!";
           compuestText = "Lo sentimos, algunos productos no cuentan con un stock disponible!";
           this.isCompleteRequest = true;
           this.isStockError = true;
-          this.handleResponse(this.productsError, simpleText, compuestText, false);
+
+          this.handleResponse(this.productsError, simpleText, compuestText);
         }
       });
     }) ;
   }
 
-  handleResponse(productsError: any[], simpleText?:string, compuestText?: string, isRequestPromotion?: boolean){
+  handleResponse(productsError: any[], simpleText?:string, compuestText?: string){
     this.showButtons = true;
     this.showButtonDynamic = true;
     this.loadRequest = false;
@@ -194,11 +157,6 @@ export class PaymentComponent implements OnInit {
       this.textButton = "Volver al carrito";
       this.iconButton = "pi pi-shopping-cart mr-2";
     }else if (productsError.length == 0 ) {
-      if(!this.isCompleteRequest && isRequestPromotion){
-        this.loadRequest = true;
-        this.validateStockProduct();
-        return ;
-      }
       localStorage.setItem('total',this.priceTotalOrder);
       this.iconResponse = "pi pi-check-circle response_ok";
       this.textResponse = "Validación completada con éxito!";
@@ -223,5 +181,33 @@ export class PaymentComponent implements OnInit {
 
   getIva(){
     this.iva = localStorage.getItem('iva')!;
+  }
+
+  next() {
+    this.cont = 0;
+    if(this.isLastPage()) return;
+
+    this.first = this.first + this.rows;
+  }
+
+  prev() {
+    if(this.isFirstPage()) return;
+
+    this.first = this.first - this.rows;
+  }
+
+  reset() {
+    this.first = 0;
+  }
+
+  isLastPage(): boolean {
+    // if(this.cont === Math.floor(this.products.length/this.rows)) return true;
+
+    // this.cont ++;
+    return false;
+  }
+
+  isFirstPage(): boolean {
+    return this.products ? this.first === 0 : true;
   }
 }

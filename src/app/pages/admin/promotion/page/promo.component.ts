@@ -296,7 +296,7 @@ export class PromoComponent implements OnInit {
           this.promotionService.deletePromotion(promotion.id_promotion!, this.user.id_user!).subscribe((response)=>{
               if(response.status == 200 && response.message === "Eliminado correctamente"){
                   this.getPromotions();
-                  this.messageService.add({severity:'success', summary: 'Completado', detail: 'Promoción Eliminado', life: 3000});
+                  this.messageService.add({severity:'success', summary: 'Completado', detail: 'Promoción Eliminada', life: 3000});
               }else{
                 this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
               }

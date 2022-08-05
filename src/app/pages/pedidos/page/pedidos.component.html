@@ -85,6 +85,7 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
+                        <th><i class="pi pi-info-circle"></i> Índice</th>
                         <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> N° Orden <p-sortIcon field="id_order"></p-sortIcon></th>
                         <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
                         <th pSortableColumn="total"><i class="pi pi-dollar"></i> Total <p-sortIcon field="total"></p-sortIcon></th>
@@ -92,8 +93,9 @@
                         <th><i class="pi pi-th-large"></i> Ver Detalles</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-pedido>
+                <ng-template pTemplate="body" let-pedido let-rowIndex="rowIndex">
                     <tr>
+                        <td>{{rowIndex + 1 }}</td>
                         <td>{{pedido.id_order}}</td>
                         <td>{{pedido.create_date}}</td>
                         <td>${{pedido.total}}</td>

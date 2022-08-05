@@ -6,3 +6,19 @@
     color: whitesmoke;
     font-size: 14px;
 }
+
+.icon__header{
+    padding: 8px;
+    background-color: #655fe2;
+    border-radius: 3px;
+    color: whitesmoke;
+}
+
+.pi-th-large{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+:host ::ng-deep .p-card-subtitle {
+    margin-left: 25px;
+}

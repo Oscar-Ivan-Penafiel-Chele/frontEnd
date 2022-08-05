@@ -1,7 +1,7 @@
 <div class="stepsdemo-content">
     <p-card>
         <ng-template pTemplate="title">
-            Detalles De La Compra
+           <i class="pi pi-th-large"></i> Detalles De La Compra
         </ng-template>
         <ng-template pTemplate="subtitle">
             Datos Personales
@@ -9,39 +9,48 @@
         <ng-template pTemplate="content">
             <div class="flex flex-column">
                 <div class="">
-                    <label for="name">Nombres y Apellidos: </label>
+                    <label for="name"><i class="icon__header pi pi-user"></i> Nombres y Apellidos: </label>
                     <b> {{user.user_name}} {{user.user_lastName}}</b>
                 </div>
                 <div class="mt-2">
-                    <label for="Age">{{typeDocument}}: </label>
+                    <label for="Age"><i class="icon__header pi pi-id-card"></i> {{typeDocument}}: </label>
                     <b> {{user.user_document}}</b>
                 </div>
                 <div class="mt-2">
-                    <label for="Age">Dirección:</label>
+                    <label for="Age"><i class="icon__header pi pi-map-marker"></i> Dirección:</label>
                     <b> {{addressOrder}}</b>
                 </div>
                 <div class="mt-2">
-                    <label for="Age">Lugar de Referencia: </label>
+                    <label for="Age"><i class="icon__header pi pi-building"></i> Lugar de Referencia: </label>
                     <b> {{user.user_address_reference}}</b>
                 </div>
                 <div class="mt-2">
-                    <label for="Age">Celular:</label>
+                    <label for="Age"><i class="icon__header pi pi-phone"></i> Celular:</label>
                     <b> {{user.user_phone}}</b>
                 </div>
             </div>
             <p-divider></p-divider>
 
             <div>
-                <p-table [value]="products" responsiveLayout="scroll">
+                <div class="mb-3">
+                    <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+                    <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+                    <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+                </div>
+
+                <p-table [value]="products" [rows]="rows" [rowsPerPageOptions]="[3,10,20]" [paginator]="true" [(first)]="first"
+                currentPageReportTemplate="" [showCurrentPageReport]="true" responsiveLayout="stack"
+                >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Precio Unitario</th>
-                            <th>Valor Descuento</th>
-                            <th>Parcial</th>
-                            <th>Cantidad</th>
-                            <th>Subtotal</th>
+                            <th><i class="pi pi-image"></i> Imagen</th>
+                            <th><i class="pi pi-tag"></i> Nombre</th>
+                            <th><i class="pi pi-dollar"></i> Precio Unitario</th>
+                            <th><i class="pi pi-percentage"></i> Valor Descuento</th>
+                            <th><i class="pi pi-dollar"></i> Parcial</th>
+                            <th><i class="pi pi-box"></i> Cantidad</th>
+                            <th><i class="pi pi-percentage"></i> IVA {{iva}}%</th>
+                            <th><i class="pi pi-dollar"></i> Subtotal</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-product>
@@ -61,26 +70,27 @@
                             <td>${{product.product_offered == null || !product.product_offered ? '0.00' : ( product.product_price_aux * (product.product_offered / 100)).toFixed(2)}}</td>
                             <td>${{!product.productWithDiscount ? product.product_price_aux : product.productWithDiscount}}</td>
                             <td>{{product.product_amount_sail}}</td>
+                            <td>${{product.product__price__iva}}</td>
                             <td>${{product.product_price_amount.toFixed(2)}}</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
                         <div class="flex flex-column align-items-end justify-content-end">
                             <div class="flex">
-                                <p>Subtotal:</p>
+                                <p><i class="pi pi-dollar"></i> Subtotal:</p>
                                 <span style="font-weight: lighter;" class="ml-2">${{order.price_order_total}}</span>
                             </div>
-                            <div class="flex">
-                                <p>Iva 0%: </p>
+                            <!-- <div class="flex">
+                                <p>Base Iva 0%: </p>
                                 <span style="font-weight: lighter;" class="ml-2">$0.00</span>
-                            </div>
+                            </div> -->
                             <div class="flex">
-                                <p>Iva {{iva}}%: </p>
+                                <p><i class="pi pi-percentage"></i> Iva {{iva}}%: </p>
                                 <span style="font-weight: lighter;" class="ml-2">${{priceIva.toFixed(2)}}</span>
                             </div>
                             <div style="width: 150px;height: 2px; background-color: black;"></div>
                             <div class="flex">
-                                <p>Precio Total: </p>
+                                <p><i class="pi pi-dollar"></i> Precio Total: </p>
                                 <span style="font-weight: lighter;" class="ml-2">${{priceTotalOrder}}</span>
                             </div>
                         </div>

@@ -74,8 +74,10 @@ export class CarComponent implements OnInit {
   }
 
   async getIva(){
-    this.manageIvaService.getManageIva().subscribe((response : any) =>{
-      this.manageIva = response[0];
+    this.manageIvaService.getManageIva().subscribe((response : IManageIVA[]) =>{
+      let data = response;
+      this.manageIva = data.filter( i => i.iva_status === 1)[0];
+
       this.getAllProductsCart(this.user.id_user!);
     });
   }
@@ -132,26 +134,10 @@ export class CarComponent implements OnInit {
         i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
 
         return;
-
-      }else if(i.product_iva == 1){
-        if(this.manageIva.undefined_date == 1){
-          i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-          i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
-        }else{
-          if(this.manageIva.date_start.slice(0,10) <= dateNow){
-            if(this.manageIva.date_end.slice(0,10) >= dateNow){
-              i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-              i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
-            }else{
-              i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
-              i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
-            }
-          }else{
-            i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
-            i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
-          }
-        }
       }
+
+      i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+      i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
     });
   }
 
@@ -175,24 +161,9 @@ export class CarComponent implements OnInit {
       product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
       product.product_price_total! = product.product_price! * $event.value;
       return;
-
-    }else if(product.product_iva == 1){
-
-      if(this.manageIva.undefined_date == 1){
-        product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-      }else{
-        if(this.manageIva.date_start.slice(0,10) <= dateNow){
-          if(this.manageIva.date_end.slice(0,10) >= dateNow){
-            product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-          }else{
-            product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
-          }
-        }else{
-          product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
-        }
-      }
     }
-
+    
+    product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
     product.product_price_total! = product.product_price! * $event.value;
     
     this.getTotalPriceForAmount();

@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<p-toast></p-toast> 
 <section>
     <nav>
         <div class="logout" *ngIf="overlayLogout">
@@ -107,6 +107,15 @@
                         <th pSortableColumn="product_price_total"><i class="pi pi-dollar"></i>Total <p-sortIcon field="product_price_total"></p-sortIcon></th>
                     </tr>
                 </ng-template>
+
+                <ng-template pTemplate="emptymessage" let-columns>
+                    <tr>
+                        <td colspan="8">
+                            No records found - Empty
+                        </td>
+                    </tr>
+                </ng-template>
+
                 <ng-template pTemplate="body" let-product | async>
                     <tr>
                         <td>
@@ -133,7 +142,9 @@
                         <td><span class="p-column-title">Cantidad: </span> <p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber></td>
                         <td><span class="p-column-title">Descuento %: </span>{{product.product_offered == null || !product.product_offered || product.product_offered == '0.00' ? 0 : product.product_offered}}%</td>
                         <td><span class="p-column-title">IVA 12%: </span>${{product.product__price__iva}}</td>
-                        <td><span class="p-column-title">Total: </span>${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}</td>      
+                        <td><span class="p-column-title">Total: </span>
+                            ${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}
+                        </td>      
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

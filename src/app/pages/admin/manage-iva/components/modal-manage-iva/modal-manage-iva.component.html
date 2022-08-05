@@ -1,39 +1,23 @@
 <section>
-    <p-dialog header="Actualización de IVA" appendTo="body" [(visible)]="displayModal" (onHide)="closeModal()" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
+    <p-dialog header="Creación del IVA" [breakpoints]="{'960px': '75vw'}" [(visible)]="displayModal" (onHide)="closeModal()" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
     [draggable]="false" [resizable]="false">
         <div class="grid">
             <div class="col-12 md:col-6 lg:col-6">
                 <label for="porcent">Porcentaje <span class="inputs__required">*</span></label>
-                <p-inputNumber [(ngModel)]="data.porcent" [showButtons]="true" inputId="porcent" suffix="%"></p-inputNumber>
+                <p-inputNumber [(ngModel)]="manageIva.porcent" [showButtons]="true" inputId="porcent" suffix="%" [min]="0"></p-inputNumber>
             </div>
             <div class="col-12 md:col-6 lg:col-6">
-                <label for="productStatus">Fecha Indefinida <span class="inputs__required">*</span></label>
-                <p-dropdown [showClear]="true" [style]="{width : '100%'}" [(ngModel)]="data.undefined_date" optionLabel="label" optionValue="value" inputId="label" [options]="optionsIVA" placeholder="Seleccionar">
-                    <ng-template let-option pTemplate="item">
-                        <div class="flex flex-row justify-content-start align-items-center">
-                            <i class="{{option.icon}} mr-2"></i>
-                            <span>{{option.label}}</span>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <div class="col-12 md:col-6 lg:col-6">
-                <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
-                <p-calendar appendTo="body" [disabled]="data.undefined_date == 1" [style]="{width : '100%'}" dateFormat="yy-mm-dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="data.date_start" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
-                <small class="p-error" *ngIf="submitted && data.date_start == null">Fecha de inicio es requerido</small>
-                <small class="p-error" *ngIf="isShowMessageDateInit">{{!messageErrorDateInit ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateInit}}</small>
-            </div>
-            <div class="col-12 md:col-6 lg:col-6">
-                <label for="buttonbar">Fecha Fin <span class="inputs__required">*</span></label>
-                <p-calendar appendTo="body" [disabled]="data.undefined_date == 1" [style]="{width : '100%'}" dateFormat="yy-mm-dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="data.date_end" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
-                <small class="p-error" *ngIf="submitted && data.date_end == null">Fecha culminación es requerido</small>
-                <small class="p-error" *ngIf="isShowMessageDateExpiry">{{!messageErrorDateExpiry ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateExpiry}}</small>
+                <label for="productStatus">Estado</label>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-check-circle"></i>
+                    <input type="text" pInputText placeholder="Activo" [disabled]="status" [(ngModel)]="status" />
+                </span>
             </div>
         </div>
 
         <ng-template pTemplate="footer">
             <p-button icon="pi pi-times" (click)="closeModal()" label="Cancelar" styleClass="p-button-text p-button-danger"></p-button>
-            <p-button icon="pi pi-check" (click)="updateIva()" label="Actualizar" styleClass="p-button-text"></p-button>
+            <p-button icon="pi pi-check" (click)="updateIva()" label="Crear" styleClass="p-button-outlined"></p-button>
         </ng-template>
     </p-dialog>
 </section>

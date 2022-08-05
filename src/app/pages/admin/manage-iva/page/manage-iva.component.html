@@ -1,8 +1,32 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <p-table #dt [value]="data" [rows]="5" [loading]="isLoading" 
-    responsiveLayout="stack" [rowHover]="true">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button mr-2" (click)="openModal()"></button>
+
+            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+                <ng-template pTemplate>
+                    <div *ngFor="let option of options" class="field-checkbox">
+                        <p-radioButton [id]="option.id" id="option.id" [name]="option.id" name="option.name" [inputId]="option.id" [value]="option.id" (onClick)="change($event)" [(ngModel)]="selectedOptionFilter"></p-radioButton>
+                        <label [for]="option.id">{{option.name}}</label>
+                    </div>
+                </ng-template>
+            </p-overlayPanel>
+
+        </ng-template>
+
+        <!-- <ng-template pTemplate="right">
+            <button pButton pRipple icon="pi pi-file-pdf"  pTooltip="PDF" tooltipPosition="left" class="p-button-info"></button>
+        </ng-template> -->
+    </p-toolbar>
+
+    <p-table #dt [value]="data" [rows]="5" [loading]="isLoading" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
+        responsiveLayout="stack" [rowHover]="true"  
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true"
+    >
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h4 class="m-0">Gestión del IVA</h4>
@@ -10,26 +34,21 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th><i class="pi pi-percentage"></i> Porcentaje</th>
-                <th><i class="pi pi-folder-open"></i> Fecha Indefinida</th>
-                <th><i class="pi pi-calendar"></i> Fecha de Inicio</th>
-                <th><i class="pi pi-calendar"></i> Fecha Fin</th>
-                <th><i class="pi pi-inbox"></i> Acción</th>
+                <th pSortableColumn="porcent"><i class="pi pi-percentage"></i> Porcentaje <p-sortIcon field="porcent"></p-sortIcon></th>
+                <th pSortableColumn="iva_status"><i class="pi pi-folder-open"></i> Estado <p-sortIcon field="iva_status"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="updated_at"><i class="pi pi-calendar"></i> Fecha de Actualización <p-sortIcon field="updated_at"></p-sortIcon></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-iva>
             <tr>
                 <td><span class="p-column-title"><i class="pi pi-percentage"></i> Porcentaje: </span>{{iva.porcent}}%</td>
-                <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Fecha Indefinida: </span>{{iva.undefined_date == 1 ? 'Si' : 'No'}}</td>
-                <td [style]="iva.undefined_date == 1 ? 'color:#ccc;' : ''"><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Inicio: </span> {{iva.date_start.slice(0,10)}}</td>
-                <td [style]="iva.undefined_date == 1 ? 'color:#ccc;' : ''"><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha Fin: </span>{{iva.date_end.slice(0,10)}}</td>
-                <td>
-                    <span class="p-column-title"><i class="pi pi-database"></i> Acción: </span>
-                    <button pButton pRipple type="button" icon="pi pi-pencil" (click)="openModal(iva)" class="p-button-info"></button>
-                </td>
+                <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Estado: </span>{{iva.iva_status == 1 ? 'Activo' : 'Inactivo'}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Creación: </span> {{iva.create_date}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Actualización: </span>{{iva.updated_at}}</td>
             </tr>
         </ng-template>
     </p-table>
 </div>
 
-<app-modal-manage-iva [displayModal]="displayModal" [data]="manageIva"></app-modal-manage-iva>
+<app-modal-manage-iva [displayModal]="displayModal"></app-modal-manage-iva>
