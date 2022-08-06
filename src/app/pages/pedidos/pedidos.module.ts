@@ -4,6 +4,7 @@ import { PedidosComponent } from './page/pedidos.component';
 import { PedidosRoutingModule } from './pedidos-routing.module';
 import { FooterModule } from 'src/app/shared/components/footer/footer.module';
 import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
     CommonModule,
     PedidosRoutingModule,
     FooterModule,
-    PrimengComponentsModule
+    PrimengComponentsModule,
+    FormsModule
   ]
 })
 export class PedidosModule { }

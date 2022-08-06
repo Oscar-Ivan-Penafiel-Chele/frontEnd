@@ -31,6 +31,9 @@ export class PedidosComponent implements OnInit {
   pedidos : any;
   dataAux : IPedido[] = [];
   isLoading : boolean = true;
+  options : any [] = [];
+  dataFilter: IPedido[] = [];
+  selectedOptionFilter : any;
 
   constructor(
     private _navigate : Router,
@@ -40,6 +43,11 @@ export class PedidosComponent implements OnInit {
     private generatePDF : GeneratePdfFacturaService
   ) { 
     this.overlayLogout = false;
+    this.options = [
+      {id: '1', name : 'Completada'},
+      {id: '2', name : 'Pendiente'},
+      {id: '3', name : 'Todos'},
+    ]
   }
 
   ngOnInit(): void {
@@ -61,6 +69,8 @@ export class PedidosComponent implements OnInit {
   }
 
   async getOrdersClient(){
+    this.selectedOptionFilter = 3;
+    this.isLoading = true;
     const data = {
       id_user : this.user.id_user
     }
@@ -84,6 +94,7 @@ export class PedidosComponent implements OnInit {
     }); 
 
     this.pedidos = Object.values(data)
+
     this.createInterfaceTable(this.pedidos)
   }
 
@@ -101,6 +112,7 @@ export class PedidosComponent implements OnInit {
     });
     this.isLoading = false;
     this.dataAux = Object.values(this.dataAux);
+    this.dataFilter = this.dataAux;
   }
 
 
@@ -159,6 +171,21 @@ export class PedidosComponent implements OnInit {
         return true;
     }else{
         return false;
+    }
+  }
+
+  
+  change($event : any){
+    let filter = 0;
+
+    filter = $event.path[2].attributes[1].value
+
+    if(filter == 1){
+      this.dataAux = this.dataFilter.filter( i => i.status == 'Completada')
+    }else if( filter == 2){
+      this.dataAux = this.dataFilter.filter( i => i.status == 'Pendiente')
+    }else if(filter == 3){
+      this.dataAux = this.dataFilter;
     }
   }
 }

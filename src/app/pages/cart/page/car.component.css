@@ -624,3 +624,11 @@ main > p {
 .p-column-title{
     font-weight: 600;
 }
+
+.empty__cart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0px;
+    height: 80vh;
+}

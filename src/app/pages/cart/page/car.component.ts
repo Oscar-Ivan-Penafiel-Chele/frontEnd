@@ -25,12 +25,12 @@ export class CarComponent implements OnInit {
   products : Product[] = [];
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.jpg";
-  loadingDelete : boolean = false;
   loading : boolean = true;
   priceTotal : number = 0;
   order : Order = {} as Order;
   promotions : Promotion[] = [];
   manageIva : IManageIVA = {} as IManageIVA;
+  emptyImage: string = "assets/img/image_empty.svg";
 
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -113,7 +113,6 @@ export class CarComponent implements OnInit {
     this.handleProduct(this.products);
 
     this.loading = false;
-    this.loadingDelete = false;
     await this.getTotalPriceToPay();
   }
 
@@ -254,7 +253,6 @@ export class CarComponent implements OnInit {
   }
 
   async deleteProductCart(product : Product){
-    this.loadingDelete = true;
     const data = {
       id_user : this.user.id_user,
       id_product : product.id_product
@@ -262,7 +260,7 @@ export class CarComponent implements OnInit {
 
     this.confirmationService.confirm({
       message: `¿Estás seguro de eliminar el producto del carrito? `,
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel : 'Si',
       acceptButtonStyleClass : '',
@@ -280,9 +278,47 @@ export class CarComponent implements OnInit {
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue eliminado'});
       }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor'});
-        this.loadingDelete = false;
       }
     })
+  }
+
+  cleanCart(){
+    this.confirmationService.confirm({
+      message: `¿Deseas eliminar todos los productos del carrito? `,
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel : 'Si',
+      acceptButtonStyleClass : '',
+      rejectButtonStyleClass : ' p-button-text p-button-danger',
+      accept: () => {
+         this.deleteAllProducts()
+      },
+    });
+  }
+
+  deleteAllProducts(){
+    this.loading = true;
+    let data = {};
+    const productLenght = this.products.length;
+
+    this.products.forEach((product : Product, index)=>{
+      data = {
+        id_user : this.user.id_user,
+        id_product : product.id_product
+      };
+
+      this.cartService.deleteProductCart(data).subscribe((response)=>{
+        if(response.status >= 400 || response.message === "Ocurrio un error interno en el servidor"){
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor'});
+          return;
+        };
+
+        if( index == (productLenght - 1)){
+          this.getData();
+          this.messageService.add({severity:'success', summary: 'Completado', detail: 'Todos los productos fueron eliminados del carrito!'});
+        }
+      })
+    });
   }
 
   @HostListener('window:beforeunload', ['$event'])

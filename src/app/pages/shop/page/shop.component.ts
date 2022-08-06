@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { } from 'primeng/api';
+import { LazyLoadEvent } from 'primeng/api';
 import { ConfirmationService, PrimeNGConfig, MessageService } from 'primeng/api';
 
 import { Router } from '@angular/router';
@@ -49,6 +49,7 @@ export class ShopComponent implements OnInit {
   iconButton : string = "";
   arrayButtons : any = [];
   showPromotion : boolean = false;
+  totalRecords: number= 0;
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -441,5 +442,13 @@ export class ShopComponent implements OnInit {
   //   console.log(buttonsCurrent);
   // } 
 
-  
+  // loadCustomers(event: LazyLoadEvent) {
+  //   this.completeProduct = true;
+
+  //   this.productService.getProducts({lazyEvent: JSON.stringify(event)}).subscribe(res => {
+  //       this.productAux = res;
+  //       this.totalRecords = this.productAux.length;
+  //       this.completeProduct = false;
+  //   })
+  // }
 }

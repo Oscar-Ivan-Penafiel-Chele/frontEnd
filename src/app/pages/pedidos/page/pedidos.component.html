@@ -75,13 +75,28 @@
             <p-table #dt [value]="dataAux" [loading]="isLoading" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'status']"  responsiveLayout="scroll"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]">
                 <ng-template pTemplate="caption">
-                    <div class="flex align-items-center justify-content-between">
+                    <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                        <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                            <button pButton [style]="{width : '42px', height : '42px'}" pTooltip="Filtrar por estado" [loading]="isLoading" tooltipPosition="top" class="p-button-success mr-2" styleClass="p-button-sm" icon="pi pi-filter" (click)="op.toggle($event)"></button>
+                            <button pButton [style]="{width : '42px', height : '42px'}" pTooltip="Recargar tabla" [loading]="isLoading" tooltipPosition="top" class="p-button-info mr-2" styleClass="p-button-sm" icon="pi pi-refresh" (click)="getData();"></button>
+                            Listado de Pedidos
+                        </div>
+
+                        <div>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por n° orden" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- <div class="flex align-items-center justify-content-between">
                         Listado de Pedidos
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o estado..." />
                         </span>
-                    </div>
+                    </div> -->
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
@@ -115,3 +130,13 @@
 
     <app-footer></app-footer>
 </section>
+
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+    <ng-template pTemplate>
+        <div *ngFor="let option of options" class="field-checkbox">
+            <p-radioButton [id]="option.id" id="option.id" [name]="option.id" name="option.name" [inputId]="option.id" [value]="option.id" (onClick)="change($event)" [(ngModel)]="selectedOptionFilter"></p-radioButton>
+            <label [for]="option.id">{{option.name}}</label>
+        </div>
+    </ng-template>
+</p-overlayPanel>

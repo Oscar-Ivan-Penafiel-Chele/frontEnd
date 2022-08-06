@@ -522,9 +522,11 @@ main{
 .status__order__pendiente{
     background-color: #FEEDAF;
     color: #8A5340;
+    border-radius: 5px;
 }
 
 .status__order__completada{
     background-color: #C8E6C9;
     color: #256029;
+    border-radius: 5px;
 }
