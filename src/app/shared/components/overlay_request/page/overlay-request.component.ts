@@ -15,18 +15,18 @@ export class OverlayRequestComponent implements OnInit {
   @Input() loadRequest: boolean = false;
   @Input() textOverlay: string = "";
   @Input() textResponse: string = "";
-  @Input() url: string = "";
+  @Input() url?: string = "";
   @Input() showButtons : boolean = false;
-  @Input() showButtonDynamic : boolean = false;
+  @Input() showButtonDynamic? : boolean = false;
   @Input() iconResponse : string = "";
-  @Input() textButton : string = "";
-  @Input() iconButton : string = "";
-  @Input() productsError : any[] = [];
-  @Input() isButtonHome : boolean = false;
-  @Input() existProducstError: boolean = false;
-  @Input() isChangePromotion: boolean = false;
-  @Input() isStockError: boolean = false;
-  @Input() textHeaderModal: string = "";
+  @Input() textButton? : string = "";
+  @Input() iconButton? : string = "";
+  @Input() productsError? : any[] = [];
+  @Input() isButtonHome? : boolean = false;
+  @Input() existProducstError?: boolean = false;
+  @Input() isChangePromotion?: boolean = false;
+  @Input() isStockError?: boolean = false;
+  @Input() textHeaderModal?: string = "";
 
   display : boolean = false;
   iconDetail: string = "";
@@ -55,14 +55,14 @@ export class OverlayRequestComponent implements OnInit {
   redirection(){
     let data: any = {}
 
-    if(this.productsError.length == 0) {
+    if(this.productsError!.length == 0) {
       this.router.navigate([this.url]);
       return;
     }
 
-    const sizeProducts = (this.productsError.length - 1 );
+    const sizeProducts = (this.productsError!.length - 1 );
 
-    this.productsError.forEach((i : any, index) =>{
+    this.productsError!.forEach((i : any, index) =>{
       data = {
         id_user : this.user.id_user,
         id_product : i.id
@@ -85,5 +85,9 @@ export class OverlayRequestComponent implements OnInit {
 
   showDetails(){
     this.display = true;
+  }
+
+  closeOverlay(){
+    this.showOverlay = false;
   }
 }

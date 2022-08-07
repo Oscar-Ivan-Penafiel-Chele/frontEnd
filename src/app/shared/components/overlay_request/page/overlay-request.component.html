@@ -23,6 +23,10 @@
                             </ng-template>
                         </div>
                     </ng-template>
+
+                    <ng-template>
+                        <button class="button__response" (click)="closeOverlay()">Continuar <i class="pi-chevron-right"></i></button>
+                    </ng-template>
                 </div>
             </ng-template>
         </div>
@@ -30,11 +34,11 @@
     
 </ng-template>
 
-<p-dialog [header]="textHeaderModal" styleClass="p-datatable-sm" [(visible)]="display" [modal]="true" [breakpoints]="{'960px': '80vw'}" [style]="{width: '50vw'}" [maximizable]="true"
+<p-dialog [header]="textHeaderModal!" styleClass="p-datatable-sm" [(visible)]="display" [modal]="true" [breakpoints]="{'960px': '80vw'}" [style]="{width: '50vw'}" [maximizable]="true"
     [draggable]="false" [resizable]="false">
 
         <div class="detil__products__error">
-            <p-table #dt [value]="productsError" [rowHover]="true" responsiveLayout="stack" [rows]="3" [paginator]="true"
+            <p-table #dt [value]="productsError!" [rowHover]="true" responsiveLayout="stack" [rows]="3" [paginator]="true"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
                 <ng-template pTemplate="header">
                     <tr>

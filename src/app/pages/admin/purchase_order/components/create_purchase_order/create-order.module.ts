@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     PrimengComponentsModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     CreateOrderComponent,

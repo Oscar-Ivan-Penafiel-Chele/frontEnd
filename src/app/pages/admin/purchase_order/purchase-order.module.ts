@@ -7,6 +7,7 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
 import { CreateOrderModule } from './components/create_purchase_order/create-order.module';
 import { TablePurchaseOrderComponent } from './components/table_purchase_order/table-purchase-order.component';
 import { FormsModule } from '@angular/forms';
+import { OverlayRequestModule } from 'src/app/shared/components/overlay_request/overlay-request.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     PurchaseOrderRoutingModule,
     PrimengComponentsModule,
     CreateOrderModule,
-    FormsModule
+    FormsModule,
+    OverlayRequestModule
   ]
 })
 export class PurchaseOrderModule { }

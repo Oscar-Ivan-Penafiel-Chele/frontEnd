@@ -11,6 +11,7 @@
                     <label [for]="provider.id_provider" class="description__provider">{{provider.provider_name}}</label>
                 </div>
             </div>
+            <small class="p-error" *ngIf="existProveedor && !selectedProvider">Proveedor es requerido</small>
         </p-fieldset>
     </article>
 
@@ -21,10 +22,12 @@
             <div class="col-12 md:col-6 lg:col-6">
                 <label for="name">Nombre del Producto <span class="inputs__required">*</span></label>
                 <p-dropdown [options]="products" emptyFilterMessage="No se encontraron resultados" [(ngModel)]="product.product" optionLabel="product_name" optionValue="" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
+                <small class="p-error" *ngIf="submitted && !product.product">Producto es requerido</small>
             </div>
             <div class="col-12 md:col-6 lg:col-6">
                 <label for="minmax-buttons">Cantidad del Producto <span class="inputs__required">*</span></label>
-                <p-inputNumber [required]="true" [(ngModel)]="product.amount" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="10000"></p-inputNumber>
+                <p-inputNumber [(ngModel)]="product.amount" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="10000"></p-inputNumber>
+                <small class="p-error" *ngIf="submitted && (!product.amount || product.amount == null)">Cantidad es requerida</small>
             </div>
         </div>
 
