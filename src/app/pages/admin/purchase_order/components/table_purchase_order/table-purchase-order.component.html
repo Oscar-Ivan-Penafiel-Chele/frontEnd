@@ -1,0 +1,58 @@
+<p-table #dt [value]="purchase_orders" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="stack" [rowHover]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                    <button pButton pRipple icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" [style]="{width : '42px', height : '42px'}" pTooltip="Filtrar estado" tooltipPosition="top" (click)="op.toggle($event)"></button>
+                    <p>Gestión de Ordenes de Compra</p>
+                </div>
+
+                <div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText style="width: 300px;" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por proveedor o n° orden" />
+                    </span>
+                </div>
+            </div>
+
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id"><i class="pi pi-qrcode"></i> N° orden<p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="provider.name"><i class="pi pi-user"></i> Proveedor<p-sortIcon field="provider.name"></p-sortIcon></th>
+                <th pSortableColumn="status"><i class="pi pi-box"></i> Estado <p-sortIcon field="status"></p-sortIcon></th>
+                <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
+                <th pSortableColumn="updated_at"><i class="pi pi-calendar"></i> Fecha de recepción <p-sortIcon field="updated_at"></p-sortIcon></th>
+                <th><i class="pi pi-inbox"></i> Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-purchase_order let-columns="columns">
+            <tr>
+                <td><span class="p-column-title"><i class="pi pi-qrcode"></i> N° orden: </span>{{purchase_order.id}}</td>
+                <td><span class="p-column-title"><i class="pi pi-user"></i> Proveedor: </span>{{purchase_order.provider.name}}</td>
+                <td><span class="p-column-title"><i class="pi pi-box"></i> Estado: </span>{{purchase_order.status == 0 ? 'Pendiente' : 'Completado'}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{purchase_order.create_date}}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de recepción: </span>{{purchase_order.updated_at}}</td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
+                    <div class="flex justify-content-end align-items-end"> 
+                        <button pButton pRipple icon="pi pi-file-pdf" class="p-button-rounded p-button-info mr-2" (click)="viewPurchaseOrderPDF(purchase_order)"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{purchase_orders ? purchase_orders.length : 0 }} ordenes de compra
+            </div>
+        </ng-template>
+    </p-table>
+
+    <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+        <ng-template pTemplate>
+            <div *ngFor="let option of options" class="field-checkbox">
+                <p-radioButton [id]="option.id" id="option.id" [name]="option.id" name="option.name" [inputId]="option.id" [value]="option.id" (onClick)="change($event)" [(ngModel)]="selectedOptionFilter"></p-radioButton>
+                <label [for]="option.id">{{option.name}}</label>
+            </div>
+        </ng-template>
+    </p-overlayPanel>

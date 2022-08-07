@@ -1,0 +1,15 @@
+*{
+    font-size: 15px;
+}
+
+.field > label{
+    font-weight: bold;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav {
+    justify-content: center;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav .p-tabview-ink-bar{
+    display: none;
+}

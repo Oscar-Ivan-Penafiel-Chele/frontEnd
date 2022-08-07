@@ -36,6 +36,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CalendarModule} from 'primeng/calendar';
 import {ChartModule} from 'primeng/chart';
+import {TabViewModule} from 'primeng/tabview';
+
 
 @NgModule({
   declarations: [],
@@ -79,6 +81,7 @@ import {ChartModule} from 'primeng/chart';
     AutoCompleteModule,
     CalendarModule,
     ChartModule,
+    TabViewModule,
   ]
 })
 export class PrimengComponentsModule { }

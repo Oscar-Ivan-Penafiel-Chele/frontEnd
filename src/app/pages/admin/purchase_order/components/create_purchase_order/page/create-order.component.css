@@ -1,0 +1,43 @@
+:host ::ng-deep .p-fieldset .p-fieldset-legend {
+    padding: 0em;
+}
+
+.providers__radio{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row wrap;
+    gap: 1.5em;
+}
+
+.title__provider{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.field-checkbox{
+    background-color: #DEE2E6;
+    padding: 8px 18px;
+    border-radius: 2em;
+    color: rgb(41, 41, 41);
+}
+
+.field__provider{
+    margin-bottom: 60px;
+}
+
+.field__provider:first-of-type{
+    margin-top: 30px;
+}
+
+.description__provider{
+    font-size: 14px;
+}
+
+.button__save__data{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}

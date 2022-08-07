@@ -15,44 +15,47 @@
             <div style="height: 75vh;">
                 <p-scrollPanel [style]="{width: '100%', height: '100%'}">
                     <div class="nav__aside__content">
-                        <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="1" (click)="activeLink()" [routerLink]="'purchase-order'" pRipple pTooltip="Orden de Compra" tooltipPosition="right">
+                            <i class="pi pi-paperclip"></i>
+                            <p [hidden]="isHidden">Orden de Compra</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'products'" pRipple pTooltip="Productos" tooltipPosition="right">
                             <i class="pi pi-bookmark"></i>
                             <p [hidden]="isHidden">Productos</p>
                         </div>
-                    
-                        <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Categorías" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'category'" pRipple pTooltip="Categorías" tooltipPosition="right">
                             <i class="pi pi-th-large"></i>
                             <p [hidden]="isHidden">Categorías</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'brand'" pRipple pTooltip="Marcas" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'brand'" pRipple pTooltip="Marcas" tooltipPosition="right">
                             <i class="pi pi-tags"></i>
                             <p [hidden]="isHidden">Marcas</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="4" (click)="activeLink()" [routerLink]="'provider'" pRipple pTooltip="Proveedores" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'provider'" pRipple pTooltip="Proveedores" tooltipPosition="right">
                             <i class="pi pi-users"></i>
                             <p [hidden]="isHidden">Proveedores</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'manage-iva'" pRipple pTooltip="IVA" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'manage-iva'" pRipple pTooltip="IVA" tooltipPosition="right">
                             <i class="pi pi-percentage"></i>
                             <p [hidden]="isHidden">IVA</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'banner'" pRipple pTooltip="Banner" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'banner'" pRipple pTooltip="Banner" tooltipPosition="right">
                             <i class="pi pi-images"></i>
                             <p [hidden]="isHidden">Banner</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="7" (click)="activeLink()" [routerLink]="'promotions'" pRipple pTooltip="Promociones" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="8" (click)="activeLink()" [routerLink]="'promotions'" pRipple pTooltip="Promociones" tooltipPosition="right">
                             <i class="pi pi-ticket"></i>
                             <p [hidden]="isHidden">Promociones</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="8" (click)="activeLink()" [routerLink]="'employee'" pRipple pTooltip="Empleados" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="9" (click)="activeLink()" [routerLink]="'employee'" pRipple pTooltip="Empleados" tooltipPosition="right">
                             <i class="pi pi-user"></i>
                             <p [hidden]="isHidden">Empleados</p>
                         </div> 
-                        <div class="nav__aside__item" tabindex="9" (click)="activeLink()" [routerLink]="'auditory'" pRipple pTooltip="Auditoría" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="10" (click)="activeLink()" [routerLink]="'auditory'" pRipple pTooltip="Auditoría" tooltipPosition="right">
                             <i class="pi pi-history"></i>
                             <p [hidden]="isHidden">Auditoría</p>
                         </div>
-                        <div class="nav__aside__item" tabindex="10" (click)="activeLink()" [routerLink]="'migration'" pRipple pTooltip="Migraciones" tooltipPosition="right">
+                        <div class="nav__aside__item" tabindex="11" (click)="activeLink()" [routerLink]="'migration'" pRipple pTooltip="Migraciones" tooltipPosition="right">
                             <i class="pi pi-cloud-upload"></i>
                             <p [hidden]="isHidden">Migraciones</p>
                         </div>
