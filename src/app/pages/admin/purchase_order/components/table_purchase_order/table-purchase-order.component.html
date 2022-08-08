@@ -92,10 +92,10 @@
                 <ng-template pTemplate="body" let-product let-columns="columns">
                     <tr>
                         <td><span class="p-column-title"><i class="pi pi-check-square"></i></span>
-                            <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event)" [(ngModel)]="selectedProducts"></p-checkbox>
+                            <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event, product)" [(ngModel)]="selectedProducts"></p-checkbox>
                         </td>
-                        <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product selected">{{product.producto.product_name}}</p></td>
-                        <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> <p class="item__table__amount selected">{{product.purchase_order_products_amount}}</p></td>
+                        <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product">{{product.producto.product_name}}</p></td>
+                        <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> <p class="item__table__amount">{{product.purchase_order_products_amount}}</p></td>
                     </tr>
                 </ng-template>
             </p-table>

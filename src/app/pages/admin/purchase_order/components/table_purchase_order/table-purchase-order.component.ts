@@ -1,5 +1,5 @@
 import { Component, Host, Input, OnInit } from '@angular/core';
-import { IPurchaseOrder } from '@models/interfaces';
+import { IPurchaseOrder, IPurchaseOrderProducts } from '@models/interfaces';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { PurchaseOrderPdfService } from 'src/app/shared/services/pdfs/purchase-order-pdf.service';
 import { PurchaseOrderComponent } from '../../page/purchase-order.component';
@@ -97,18 +97,29 @@ export class TablePurchaseOrderComponent implements OnInit {
   saveData(){
     const data = {
       id_purchase_order: this.idPurchaseOrder!,
-      products: this.selectedProducts
+      products: this.productsPurchaseOrder
     };
+
+    console.log(data);
   }
 
-  changeStyle($event: any){
-    const item_product = document.querySelector('.item__table__product');
-    const item_amount = document.querySelector('.item__table__amount');
+  changeStyle($event: any, product: any){
+    let item_product;
+    let item_amount;
+
+    const path = $event.originalEvent.path[0];
+
+    if(path.localName == "span"){
+      item_product = $event.originalEvent.path[5].children[1].children[1];
+      item_amount = $event.originalEvent.path[5].children[2].children[1];
+      product.purchase_order_products_status = 0;
+    }else{
+      item_product = $event.originalEvent.path[4].children[1].children[1];
+      item_amount = $event.originalEvent.path[4].children[2].children[1];
+      product.purchase_order_products_status = 1;
+    }
 
     item_product?.classList.toggle('unselected');
     item_amount?.classList.toggle('unselected');
-
-    console.log(item_product)
-    console.log(item_amount)
   }
 }
