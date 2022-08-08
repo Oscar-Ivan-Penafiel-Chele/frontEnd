@@ -19,13 +19,13 @@ export class TablePurchaseOrderComponent implements OnInit {
 
   options : any [] = [];
   selectedOptionFilter : any;
+  
   displayModal: boolean = false;
-
-  checked: boolean = false;
   selectedProducts: string[] = [];
   productsPurchaseOrder: any;
   informationProvider: any;
   idPurchaseOrder?: number = 0;
+  clonedProducts: any = {};
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -92,34 +92,5 @@ export class TablePurchaseOrderComponent implements OnInit {
     this.selectedProducts = this.productsPurchaseOrder;
 
     this.displayModal = true;
-  }
-
-  saveData(){
-    const data = {
-      id_purchase_order: this.idPurchaseOrder!,
-      products: this.productsPurchaseOrder
-    };
-
-    console.log(data);
-  }
-
-  changeStyle($event: any, product: any){
-    let item_product;
-    let item_amount;
-
-    const path = $event.originalEvent.path[0];
-
-    if(path.localName == "span"){
-      item_product = $event.originalEvent.path[5].children[1].children[1];
-      item_amount = $event.originalEvent.path[5].children[2].children[1];
-      product.purchase_order_products_status = 0;
-    }else{
-      item_product = $event.originalEvent.path[4].children[1].children[1];
-      item_amount = $event.originalEvent.path[4].children[2].children[1];
-      product.purchase_order_products_status = 1;
-    }
-
-    item_product?.classList.toggle('unselected');
-    item_amount?.classList.toggle('unselected');
   }
 }

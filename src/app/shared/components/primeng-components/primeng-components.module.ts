@@ -39,7 +39,6 @@ import {ChartModule} from 'primeng/chart';
 import {TabViewModule} from 'primeng/tabview';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
 
-
 @NgModule({
   declarations: [],
   imports: [

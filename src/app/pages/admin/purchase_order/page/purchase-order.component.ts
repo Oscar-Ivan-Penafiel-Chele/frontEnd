@@ -47,7 +47,6 @@ export class PurchaseOrderComponent implements OnInit {
       this.loading = false;
       this.purchase_orders = Object.values(response);
       this.dataAux = this.purchase_orders;
-      console.log(this.purchase_orders)
     })
   }
 

@@ -60,49 +60,11 @@
 
 
     <ng-template [ngIf]="displayModal">
-        <p-dialog header="Confirmar orden de pago" [(visible)]="displayModal" [modal]="true" [breakpoints]="{'960px': '90vw'}" [style]="{width: '75vw'}" [maximizable]="true"
-            [draggable]="false" [resizable]="false">
-    
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <p>Proveedor: {{informationProvider!.provider_name}}</p>
-                </ng-template>
-            </p-toolbar>
-    
-            <p-table #productTable [value]="productsPurchaseOrder" styleClass="p-datatable-sm" [rows]="5" [loading]="loading" [paginator]="true" [globalFilterFields]="['producto.product_name']" responsiveLayout="stack" [rowHover]="true"
-                currentPageReportTemplate="" [showCurrentPageReport]="true">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
-                        <div>
-                            <span class="p-input-icon-left">
-                                <i class="pi pi-search"></i>
-                                <input pInputText style="width: 300px;" type="text" (input)="productTable.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
-                            </span>
-                        </div>
-                    </div>
-    
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th><i class="pi pi-check-square"></i></th>
-                        <th pSortableColumn="provider.provider_name"><i class="pi pi-user"></i> Producto<p-sortIcon field="provider.provider_name"></p-sortIcon></th>
-                        <th pSortableColumn="status"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="status"></p-sortIcon></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-columns="columns">
-                    <tr>
-                        <td><span class="p-column-title"><i class="pi pi-check-square"></i></span>
-                            <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event, product)" [(ngModel)]="selectedProducts"></p-checkbox>
-                        </td>
-                        <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product">{{product.producto.product_name}}</p></td>
-                        <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> <p class="item__table__amount">{{product.purchase_order_products_amount}}</p></td>
-                    </tr>
-                </ng-template>
-            </p-table>
-    
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-times" (click)="displayModal=false" label="Cancelar" styleClass="p-button-text p-button-danger"></p-button>
-                    <p-button icon="pi pi-check" (click)="saveData()" label="Confirmar" styleClass="p-button-text"></p-button>
-                </ng-template>
-        </p-dialog>
+        <app-detail-purchase-order
+            [displayModal]="displayModal"
+            [informationProvider]="informationProvider"
+            [productsPurchaseOrder]="productsPurchaseOrder"
+            [selectedProducts]="selectedProducts"
+            [idPurchaseOrder]="idPurchaseOrder"
+        ></app-detail-purchase-order>
     </ng-template>

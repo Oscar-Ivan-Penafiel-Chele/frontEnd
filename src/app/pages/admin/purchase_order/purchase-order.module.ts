@@ -8,12 +8,14 @@ import { CreateOrderModule } from './components/create_purchase_order/create-ord
 import { TablePurchaseOrderComponent } from './components/table_purchase_order/table-purchase-order.component';
 import { FormsModule } from '@angular/forms';
 import { OverlayRequestModule } from 'src/app/shared/components/overlay_request/overlay-request.module';
+import { DetailPurchaseOrderComponent } from './components/detail-purchase-order/detail-purchase-order.component';
 
 
 @NgModule({
   declarations: [
     PurchaseOrderComponent,
-    TablePurchaseOrderComponent
+    TablePurchaseOrderComponent,
+    DetailPurchaseOrderComponent
   ],
   imports: [
     CommonModule,
