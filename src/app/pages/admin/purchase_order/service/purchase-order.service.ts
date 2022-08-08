@@ -19,4 +19,8 @@ export class PurchaseOrderService {
   createPurchaseOrder(data: IPurchaseOrder): Observable<any>{
     return this.http.post<any>(`${this.url}/purchase/order`,data);
   }
+
+  completePurchaseOrder(data: any): Observable<any>{
+    return this.http.post<any>(`${this.url}/purchase/order`,'');
+  }
 }

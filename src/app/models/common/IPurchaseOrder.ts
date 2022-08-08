@@ -5,7 +5,7 @@ export interface IPurchaseOrder{
     id_provider: number,
     id_user: number,
     products: IPurchaseOrderProducts[],
-    status: string,
+    purchase_order_status: number,
     total: number,
     create_date: Date,
     updated_at: Date,

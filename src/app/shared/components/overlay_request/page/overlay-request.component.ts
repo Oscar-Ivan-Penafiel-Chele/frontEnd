@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Host, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@models/interfaces';
+import { PurchaseOrderComponent } from 'src/app/pages/admin/purchase_order/page/purchase-order.component';
 import { CartServiceService } from 'src/app/pages/cart/service/cart-service.service';
 import { environment } from 'src/environments/environment.prod';
 
@@ -27,6 +28,7 @@ export class OverlayRequestComponent implements OnInit {
   @Input() isChangePromotion?: boolean = false;
   @Input() isStockError?: boolean = false;
   @Input() textHeaderModal?: string = "";
+  @Input() isPurchaseOrder?: boolean = false;
 
   display : boolean = false;
   iconDetail: string = "";
@@ -35,7 +37,10 @@ export class OverlayRequestComponent implements OnInit {
   overImage : string = "assets/img/not_image.jpg";
   host : string = environment.URL;
 
-  constructor(private router : Router, private cartService : CartServiceService) { }
+  constructor(
+    private router : Router, private cartService : CartServiceService,
+    @Host() private purchaseComponent?: PurchaseOrderComponent,
+    ) { }
 
   ngOnInit(): void {
     this.iconDetail = "pi pi-angle-down";
@@ -89,5 +94,6 @@ export class OverlayRequestComponent implements OnInit {
 
   closeOverlay(){
     this.showOverlay = false;
+    this.purchaseComponent!.showOverlay = false;
   }
 }

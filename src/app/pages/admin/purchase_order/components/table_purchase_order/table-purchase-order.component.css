@@ -1,0 +1,8 @@
+.selected{
+    text-decoration: none;
+}
+
+.unselected{
+    text-decoration: line-through;
+}
+

@@ -82,7 +82,7 @@ export class GeneratePdfFacturaService {
     pdf.info({
         title: 'Orden de Pedido',
         author: '@Yebba',
-        subject: 'Mostrar los proveedores de la ferretería',
+        subject: 'Orden de Pedido',
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('portrait'); // 'portrait'

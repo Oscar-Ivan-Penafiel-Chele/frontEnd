@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import { PdfMakeWrapper} from 'pdfmake-wrapper';
 import { IPurchaseOrder } from '@models/interfaces';
 import { CreateOrderComponent } from '../components/create_purchase_order/page/create-order.component';
 import { PurchaseOrderService } from '../service/purchase-order.service';
 import {MessageService} from 'primeng/api';
+
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
   selector: 'app-purchase-order',
@@ -42,6 +46,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.purchaseOrderService.getPurchaseOrders().subscribe((response : any)=>{
       this.loading = false;
       this.purchase_orders = Object.values(response);
+      this.dataAux = this.purchase_orders;
+      console.log(this.purchase_orders)
     })
   }
 
@@ -56,17 +62,16 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   showMessage(response: any){
+    this.loadRequest = false;
     if(response.status == 200 || response.message == "Orden de compra creada con exito"){
       this.iconResponse = this.iconOkResponse;
       this.textResponse = "Orden de compra creada con éxito";
       this.getPurchaseOrder();
       this.createComponent.resetData();
       this.index = 0;
-      // this.messageService.add({severity:'success', summary: 'Completado', detail: 'Orden de compra creada con éxito'});
     }else if(response.status >= 400){
       this.iconResponse = this.iconErrorResponse;
-      this.textResponse = `${response.message[0]}`;
-      // this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message[0]}`});
+      this.textResponse = "Ha ocurrido un error en el servidor";
     }
   }
 }

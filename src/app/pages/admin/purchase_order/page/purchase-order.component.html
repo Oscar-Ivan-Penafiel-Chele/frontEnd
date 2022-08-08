@@ -7,7 +7,7 @@
                 <i class="pi pi-book mr-2"></i>
                 <span>Ordenes de Compras</span>
             </ng-template>
-           <app-table-purchase-order [purchase_orders]="purchase_orders" [loading]="loading" ></app-table-purchase-order>
+           <app-table-purchase-order [purchase_orders]="purchase_orders" [dataAux]="dataAux" [loading]="loading" ></app-table-purchase-order>
         </p-tabPanel>
         <p-tabPanel>
             <ng-template pTemplate = "header">
@@ -19,11 +19,12 @@
     </p-tabView>
 </div>
 
-<!-- <app-overlay-request
+<app-overlay-request
     [showOverlay]="showOverlay"
     [loadRequest]="loadRequest"
     [textOverlay]="textOverlay"
     [textResponse]="textResponse"
     [iconResponse]="iconResponse"
+    [isPurchaseOrder]="true"
 ></app-overlay-request>
- -->
+

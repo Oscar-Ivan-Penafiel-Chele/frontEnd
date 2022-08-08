@@ -1,4 +1,7 @@
-<p-table #dt [value]="purchase_orders" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['id_purchase_order', 'provider.provider_name']" responsiveLayout="stack" [rowHover]="true"
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-toast></p-toast>
+
+    <p-table #dt [value]="purchase_orders" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['id_purchase_order', 'provider.provider_name']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
@@ -37,7 +40,9 @@
                     <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
                     <div class="flex justify-content-end align-items-end"> 
                         <button pButton pRipple pTooltip="PDF" tooltipPosition="top" icon="pi pi-file-pdf" class="p-button-info mr-2" (click)="viewPurchaseOrderPDF(purchase_order)"></button>
-                        <button pButton pRipple pTooltip="Completar" tooltipPosition="top" icon="pi pi-check-circle" class="p-button-success mr-2" (click)="viewPurchaseOrderPDF(purchase_order)"></button>
+                        <ng-template [ngIf]="purchase_order.status != 1">
+                            <button pButton pRipple pTooltip="Completar" tooltipPosition="top" icon="pi pi-check-circle" class="p-button-success mr-2" (click)="openModal(purchase_order)"></button>
+                        </ng-template>
                     </div>
                 </td>
             </tr>
@@ -52,3 +57,52 @@
             </div>
         </ng-template>
     </p-overlayPanel>
+
+
+    <ng-template [ngIf]="displayModal">
+        <p-dialog header="Confirmar orden de pago" [(visible)]="displayModal" [modal]="true" [breakpoints]="{'960px': '90vw'}" [style]="{width: '75vw'}" [maximizable]="true"
+            [draggable]="false" [resizable]="false">
+    
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <p>Proveedor: {{informationProvider!.provider_name}}</p>
+                </ng-template>
+            </p-toolbar>
+    
+            <p-table #productTable [value]="productsPurchaseOrder" styleClass="p-datatable-sm" [rows]="5" [loading]="loading" [paginator]="true" [globalFilterFields]="['producto.product_name']" responsiveLayout="stack" [rowHover]="true"
+                currentPageReportTemplate="" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                        <div>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText style="width: 300px;" type="text" (input)="productTable.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
+                            </span>
+                        </div>
+                    </div>
+    
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th><i class="pi pi-check-square"></i></th>
+                        <th pSortableColumn="provider.provider_name"><i class="pi pi-user"></i> Producto<p-sortIcon field="provider.provider_name"></p-sortIcon></th>
+                        <th pSortableColumn="status"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="status"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-columns="columns">
+                    <tr>
+                        <td><span class="p-column-title"><i class="pi pi-check-square"></i></span>
+                            <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event)" [(ngModel)]="selectedProducts"></p-checkbox>
+                        </td>
+                        <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product selected">{{product.producto.product_name}}</p></td>
+                        <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> <p class="item__table__amount selected">{{product.purchase_order_products_amount}}</p></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+    
+                <ng-template pTemplate="footer">
+                    <p-button icon="pi pi-times" (click)="displayModal=false" label="Cancelar" styleClass="p-button-text p-button-danger"></p-button>
+                    <p-button icon="pi pi-check" (click)="saveData()" label="Confirmar" styleClass="p-button-text"></p-button>
+                </ng-template>
+        </p-dialog>
+    </ng-template>

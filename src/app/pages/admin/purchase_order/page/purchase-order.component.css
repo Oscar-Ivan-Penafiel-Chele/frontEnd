@@ -13,3 +13,11 @@
 :host ::ng-deep .p-tabview .p-tabview-nav .p-tabview-ink-bar{
     display: none;
 }
+
+.response_ok{
+    color: #16A34A;
+}
+
+.response_error{
+    color: #FF5757;
+}

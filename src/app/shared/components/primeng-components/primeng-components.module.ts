@@ -37,6 +37,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CalendarModule} from 'primeng/calendar';
 import {ChartModule} from 'primeng/chart';
 import {TabViewModule} from 'primeng/tabview';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import {TabViewModule} from 'primeng/tabview';
     CalendarModule,
     ChartModule,
     TabViewModule,
+    DynamicDialogModule,
   ]
 })
 export class PrimengComponentsModule { }
