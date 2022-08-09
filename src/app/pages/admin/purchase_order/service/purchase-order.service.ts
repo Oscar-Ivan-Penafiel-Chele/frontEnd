@@ -21,6 +21,6 @@ export class PurchaseOrderService {
   }
 
   completePurchaseOrder(data: any): Observable<any>{
-    return this.http.post<any>(`${this.url}/purchase/order`,'');
+    return this.http.post<any>(`${this.url}/checked-purchase-order`, data);
   }
 }

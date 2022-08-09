@@ -1,16 +1,33 @@
+<p-toast></p-toast>
 <p-dialog header="Confirmar orden de pago" [(visible)]="displayModal" (onHide)="resetModal()" [modal]="true" [breakpoints]="{'960px': '90vw'}" [style]="{width: '75vw'}" [maximizable]="true"
             [draggable]="false" [resizable]="false">
     
 <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
-        <p class="infor__provider"><i class="pi pi-user mr-1"></i>Proveedor:<span class="pl-2">{{informationProvider!.provider_name}}</span></p>
+        <p class="info__provider"><i class="pi pi-user mr-1"></i>Proveedor:<span class="pl-2">{{informationProvider!.provider_name}}</span></p>
     </ng-template>
 </p-toolbar>
+
+<div class="data__order grid mb-4">
+    <div class="col-12 md:col-6 lg:col-6">
+        <p class="info__provider pb-1"><i class="pi pi-credit-card"></i> Método de Pago</p>
+        <p-dropdown [options]="opctionsPay" [style]="{'width':'100%'}" [(ngModel)]="selectedPay" placeholder="Seleccione método de pago" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
+        <small class="p-error" *ngIf="submitted && !selectedPay">Método de pago es requerido</small>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+        <p class="info__provider pb-1"><i class="pi pi-dollar"></i> Total a pagar</p>
+        <p-inputNumber [(ngModel)]="purchase_order_total" [style]="{'width':'100%'}" placeholder="0.00" prefix="$" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+        <div>
+            <small class="p-error" *ngIf="submitted && (!purchase_order_total || purchase_order_total == null)">Total a pagar es requerido</small>
+        </div>
+    </div>
+</div>
 
 <p-table #productTable [value]="productsPurchaseOrder" editMode="row" styleClass="p-datatable-sm" [rows]="5" [paginator]="true" [globalFilterFields]="['producto.product_name']" responsiveLayout="stack" [rowHover]="true"
     currentPageReportTemplate="" [showCurrentPageReport]="true">
     <ng-template pTemplate="caption">
         <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+            <p><i class="pi pi-th-large"></i> Productos Seleccionados</p>
             <div>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>

@@ -24,6 +24,7 @@ export class CreateOrderComponent implements OnInit {
   data : any = {};
   submitted: boolean = false;
   existProveedor: boolean = false;
+  isLoadingProvider: boolean = false;
 
   constructor(
     private providerService: ProviderService,
@@ -44,10 +45,12 @@ export class CreateOrderComponent implements OnInit {
   }
 
   getProviders(){
+    this.isLoadingProvider = true;
     this.providerService.getProviders().subscribe((response : IProvider[])=>{
       response = response.filter( i => i.provider_name != 'NO_DEFINIDO')
       this.providers = Object.values(response);
       this.providers = this.providers.sort(this.sortProviders)
+      this.isLoadingProvider = false;
     })
   }
 

@@ -1,0 +1,26 @@
+.unselected{
+    text-decoration: line-through;
+}
+
+:host ::ng-deep .p-cell-editing {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.info__provider{
+    color: rgb(75, 75, 75);
+    font-weight: 600;
+}
+
+.info__provider span{
+    color: black;
+    font-weight: lighter;
+}
+
+.data__order{
+    background-color: #F8F9FA;
+    border-radius: 5px;
+    border: 1px solid #DEE2E6;
+    padding: 10px;
+    margin: 0px 3px;
+}

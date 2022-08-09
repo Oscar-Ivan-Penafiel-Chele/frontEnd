@@ -93,4 +93,12 @@ export class TablePurchaseOrderComponent implements OnInit {
 
     this.displayModal = true;
   }
+
+  showMessage(response: any){
+    if(response.status == 200 || response.message == "Orden de compra completada con exito"){
+      this.messageService.add({severity:'success', summary: 'Completado', detail: 'Orden de compra completada con éxito'});
+    }else if(response.status >= 400){
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor'});
+    }
+  }
 }

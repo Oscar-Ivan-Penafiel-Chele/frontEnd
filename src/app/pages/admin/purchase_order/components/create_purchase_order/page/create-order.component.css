@@ -30,7 +30,7 @@
 
 .field-checkbox{
     width: 100%;
-    background-color: #e9e9e9;
+    background-color: #EFF3F8;
     padding: 8px 18px;
     border-radius: 2em;
     color: rgb(41, 41, 41);
@@ -73,3 +73,17 @@
 .table__products__selected{
     margin-top: 30px;
 }
+
+.loader__provider{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 230px;
+}
+
+@media screen and (max-width: 991px){
+    .providers__content{
+        width: 100%;
+    }
+}
+

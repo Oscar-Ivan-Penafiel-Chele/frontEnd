@@ -1,10 +1,14 @@
 import { Component, Host, Input, OnInit } from '@angular/core';
+import { PurchaseOrderService } from '../../service/purchase-order.service';
 import { TablePurchaseOrderComponent } from '../table_purchase_order/table-purchase-order.component';
+import {MessageService} from 'primeng/api';
+import { User } from '@models/interfaces';
 
 @Component({
   selector: 'app-detail-purchase-order',
   templateUrl: './detail-purchase-order.component.html',
-  styleUrls: ['./detail-purchase-order.component.css']
+  styleUrls: ['./detail-purchase-order.component.css'],
+  providers: [MessageService]
 })
 export class DetailPurchaseOrderComponent implements OnInit {
 
@@ -14,19 +18,59 @@ export class DetailPurchaseOrderComponent implements OnInit {
   @Input() informationProvider: any;
   @Input() idPurchaseOrder?: number = 0;
 
-  constructor(@Host() private tablePurchase: TablePurchaseOrderComponent) { }
+  opctionsPay: any[] = [];
+  selectedPay: any;
+  purchase_order_total: any;
+  user: User = {};
+  submitted: boolean = false;
+
+  constructor(
+    @Host() private tablePurchase: TablePurchaseOrderComponent, 
+    private purchaseOrderService: PurchaseOrderService,
+    private messageService: MessageService,
+    ) { 
+    this.opctionsPay = [
+      {id: 1, value:'Efectivo'},
+      {id: 2, value:'Cheque'},
+      {id: 3, value:'Transferencia bancaria'},
+    ]
+  }
 
   ngOnInit(): void {
+    this.getUser();
+  }
+
+  getUser(){
+    const data = localStorage.getItem('user');
+
+    this.user = JSON.parse(data!);
   }
 
   saveData(){
+    this.submitted = true;
+
+    if(!this.validateData()) return;
+
     const data = {
       id_purchase_order: this.idPurchaseOrder!,
-      products: this.productsPurchaseOrder
+      id_user: this.user.id_user,
+      products: this.productsPurchaseOrder,
+      tipe_of_pay: this.selectedPay,
+      purchase_order_total: this.purchase_order_total,
     };
 
-    console.log(data);
-    this.tablePurchase.displayModal = false;
+    this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
+      this.tablePurchase.displayModal = false;
+      this.tablePurchase.showMessage(response);
+    });
+  }
+
+  validateData(){
+    if(!this.selectedPay || this.selectedPay == null || !this.purchase_order_total || this.purchase_order_total == null){
+      return false;
+    }
+
+    return true;
   }
 
 
