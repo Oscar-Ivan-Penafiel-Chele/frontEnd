@@ -10,12 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { OverlayRequestModule } from 'src/app/shared/components/overlay_request/overlay-request.module';
 import { DetailPurchaseOrderComponent } from './components/detail-purchase-order/detail-purchase-order.component';
 
-
 @NgModule({
   declarations: [
     PurchaseOrderComponent,
     TablePurchaseOrderComponent,
-    DetailPurchaseOrderComponent
+    DetailPurchaseOrderComponent,
   ],
   imports: [
     CommonModule,

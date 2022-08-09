@@ -1,5 +1,9 @@
 <section>
-
+    
+    <ng-template [ngIf]="showErrors">
+        <p-messages [(value)]="msgs1"></p-messages>
+    </ng-template>
+    
     <div class="grid">
         <div class="col-12 md:col-5 lg:col-3 sm:col-12">
             <div class="providers__content">

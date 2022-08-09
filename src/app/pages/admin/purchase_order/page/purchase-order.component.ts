@@ -47,6 +47,9 @@ export class PurchaseOrderComponent implements OnInit {
       this.loading = false;
       this.purchase_orders = Object.values(response);
       this.dataAux = this.purchase_orders;
+    }, err =>{
+      this.loading = false;
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema en el servidor'});
     })
   }
 
@@ -73,4 +76,5 @@ export class PurchaseOrderComponent implements OnInit {
       this.textResponse = "Ha ocurrido un error en el servidor";
     }
   }
+
 }

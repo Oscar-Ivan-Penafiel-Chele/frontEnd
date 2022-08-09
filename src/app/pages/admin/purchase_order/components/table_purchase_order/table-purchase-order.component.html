@@ -19,6 +19,15 @@
             </div>
 
         </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">
+                    <p>No se encontraron registros</p>
+                </td>
+            </tr>
+        </ng-template>
+
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="id_purchase_order"><i class="pi pi-qrcode"></i> N° orden<p-sortIcon field="id_purchase_order"></p-sortIcon></th>

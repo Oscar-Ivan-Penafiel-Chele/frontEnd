@@ -1,4 +1,4 @@
-import { Component, Host, Input, OnInit } from '@angular/core';
+import { Component, Host, Input, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@models/interfaces';
 import { PurchaseOrderComponent } from 'src/app/pages/admin/purchase_order/page/purchase-order.component';
@@ -39,7 +39,7 @@ export class OverlayRequestComponent implements OnInit {
 
   constructor(
     private router : Router, private cartService : CartServiceService,
-    @Host() private purchaseComponent?: PurchaseOrderComponent,
+    @Host() @Optional() private purchaseComponent: PurchaseOrderComponent,
     ) { }
 
   ngOnInit(): void {

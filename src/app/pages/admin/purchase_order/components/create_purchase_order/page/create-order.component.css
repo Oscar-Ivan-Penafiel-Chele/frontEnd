@@ -6,6 +6,12 @@
     font-size: 14px;
 }
 
+:host ::ng-deep .p-scrollpanel:hover .p-scrollpanel-bar, .p-scrollpanel:active .p-scrollpanel-bar{
+    background-color: #C7D2FE;
+    width: 7px;
+    border-radius: 4em;
+}
+
 .providers__content{
     width: 90%;
     padding: 15px 15px 0px 20px;

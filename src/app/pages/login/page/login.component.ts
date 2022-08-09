@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
           'invalido' : { severity : 'error', message : "Credenciales No Válidas"},
           'valido' : {severity : 'success', message : "Credenciales Válidas"},
           'bloqueado' : {severity : 'error', message : "Demasiados intentos, intentalo más tarde"},
-          'error' : {severity : 'error', message : "Error del servidor"}
+          'error' : {severity : 'error', message : "Error del servidor, intentalo más tarde"}
         };
     }
 
@@ -81,11 +81,11 @@ export class LoginComponent implements OnInit {
           this.selectedMessageStatus = this.optionsMessageStatus['invalido'];
           this.closeMessage();
           return ;
-        }else if(response.status == 500 && response.message == "Ocurrio un error interno en el servidor"){
+        }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
           this.selectedMessageStatus = this.optionsMessageStatus['error'];
           this.closeMessage();
           return ; 
-        }else if(response.status == 500 && response.message == "Demasiados intentos, intentar en 1 minuto"){
+        }else if(response.status == 500 || response.message == "Demasiados intentos, intentar en 1 minuto"){
           this.selectedMessageStatus = this.optionsMessageStatus['bloqueado'];
           this.closeMessage();
           return ;
@@ -94,6 +94,12 @@ export class LoginComponent implements OnInit {
         this.selectedMessageStatus = this.optionsMessageStatus['valido'];
         this.responseHandle(response);
         this.redirectRoute();
+    },err =>{
+      this.displayMessage = true;
+      if(err.status == 500){
+        this.selectedMessageStatus = this.optionsMessageStatus['error'];
+        this.closeMessage();
+      }
     });
   }
 

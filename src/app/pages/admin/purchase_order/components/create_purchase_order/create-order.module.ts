@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { CreateOrderComponent } from './page/create-order.component';
 import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
 import { FormsModule } from '@angular/forms';
+import { MessagesErrorComponent } from '../messages-error/messages-error.component';
 
 @NgModule({
   declarations: [
-    CreateOrderComponent
+    CreateOrderComponent,
+    MessagesErrorComponent
   ],
   imports: [
     CommonModule,

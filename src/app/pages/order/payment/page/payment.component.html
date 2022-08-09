@@ -77,20 +77,28 @@
                     <ng-template pTemplate="summary">
                         <div class="flex flex-column align-items-end justify-content-end">
                             <div class="flex">
-                                <p><i class="pi pi-dollar"></i> Subtotal:</p>
+                                <p>Subtotal {{iva}}% (+): </p>
+                                <span style="font-weight: lighter;" class="ml-2">${{subtotalIva.toFixed(2)}}</span>
+                            </div>
+                            <div class="flex">
+                                <p>Subtotal 0% (+): </p>
+                                <span style="font-weight: lighter;" class="ml-2">${{subtotalSinIva.toFixed(2)}}</span>
+                            </div>
+                            <div class="flex">
+                                <p>Descuento (-): </p>
+                                <span style="font-weight: lighter;" class="ml-2">${{discount.toFixed(2)}}</span>
+                            </div>
+                            <div class="flex">
+                                <p>Subtotal (=):</p>
                                 <span style="font-weight: lighter;" class="ml-2">${{order.price_order_total}}</span>
                             </div>
-                            <!-- <div class="flex">
-                                <p>Base Iva 0%: </p>
-                                <span style="font-weight: lighter;" class="ml-2">$0.00</span>
-                            </div> -->
                             <div class="flex">
-                                <p><i class="pi pi-percentage"></i> Iva {{iva}}%: </p>
+                                <p>Iva {{iva}}% (+): </p>
                                 <span style="font-weight: lighter;" class="ml-2">${{priceIva.toFixed(2)}}</span>
                             </div>
                             <div style="width: 150px;height: 2px; background-color: black;"></div>
                             <div class="flex">
-                                <p><i class="pi pi-dollar"></i> Precio Total: </p>
+                                <p><i class="pi pi-dollar"></i> Precio Total (=): </p>
                                 <span style="font-weight: lighter;" class="ml-2">${{priceTotalOrder}}</span>
                             </div>
                         </div>

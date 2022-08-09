@@ -62,7 +62,9 @@ export class DetailPurchaseOrderComponent implements OnInit {
     this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
       this.tablePurchase.displayModal = false;
       this.tablePurchase.showMessage(response);
-    });
+    }, err =>{
+      this.tablePurchase.showMessage({status: err.status});
+    })
   }
 
   validateData(){

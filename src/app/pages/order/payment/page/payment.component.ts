@@ -46,6 +46,10 @@ export class PaymentComponent implements OnInit {
   rows: number = 3;
   cont: number = 0;
 
+  subtotalIva: number = 0;
+  subtotalSinIva: number = 0;
+  discount: number = 0;
+
   constructor(
     private _router : Router,
     private addressService : AddressUserService,
@@ -85,12 +89,23 @@ export class PaymentComponent implements OnInit {
 
     this.products = JSON.parse(data!);
 
+    console.log(this.products)
     this.products.forEach((i)=>{
-      this.priceIva += parseFloat(i.product__price__iva);
-      total += parseFloat(i.product_price_amount);
+      if(i.product_offered || i.product_offered! > 0 ){
+        this.discount += ((i.product_offered! / 100) * i.product_price_aux!);
+        console.log(`${this.discount} ${i.product_offered} ${i.product_price_aux}`)
+      }
+
+      if(i.product_iva == 0) {
+        this.subtotalSinIva += parseFloat(i.product_price_amount!.toString());
+      }else{
+        this.priceIva += parseFloat(i.product__price__iva);
+        total += parseFloat(i.product_price_amount);
+        this.subtotalIva = total;
+      }
     })
 
-    this.order.price_order_total = total.toFixed(2);
+    this.order.price_order_total = (parseFloat(total.toFixed(2)) + this.subtotalSinIva - this.discount).toFixed(2);
     this.getTotalPay()
   }
 

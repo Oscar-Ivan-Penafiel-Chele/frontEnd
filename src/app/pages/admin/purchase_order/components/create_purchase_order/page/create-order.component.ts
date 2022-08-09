@@ -1,5 +1,6 @@
 import { Component, Host, OnInit } from '@angular/core';
 import { IProvider, IPurchaseOrder, IPurchaseOrderProducts, Product, User } from '@models/interfaces';
+import { Message } from 'primeng/api';
 import { ProductService } from 'src/app/pages/admin/products/service/product.service';
 import { ProviderService } from 'src/app/pages/admin/provider/service/provider.service';
 import { PurchaseOrderComponent } from '../../../page/purchase-order.component';
@@ -25,12 +26,16 @@ export class CreateOrderComponent implements OnInit {
   submitted: boolean = false;
   existProveedor: boolean = false;
   isLoadingProvider: boolean = false;
+  showErrors: boolean = false;
+  msgs1: Message[] = [];
 
   constructor(
     private providerService: ProviderService,
     private productService : ProductService,
     @Host() private purchaseComponent: PurchaseOrderComponent
-  ) { }
+  ) { 
+    this.msgs1.push({severity:'error', summary: 'Error', detail: 'Ocurrio un error en el servidor, por favor inténtalo más tarde'});
+  }
 
   ngOnInit(): void {
     this.getUser();
@@ -51,12 +56,16 @@ export class CreateOrderComponent implements OnInit {
       this.providers = Object.values(response);
       this.providers = this.providers.sort(this.sortProviders)
       this.isLoadingProvider = false;
+    }, err =>{
+      this.showErrors = true;
     })
   }
 
   getProducts(){
     this.productService.getProducts().subscribe((response : Product[])=>{
       this.products = Object.values(response);
+    }, err =>{
+      this.showErrors = true;
     })
   }
 

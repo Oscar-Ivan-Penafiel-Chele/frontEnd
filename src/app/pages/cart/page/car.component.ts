@@ -147,8 +147,6 @@ export class CarComponent implements OnInit {
   }
 
   getTotalPriceForUnit($event : any, product : Product){
-    const dateNow = this.getDateToday();
-
     if(product.product_offered){ 
       product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
       product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
@@ -159,6 +157,8 @@ export class CarComponent implements OnInit {
     if(product.product_iva == 0){
       product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
       product.product_price_total! = product.product_price! * $event.value;
+
+      this.getTotalPriceForAmount();
       return;
     }
     
@@ -174,10 +174,9 @@ export class CarComponent implements OnInit {
 
     this.products.forEach((i)=>{
       if(i.product_price_total == undefined){
-
-      i.product_amount_sail = 1;
-      totalIva += parseFloat(i.product__price__iva); 
-      totalPrecioSinIva += parseFloat(i.product_price!.toString());
+        i.product_amount_sail = 1;
+        totalIva += parseFloat(i.product__price__iva); 
+        totalPrecioSinIva += parseFloat(i.product_price!.toString());
       }
     })
     this.order.price_order_total = totalPrecioSinIva;
@@ -186,14 +185,13 @@ export class CarComponent implements OnInit {
   getTotalPriceForAmount(){
     let price : any ;
 
-    const reduce = (i : number,j : number) => i+j;
+    const reduce = (i : number,j : number) => i + j;
 
     price = this.products.map((i)=>{
       if(i.product_price_total == undefined){
-        
         i.product_price_total = parseFloat(i.product_price!.toString())
       } 
-
+      console.log(i);
       return i.product_price_total;
     })
 
