@@ -42,16 +42,14 @@
             <tr>
                 <td><span class="p-column-title"><i class="pi pi-qrcode"></i> N° orden: </span>{{purchase_order.id_purchase_order}}</td>
                 <td><span class="p-column-title"><i class="pi pi-user"></i> Proveedor: </span>{{purchase_order.provider.provider_name}}</td>
-                <td><span class="p-column-title"><i class="pi pi-box"></i> Estado: </span>{{purchase_order.status == 0 ? 'Pendiente' : 'Completado'}}</td>
+                <td><span class="p-column-title"><i class="pi pi-box"></i> Estado: </span>{{purchase_order.purchase_order_status == 0 ? 'Pendiente' : 'Completado'}}</td>
                 <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{purchase_order.create_date}}</td>
                 <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de recepción: </span>{{purchase_order.updated_at}}</td>
                 <td>
                     <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
-                    <div class="flex justify-content-end align-items-end"> 
+                    <div class="flex justify-content-start align-items-end"> 
                         <button pButton pRipple pTooltip="PDF" tooltipPosition="top" icon="pi pi-file-pdf" class="p-button-info mr-2" (click)="viewPurchaseOrderPDF(purchase_order)"></button>
-                        <ng-template [ngIf]="purchase_order.status != 1">
-                            <button pButton pRipple pTooltip="Completar" tooltipPosition="top" icon="pi pi-check-circle" class="p-button-success mr-2" (click)="openModal(purchase_order)"></button>
-                        </ng-template>
+                        <button pButton pRipple pTooltip="Completar" [disabled]="purchase_order.purchase_order_status == 1" tooltipPosition="top" icon="pi pi-check-circle" class="p-button-success mr-2" (click)="openModal(purchase_order)"></button>
                     </div>
                 </td>
             </tr>

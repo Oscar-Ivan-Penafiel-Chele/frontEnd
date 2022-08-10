@@ -45,6 +45,10 @@ export class TablePurchaseOrderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getData(){
+    this.purchaseOrderComponent.getPurchaseOrder();
+  }
+
   viewPurchaseOrderPDF(order: IPurchaseOrder){
     this.purchaseOrderPDF.generatePDF(order);
   }
