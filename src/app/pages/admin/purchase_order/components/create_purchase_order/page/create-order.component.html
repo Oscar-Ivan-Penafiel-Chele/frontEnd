@@ -7,7 +7,7 @@
     <div class="grid">
         <div class="col-12 md:col-5 lg:col-3 sm:col-12">
             <div class="providers__content">
-                <p class="title__provider"><i class="pi pi-user"></i> Selección de Proveedor</p>
+                <p class="title__provider"><i class="pi pi-user"></i> 1.Selección del Proveedor</p>
 
                 <ng-template [ngIf]="isLoadingProvider" [ngIfElse]="completeProviders">
                     <div class="loader__provider" >
@@ -19,7 +19,7 @@
                     <p-scrollPanel [style]="{width: '100%', height: '230px'}">
                         <div class="providers__radio">
                             <div *ngFor="let provider of providers" class="field-checkbox">
-                                <p-radioButton [inputId]="provider.id_provider!.toString()" name="provider" [value]="provider" [(ngModel)]="selectedProvider"></p-radioButton>
+                                <p-radioButton [inputId]="provider.id_provider!.toString()" (onClick)="getIdProvider($event)" name="provider" [value]="provider" [(ngModel)]="selectedProvider"></p-radioButton>
                                 <label [for]="provider.id_provider" class="description__provider">{{provider.provider_name}}</label>
                             </div>
                         </div>
@@ -30,26 +30,26 @@
         </div>
         <div class="col-12 md:col-7 lg:col-9 sm:col-12">
             <div class="section__selected__products">
-                <p class="title__provider"><i class="pi pi-box"></i> Selección de Productos</p>
+                <p class="title__provider"><i class="pi pi-box"></i> 2.Selección de los Productos</p>
         
-                <div class="grid">
+                <div class="grid mt-5">
                     <div class="col-12 md:col-12 lg:col-7">
                         <div class="flex flex-column" style="width: 100%;">
                             <label class="label__product__input" for="name">Nombre del Producto <span class="inputs__required">*</span></label>
-                            <p-dropdown [options]="products" [style]="{'width':'100%'}"  emptyFilterMessage="No se encontraron resultados" [(ngModel)]="product.product" optionLabel="product_name" optionValue="" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
+                            <p-dropdown [options]="products" [emptyMessage]="emptyMessage" [filterPlaceholder]="emptyMessage" [emptyFilterMessage]="emptyMessage" [style]="{'width':'100%'}" [(ngModel)]="product.product" optionLabel="product_name" optionValue="" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
                         </div>
                         <small class="p-error" *ngIf="submitted && !product.product">Producto es requerido</small>
                     </div>
                     <div class="col-12 md:col-12 lg:col-5 sm:col-12">
                         <div class="flex flex-column">
                             <label class="label__product__input" for="minmax-buttons">Cantidad del Producto <span class="inputs__required">*</span></label>
-                            <p-inputNumber [(ngModel)]="product.amount" [style]="{'width':'100%'}" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0"></p-inputNumber>
+                            <p-inputNumber [(ngModel)]="product.amount" [disabled]="!product.product || product.product == null" [style]="{'width':'100%'}" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0"></p-inputNumber>
                         </div>
                         <small class="p-error" *ngIf="submitted && (!product.amount || product.amount == null)">Cantidad es requerida</small>
                     </div>
                 </div>
         
-                <button pButton pRipple [disabled]="!validateData()" styleClass="p-button-sm" type="button" class="p-button-info mt-7 mb-5 button__add" icon="pi pi-plus" label="Agregar Producto" (click)="addProduct()"></button>
+                <button pButton pRipple [disabled]="!validateData()" styleClass="p-button-sm" type="button" class="p-button-info mt-7 button__add" icon="pi pi-plus" label="Agregar Producto" (click)="addProduct()"></button>
             </div>
         </div>
 

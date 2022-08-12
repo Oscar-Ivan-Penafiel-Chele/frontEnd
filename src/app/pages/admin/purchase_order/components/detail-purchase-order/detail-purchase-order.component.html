@@ -1,78 +1,95 @@
 <p-toast></p-toast>
-<p-dialog header="Confirmar orden de pago" [(visible)]="displayModal" (onHide)="resetModal()" [modal]="true" [breakpoints]="{'960px': '90vw'}" [style]="{width: '75vw'}" [maximizable]="true"
+<p-dialog header="Confirmar orden de pago" appendTo="body" [(visible)]="displayModal" (onHide)="resetModal()" [modal]="true" [breakpoints]="{'960px': '90vw'}" [style]="{width: '75vw'}" [maximizable]="true"
             [draggable]="false" [resizable]="false">
-    
-<p-toolbar styleClass="mb-4">
-    <ng-template pTemplate="left">
-        <p class="info__provider"><i class="pi pi-user mr-1"></i>Proveedor:<span class="pl-2">{{informationProvider!.provider_name}}</span></p>
-    </ng-template>
-</p-toolbar>
+        
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <p class="info__provider"><i class="pi pi-user mr-1"></i>Proveedor:<span class="pl-2">{{informationProvider!.provider_name}}</span></p>
+        </ng-template>
+    </p-toolbar>
 
-<div class="data__order grid mb-4">
-    <div class="col-12 md:col-6 lg:col-6">
-        <p class="info__provider pb-1"><i class="pi pi-credit-card"></i> Método de Pago</p>
-        <p-dropdown [options]="opctionsPay" [style]="{'width':'100%'}" [(ngModel)]="selectedPay" placeholder="Seleccione método de pago" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
-        <small class="p-error" *ngIf="submitted && !selectedPay">Método de pago es requerido</small>
-    </div>
-    <div class="col-12 md:col-6 lg:col-6">
-        <p class="info__provider pb-1"><i class="pi pi-dollar"></i> Total a pagar</p>
-        <p-inputNumber [(ngModel)]="purchase_order_total" [style]="{'width':'100%'}" placeholder="0.00" prefix="$" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
-        <div>
-            <small class="p-error" *ngIf="submitted && (!purchase_order_total || purchase_order_total == null)">Total a pagar es requerido</small>
+    <div class="data__order grid mb-4">
+        <div class="col-12 md:col-6 lg:col-6">
+            <p class="info__provider pb-1"><i class="pi pi-hashtag"></i> N° de Factura</p>
+            <span class="p-input-icon-left">
+                <i class="pi pi-file"></i>
+                <input type="text" pInputText [style]="{'width':'100%'}" placeholder="N° de Factura" [(ngModel)]="number_facture" />
+            </span>
+            <small class="p-error" *ngIf="submitted && !number_facture">Método de pago es requerido</small>
         </div>
-    </div>
-</div>
 
-<p-table #productTable [value]="productsPurchaseOrder" editMode="row" styleClass="p-datatable-sm" [rows]="5" [paginator]="true" [globalFilterFields]="['producto.product_name']" responsiveLayout="stack" [rowHover]="true"
-    currentPageReportTemplate="" [showCurrentPageReport]="true">
-    <ng-template pTemplate="caption">
-        <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
-            <p><i class="pi pi-th-large"></i> Productos Seleccionados</p>
+        <div class="col-12 md:col-6 lg:col-6">
+            <p class="info__provider pb-1"><i class="pi pi-calendar"></i> Fecha</p>
+            <p-calendar appendTo="body" placeholder="Fecha" dateFormat="yy-mm-dd" [(ngModel)]="date_purchase" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
             <div>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText style="width: 300px;" type="text" (input)="productTable.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
-                </span>
+                <small class="p-error" *ngIf="submitted && (!date_purchase || date_purchase == null)">Total a pagar es requerido</small>
             </div>
         </div>
 
-    </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th><i class="pi pi-check-square"></i></th>
-            <th pSortableColumn="provider.provider_name"><i class="pi pi-user"></i> Producto<p-sortIcon field="provider.provider_name"></p-sortIcon></th>
-            <th pSortableColumn="status"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="status"></p-sortIcon></th>
-            <th></th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product let-columns="columns" let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="product">
-            <td><span class="p-column-title"><i class="pi pi-check-square"></i></span>
-                <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event, product)" [(ngModel)]="selectedProducts"></p-checkbox>
-            </td>
-            <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product">{{product.producto.product_name}}</p></td>
-            <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> 
-                <p-cellEditor>
-                    <ng-template pTemplate="input">
-                        <p-inputNumber [(ngModel)]="product.purchase_order_products_amount" [size]="2" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" [showButtons]="true" inputId="minmax-buttons" [min]="0">
-                        </p-inputNumber>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                        <p class="item__table__amount">{{product.purchase_order_products_amount}}</p>
-                    </ng-template>
-                </p-cellEditor>
-            </td>
-            <td style="text-align:center">
-                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+        <div class="col-12 md:col-6 lg:col-6">
+            <p class="info__provider pb-1"><i class="pi pi-credit-card"></i> Método de Pago</p>
+            <p-dropdown [options]="opctionsPay" [style]="{'width':'100%'}" [(ngModel)]="selectedPay" placeholder="Seleccione método de pago" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
+            <small class="p-error" *ngIf="submitted && !selectedPay">Método de pago es requerido</small>
+        </div>
+        <div class="col-12 md:col-6 lg:col-6">
+            <p class="info__provider pb-1"><i class="pi pi-dollar"></i> Total a pagar</p>
+            <p-inputNumber [(ngModel)]="purchase_order_total" [style]="{'width':'100%'}" placeholder="0.00" prefix="$" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+            <div>
+                <small class="p-error" *ngIf="submitted && (!purchase_order_total || purchase_order_total == null)">Total a pagar es requerido</small>
+            </div>
+        </div>
+    </div>
 
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-times" (click)="resetModal()" label="Cancelar" styleClass="p-button-text p-button-danger"></p-button>
-        <p-button icon="pi pi-check" (click)="saveData()" label="Confirmar" styleClass="p-button-text"></p-button>
-    </ng-template>
+    <p-table #productTable [value]="productsPurchaseOrder" editMode="row" styleClass="p-datatable-sm" [rows]="5" [paginator]="true" [globalFilterFields]="['producto.product_name']" responsiveLayout="stack" [rowHover]="true"
+        currentPageReportTemplate="" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                <p><i class="pi pi-th-large"></i> Productos Seleccionados</p>
+                <div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText style="width: 300px;" type="text" (input)="productTable.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
+                    </span>
+                </div>
+            </div>
+
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th><i class="pi pi-check-square"></i></th>
+                <th pSortableColumn="provider.provider_name"><i class="pi pi-user"></i> Producto<p-sortIcon field="provider.provider_name"></p-sortIcon></th>
+                <th pSortableColumn="status"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="status"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-columns="columns" let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="product">
+                <td><span class="p-column-title"><i class="pi pi-check-square"></i></span>
+                    <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event, product)" [(ngModel)]="selectedProducts"></p-checkbox>
+                </td>
+                <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product">{{product.producto.product_name}}</p></td>
+                <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> 
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <p-inputNumber [(ngModel)]="product.purchase_order_products_amount" [size]="2" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" [showButtons]="true" inputId="minmax-buttons" [min]="0">
+                            </p-inputNumber>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            <p class="item__table__amount">{{product.purchase_order_products_amount}}</p>
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td style="text-align:center">
+                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-times" (click)="resetModal()" label="Cancelar" styleClass="p-button-text p-button-danger"></p-button>
+            <p-button icon="pi pi-check" (click)="saveData()" label="Confirmar" styleClass="p-button-text"></p-button>
+        </ng-template>
 </p-dialog>

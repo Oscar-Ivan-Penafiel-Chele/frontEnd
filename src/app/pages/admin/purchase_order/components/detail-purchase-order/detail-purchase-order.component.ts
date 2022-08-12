@@ -1,8 +1,8 @@
 import { Component, Host, Input, OnInit } from '@angular/core';
 import { PurchaseOrderService } from '../../service/purchase-order.service';
 import { TablePurchaseOrderComponent } from '../table_purchase_order/table-purchase-order.component';
-import {MessageService} from 'primeng/api';
 import { User } from '@models/interfaces';
+import { PrimeNGConfig, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-detail-purchase-order',
@@ -23,17 +23,27 @@ export class DetailPurchaseOrderComponent implements OnInit {
   purchase_order_total: any;
   user: User = {};
   submitted: boolean = false;
+  number_facture: any;
+  date_purchase: string = "";
 
   constructor(
     @Host() private tablePurchase: TablePurchaseOrderComponent, 
     private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
+    private config: PrimeNGConfig,
     ) { 
     this.opctionsPay = [
       {id: 1, value:'Efectivo'},
       {id: 2, value:'Cheque'},
       {id: 3, value:'Transferencia bancaria'},
-    ]
+    ];
+
+    this.config.setTranslation({
+      "clear" : "Vaciar",
+      "today" : "Hoy",
+      "dayNamesMin": ["D","L","M","X","J","V","S"],
+      "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    });
   }
 
   ngOnInit(): void {
@@ -57,15 +67,18 @@ export class DetailPurchaseOrderComponent implements OnInit {
       products: this.productsPurchaseOrder,
       tipe_of_pay: this.selectedPay,
       purchase_order_total: this.purchase_order_total,
+      facture: this.number_facture,
+      date_purchase: this.date_purchase
     };
 
-    this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
-      this.tablePurchase.displayModal = false;
-      this.tablePurchase.getData();
-      this.tablePurchase.showMessage(response);
-    }, err =>{
-      this.tablePurchase.showMessage({status: err.status});
-    })
+    console.log(data)
+    // this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
+    //   this.tablePurchase.displayModal = false;
+    //   this.tablePurchase.getData();
+    //   this.tablePurchase.showMessage(response);
+    // }, err =>{
+    //   this.tablePurchase.showMessage({status: err.status});
+    // })
   } 
 
   validateData(){

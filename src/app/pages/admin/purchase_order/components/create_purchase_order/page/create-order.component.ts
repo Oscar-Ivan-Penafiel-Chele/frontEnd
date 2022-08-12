@@ -19,6 +19,7 @@ export class CreateOrderComponent implements OnInit {
   product: IPurchaseOrderProducts = {} as IPurchaseOrderProducts;
   displayModal: boolean = false;
   products: Product[] = [];
+  productAux: Product[] = [];
   user: User = {};
   totalRecords: number = 0;
   arrayAux : any[] = [];
@@ -28,6 +29,7 @@ export class CreateOrderComponent implements OnInit {
   isLoadingProvider: boolean = false;
   showErrors: boolean = false;
   msgs1: Message[] = [];
+  emptyMessage: string = "No se encontraron resultados";
 
   constructor(
     private providerService: ProviderService,
@@ -63,7 +65,7 @@ export class CreateOrderComponent implements OnInit {
 
   getProducts(){
     this.productService.getProducts().subscribe((response : Product[])=>{
-      this.products = Object.values(response);
+      this.productAux = Object.values(response);
     }, err =>{
       this.showErrors = true;
     })
@@ -148,5 +150,11 @@ export class CreateOrderComponent implements OnInit {
     this.arrayAux = [];
     this.product = {} as IPurchaseOrderProducts;
     this.existProveedor = false;
+  }
+
+  getIdProvider($event: any): void{
+    let id = this.selectedProvider.id_provider;
+
+    this.products = this.productAux.filter(i=> i.id_provider == id);
   }
 }
