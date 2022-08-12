@@ -13,6 +13,10 @@ export class GeneratePdfFacturaService {
   iva : any;
   total : any;
   percentIva : number = 0;
+  subtotalIva: number = 0;
+  subtotalSinIva: number = 0;
+  discount: number = 0;
+
 
   constructor(private manageIvaService : ManageIvaService) {
     this.getIva();
@@ -221,13 +225,21 @@ export class GeneratePdfFacturaService {
           ]).widths([240]).fontSize(8).end,
 
           new Table([
-            [ 
+            // [ 
+            //   new Txt(`SUBTOTAL ${this.percentIva}%`).fontSize(8).alignment('left').bold().end,
+            //   new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
+            // ],
+            // [ 
+            //   new Txt('SUBTOTAL 0%').fontSize(8).alignment('left').bold().end,
+            //   new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
+            // ],
+            // [ 
+            //   new Txt('DESCUENTO').fontSize(8).alignment('left').bold().end,
+            //   new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
+            // ],
+            [
               new Txt('SUBTOTAL').fontSize(8).alignment('left').bold().end,
               new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
-            ],
-            [
-              new Txt('IVA 0%').fontSize(8).alignment('left').bold().end,
-              new Txt(`$ 0.00`).fontSize(8).alignment('right').end,
             ],
             [
               new Txt(`IVA ${this.percentIva}%`).fontSize(8).alignment('left').bold().end,

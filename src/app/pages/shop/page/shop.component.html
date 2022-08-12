@@ -151,7 +151,7 @@
                                         <span class="product-price" style="font-size: 20px;">${{product.product_offered_price_total}}</span>
                                     </div>
                                     <span *ngIf="product.product_offered == null" class="product-price">${{product.product_price}}</span>
-                                    <p-button  styleClass="p-button-sm" icon="pi pi-shopping-cart" label="Añadir al carrito"></p-button>
+                                    <p-button id="{{product.id_product}}" styleClass="p-button-sm" icon="pi pi-shopping-cart" label="Añadir al carrito" (onClick)="addProductoCart($event,product)"></p-button>
                                 </div>
                             </div>
                         </div>

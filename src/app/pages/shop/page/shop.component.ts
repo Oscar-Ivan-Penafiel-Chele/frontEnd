@@ -150,7 +150,9 @@ export class ShopComponent implements OnInit {
 
   isExistProduct($event : any, product : Product){
     const buttonSelected = $event.composedPath()[1].id;
-
+  
+    console.log($event.composedPath())
+    console.log(buttonSelected);
     const data = {
       id_user : this.user.id_user
     };

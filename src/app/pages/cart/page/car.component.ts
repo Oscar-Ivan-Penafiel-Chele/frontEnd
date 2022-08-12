@@ -31,6 +31,7 @@ export class CarComponent implements OnInit {
   promotions : Promotion[] = [];
   manageIva : IManageIVA = {} as IManageIVA;
   emptyImage: string = "assets/img/image_empty.svg";
+  isErrorStock = false;
 
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -147,6 +148,12 @@ export class CarComponent implements OnInit {
   }
 
   getTotalPriceForUnit($event : any, product : Product){
+    if($event.value > product.product_stock!){ 
+      this.isErrorStock = true;
+      return ; 
+    }
+    
+    this.isErrorStock = false;
     if(product.product_offered){ 
       product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
       product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
@@ -317,6 +324,10 @@ export class CarComponent implements OnInit {
         }
       })
     });
+  }
+
+  onBlurInput($event: any): void{
+    this.isErrorStock = false;
   }
 
   @HostListener('window:beforeunload', ['$event'])

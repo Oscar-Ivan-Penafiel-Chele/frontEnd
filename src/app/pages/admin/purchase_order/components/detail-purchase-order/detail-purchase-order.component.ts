@@ -50,7 +50,7 @@ export class DetailPurchaseOrderComponent implements OnInit {
     this.submitted = true;
 
     if(!this.validateData()) return;
-
+ 
     const data = {
       id_purchase_order: this.idPurchaseOrder!,
       id_user: this.user.id_user,
@@ -66,7 +66,7 @@ export class DetailPurchaseOrderComponent implements OnInit {
     }, err =>{
       this.tablePurchase.showMessage({status: err.status});
     })
-  }
+  } 
 
   validateData(){
     if(!this.selectedPay || this.selectedPay == null || !this.purchase_order_total || this.purchase_order_total == null){
