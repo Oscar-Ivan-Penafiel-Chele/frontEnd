@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <p-table #productTable [value]="productsPurchaseOrder" editMode="row" styleClass="p-datatable-sm" [rows]="5" [paginator]="true" [globalFilterFields]="['producto.product_name']" responsiveLayout="stack" [rowHover]="true"
+    <p-table #productTable [value]="productsPurchaseOrder" editMode="row" styleClass="p-datatable-sm" [rows]="5" [paginator]="true" [globalFilterFields]="['producto.product_name','producto.product_code']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
@@ -57,16 +57,25 @@
         <ng-template pTemplate="header">
             <tr>
                 <th><i class="pi pi-check-square"></i></th>
-                <th pSortableColumn="provider.provider_name"><i class="pi pi-user"></i> Producto<p-sortIcon field="provider.provider_name"></p-sortIcon></th>
-                <th pSortableColumn="status"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="status"></p-sortIcon></th>
+                <th pSortableColumn="producto.product_code"><i class="pi pi-qrcode"></i> Código<p-sortIcon field="producto.product_code"></p-sortIcon></th>
+                <th pSortableColumn="producto.product_name"><i class="pi pi-user"></i> Producto<p-sortIcon field="producto.product_name"></p-sortIcon></th>
+                <th pSortableColumn="purchase_order_products_amount"><i class="pi pi-box"></i> Cantidad <p-sortIcon field="purchase_order_products_amount"></p-sortIcon></th>
                 <th></th>
             </tr>
         </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">NO SE ENCONTRARON RESULTADOS!</td>
+            </tr>
+        </ng-template>
+
         <ng-template pTemplate="body" let-product let-columns="columns" let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="product">
                 <td><span class="p-column-title"><i class="pi pi-check-square"></i></span>
                     <p-checkbox name="product.producto.product_name" [value]="product" (onChange)="changeStyle($event, product)" [(ngModel)]="selectedProducts"></p-checkbox>
                 </td>
+                <td><span class="p-column-title"><i class="pi pi-user"></i> Código: </span> <p class="item__table__product">{{product.producto.product_code}}</p></td>
                 <td><span class="p-column-title"><i class="pi pi-user"></i> Producto: </span> <p class="item__table__product">{{product.producto.product_name}}</p></td>
                 <td><span class="p-column-title"><i class="pi pi-box"></i> Cantidad: </span> 
                     <p-cellEditor>

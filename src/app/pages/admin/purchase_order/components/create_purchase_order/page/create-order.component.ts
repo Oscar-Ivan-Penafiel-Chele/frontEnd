@@ -54,7 +54,7 @@ export class CreateOrderComponent implements OnInit {
   getProviders(){
     this.isLoadingProvider = true;
     this.providerService.getProviders().subscribe((response : IProvider[])=>{
-      response = response.filter( i => i.provider_name != 'NO_DEFINIDO')
+      response = response.filter( i => i.provider_name != 'NO_DEFINIDO' && i.provider_qualified == 1 && i.provider_status == 1)
       this.providers = Object.values(response);
       this.providers = this.providers.sort(this.sortProviders)
       this.isLoadingProvider = false;

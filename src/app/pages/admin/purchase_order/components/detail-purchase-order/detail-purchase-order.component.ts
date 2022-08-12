@@ -71,14 +71,13 @@ export class DetailPurchaseOrderComponent implements OnInit {
       date_purchase: this.date_purchase
     };
 
-    console.log(data)
-    // this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
-    //   this.tablePurchase.displayModal = false;
-    //   this.tablePurchase.getData();
-    //   this.tablePurchase.showMessage(response);
-    // }, err =>{
-    //   this.tablePurchase.showMessage({status: err.status});
-    // })
+    this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
+      this.tablePurchase.displayModal = false;
+      this.tablePurchase.getData();
+      this.tablePurchase.showMessage(response);
+    }, err =>{
+      this.tablePurchase.showMessage({status: err.status});
+    })
   } 
 
   validateData(){

@@ -3,11 +3,13 @@ import { UpperCasePipe } from '@angular/common';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { IProvider, Type_Provider, User } from '@models/interfaces';
 import { verificarRuc } from 'udv-ec';
-import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { PdfMakeWrapper} from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 import { TokenService } from 'src/app/auth/service/token.service';
 import { ProviderService } from '../service/provider.service';
+import { GeneratePdfProviderService } from 'src/app/shared/services/pdfs/generate-pdf-provider.service';
+import { GenerateCsvProviderService } from 'src/app/shared/services/pdfs/generate-csv-provider.service';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -24,9 +26,6 @@ export class ProviderComponent implements OnInit {
 
   provider : IProvider = {} as IProvider;
   user : User = {};
-
-  dataCVS : any[] = [];
-
   productDialog: boolean = false;
   submitted: boolean = false;
   states : any[] = [];
@@ -49,6 +48,8 @@ export class ProviderComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private _sortByOrder : UpperCasePipe,
     private _token : TokenService,
+    private generatePDFService: GeneratePdfProviderService,
+    private generateCSVService: GenerateCsvProviderService
   ) { }
 
   ngOnInit(): void {
@@ -88,6 +89,8 @@ export class ProviderComponent implements OnInit {
         this.providers = this.providersAux;
       }
       this.loading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
     })
   }
 
@@ -135,102 +138,7 @@ export class ProviderComponent implements OnInit {
   }
 
   async exportPdf() {
-    const fecha = new Date();
-    const pdf = new PdfMakeWrapper();
-    pdf.info({
-        title: 'PDF Proveedores',
-        author: '@Yebba',
-        subject: 'Mostrar los proveedores de la ferretería',
-    });
-    pdf.pageSize('A4');
-    pdf.pageOrientation('landscape'); // 'portrait'
-    pdf.add(
-      new Stack([
-        new Columns([
-          await new Img('assets/img/log_app_pdf.svg').width(100).build(),
-          new Columns([
-            new Stack([
-              new Columns([ 
-                new Txt('Nómina de Proveedores').fontSize(14).bold().end,
-              ]).color('#3f3f3f').end,
-              new Columns([ 
-                new Txt('Módulo de Proveedores  \n\n').fontSize(11).end,
-              ]).color('#3f3f3f').end,
-              new Columns([ 
-                new Txt('').alignment('right').width('*').bold().end,
-                new Txt('Usuario: ').alignment('right').width('*').bold().end,
-                new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
-                new Txt('Fecha: ').alignment('right').width(40).bold().end,
-                new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
-                new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
-              ]).end,
-            ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
-          ]).end
-        ]).end
-      ]).end
-    );
-    pdf.add(
-      '\n'
-    )
-    pdf.add(
-      new Columns([
-        new Canvas([
-            new Line([0,0], [755,0]).lineColor('#ccc').end
-        ]).end,
-      ]).width('*').end
-    );
-    pdf.add(
-      '\n\n'
-    )
-    pdf.add(
-      new Txt(`Total Proveedores: ${this.providersAux.length}`).alignment('right').bold().fontSize(10).margin(10).end
-  ); 
-    pdf.add(
-        new Txt('Nómina de Proveedores').alignment('center').bold().fontSize(14).margin(10).end
-    );   
-    pdf.add(
-      new Table([
-        [
-            new Txt('Código').bold().end,
-            new Txt('Nombre').bold().end,
-            new Txt('Correo Electrónico').bold().end,
-            new Txt('Dirección').bold().end,
-            new Txt('Teléfono').bold().end,
-            new Txt('Celular').bold().end,
-            new Txt('Tiempo de Respuesta').bold().end,
-            new Txt('Estado').bold().end,
-        ],
-    ]).widths([40,120,120,80,60,100,80,60]).fontSize(12).end
-    );
-
-    this.providersAux.sort(this.sortProvider)
-    this.providersAux.forEach((item)=>{
-        pdf.add(
-            new Table([
-                [
-                  new Txt(String(item.id_provider!)).end,
-                  new Txt(item.provider_name!).end,
-                  new Txt(item.provider_email!).end,
-                  new Txt(item.provider_address!).end,
-                  new Txt(item.provider_landline!).end,
-                  new Txt(item.provider_phone!).end,
-                  new Txt(String(item.provider_response_time_day)+ ' Días y ' + String(item.provider_response_time_hour) + ' Horas').end,
-                  new Txt(item.provider_status == 1 ? 'Activo' : 'Inactivo').end,
-                ]
-            ]).widths([40,120,120,80,60,100,80,60]).fontSize(10).end
-        );
-    })
-    pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
-    });
-    pdf.create().open();    
-  }
-
-  sortProvider(x:any , y:any){
-    if(x.provider_name < y.provider_name) return -1;
-    if(x.provider_name > y.provider_name) return 1;
-    return 0;
+    this.generatePDFService.generatePDF(this.providersAux, this.user);
   }
 
   regexCode(event: any) {
@@ -245,7 +153,7 @@ export class ProviderComponent implements OnInit {
     if(this.actionSelected === "new"){
       this.submitted = true;
       if(!this.validateIdentification()){
-        this.messageIdentification = 'Identificación invalida';
+        this.messageIdentification = 'Identificación no válida';
         return ;
       }else{
         this.messageIdentification = '';
@@ -255,7 +163,7 @@ export class ProviderComponent implements OnInit {
     }else if(this.actionSelected === "edit"){
       this.submitted = true;
       if(!this.validateIdentification()){
-        this.messageIdentification = 'Identificación invalida';
+        this.messageIdentification = 'Identificación no válida';
         return ;
       }else{
         this.messageIdentification = '';
@@ -382,25 +290,6 @@ export class ProviderComponent implements OnInit {
   }
 
   exportCSV(){
-    const fecha = new Date();
-    const headers = Object.keys(this.providers[0]);
-    let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
-
-    const options = { 
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalseparator: '.',
-        showLabels: true, 
-        useBom: true,
-        headers: headers,
-        useHeader: false,
-        nullToEmptyString: true,
-      };
-
-    this.dataCVS = this.providers.map((i)=>{
-        return i;
-    })
-
-    new AngularCsv(this.dataCVS, `PROV ${dataNow}`, options);
+    this.generateCSVService.generateCSV(this.providers);
   }
 }
