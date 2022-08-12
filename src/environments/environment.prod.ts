@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  API : "https://apiferreteriaeldescanso.jomatelapps.com/api",
-  URL : "https://apiferreteriaeldescanso.jomatelapps.com",
+  API : "http://127.0.0.1:8000/api/api",
+  URL : "http://127.0.0.1:8000/api",
   dataRol : {
     1 : '/gerente',
     2 : '/administrador',
