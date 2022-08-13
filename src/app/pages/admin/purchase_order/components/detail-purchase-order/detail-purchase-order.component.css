@@ -7,6 +7,10 @@
     padding-bottom: 0 !important;
 }
 
+:host ::ng-deep .p-inputnumber .p-component{
+    width: 100%;
+}
+
 .info__provider{
     color: rgb(75, 75, 75);
     font-weight: 600;

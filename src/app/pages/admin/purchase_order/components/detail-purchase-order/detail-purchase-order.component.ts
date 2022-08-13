@@ -71,13 +71,14 @@ export class DetailPurchaseOrderComponent implements OnInit {
       date_purchase: this.date_purchase
     };
 
-    this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
-      this.tablePurchase.displayModal = false;
-      this.tablePurchase.getData();
-      this.tablePurchase.showMessage(response);
-    }, err =>{
-      this.tablePurchase.showMessage({status: err.status});
-    })
+    console.log(data)
+    // this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
+    //   this.tablePurchase.displayModal = false;
+    //   this.tablePurchase.getData();
+    //   this.tablePurchase.showMessage(response);
+    // }, err =>{
+    //   this.tablePurchase.showMessage({status: err.status});
+    // })
   } 
 
   validateData(){
@@ -118,5 +119,12 @@ export class DetailPurchaseOrderComponent implements OnInit {
   resetModal(){
     this.displayModal = false;
     this.tablePurchase.displayModal = false;
+
+    if(this.productsPurchaseOrder){
+      this.productsPurchaseOrder.forEach( (i : any) => {
+        i.purchase_order_products_status = 1;
+      });
+      return;
+    }
   }
 }

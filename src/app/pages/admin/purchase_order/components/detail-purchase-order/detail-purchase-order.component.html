@@ -11,7 +11,7 @@
     <div class="data__order grid mb-4">
         <div class="col-12 md:col-6 lg:col-6">
             <p class="info__provider pb-1"><i class="pi pi-hashtag"></i> N° de Factura</p>
-            <span class="p-input-icon-left">
+            <span class="p-input-icon-left" [style]="{'width':'100%'}">
                 <i class="pi pi-file"></i>
                 <input type="text" pInputText [style]="{'width':'100%'}" placeholder="N° de Factura" [(ngModel)]="number_facture" />
             </span>
@@ -20,7 +20,7 @@
 
         <div class="col-12 md:col-6 lg:col-6">
             <p class="info__provider pb-1"><i class="pi pi-calendar"></i> Fecha</p>
-            <p-calendar appendTo="body" placeholder="Fecha" dateFormat="yy-mm-dd" [(ngModel)]="date_purchase" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
+            <p-calendar appendTo="body" [style]="{'width':'100%'}" placeholder="Fecha" dateFormat="yy-mm-dd" [(ngModel)]="date_purchase" [showTime]="false" [touchUI]="true" [showButtonBar]="true"></p-calendar>
             <div>
                 <small class="p-error" *ngIf="submitted && (!date_purchase || date_purchase == null)">Total a pagar es requerido</small>
             </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="col-12 md:col-6 lg:col-6">
             <p class="info__provider pb-1"><i class="pi pi-dollar"></i> Total a pagar</p>
-            <p-inputNumber [(ngModel)]="purchase_order_total" [style]="{'width':'100%'}" placeholder="0.00" prefix="$" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+            <p-inputNumber [(ngModel)]="purchase_order_total" placeholder="0.00" prefix="$" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
             <div>
                 <small class="p-error" *ngIf="submitted && (!purchase_order_total || purchase_order_total == null)">Total a pagar es requerido</small>
             </div>

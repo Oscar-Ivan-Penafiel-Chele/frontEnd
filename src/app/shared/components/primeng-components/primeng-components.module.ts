@@ -38,6 +38,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {ChartModule} from 'primeng/chart';
 import {TabViewModule} from 'primeng/tabview';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {ListboxModule} from 'primeng/listbox';
 
 @NgModule({
   declarations: [],
@@ -83,6 +84,7 @@ import {DynamicDialogModule} from 'primeng/dynamicdialog';
     ChartModule,
     TabViewModule,
     DynamicDialogModule,
+    ListboxModule
   ]
 })
 export class PrimengComponentsModule { }

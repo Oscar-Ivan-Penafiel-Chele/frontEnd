@@ -4,15 +4,18 @@ import { Message } from 'primeng/api';
 import { ProductService } from 'src/app/pages/admin/products/service/product.service';
 import { ProviderService } from 'src/app/pages/admin/provider/service/provider.service';
 import { PurchaseOrderComponent } from '../../../page/purchase-order.component';
+import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.css']
+  styleUrls: ['./create-order.component.css'],
+  providers: [ConfirmationService,MessageService]
 })
 export class CreateOrderComponent implements OnInit {
 
   providers: IProvider[] = [];
+  providersAux: IProvider[] = [];
   selectedProvider: any;
   purchase_order: IPurchaseOrder = {} as IPurchaseOrder;
   selectedProducts: IPurchaseOrderProducts[] = [];
@@ -27,14 +30,21 @@ export class CreateOrderComponent implements OnInit {
   submitted: boolean = false;
   existProveedor: boolean = false;
   isLoadingProvider: boolean = false;
+  isLoadingProduct: boolean = false;
   showErrors: boolean = false;
   msgs1: Message[] = [];
   emptyMessage: string = "No se encontraron resultados";
+  searchInput: string ="";
+  textSearch: string = "";
+  options: any[] = []
+  prueba: any;
 
   constructor(
     private providerService: ProviderService,
     private productService : ProductService,
-    @Host() private purchaseComponent: PurchaseOrderComponent
+    @Host() private purchaseComponent: PurchaseOrderComponent,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService
   ) { 
     this.msgs1.push({severity:'error', summary: 'Error', detail: 'Ocurrio un error en el servidor, por favor inténtalo más tarde'});
   }
@@ -56,18 +66,29 @@ export class CreateOrderComponent implements OnInit {
     this.providerService.getProviders().subscribe((response : IProvider[])=>{
       response = response.filter( i => i.provider_name != 'NO_DEFINIDO' && i.provider_qualified == 1 && i.provider_status == 1)
       this.providers = Object.values(response);
-      this.providers = this.providers.sort(this.sortProviders)
+      this.providers = this.providers.sort(this.sortProviders);
+      this.providersAux = this.providers;
+      this.getOptions(this.providers);
       this.isLoadingProvider = false;
     }, err =>{
       this.showErrors = true;
     })
   }
 
+  getOptions(prov: IProvider[]){
+    prov.forEach((i: IProvider)=>{
+      this.options.push({name: i.provider_name!});
+    })
+  }
+
   getProducts(){
+    this.isLoadingProduct = true;
     this.productService.getProducts().subscribe((response : Product[])=>{
       this.productAux = Object.values(response);
+      this.isLoadingProduct = false;
     }, err =>{
       this.showErrors = true;
+      this.isLoadingProduct = false;
     })
   }
 
@@ -84,7 +105,8 @@ export class CreateOrderComponent implements OnInit {
     this.purchase_order.id_provider = this.selectedProvider.id_provider;
     this.purchase_order.id_user = this.user.id_user!;
 
-    this.purchaseComponent.savePurchaseOrder(this.purchase_order);
+    console.log(this.purchase_order)
+    //this.purchaseComponent.savePurchaseOrder(this.purchase_order);
   }
 
   addProduct(){
@@ -110,10 +132,10 @@ export class CreateOrderComponent implements OnInit {
     try {
       this.data = {
         id_product: this.product.product.id_product!,
+        product_name: this.product.product.product_name,
         amount: this.product.amount
       }
       
-      console.log(this.data)
       index = this.arrayAux.findIndex((e) => e.id_product === this.data.id_product);
       
       if(index != -1){
@@ -156,5 +178,26 @@ export class CreateOrderComponent implements OnInit {
     let id = this.selectedProvider.id_provider;
 
     this.products = this.productAux.filter(i=> i.id_provider == id);
+    this.product = {} as IPurchaseOrderProducts;
+
+    if(this.selectedProducts,length > 0){
+
+      this.selectedProducts = [];
+    }
+  }
+
+  emptySelectProducts(){
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de eliminar todos los productos seleccionados?',
+      header: 'Confirmar',
+      acceptLabel: 'Eliminar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-outlined p-button-info',
+      rejectButtonStyleClass: 'p-button-danger p-button-text',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+          this.selectedProducts = [];
+      },
+    });
   }
 }

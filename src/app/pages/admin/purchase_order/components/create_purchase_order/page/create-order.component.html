@@ -1,4 +1,5 @@
 <section>
+    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
     
     <ng-template [ngIf]="showErrors">
         <p-messages [(value)]="msgs1"></p-messages>
@@ -6,69 +7,75 @@
     
     <div class="grid">
         <div class="col-12 md:col-5 lg:col-3 sm:col-12">
-            <div class="providers__content">
-                <p class="title__provider"><i class="pi pi-user"></i> 1.Selección del Proveedor</p>
-
-                <ng-template [ngIf]="isLoadingProvider" [ngIfElse]="completeProviders">
-                    <div class="loader__provider" >
-                        <p-progressSpinner [style]="{width: '100px', height: '100px'}"></p-progressSpinner>
+            <ng-template [ngIf]="isLoadingProvider || isLoadingProduct" [ngIfElse]="completeProviders">
+                    <div class="providers__content">
+                        <div class="loader__provider" >
+                            <p-progressSpinner [style]="{width: '100px', height: '100px'}"></p-progressSpinner>
+                        </div>
                     </div>
                 </ng-template>
 
-                <ng-template #completeProviders>
-                    <p-scrollPanel [style]="{width: '100%', height: '230px'}">
-                        <div class="providers__radio">
-                            <div *ngFor="let provider of providers" class="field-checkbox">
-                                <p-radioButton [inputId]="provider.id_provider!.toString()" (onClick)="getIdProvider($event)" name="provider" [value]="provider" [(ngModel)]="selectedProvider"></p-radioButton>
-                                <label [for]="provider.id_provider" class="description__provider">{{provider.provider_name}}</label>
-                            </div>
-                        </div>
-                    </p-scrollPanel>
-                </ng-template>
-            </div>
+            <ng-template #completeProviders>
+                <p-listbox [options]="providers" [(ngModel)]="selectedProvider" (onChange)="getIdProvider($event)" optionLabel="provider_name" [filter]="true" [listStyle]="{'min-height':'190px','max-height':'190px'}">
+                    <ng-template pTemplate="header">
+                        <p class="title__provider"><i class="pi pi-user"></i> 1.Selección del Proveedor</p>
+                    </ng-template>
+                </p-listbox>
+            </ng-template>
             <small class="p-error" *ngIf="existProveedor && !selectedProvider">Proveedor es requerido</small>
         </div>
         <div class="col-12 md:col-7 lg:col-9 sm:col-12">
             <div class="section__selected__products">
                 <p class="title__provider"><i class="pi pi-box"></i> 2.Selección de los Productos</p>
         
-                <div class="grid mt-5">
-                    <div class="col-12 md:col-12 lg:col-7">
-                        <div class="flex flex-column" style="width: 100%;">
-                            <label class="label__product__input" for="name">Nombre del Producto <span class="inputs__required">*</span></label>
-                            <p-dropdown [options]="products" [emptyMessage]="emptyMessage" [filterPlaceholder]="emptyMessage" [emptyFilterMessage]="emptyMessage" [style]="{'width':'100%'}" [(ngModel)]="product.product" optionLabel="product_name" optionValue="" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
-                        </div>
-                        <small class="p-error" *ngIf="submitted && !product.product">Producto es requerido</small>
+                <ng-template [ngIf]="isLoadingProduct || isLoadingProvider" [ngIfElse]="completeProducts">
+                    <div class="loader__provider" >
+                        <p-progressSpinner [style]="{width: '100px', height: '100px'}"></p-progressSpinner>
                     </div>
-                    <div class="col-12 md:col-12 lg:col-5 sm:col-12">
-                        <div class="flex flex-column">
-                            <label class="label__product__input" for="minmax-buttons">Cantidad del Producto <span class="inputs__required">*</span></label>
-                            <p-inputNumber [(ngModel)]="product.amount" [disabled]="!product.product || product.product == null" [style]="{'width':'100%'}" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0"></p-inputNumber>
+                </ng-template>
+
+                <ng-template #completeProducts>
+                    <div class="grid mt-5">
+                        <div class="col-12 md:col-12 lg:col-7">
+                            <div class="flex flex-column" style="width: 100%;">
+                                <label class="label__product__input" for="name">Nombre del Producto <span class="inputs__required">*</span></label>
+                                <p-dropdown [options]="products" [emptyMessage]="emptyMessage" [filterPlaceholder]="emptyMessage" [emptyFilterMessage]="emptyMessage" [style]="{'width':'100%'}" [(ngModel)]="product.product" optionLabel="product_name" optionValue="" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
+                            </div>
+                            <small class="p-error" *ngIf="submitted && !product.product">Producto es requerido</small>
                         </div>
-                        <small class="p-error" *ngIf="submitted && (!product.amount || product.amount == null)">Cantidad es requerida</small>
+                        <div class="col-12 md:col-12 lg:col-5 sm:col-12">
+                            <div class="flex flex-column">
+                                <label class="label__product__input" for="minmax-buttons">Cantidad del Producto <span class="inputs__required">*</span></label>
+                                <p-inputNumber [(ngModel)]="product.amount" [disabled]="!product.product || product.product == null" [style]="{'width':'100%'}" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1"></p-inputNumber>
+                            </div>
+                            <small class="p-error" *ngIf="submitted && (!product.amount || product.amount == null)">Cantidad es requerida</small>
+                        </div>
                     </div>
-                </div>
+                </ng-template>
         
-                <button pButton pRipple [disabled]="!validateData()" styleClass="p-button-sm" type="button" class="p-button-info mt-7 button__add" icon="pi pi-plus" label="Agregar Producto" (click)="addProduct()"></button>
+                <button pButton pRipple [disabled]="!validateData()" styleClass="p-button-sm" type="button" class="p-button-info mt-7 mb-5 button__add" icon="pi pi-plus" label="Agregar Producto" (click)="addProduct()"></button>
             </div>
         </div>
 
         <div class="col-12">
             <div class="table__products__selected">
-                <p-table #dt [value]="selectedProducts" [totalRecords]="totalRecords" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="stack" [rowHover]="true"
+                <p-table #dt [value]="selectedProducts" [totalRecords]="totalRecords" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product.product_code','product.product_name']" responsiveLayout="stack" [rowHover]="true"
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
                     <ng-template pTemplate="caption">
                         <div class="flex flex-wrap align-items-center justify-content-between">
                             <p><i class="pi pi-th-large"></i> Productos Seleccionados</p>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por producto" />
+                                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
                             </span>
                         </div>
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
-                            <th><i class="pi pi-trash" style="color: rgb(255, 78, 78);"></i></th>
+                            <th>
+                                <button pButton pRipple type="button" [disabled]="selectedProducts.length == 0" pTooltip="Vaciar Tabla" tooltipPosition="top" (click)="emptySelectProducts()" style="width: 42px; height: 42px;" icon="pi pi-trash" class="p-button-danger" styleClass="p-button-sm"></button>
+                            </th>
+                            <th pSortableColumn="product.product_code"><i class="pi pi-qrcode"></i> Código <p-sortIcon field="product.product_code"></p-sortIcon></th>
                             <th pSortableColumn="product.product_name"><i class="pi pi-box"></i> Nombre <p-sortIcon field="product.product_name"></p-sortIcon></th>
                             <th pSortableColumn="amount"><i class="pi pi-th-large"></i> Cantidad <p-sortIcon field="amount"></p-sortIcon></th>
                         </tr>
@@ -84,6 +91,7 @@
                                 <span class="p-column-title"><i class="pi pi-trash" style="color: rgb(255, 78, 78);"></i></span>
                                 <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteItem(product)" class="p-button-rounded p-button-danger p-button-text"></button>
                             </td>
+                            <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Código</span>{{product.product.product_code}}</td>
                             <td><span class="p-column-title"><i class="pi pi-box"></i> Nombre</span>{{product.product.product_name}}</td>
                             <td><span class="p-column-title"><i class="pi pi-th-large"></i> Cantidad</span>{{product.amount}}</td>
                         </tr>
