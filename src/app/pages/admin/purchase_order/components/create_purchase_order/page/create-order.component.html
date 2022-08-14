@@ -60,7 +60,7 @@
         <div class="col-12">
             <div class="table__products__selected">
                 <p-table #dt [value]="selectedProducts" [totalRecords]="totalRecords" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product.product_code','product.product_name']" responsiveLayout="stack" [rowHover]="true"
-                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+                currentPageReportTemplate="" [showCurrentPageReport]="true">
                     <ng-template pTemplate="caption">
                         <div class="flex flex-wrap align-items-center justify-content-between">
                             <p><i class="pi pi-th-large"></i> Productos Seleccionados</p>
@@ -82,7 +82,7 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>
-                            <td colspan="3">No existen productos agregados!</td>
+                            <td colspan="4">No existen productos agregados!</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-product>

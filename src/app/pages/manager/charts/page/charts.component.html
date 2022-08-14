@@ -1,39 +1,28 @@
 <section>
     <div class="cards__options">
-        <div class="skeleton flex flex-wrap" *ngIf="completeLoadingProducts || completeLoadingSails || completeLoadingSailsman">
-            <p-skeleton class="mr-2" width="290px" height="6rem"></p-skeleton>
-            <p-skeleton class="mr-2" width="290px" height="6rem"></p-skeleton>
-            <p-skeleton width="290px" height="6rem"></p-skeleton>
-        </div>
-        <div class="card__items flex flex-wrap justify-content-center alings-items-center" *ngIf="!completeLoadingProducts && !completeLoadingSails && !completeLoadingSailsman">
-            <div class="card__option__item ventas" (click)="actionSelect = 'sails'" pRipple>
-                <div class="card__item">
-                    <p>222</p>
-                    <p>Ventas</p>
-                </div>
-                <div class="card__icon">
-                    <i class="pi pi-shopping-cart"></i>
+        <ng-template [ngIf]="isLoading" [ngIfElse]="showCards">
+            <div class="skeleton flex flex-wrap">
+                <p-skeleton class="mr-2" width="290px" height="6rem"></p-skeleton>
+                <p-skeleton class="mr-2" width="290px" height="6rem"></p-skeleton>
+                <p-skeleton width="290px" height="6rem"></p-skeleton>
+            </div>
+        </ng-template>
+
+        <ng-template #showCards>
+            <div class="card__items flex flex-wrap justify-content-center alings-items-center">
+                <div *ngFor="let item of options; let element=index">
+                    <div [class]="item.class" (click)="actionSelect = item.action" pRipple>
+                        <div class="card__item">
+                            <p>{{item.amount}}</p>
+                            <p>{{item.title}}</p>
+                        </div>
+                        <div class="card__icon">
+                            <i [class]="item.icon"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card__option__item productos" (click)="actionSelect = 'products'" pRipple>
-                <div class="card__item">
-                    <p>222</p>
-                    <p>Productos</p>
-                </div>
-                <div class="card__icon">
-                    <i class="pi pi-tags"></i>
-                </div>
-            </div>
-            <div class="card__option__item stock" (click)="actionSelect = 'sailman'" pRipple>
-                <div class="card__item">
-                    <p>222</p>
-                    <p>Vendedores</p>
-                </div>
-                <div class="card__icon">
-                    <i class="pi pi-user"></i>
-                </div>
-            </div>
-        </div>
+        </ng-template>
     </div>
 </section>
 
@@ -50,7 +39,8 @@
         <div class="titleGraphyc">
             <p class="titleGraphyc">Productos</p>
             <p-skeleton *ngIf="completeLoadingProducts" width="60vw" height="25rem"></p-skeleton>
-            <p-chart *ngIf="!completeLoadingProducts" type="radar" [data]="dataProducts" width="35vw" [options]="basicOptions"></p-chart>
+            <p-chart *ngIf="!completeLoadingProducts" type="polarArea" [data]="data"  width="35vw" [options]="basicOptions"></p-chart>
+            <!-- <p-chart *ngIf="!completeLoadingProducts" type="radar" [data]="dataProducts" width="35vw" [options]="basicOptions"></p-chart> -->
         </div>
     </ng-template>
 

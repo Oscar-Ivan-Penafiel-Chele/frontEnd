@@ -1,7 +1,7 @@
 import { Product } from "./product";
 
 export interface IPurchaseOrder{
-    id: number,
+    id_purchase_order: number,
     id_provider: number,
     id_user: number,
     products: IPurchaseOrderProducts[],

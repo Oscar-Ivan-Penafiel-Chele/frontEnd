@@ -10,6 +10,7 @@ export * from './common/ingreso';
 export * from './common/manageIVA';
 export * from './common/measure';
 export * from './common/IPurchaseOrder';
+export * from './common/ICardAdmin';
 export * from './common/navigation';
 export * from './common/order';
 export * from './common/product';

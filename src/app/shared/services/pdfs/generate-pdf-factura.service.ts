@@ -90,6 +90,7 @@ export class GeneratePdfFacturaService {
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('portrait'); // 'portrait'
+    
     pdf.add(
       new Stack([
         new Columns([

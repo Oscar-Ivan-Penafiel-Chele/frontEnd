@@ -180,8 +180,7 @@ export class CreateOrderComponent implements OnInit {
     this.products = this.productAux.filter(i=> i.id_provider == id);
     this.product = {} as IPurchaseOrderProducts;
 
-    if(this.selectedProducts,length > 0){
-
+    if(this.selectedProducts.length > 0){
       this.selectedProducts = [];
     }
   }

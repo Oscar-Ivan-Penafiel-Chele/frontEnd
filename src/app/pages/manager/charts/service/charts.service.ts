@@ -12,7 +12,19 @@ export class ChartsService {
   
   constructor(private _http : HttpClient) { }
 
-  getCategoriesProducts() : Observable<Category[]>{
+  getCategoriesProducts(): Observable<Category[]>{
     return this._http.get<Category[]>(`${this.url}/categories/products`)
+  }
+
+  getSails(): Observable<any>{
+    return this._http.post<any>(`${this.url}/sales/all`,'')
+  }
+
+  getProductsByCategory(): Observable<any>{
+    return this._http.get<any>(`${this.url}/products/by/category`)
+  }
+
+  getOrders(): Observable<any>{
+    return this._http.post<any>(`${this.url}/orders/by/status`,"")
   }
 }
