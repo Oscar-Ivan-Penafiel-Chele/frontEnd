@@ -7,6 +7,8 @@ import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from '
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { TokenService } from 'src/app/auth/service/token.service';
 import { EmployeeService } from '../service/employee.service';
+import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
+import { GeneratePdfEmployeeService } from 'src/app/shared/services/pdfs/generate-pdf-employee.service';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -44,11 +46,12 @@ export class ReportComponent implements OnInit {
   regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;  
   
   constructor(
-    private employeeService : EmployeeService,
+    private employeeService: EmployeeService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService,
-    private _sortByOrder : UpperCasePipe,
-    private _token : TokenService,
+    private _token: TokenService,
+    private validationService: ValidationsService,
+    private generatePdfEmployeeService : GeneratePdfEmployeeService
   ) { }
 
   ngOnInit(): void {
@@ -89,7 +92,6 @@ export class ReportComponent implements OnInit {
     this.loading = true;
     this.employeeService.getEmployees().subscribe((response : User[])=>{
       this.userAux = Object.values(response);
-      console.log(response)
       if(this.stateCheckActive && !this.stateCheckInactive){
         this.users = this.userAux.filter(i => i.user_status == 1);
       }else if(!this.stateCheckActive && this.stateCheckInactive){
@@ -117,97 +119,7 @@ export class ReportComponent implements OnInit {
   }
 
   async exportPdf() {
-    const fecha = new Date();
-    const pdf = new PdfMakeWrapper();
-    pdf.info({
-        title: 'PDF Empleados',
-        author: '@Yebba',
-        subject: 'Mostrar los empleados de la ferretería',
-    });
-    pdf.pageSize('A4');
-    pdf.pageOrientation('landscape'); // 'portrait'
-    pdf.add(
-      new Stack([
-        new Columns([
-          await new Img('assets/img/log_app_pdf.svg').width(100).build(),
-          new Columns([
-            new Stack([
-              new Columns([ 
-                new Txt('Nómina de Empleados').fontSize(14).bold().end,
-              ]).color('#3f3f3f').end,
-              new Columns([ 
-                new Txt('Módulo de Empleados  \n\n').fontSize(11).end,
-              ]).color('#3f3f3f').end,
-              new Columns([ 
-                new Txt('').alignment('right').width('*').bold().end,
-                new Txt('Usuario: ').alignment('right').width('*').bold().end,
-                new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
-                new Txt('Fecha: ').alignment('right').width(40).bold().end,
-                new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
-                new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
-              ]).end,
-            ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
-          ]).end
-        ]).end
-      ]).end
-    );
-    pdf.add(
-      '\n'
-    )
-    pdf.add(
-      new Columns([
-        new Canvas([
-            new Line([0,0], [755,0]).lineColor('#ccc').end
-        ]).end,
-      ]).width('*').end
-    );
-    pdf.add(
-      '\n\n'
-    )
-    pdf.add(
-        new Txt('Nómina de Empleados').alignment('center').bold().fontSize(14).margin(10).end
-    );   
-    pdf.add(
-      new Table([
-        [
-            new Txt('Identificación').bold().end,
-            new Txt('Apellidos').bold().end,
-            new Txt('Nombres').bold().end,
-            new Txt('Rol').bold().end,
-            new Txt('Teléfono').bold().end,
-            new Txt('Correo Electrónico').bold().end,
-            new Txt('Estado').bold().end,
-        ],
-    ]).widths([ 80,70,80,80,100,'*',80]).fontSize(12).end
-    );
-
-    this.userAux.sort(this.sortEmployee);
-    this.userAux.forEach((item)=>{
-        pdf.add(
-            new Table([
-                [
-                  new Txt(item.user_document!).end,
-                  new Txt(item.user_lastName!).end,
-                  new Txt(item.user_name!).end,
-                  new Txt(item.role_user.role_description).end,
-                  new Txt(item.user_phone!).end,
-                  new Txt(item.email!).end,
-                  new Txt(item.user_status == 1 ? 'Activo' : 'Inactivo').end,
-                ]
-            ]).widths([ 80,70,80,80,100,'*',80 ]).fontSize(10).end
-        );
-    })
-    pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
-    });
-    pdf.create().open();    
-  }
-
-  sortEmployee(x:any , y:any){
-    if(x.user_lastName < y.user_lastName) return -1;
-    if(x.user_lastName > y.user_lastName) return 1;
-    return 0;
+    this.generatePdfEmployeeService.generatePDF(this.user, this.users);
   }
 
   createEmployee(){
@@ -216,32 +128,39 @@ export class ReportComponent implements OnInit {
    
     if(this.actionSelected === "new"){
       this.submitted = true;
+      if(!this.regexData(this.user.email!)) return;
       if(!this.validateIdentification()){
-        this.messageIdentification = 'Identificación invalida';
+        this.messageIdentification = 'Identificación no válida';
         return ;
       }else{
         this.messageIdentification = '';
-        this.employeeService.createEmployee(this.user).subscribe((response)=>{
-          if(response.status == 200 || response.message === "Usuario creado exitosamente"){
-            this.getEmployees();
-            this.hideDialog();
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'El empleado fue creado con éxito', life:3000});
-        }
-        });
+        
+        this.isExistEmail(this.user.email!, this.user.user_document!);
       }
 
     }else if(this.actionSelected === "edit"){
       this.submitted = true;
+      if(!this.regexData(this.user.email!)) return;
       if(!this.validateIdentification()){
-        this.messageIdentification = 'Identificación invalida';
+        this.messageIdentification = 'Identificación no válida';
         return ;
       }else{
         this.messageIdentification = '';
         this.updateEmployee();
       }
     }
+  }
 
-    
+  requestSaveData(){
+    this.employeeService.createEmployee(this.user).subscribe((response)=>{
+      if(response.status == 200 || response.message === "Usuario creado exitosamente"){
+        this.getEmployees();
+        this.hideDialog();
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'El empleado fue creado con éxito', life:3000});
+      }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
+    });
   }
 
   updateEmployee(){
@@ -250,7 +169,9 @@ export class ReportComponent implements OnInit {
         this.getEmployees();
         this.hideDialog();
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Empleado actualizado con éxito', life:3000});
-    }
+      }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
     });
   }
 
@@ -341,6 +262,12 @@ export class ReportComponent implements OnInit {
     event.target.value = event.target.value.replace(/[^0-9a-zA-ZáéíñóúüÁÉÍÑÓÚÜ_-]/g, "");
   }
 
+  regexData(email : string){
+    let regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
+     return regexEmail.test(email);
+  }
+
   editUser(user : User){
     this.actionSelected = "edit"
     this.user = {...user};
@@ -355,6 +282,7 @@ export class ReportComponent implements OnInit {
       header: 'Inactivar Usuario',
       acceptLabel : 'Inactivar',
       rejectLabel : 'Cancelar',
+      rejectButtonStyleClass: 'p-button-outlined p-button-danger',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
           this.employeeService.deleteEmployee(user.id_user!, this.userLoged.id_user!).subscribe((response)=>{
@@ -363,9 +291,35 @@ export class ReportComponent implements OnInit {
                   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Usuario inactivado', life: 3000});
               }
           },(err)=>{
-            console.log(err.error);
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
           });
       }
     });
+  }
+
+  isExistEmail(email: string, identificación: string){
+    this.validationService.validateEmailDuplicate({email: email}).subscribe((response) =>{
+      if(response.message == "Existe"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'El correo electrónico ya existe', life: 3000});
+        return;
+      }
+
+      this.isExistIdentification(identificación);
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
+    })
+  }
+
+  isExistIdentification(identification: string){
+    this.validationService.validateIdentificationDuplicate({user_document: identification}).subscribe((response)=>{
+      if(response.message == "Existe"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'La identificación ya existe', life: 3000});
+        return;
+      }
+      
+      this.requestSaveData();
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
+    })
   }
 }

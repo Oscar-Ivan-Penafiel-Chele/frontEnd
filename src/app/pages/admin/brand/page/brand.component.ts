@@ -46,7 +46,6 @@ export class BrandComponent implements OnInit {
     private brandService : BrandService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService,
-    private _sortByOrder : UpperCasePipe,
     private _token : TokenService
   ) { 
     this.isPhotoEdit = false;
@@ -82,6 +81,8 @@ export class BrandComponent implements OnInit {
           this.brands = this.brandsAux;
         }
         this.loading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     })
   }
 
@@ -242,6 +243,8 @@ export class BrandComponent implements OnInit {
               this.hideDialog();
               this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
             }
+        }, err =>{
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
         });
   }
 
@@ -291,6 +294,8 @@ export class BrandComponent implements OnInit {
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
         }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -312,6 +317,7 @@ export class BrandComponent implements OnInit {
         header: 'Eliminar Marca',
         acceptLabel : 'Eliminar',
         rejectLabel : 'Cancelar',
+        rejectButtonStyleClass: 'p-button-outlined p-button-danger',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
             this.brandService.deleteBrand(brand.id_brand!, this.user.id_user!).subscribe((response)=>{
@@ -322,7 +328,7 @@ export class BrandComponent implements OnInit {
                   this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000, sticky: true});
                 }
             },(err)=>{
-              console.log(err.error);
+              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000, sticky: true});
             });
         }
     });

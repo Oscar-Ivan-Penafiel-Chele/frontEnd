@@ -6,7 +6,6 @@ import { TokenService } from 'src/app/auth/service/token.service';
 import { PromotionService } from '../service/promotion.service';
 import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 import { ProductService } from '../../products/service/product.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-promo',
@@ -74,6 +73,8 @@ export class PromoComponent implements OnInit {
     this.productService.getProducts().subscribe((response : Product[])=>{
       this.products = Object.values(response);
       this.products = this.products.filter((i) => i.product_status == 1 && !i.product_offered);
+    }, err => {
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life:3000});
     })
   }
 
@@ -81,7 +82,7 @@ export class PromoComponent implements OnInit {
     this.loading = true;
     this.promotionService.getPromotions().subscribe((response : Promotion[])=>{
       this.promotionsAux = Object.values(response);
-      this.promotions = this.promotionsAux.filter((i)=> i.promotion_status == 1);
+      this.promotions = this.promotionsAux;
       this.loading = false;
     });
   }
@@ -291,6 +292,7 @@ export class PromoComponent implements OnInit {
       header: 'Eliminar Promoción',
       acceptLabel : 'Eliminar',
       rejectLabel : 'Cancelar',
+      rejectButtonStyleClass: 'p-button-outlined p-button-danger',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
           this.promotionService.deletePromotion(promotion.id_promotion!, this.user.id_user!).subscribe((response)=>{
@@ -301,7 +303,7 @@ export class PromoComponent implements OnInit {
                 this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
               }
           },(err)=>{
-            console.log(err.error);
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
           });
       }
   });

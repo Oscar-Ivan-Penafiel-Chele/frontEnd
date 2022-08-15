@@ -62,9 +62,10 @@ export class BannerComponent implements OnInit {
     this.loading = true;
     this.bannerService.getBanners().subscribe((response : Banner[])=>{
       this.bannersAux = Object.values(response);
-      this.banners = this.bannersAux.filter((r)=> r.banner_status == 1);
-      
+      this.banners = this.bannersAux;
       this.loading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     }); 
   }
 
@@ -226,6 +227,8 @@ export class BannerComponent implements OnInit {
               this.hideDialog();
               this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un problema', life: 3000});
             }
+        }, err =>{
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
         });
   }
 
@@ -285,6 +288,8 @@ export class BannerComponent implements OnInit {
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life:3000});
         }
+    }, err => {
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -296,16 +301,16 @@ export class BannerComponent implements OnInit {
       rejectLabel : 'Cancelar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this.bannerService.deleteBanner(banner.id_banner!, this.user.id_user!).subscribe((response)=>{
-              if(response.status == 200 && response.message === "Eliminado correctamente"){
-                  this.getBanners()
-                  this.messageService.add({severity:'success', summary: 'Completado', detail: 'Banner Eliminado', life: 3000});
-              }else{
-                this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
-              }
-          },(err)=>{
-            console.log(err.error);
-          });
+        this.bannerService.deleteBanner(banner.id_banner!, this.user.id_user!).subscribe((response)=>{
+            if(response.status == 200 && response.message === "Eliminado correctamente"){
+                this.getBanners()
+                this.messageService.add({severity:'success', summary: 'Completado', detail: 'Banner Eliminado', life: 3000});
+            }else{
+              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
+            }
+        },(err)=>{
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
+        });
       }
   });
   }

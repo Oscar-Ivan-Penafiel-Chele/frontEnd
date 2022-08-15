@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+    <p-toast></p-toast>
 
 <div class="card">
     <p-toolbar styleClass="mb-4">
@@ -21,14 +21,14 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="banners" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['brand_name']" responsiveLayout="stack" [rowHover]="true"
+    <p-table #dt [value]="banners" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['banner_name']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Banners</h5>
-                <span class="p-input-icon-left">
+                <span class="p-input-icon-left input__search">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                    <input pInputText style="width: 330px;" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre" />
                 </span>
             </div>
         </ng-template>
@@ -142,4 +142,4 @@
     </ng-template>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '550px'}"></p-confirmDialog>

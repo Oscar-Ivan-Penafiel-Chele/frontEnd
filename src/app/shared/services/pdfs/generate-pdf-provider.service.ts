@@ -33,12 +33,11 @@ export class GeneratePdfProviderService {
               ]).color('#3f3f3f').end,
               new Columns([ 
                 new Txt('').alignment('right').width('*').bold().end,
-                new Txt('Usuario: ').alignment('right').width('*').bold().end,
-                new Txt(`${user.user_name} ${user.user_lastName}`).width(60).alignment('right').end,
+                new Txt(`Usuario: ${user.user_name} ${user.user_lastName}`).alignment('right').width('*').bold().end,
                 new Txt('Fecha: ').alignment('right').width(40).bold().end,
                 new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
                 new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
+                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(23).alignment('right').end,
               ]).end,
             ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
           ]).end
@@ -62,7 +61,7 @@ export class GeneratePdfProviderService {
       new Txt(`Total Proveedores: ${provider.length}`).alignment('right').bold().fontSize(10).margin(10).end
   ); 
     pdf.add(
-        new Txt('Nómina de Proveedores').alignment('center').bold().fontSize(14).margin(10).end
+        new Txt('Nómina de Proveedores').alignment('center').bold().fontSize(11).margin(10).end
     );   
     pdf.add(
       new Table([
@@ -76,7 +75,7 @@ export class GeneratePdfProviderService {
             new Txt('Tiempo de Respuesta').bold().end,
             new Txt('Estado').bold().end,
         ],
-    ]).widths([40,120,120,80,60,100,80,60]).fontSize(12).end
+    ]).widths([40,120,120,80,60,100,80,60]).fontSize(9).end
     );
 
     provider.sort(this.sortProvider)
@@ -93,7 +92,7 @@ export class GeneratePdfProviderService {
                   new Txt(String(item.provider_response_time_day)+ ' Días y ' + String(item.provider_response_time_hour) + ' Horas').end,
                   new Txt(item.provider_status == 1 ? 'Activo' : 'Inactivo').end,
                 ]
-            ]).widths([40,120,120,80,60,100,80,60]).fontSize(10).end
+            ]).widths([40,120,120,80,60,100,80,60]).fontSize(9).end
         );
     })
     pdf.footer((currentPage : any, pageCount : any)=>{

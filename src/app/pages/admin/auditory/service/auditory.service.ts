@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Auditory } from '@models/interfaces';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 
@@ -11,7 +12,7 @@ export class AuditoryService {
   
   constructor(private _http : HttpClient) { }
 
-  getAuditories() : Observable<any>{
-    return this._http.get<any>(`${this.url}/audit`);
+  getAuditories() : Observable<Auditory[]>{
+    return this._http.get<Auditory[]>(`${this.url}/audit`);
   }
 }

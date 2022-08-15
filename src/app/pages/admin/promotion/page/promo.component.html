@@ -21,14 +21,14 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code','producto.product_name','promotion_discount']" responsiveLayout="stack" [rowHover]="true"
+    <p-table #dt [value]="promotions" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code','producto.product_name']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Promociones</h5>
-                <span class="p-input-icon-left">
+                <span class="p-input-icon-left input__search">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código ..." />
+                    <input pInputText style="width: 330px;" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código o producto"/>
                 </span>
             </div>
         </ng-template>
@@ -97,7 +97,7 @@
                 <label for="percent">Descuento <span class="inputs__required">*</span></label>
                 <p-inputNumber [(ngModel)]="promotion.promotion_discount" [minFractionDigits]="2" inputId="percent" suffix="%" [placeholder]="'Porcentaje de Descuento'"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && promotion.promotion_discount == null">Descuento es requerido</small>
-                <small class="p-error" *ngIf="submitted && promotion.promotion_discount! < 1"> El descuento no puede ser menor a 1%</small>
+                <small class="p-error" *ngIf="promotion.promotion_discount && promotion.promotion_discount! < 1"> El descuento no puede ser menor a 1%</small>
             </div>
             <div class="field col">
                 <label for="buttonbar">Fecha de Inicio <span class="inputs__required">*</span></label>
@@ -128,4 +128,4 @@
     </ng-template>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '550px'}"></p-confirmDialog>

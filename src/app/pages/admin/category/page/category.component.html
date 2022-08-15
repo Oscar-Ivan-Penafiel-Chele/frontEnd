@@ -3,8 +3,8 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+            <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button [disabled]="loading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
             <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
                 <ng-template pTemplate>
@@ -23,13 +23,13 @@
     </p-toolbar>
 
     <p-table #dt [value]="categories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['category_name']" responsiveLayout="stack" [rowHover]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  [showCurrentPageReport]="true">
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"  [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Categorías</h5>
-                <span class="p-input-icon-left">
+                <span class="p-input-icon-left input__search">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre" />
                 </span>
             </div>
         </ng-template>
@@ -140,4 +140,4 @@
     </ng-template>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '550px'}"></p-confirmDialog>

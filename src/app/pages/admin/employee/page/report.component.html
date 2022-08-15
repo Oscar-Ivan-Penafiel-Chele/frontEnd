@@ -3,8 +3,8 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+            <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
+            <button [disabled]="loading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
             <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
                 <ng-template pTemplate>
@@ -28,11 +28,11 @@
     <p-table #dt [value]="users" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user_name','user_lastName']" responsiveLayout="stack" [rowHover]="true" 
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Empleados</h5>
-                <span class="p-input-icon-left">
+                <span class="p-input-icon-left input__search">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre y apellido..." />
+                    <input pInputText type="text" style="width: 330px;" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre o apellido" />
                 </span>
             </div>
         </ng-template>
@@ -75,20 +75,21 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="name">Nombre del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" required pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" required autofocus />
+                <input type="text" required pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" required />
                 <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requerido</small>
             </div>
             <div class="field col">
-                <label for="name">Apellidos del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" required pInputText id="name" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" required  />
+                <label for="lastname">Apellidos del Empleado <span class="inputs__required">*</span></label>
+                <input type="text" required pInputText id="lastname" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" required  />
                 <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
-                <label for="name">Correo Electrónico del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="user.email" required  />
+                <label for="email">Correo Electrónico del Empleado <span class="inputs__required">*</span></label>
+                <input type="text" placeholder="example@xyz.com" required pInputText id="email" [(ngModel)]="user.email" required  />
                 <small class="p-error" *ngIf="submitted && !user.email">Correo Electrónico es requerido</small>
+                <small class="p-error" *ngIf="user.email && !regexData(user.email!)">Correo Electrónico no es válido</small>
             </div>
             <div class="field col">
                 <label for="phone">Celular del Empleado <span class="inputs__required">*</span></label>
@@ -98,8 +99,8 @@
         </div>
         <div class="formgrid grid">
             <div class="field col">    
-                <label for="productStatus">Tipo de Empleado <span class="inputs__required">*</span></label>
-                <p-dropdown [showClear]="true" [(ngModel)]="user.id_role" optionLabel="name" optionValue="id" inputId="productStatus" [options]="types_employees" placeholder="Seleccionar">
+                <label for="typeEmployee">Tipo de Empleado <span class="inputs__required">*</span></label>
+                <p-dropdown [showClear]="true" [(ngModel)]="user.id_role" optionLabel="name" optionValue="id" inputId="typeEmployee" [options]="types_employees" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="pi pi-user mr-2"></i>
@@ -110,8 +111,8 @@
                 <small class="p-error" *ngIf="submitted && user.id_role == null">Rol es requerido</small>
             </div>
             <div class="field col">
-                <label for="productStatus">Estado del Empleado <span class="inputs__required">*</span></label>
-                <p-dropdown [showClear]="true" [(ngModel)]="user.user_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                <label for="stateEmployee">Estado del Empleado <span class="inputs__required">*</span></label>
+                <p-dropdown [showClear]="true" [(ngModel)]="user.user_status" optionLabel="name" optionValue="id" inputId="stateEmployee" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="{{option.icon}} mr-2"></i>
@@ -136,16 +137,16 @@
                 <small class="p-error" *ngIf="submitted && user.id_identification_type == null">Tipo de identificación es requerido</small>
             </div>
             <div class="field col">
-                <label for="code">Identificación del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" [disabled]="user.id_identification_type == null" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="user.user_document" (input)="regexCode($event)" required/>
+                <label for="identification">Identificación del Empleado <span class="inputs__required">*</span></label>
+                <input type="text" [disabled]="user.id_identification_type == null" [maxlength]="maxLength" required pInputText id="identification" [(ngModel)]="user.user_document" (input)="regexCode($event)" required/>
                 <small class="p-error" *ngIf="(submitted && !user.user_document) || (stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación requerida' : messageIdentification}}</small>
             </div>
         </div>
 
         <div class="formgrid grid">
             <div class="field col">
-                <label for="name">Dirección del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" required pInputText id="name" [(ngModel)]="user.user_address" placeholder="Ejemplo: Av. 9 De Octubre" required autofocus />
+                <label for="address">Dirección del Empleado <span class="inputs__required">*</span></label>
+                <input type="text" required pInputText id="address" [(ngModel)]="user.user_address" placeholder="Ejemplo: Av. 9 De Octubre" required />
                 <small class="p-error" *ngIf="submitted && !user.user_address">Dirección es requerida</small>
             </div>
             <div class="field col">
@@ -171,8 +172,8 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="createEmployee()"></button>
+        <button pButton pRipple [disabled]="actionSelected == 'new' && user.user_status == 0" [label]="actionSelected == 'new' ? 'Nuevo' : 'Editar'" icon="pi pi-check" class="p-button-text" (click)="createEmployee()"></button>
     </ng-template>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '550px'}"></p-confirmDialog>

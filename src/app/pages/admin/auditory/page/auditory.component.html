@@ -1,21 +1,41 @@
 <div class="card">
 
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton class="p-button-success" style="color:black;" label="Acción" icon="pi pi-filter" (click)="actions.toggle($event)"></button>
+            <button pButton class="p-button-warning ml-2" style="color:black;" label="Módulo" icon="pi pi-filter" (click)="modules.toggle($event)"></button>
+            <button pButton class="p-button-outlined ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button pButton class="p-button-info" [disabled]="loading" pTooltip="PDF" tooltipPosition="top" icon="pi pi-file-pdf"></button>
+        </ng-template>
+    </p-toolbar>
+
     <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" 
     responsiveLayout="stack" [rowHover]="true"  [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Auditoría</h5>
-                <span class="p-input-icon-left">
+            <div class="flex flex-wrap align-items-center justify-content-between">
+                <h5 class="ml-2 m-0">Auditoría</h5>
+                <span class="p-input-icon-left input__search">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre..." />
+                    <input pInputText type="text" style="width: 330px;" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por nombre o módulo" />
                 </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="user.user_name"><i class="pi pi-user"></i> Nombres<p-sortIcon field="user.user_name"></p-sortIcon></th>
-                <th pSortableColumn="audit_module"><i class="pi pi-folder-open"></i> Módulo <p-sortIcon field="audit_module"></p-sortIcon></th>
+                <th pSortableColumn="user.user_name"><i class="pi pi-paperclip"></i> Acción<p-sortIcon field="user.user_name"></p-sortIcon></th>
+                <th pSortableColumn="audit_module">
+                    <div class="flex justify-content-center align-items-center">
+                        <i class="pi pi-folder-open"></i> 
+                        Módulo 
+                        <p-sortIcon field="audit_module"></p-sortIcon>
+                        
+                    </div>
+                </th>
                 <th pSortableColumn="audit_description" style="width: 400px;"><i class="pi pi-book"></i> Descripción <p-sortIcon field="audit_description"></p-sortIcon></th>
                 <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="create_date"></p-sortIcon></th>
                 <th><i class="pi pi-database"></i> Query</th>
@@ -24,6 +44,7 @@
         <ng-template pTemplate="body" let-auditory let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
                 <td><span class="p-column-title"><i class="pi pi-user"></i> Nombre: </span>{{auditory.user.user_name}} {{auditory.user.user_lastName}}</td>
+                <td><span class="p-column-title"><i class="pi pi-paperclip"></i> Acción: </span>{{auditory.audit_action}}</td>
                 <td><span class="p-column-title"><i class="pi pi-folder-open"></i> Módulo: </span>{{auditory.audit_module}}</td>
                 <td><span class="p-column-title pr-7">Descripción: </span> <p style="text-align:justify;">{{auditory.audit_description}}</p></td>
                 <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{auditory.create_date}}</td>
@@ -45,3 +66,27 @@
     [draggable]="false" [resizable]="false">
     <p>{{aud.audit_query}}</p>
 </p-dialog>
+
+<p-overlayPanel #modules [showCloseIcon]="true">
+    <ng-template pTemplate>
+        <p-multiSelect [ngModel]="selectedModules" [options]="options" placeholder="Seleccionar Módulo" (onChange)="filterModule($event.value)" optionLabel="audit_module" optionValue="audit_module">
+            <ng-template let-option pTemplate="item">
+                <div class="p-multiselect-representative-option">
+                    <span class="ml-1">{{option.audit_module}}</span>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #actions [showCloseIcon]="true">
+    <ng-template pTemplate>
+        <p-multiSelect [ngModel]="selectedActions" [options]="optionsActions" placeholder="Seleccionar Acción" (onChange)="filterAction($event.value)" optionLabel="audit_action" optionValue="audit_action">
+            <ng-template let-option pTemplate="item">
+                <div class="p-multiselect-representative-option">
+                    <span class="ml-1">{{option.audit_action}}</span>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </ng-template>
+</p-overlayPanel>

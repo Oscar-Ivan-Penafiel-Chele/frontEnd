@@ -100,6 +100,8 @@ export class ProviderComponent implements OnInit {
       for(let i = 0; i < this.types_provider.length ; i++){
         this._sortByOrder.transform(`${this.types_provider[i].type_provider_name}`);
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -138,7 +140,7 @@ export class ProviderComponent implements OnInit {
   }
 
   async exportPdf() {
-    this.generatePDFService.generatePDF(this.providersAux, this.user);
+    this.generatePDFService.generatePDF(this.providers, this.user);
   }
 
   regexCode(event: any) {
@@ -182,6 +184,8 @@ export class ProviderComponent implements OnInit {
             this.hideDialog();
             this.messageService.add({severity:'success', summary: 'Completado', detail: 'El Proveedor fue creado con éxito', life:3000});
         }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -198,6 +202,8 @@ export class ProviderComponent implements OnInit {
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
         }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -274,6 +280,7 @@ export class ProviderComponent implements OnInit {
       header: 'Inactivar Proveedor',
       acceptLabel : 'Inactivar',
       rejectLabel : 'Cancelar',
+      rejectButtonStyleClass: 'p-button-outlined p-button-danger',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
           this.providerService.deleteProvider(provider.id_provider!, this.user.id_user!).subscribe((response)=>{
@@ -282,7 +289,7 @@ export class ProviderComponent implements OnInit {
                   this.messageService.add({severity:'success', summary: 'Completado', detail: 'Proveedor Inactivado', life: 3000});
               }
           },(err)=>{
-            console.log(err.error);
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
           });
       }
   });

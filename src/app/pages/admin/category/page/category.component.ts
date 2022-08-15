@@ -82,6 +82,8 @@ export class CategoryComponent implements OnInit {
         this.categories = this.categoriesAux;
       }
       this.loading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -244,6 +246,8 @@ export class CategoryComponent implements OnInit {
                 this.hideDialog();
                 this.messageService.add({severity:'success', summary: 'Completado', detail: 'La categoría fue creada con éxito', life: 3000});
             }
+        }, err =>{
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
         });
   }
 
@@ -270,6 +274,8 @@ export class CategoryComponent implements OnInit {
             this.hideDialog();
             this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error, inténtalo más tarde', life: 3000});
         }
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -312,6 +318,7 @@ export class CategoryComponent implements OnInit {
         header: 'Eliminar Categoría',
         acceptLabel : 'Eliminar',
         rejectLabel : 'Cancelar',
+        rejectButtonStyleClass: 'p-button-outlined p-button-danger',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
             this.categoryService.deleteCategory(category.id_category, this.user.id_user!).subscribe((response)=>{
@@ -320,7 +327,7 @@ export class CategoryComponent implements OnInit {
                     this.messageService.add({severity:'success', summary: 'Completado', detail: 'Categoría inactivada con éxito', life: 3000});
                 }
             },(err)=>{
-              console.log(err.error);
+              this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
             });
         }
     });

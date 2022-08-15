@@ -14,6 +14,7 @@ import { ValidationsService } from 'src/app/shared/services/validations/validati
 import { MeasureService } from 'src/app/shared/services/measure/measure.service';
 import { ProductService } from '../service/product.service';
 import { ProviderService } from '../../provider/service/provider.service';
+import { GeneratePdfProductService } from 'src/app/shared/services/pdfs/generate-pdf-product.service';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -97,7 +98,8 @@ export class ProductsComponent implements OnInit {
         private measureService : MeasureService,
         private validationService : ValidationsService,
         private providerService : ProviderService,
-        private _token : TokenService
+        private _token : TokenService,
+        private generatePDFProductService: GeneratePdfProductService
         ) { 
             this.isPhotoEdit = false;
             this.isError = false;
@@ -513,74 +515,8 @@ export class ProductsComponent implements OnInit {
 
     async exportPdf() {
         this.loadingPDF = true;
-        const fecha = new Date();
-        const pdf = new PdfMakeWrapper();
-        pdf.info({
-            title: 'PDF Productos',
-            author: '@Yebba',
-            subject: 'Mostrar los productos de la ferretería',
-        });
-        pdf.pageSize('A4');
-        pdf.pageOrientation('landscape'); // 'portrait'
-        pdf.add(
-            new Stack([
-              new Columns([
-                await new Img('assets/img/log_app_pdf.svg').width(100).build(),
-                new Columns([
-                  new Stack([
-                    new Columns([ 
-                      new Txt('Reporte de Productos').fontSize(14).bold().end,
-                    ]).color('#3f3f3f').end,
-                    new Columns([ 
-                      new Txt('Módulo de Productos  \n\n').fontSize(11).end,
-                    ]).color('#3f3f3f').end,
-                    new Columns([ 
-                      new Txt('').alignment('right').width('*').bold().end,
-                      new Txt('Usuario: ').alignment('right').width('*').bold().end,
-                      new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
-                      new Txt('Fecha: ').alignment('right').width(40).bold().end,
-                      new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
-                      new Txt('Hora:').alignment('right').width(30).bold().end,
-                      new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
-                    ]).end,
-                  ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
-                ]).end
-              ]).end
-            ]).end
-          );
-          pdf.add(
-            '\n'
-          )
-          pdf.add(
-            new Columns([
-              new Canvas([
-                  new Line([0,0], [755,0]).lineColor('#ccc').end
-              ]).end,
-            ]).width('*').end
-          );
-          pdf.add(
-            '\n\n'
-          )
-        pdf.add(
-            new Txt('Gestión de Productos').alignment('center').bold().fontSize(16).margin(10).end
-        );   
-        pdf.add(
-            new Table([
-                [ 'Código','Nombre','Proveedor', 'Marca','Categoría','Medida','Stock','Estado',],
-            ]).widths([ 50,140,100,70,80,70,70,60 ]).fontSize(14).bold().end
-        );
-        this.productsAux.forEach((item)=>{
-            pdf.add(
-                new Table([
-                    [ item.product_code , item.product_name , item.provider.provider_name , item.brand.brand_name, item.category.category_name, item.product_unit.name_product_unit, item.product_stock , item.product_status == 1 ? 'Activo' : 'Inactivo' ],
-                ]).widths([ 50,140,100,70,80,70,70,60 ]).end
-            );
-        })
-        pdf.footer((currentPage : any, pageCount : any)=>{
-            return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
-          });
-        pdf.create().open();
-        this.loadingPDF = false;    
+        this.generatePDFProductService.generatePDF(this.user, this.products);
+        this.loadingPDF = false;
     }
 
     exportCSV(){

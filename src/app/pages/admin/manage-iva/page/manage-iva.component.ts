@@ -51,6 +51,8 @@ export class ManageIvaComponent implements OnInit {
       this.data = Object.values(response);
       this.dataAuxFilter = this.data;
       this.isLoading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 
@@ -59,7 +61,6 @@ export class ManageIvaComponent implements OnInit {
     this.isLoading = true;
 
     this.manageIvaService.createIva(iva).subscribe((response : any)=>{
-      console.log(response)
       if(response.status == 200 || response.message == "Iva guardado exitosamente"){
         this.getIva();
         this.messageService.add({severity:'success', summary: 'Completado', detail: `${response.message}`, life : 3000});
@@ -69,6 +70,8 @@ export class ManageIvaComponent implements OnInit {
 
       this.displayModal = false;
       this.isLoading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     })
   }
 

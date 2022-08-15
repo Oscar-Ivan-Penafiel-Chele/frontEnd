@@ -100,3 +100,9 @@
 .p-column-title{
     font-weight: 600;
 }
+
+@media screen and (max-width: 586px) {
+    .input__search{
+        margin-top: 10px;
+    }
+}

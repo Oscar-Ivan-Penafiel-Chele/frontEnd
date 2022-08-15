@@ -39,6 +39,7 @@ import {ChartModule} from 'primeng/chart';
 import {TabViewModule} from 'primeng/tabview';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {ListboxModule} from 'primeng/listbox';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [],
@@ -84,7 +85,8 @@ import {ListboxModule} from 'primeng/listbox';
     ChartModule,
     TabViewModule,
     DynamicDialogModule,
-    ListboxModule
+    ListboxModule,
+    MultiSelectModule
   ]
 })
 export class PrimengComponentsModule { }
