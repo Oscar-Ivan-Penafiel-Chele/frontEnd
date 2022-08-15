@@ -88,13 +88,15 @@ export class ChangePasswordComponent implements OnInit {
     this.isShow = true;
 
     this.validationsService.validatePassword(opc).subscribe((response)=>{
-      if(response.status == 200 && response.message === "Coincide"){
+      if(response.message === "Coincide"){
         this.changePasswordUser();
-      }else  if(response.status == 200 && response.message === "No Coincide"){
+      }else  if(response.message === "No Coincide"){
         this.isShow = false;
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Contraseña actual no coincide', life:3000});
         return;
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     });
   }
 
@@ -104,13 +106,15 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     this.changePasswordService.changePasswordProfileEmployee(opc, this.user.id_user!).subscribe((response)=>{
-      if(response.status == 200 || response.message === "Contraseña actualizado exitosamente"){
+      if(response.message === "Contraseña actualizado exitosamente"){
         this.isLoading = false;
-      }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
+      }else if(response.message === "Ocurrio un error interno en el servidor"){
         this.isShow = false;
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al actualizar contraseña', life:3000});
         return;
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     });
   }
 

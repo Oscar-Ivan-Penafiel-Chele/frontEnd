@@ -84,6 +84,7 @@ export class ProfileComponent implements OnInit {
   saveChangeInformation(){
     this.loading = true;
     this.isVisibleText = false;
+
     this.employeeService.updateEmployee(this.user).subscribe((response)=>{
       if(response.status == 200 || response.message === "Usuario actualizado exitosamente"){
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Datos actualizado con éxito', life:3000});
@@ -98,6 +99,8 @@ export class ProfileComponent implements OnInit {
       }else{
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al actualizar datos', life:3000});
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
     });
   }
 
@@ -119,11 +122,17 @@ export class ProfileComponent implements OnInit {
     }
 
     this.validateServices.validatePassword(opc).subscribe((response)=>{
-      if(response.status == 200 || response.message === "Coincide"){
+      if(response.message == "Coincide"){
         this.saveChangeInformation();
-      }else{
+      }else if(response.message == "No Coincide"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'La contraseña no coincide', life:3000});
+        this.loading = false;
+        this.isVisibleText = true;
+        this.buttonCancel = false;
         return;
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
     });
 
     return ;

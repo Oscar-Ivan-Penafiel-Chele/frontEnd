@@ -147,28 +147,6 @@ export class ShopComponent implements OnInit {
       return ;
     })
   }
-
-  isExistProduct($event : any, product : Product){
-    const buttonSelected = $event.composedPath()[1].id;
-  
-    console.log($event.composedPath())
-    console.log(buttonSelected);
-    const data = {
-      id_user : this.user.id_user
-    };
-
-    this.cartService.getProductsCart(data).subscribe((response : Cart[])=>{
-      let item = response.filter((i) => i.id_product == buttonSelected)
-
-      if(item.length > 0){
-        this.messageService.add({severity:'info', summary: 'Info', detail: 'El producto ya ha sido agregado', life: 3000});
-        return ;
-      }
-      
-      this.addItem(product);
-    })
-  }
-
   goCart(){
     this._navigate.navigate(["/checkout/cart"]);
   }
@@ -304,10 +282,36 @@ export class ShopComponent implements OnInit {
     return 0;
   }
 
+  
+  isExistProduct($event : any, product : Product){
+    const buttonSelected = $event.composedPath()[1].id;
+    let spanClassList = $event.composedPath()[0].childNodes[1].classList;
+    let buttonItem = $event.composedPath()[0];
+
+    const data = {
+      id_user : this.user.id_user
+    };
+
+    this.changeIconButton(spanClassList, buttonItem)
+
+    this.cartService.getProductsCart(data).subscribe((response : Cart[])=>{
+      let item = response.filter((i) => i.id_product == buttonSelected)
+
+      if(item.length > 0){
+        this.messageService.add({severity:'info', summary: 'Info', detail: 'El producto ya ha sido agregado', life: 3000});
+        setTimeout(() => {
+          spanClassList.replace('pi-clock','pi-shopping-cart');
+          buttonItem.classList.remove('p-disabled');
+        }, 1000);
+        return ;
+      }
+      this.addItem(product, spanClassList, buttonItem)
+    })
+  }
+
   addProductoCart($event : any , product : Product){
     if(!this.isAuthenticated()){
       this.showOverlayLogin = true;
-      console.log(this.showOverlayLogin)
       return ;
     }
     this.isExistProduct($event, product);
@@ -317,8 +321,7 @@ export class ShopComponent implements OnInit {
     return this._token.getToken();
   }
 
-  async addItem(product : Product){
-
+  async addItem(product : Product, spanClassList: any, buttonItem: any){
     const data = {
       id_user : this.user.id_user,
       id_product : product.id_product,
@@ -332,9 +335,24 @@ export class ShopComponent implements OnInit {
       }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
         this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
       }
+
+      spanClassList.replace('pi-clock','pi-shopping-cart');
+      buttonItem.classList.remove('p-disabled');
     });
   }
 
+  async changeIconButton(spanClassList: any, buttonItem: any){
+    try {
+      if(spanClassList.contains('pi-shopping-cart')){
+        buttonItem.classList.add('p-disabled');
+        spanClassList.replace('pi-shopping-cart','pi-clock');
+        return;
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  } 
+ 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event : any) {
       if(!this.getKeepSession()){
@@ -355,102 +373,4 @@ export class ShopComponent implements OnInit {
 
     return false;
   }
-
-  // async deleteItem(id_product : any){
-  //   const data = {
-  //     id_user : this.user.id_user,
-  //     id_product : id_product
-  //   }
-
-  //   this._rest.deleteProductCart(data).subscribe((response)=>{
-  //     if(response.status == 200 || response.message === "Eliminado con exito"){
-  //       this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue eliminado'});
-  //     }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
-  //       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor'});
-  //     }
-  //   })
-  // }
-
-  // async changeIconButton($event : any, product : Product){
-  //   const buttonSelected = $event.composedPath()[1].id;
-
-  //   let spanClassList = $event.composedPath()[0].childNodes[1].classList;
-  //   let buttonItem = $event.composedPath()[0];
-
-  //   this.saveButtonsLocalStorage(buttonSelected);
-  //   this.deleteButtonsLocalStorage(buttonSelected);
-  //   try {
-  //     if(spanClassList.contains('pi-shopping-cart')){
-  //       buttonItem.classList.add('p-disabled');
-  //       spanClassList.replace('pi-shopping-cart','pi-clock');
-
-  //       //añadir item
-  //       await this.addItem(product)
-  //       await this.changeButtonIconClock(spanClassList, buttonItem);
-  //       this.saveButtonsLocalStorage(buttonItem);
-
-  //     }else{
-  //       buttonItem.classList.add('p-disabled');
-  //       spanClassList.replace('pi-times','pi-clock');
-        
-  //       //eliminar item 
-  //       await this.deleteItem(buttonSelected);
-  //       await this.changeButtonIconTimes(spanClassList, buttonItem);
-
-  //     }
-  //   } catch (error) {
-  //     console.log(`Error: ${error}`);
-  //   }
-  // } 
-
-  // async changeButtonIconClock(spanClassList : any, buttonItem : any){
-  //   setTimeout(() => {
-  //     spanClassList.replace('pi-clock','pi-times');
-  //     buttonItem.classList.remove('p-disabled');
-  //   }, 1000);
-  // }
-
-  // async changeButtonIconTimes(spanClassList : any, buttonItem : any){
-  //   setTimeout(() => {
-  //     spanClassList.replace('pi-clock','pi-shopping-cart');
-  //     buttonItem.classList.remove('p-disabled');
-  //   }, 1000);
-  // }
-
-  // saveButtonsLocalStorage(buttonSelected : any){
-  //   this.arrayButtons.push(buttonSelected);
-  //   localStorage.setItem('buttons',JSON.stringify(this.arrayButtons))
-  // }
-
-  // deleteButtonsLocalStorage(buttonSelected : any){
-  //   let data = JSON.parse(localStorage.getItem('buttons')!);
-
-  //   data.forEach((item : any, key : any)=>{
-  //     if(buttonSelected == item){
-  //       data.splice(key,1)
-  //     }
-  //   })
-
-  //   if(data.lenght == 0){
-  //     localStorage.removeItem('buttons')
-  //     return;
-  //   }
-
-  //   localStorage.setItem('buttons',JSON.stringify(data))
-  // }
-
-  // async currentButtonsChangeIcon(){
-  //   const buttonsCurrent = document.querySelectorAll('button__cart');
-  //   console.log(buttonsCurrent);
-  // } 
-
-  // loadCustomers(event: LazyLoadEvent) {
-  //   this.completeProduct = true;
-
-  //   this.productService.getProducts({lazyEvent: JSON.stringify(event)}).subscribe(res => {
-  //       this.productAux = res;
-  //       this.totalRecords = this.productAux.length;
-  //       this.completeProduct = false;
-  //   })
-  // }
 }

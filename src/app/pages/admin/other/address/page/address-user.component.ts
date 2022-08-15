@@ -54,6 +54,8 @@ export class AddressUserComponent implements OnInit {
       this.addressUser = this.addressService.sortAddress(response);
       this.isLoading= false;
       this.displayModal = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     })
   }
 
@@ -95,6 +97,8 @@ export class AddressUserComponent implements OnInit {
       }
 
       this.submitted = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     });
    
   }
@@ -106,12 +110,13 @@ export class AddressUserComponent implements OnInit {
         this.getAddress();
         this.messageService.add({severity:'success', summary:'Completado', detail:'La dirección ha sido actualizada con éxito'});
       }else{
-        this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
+        this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
         this.displayModal = false;
         this.isLoading = false;
       }
-
       this.submitted = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     })
   }
 
@@ -124,7 +129,6 @@ export class AddressUserComponent implements OnInit {
       acceptLabel : 'Aceptar',
       accept: () => {
         this.validateDeleteAddress(address.id_address);
-       //this.requestDeleteAddress(address.id_address);     
       },
     });
   }
@@ -140,6 +144,8 @@ export class AddressUserComponent implements OnInit {
         this.isLoading = false;
         this.messageService.add({severity:'error', summary:'Error', detail:`${response.message[0]}`});
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     });
   }
 
@@ -147,8 +153,6 @@ export class AddressUserComponent implements OnInit {
     this.isLoading = true;
 
     this.validationService.validateAddressDelete(id_address).subscribe((response : any)=>{
-      console.log(response);
-
       if(response.status == 200 && response.message == "no existe"){
         this.requestDeleteAddress(id_address);
       }else if(response.status == 200 && response.message == "existe"){
@@ -158,6 +162,8 @@ export class AddressUserComponent implements OnInit {
       }
 
       this.isLoading = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     })
   }
 

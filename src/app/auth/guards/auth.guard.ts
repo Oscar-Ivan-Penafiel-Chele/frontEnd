@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { TokenService } from '../services/token.service';
+import { TokenService } from '../service/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
       return false;
     }else{
       const  rol = (JSON.parse(this._rest.getTokenDataUser()!)).id_role;
-      if(route.data.role != rol){
+      if(rol != 5){
         this._router.navigate([this.data[rol]]);
         return false;
       }

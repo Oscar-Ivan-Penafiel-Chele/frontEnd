@@ -110,7 +110,6 @@ export class OtherComponent implements OnInit {
   goHome(){
     if(this.roleUser == 'Cliente'){
       this.roleUser = 'shop'
-    }else{  
     }
     
     this._navigation.navigate([`/${this.roleUser.toLowerCase()}`]);
