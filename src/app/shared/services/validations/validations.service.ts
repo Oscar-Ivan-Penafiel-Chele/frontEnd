@@ -40,4 +40,12 @@ export class ValidationsService {
   validateStockProduct(data: any): Observable<any>{
     return this._http.post<any>(`${this.url}/validate/product/stock`,data);
   }
+
+  validateProviderName(data: any){
+    return this._http.post<any>(`${this.url}/validate/provider/name`,data);
+  }
+
+  validateProviderIdentification(data: any){
+    return this._http.post<any>(`${this.url}/validate/provider/identification`,data);
+  }
 }

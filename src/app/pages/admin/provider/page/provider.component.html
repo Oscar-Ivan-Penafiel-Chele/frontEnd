@@ -160,6 +160,7 @@
                 <label for="name">Correo Electrónico del Proveedor <span class="inputs__required">*</span></label>
                 <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="provider.provider_email" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_email">Nombre es requerido</small>
+                <small class="p-error" *ngIf="provider.provider_email && !regexData(provider.provider_email)">Correo electrónico no válido</small>
             </div>
         </div>
         <div class="formgrid grid">

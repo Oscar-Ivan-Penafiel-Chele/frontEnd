@@ -105,8 +105,7 @@ export class CreateOrderComponent implements OnInit {
     this.purchase_order.id_provider = this.selectedProvider.id_provider;
     this.purchase_order.id_user = this.user.id_user!;
 
-    console.log(this.purchase_order)
-    //this.purchaseComponent.savePurchaseOrder(this.purchase_order);
+    this.purchaseComponent.savePurchaseOrder(this.purchase_order);
   }
 
   addProduct(){

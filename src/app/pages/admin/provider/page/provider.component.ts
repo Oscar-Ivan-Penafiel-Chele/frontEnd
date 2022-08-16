@@ -10,6 +10,7 @@ import { TokenService } from 'src/app/auth/service/token.service';
 import { ProviderService } from '../service/provider.service';
 import { GeneratePdfProviderService } from 'src/app/shared/services/pdfs/generate-pdf-provider.service';
 import { GenerateCsvProviderService } from 'src/app/shared/services/pdfs/generate-csv-provider.service';
+import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -49,7 +50,8 @@ export class ProviderComponent implements OnInit {
     private _sortByOrder : UpperCasePipe,
     private _token : TokenService,
     private generatePDFService: GeneratePdfProviderService,
-    private generateCSVService: GenerateCsvProviderService
+    private generateCSVService: GenerateCsvProviderService,
+    private validationServices: ValidationsService
   ) { }
 
   ngOnInit(): void {
@@ -158,8 +160,9 @@ export class ProviderComponent implements OnInit {
         this.messageIdentification = 'Identificación no válida';
         return ;
       }else{
+        if(!this.validateData() || !this.regexData(this.provider.provider_email!)) return ;
         this.messageIdentification = '';
-        this.saveData();
+        this.isExistProviderName();
       }
 
     }else if(this.actionSelected === "edit"){
@@ -168,6 +171,7 @@ export class ProviderComponent implements OnInit {
         this.messageIdentification = 'Identificación no válida';
         return ;
       }else{
+        if(!this.validateData() || !this.regexData(this.provider.provider_email!)) return ;
         this.messageIdentification = '';
         this.updateData();
       }
@@ -177,6 +181,7 @@ export class ProviderComponent implements OnInit {
   saveData(){
     this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
     this.provider.id_user = this.user.id_user;
+
     this.providerService.createProvider(this.provider)
     .subscribe((response)=>{
         if(response.status == 200 || response.message === "Proveedor creado con exito"){
@@ -298,5 +303,60 @@ export class ProviderComponent implements OnInit {
 
   exportCSV(){
     this.generateCSVService.generateCSV(this.providers);
+  }
+
+  isExistProviderName(){
+    this.validationServices.validateProviderName({provider_name: this.provider.provider_name}).subscribe((response)=>{
+      if(response.message == "existe"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'El nombre del proveedor ya existe', life: 3000});
+        return ;
+      }
+
+      this.isExistProviderIdentification();
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
+    })
+  }
+
+  isExistProviderIdentification(){
+    this.validationServices.validateProviderIdentification({provider_identification: this.provider.provider_identification}).subscribe((response)=>{
+      if(response.message == "existe"){
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'La identificación ingresada ya esta en uso', life: 3000});
+        return ;
+      }
+
+      this.saveData();
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
+    })
+  }
+
+  validateData(){
+    if(
+      !this.provider.provider_name ||
+      !this.provider.id_identification_type || this.provider.id_identification_type == null ||
+      !this.provider.provider_qualified || this.provider.provider_qualified == null ||
+      !this.provider.provider_status || this.provider.provider_status == null ||
+      !this.provider.id_identification_type || this.provider.id_identification_type == null ||
+      !this.provider.provider_identification ||
+      !this.provider.provider_address || this.provider.provider_address!.length < 5 ||
+      !this.provider.provider_email ||
+      !this.provider.provider_products_offered || 
+      !this.provider.provider_phone || this.provider.provider_phone.length < 10 ||
+      !this.provider.provider_landline || 
+      !this.provider.provider_person_name || 
+      !this.provider.provider_person_lastName ||
+      !this.provider.provider_response_time_day || this.provider.provider_response_time_day == null ||
+      !this.provider.provider_response_time_hour || this.provider.provider_response_time_hour == null 
+    )
+    {return false}
+
+    return true;
+  }
+
+  regexData(email : string){
+    let regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
+     return regexEmail.test(email);
   }
 }

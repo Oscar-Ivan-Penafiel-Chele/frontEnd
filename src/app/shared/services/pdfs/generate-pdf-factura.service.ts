@@ -84,7 +84,7 @@ export class GeneratePdfFacturaService {
     const pdf = new PdfMakeWrapper();
     
     pdf.info({
-        title: 'Orden de Pedido',
+        title: 'Factura PDF',
         author: '@Yebba',
         subject: 'Orden de Pedido',
     });
@@ -141,7 +141,7 @@ export class GeneratePdfFacturaService {
     
     pdf.add(new Stack([
         new Canvas([
-          new Rect([0, 0], [508, 55 ]).end,
+          new Rect([0, 0], [508, 80 ]).end,
         ]).end,
         new Columns([
           new Txt('RAZÓN SOCIAL / NOMBRES Y APELLIDOS:').absolutePosition(50,190).fontSize(8).bold().end,
@@ -156,15 +156,15 @@ export class GeneratePdfFacturaService {
           new Txt(`${!this.pedidosAux[0].address_reference ? this.pedidosAux[0].address : this.pedidosAux[0].address_reference}`).absolutePosition(140,210).fontSize(8).end,
         ]).end,
         new Columns([
-          new Txt('FECHA DE EMISIÓN:').absolutePosition(310,190).fontSize(8).bold().end,
-          new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(390,190).fontSize(8).end,
+          new Txt('FECHA DE EMISIÓN:').absolutePosition(50,220).fontSize(8).bold().end,
+          new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(130,220).fontSize(8).end,
         ]).end,
         new Columns([
-          new Txt('TELÉFONO:').absolutePosition(310,200).fontSize(8).bold().end,
-          new Txt(`${this.pedidosAux[0].phone}`).absolutePosition(360,200).fontSize(8).end,
+          new Txt('TELÉFONO:').absolutePosition(50,230).fontSize(8).bold().end,
+          new Txt(`${this.pedidosAux[0].phone}`).absolutePosition(95,230).fontSize(8).end,
         ]).end,
-        new Txt('IDENTIFICACIÓN:').absolutePosition(310,210).fontSize(8).bold().end,
-        new Txt(`${this.pedidosAux[0].document}`).absolutePosition(380,210).fontSize(8).end,
+        new Txt('IDENTIFICACIÓN:').absolutePosition(50,240).fontSize(8).bold().end,
+        new Txt(`${this.pedidosAux[0].document}`).absolutePosition(115,240).fontSize(8).end,
       ]).end  
     );
 
