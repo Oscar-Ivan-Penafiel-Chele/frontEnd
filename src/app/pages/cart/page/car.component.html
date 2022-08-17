@@ -129,8 +129,8 @@
                         </tr>
                     </ng-template>
     
-                    <ng-template pTemplate="body" let-product | async>
-                        <tr>
+                    <ng-template pTemplate="body" let-product | async let-rowIndex="rowIndex">
+                        <tr [pSelectableRow]="product" [pSelectableRowIndex]="rowIndex">
                             <td>
                                 <span class="p-column-title">Eliminar</span>
                                 <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text" (click)="deleteProductCart(product)"></button>
@@ -150,8 +150,8 @@
                             <td><span class="p-column-title">Precio Unitario: </span>${{product.product_price_aux}}</td>
                             <td><span class="p-column-title">Cantidad: </span> 
                                 <div class="flex flex-column">
-                                    <p-inputNumber [size]="1" (onInput)="getTotalPriceForUnit($event, product)" (onBlur)="onBlurInput($event)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber>
-                                    <small class="p-error" *ngIf="isErrorStock">Stock no disponible</small>
+                                    <p-inputNumber [size]="1" [name]="rowIndex" [id]="rowIndex" (onInput)="getTotalPriceForUnit($event, product, rowIndex)" (onBlur)="onBlurInput($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber>
+                                    <small class="p-error" *ngIf="rowSelected == rowIndex && isErrorStock">Stock no disponible</small>
                                 </div>
                             </td>
                             <td><span class="p-column-title">Descuento %: </span>{{product.product_offered == null || !product.product_offered || product.product_offered == '0.00' ? 0 : product.product_offered}}%</td>

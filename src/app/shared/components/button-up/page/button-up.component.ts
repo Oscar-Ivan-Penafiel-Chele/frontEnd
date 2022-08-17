@@ -23,26 +23,30 @@ export class ButtonUpComponent implements OnInit {
     const SET_TIME_OUT = 250;
     const backToTopButton : any = document.querySelector('#back-up');
 
-    if (window.pageYOffset > 300) { // Show backToTopButton
-      if(!backToTopButton?.classList.contains("btnEntrance")) {
-        backToTopButton?.classList.remove("btnExit");
-        backToTopButton?.classList.add("btnEntrance");
-        backToTopButton!.style.display = "block";
+    try {
+      if (window.pageYOffset > 300) { // Show backToTopButton
+        if(!backToTopButton?.classList.contains("btnEntrance")) {
+          backToTopButton?.classList.remove("btnExit");
+          backToTopButton?.classList.add("btnEntrance");
+          backToTopButton!.style.display = "block";
+        }
       }
-    }
-    else { // Hide backToTopButton
-      if(backToTopButton?.classList.contains("btnEntrance")) {
-        backToTopButton?.classList.remove("btnEntrance");
-        backToTopButton?.classList.add("btnExit");
-        setTimeout(function() {
-          backToTopButton!.style.display = "none";
-        },SET_TIME_OUT);
+      else { // Hide backToTopButton
+        if(backToTopButton?.classList.contains("btnEntrance")) {
+          backToTopButton?.classList.remove("btnEntrance");
+          backToTopButton?.classList.add("btnExit");
+          setTimeout(function() {
+            backToTopButton!.style.display = "none";
+          },SET_TIME_OUT);
+        }
+  
       }
-
+      
+      backToTopButton?.addEventListener("click", () => {
+        window.scrollTo(0,0);
+      });
+    } catch (error) {
+      
     }
-
-    backToTopButton?.addEventListener("click", () => {
-      window.scrollTo(0,0);
-    });
   }
 }

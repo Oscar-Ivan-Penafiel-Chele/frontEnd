@@ -1,6 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
-import { ConfirmationService, PrimeNGConfig, MessageService } from 'primeng/api';
+import { ConfirmationService, PrimeNGConfig, MessageService, SelectItem } from 'primeng/api';
 
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/service/auth.service';
@@ -20,7 +19,7 @@ import { User, Product, Category, Banner, Promotion, Cart } from '@models/interf
   providers : [MessageService,ConfirmationService]
 })
 export class ShopComponent implements OnInit {
-
+  
   products : Product[] = [];
   productAux : Product[] = [];
   categories : Category[] = [];
@@ -30,10 +29,7 @@ export class ShopComponent implements OnInit {
   hide : boolean = true;
   overlayLogout : boolean;
   responsiveOptions : any;
-  sortOptions: any;
-  sortOrder: number = 0;
   promotions : Promotion[] = [];
-  sortField: string = "";
   banners : Banner[] = [];
   host : string = environment.URL;
   overImage : string = "assets/img/not_image.jpg";
@@ -50,6 +46,11 @@ export class ShopComponent implements OnInit {
   arrayButtons : any = [];
   showPromotion : boolean = false;
   totalRecords: number= 0;
+  
+  sortOptions: SelectItem[] = [];
+  sortOrder: number = 0;
+  sortField: string = "";
+  sortKey: string | undefined;
 
   images: any[] = [
     {name : 'assets/img/back.svg'},
@@ -88,8 +89,8 @@ export class ShopComponent implements OnInit {
       }
   ];
     this.sortOptions = [
-      {label: 'De mayor a menor', value: 'menor'},
-      {label: 'De menor a mayor', value: 'mayor'}
+      {label: 'Precio alto a bajo', value: '!product_price'},
+      {label: 'Price bajo a alto', value: 'product_price'}
     ];
   }
 
@@ -112,9 +113,11 @@ export class ShopComponent implements OnInit {
   async getProducts(){
     this.productService.getProducts().subscribe((response : Product[]) =>{
       this.productAux = Object.values(response);
-      this.products = this.productAux.filter(i=> i.product_status == 1 && i.product_stock! > 0)
+      this.products = this.productAux.filter(i=> i.product_status == 1 && i.product_stock! > 0 && i.product_price! > 0)
       this.products.sort(this.sortProducts)
       this.completeProduct = true;
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
@@ -125,7 +128,8 @@ export class ShopComponent implements OnInit {
       this.products.forEach((product)=>{
         this.handlePromotions(product);
       })
-      
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     })
   }
 
@@ -165,6 +169,8 @@ export class ShopComponent implements OnInit {
     this.bannerService.getBanners().subscribe((response)=>{
       this.banners = Object.values(response).filter((i)=> i.banner_status != 0);
       this.bannerComplete = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
@@ -221,6 +227,8 @@ export class ShopComponent implements OnInit {
           this._token.removeToken();
           window.location.href = '/shop';
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
@@ -230,15 +238,22 @@ export class ShopComponent implements OnInit {
       this.categories = this.categories.sort(this.sortCategories);
       this.categories = this.categories.filter((i)=> i.category_status == 1 && i.category_name != 'NO DEFINIDO');
       this.hide = false;
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
 
   onSortChange(event : any) {
-    if(event.value == "mayor"){
-      this.products = this.products.sort(this.sortProductForPriceHight);
-    }else if(event.value == "menor"){
-      this.products = this.products.sort(this.sortProductForPriceLow);
+    let value = event.value;
+
+    if (value.indexOf('!') === 0) {
+        this.sortOrder = -1;
+        this.sortField = value.substring(1, value.length);
+    }
+    else {
+        this.sortOrder = 1;
+        this.sortField = value;
     }
   }
 
@@ -269,19 +284,6 @@ export class ShopComponent implements OnInit {
     if(x.category_name > y.category_name) return 1;
     return 0;
   }
-
-  sortProductForPriceHight(x : any,y : any){
-    if(x.product_price < y.product_price) return -1;
-    if(x.product_price > y.product_price) return 1;
-    return 0;
-  }
-
-  sortProductForPriceLow(x : any,y : any){
-    if(x.product_price > y.product_price) return -1;
-    if(x.product_price < y.product_price) return 1;
-    return 0;
-  }
-
   
   isExistProduct($event : any, product : Product){
     const buttonSelected = $event.composedPath()[1].id;
@@ -305,7 +307,9 @@ export class ShopComponent implements OnInit {
         }, 1000);
         return ;
       }
-      this.addItem(product, spanClassList, buttonItem)
+      this.addItem(product, spanClassList, buttonItem);
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     })
   }
 
@@ -331,13 +335,15 @@ export class ShopComponent implements OnInit {
 
     this.cartService.addProductCart(data).subscribe((response) =>{
       if(response.status == 200 || response.message === "Guardado con exito"){
-        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life: 3000});
+        this.messageService.add({severity:'success', summary: 'Completado', detail: 'Producto agregado al carrito', life:3000});
       }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
-        this.messageService.add({severity:'error', summary: 'Completado', detail: 'Ocurrio un error', life: 3000});
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error', life: 3000});
       }
 
       spanClassList.replace('pi-clock','pi-shopping-cart');
       buttonItem.classList.remove('p-disabled');
+    }, err =>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 

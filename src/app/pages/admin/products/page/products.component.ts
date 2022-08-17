@@ -1,10 +1,10 @@
-import { Component, ElementRef, HostListener, OnInit, Provider, ViewChild } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
-import { MessageService, Message, PrimeNGConfig } from 'primeng/api';
+import { Component, HostListener, OnInit} from '@angular/core';
+import {  } from 'primeng/api';
+import { MessageService, Message, ConfirmationService, PrimeNGConfig } from 'primeng/api';
 import { Product, Category, Brand, IProvider, User, Measure } from '@models/interfaces';
 import { UpperCasePipe } from '@angular/common';
 import { environment } from 'src/environments/environment.prod';
-import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { PdfMakeWrapper } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 import { TokenService } from 'src/app/auth/service/token.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, Message, ConfirmationService, PrimeNGConfig } from 'primeng/api';
 import { ISailResponse, Sail, User } from '@models/interfaces';
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { PdfMakeWrapper } from 'pdfmake-wrapper';
@@ -14,7 +14,8 @@ type TableRow = [];
 @Component({
   selector: 'app-report-sail',
   templateUrl: './report-sail.component.html',
-  styleUrls: ['./report-sail.component.css']
+  styleUrls: ['./report-sail.component.css'],
+  providers : [MessageService,ConfirmationService]
 })
 export class ReportSailComponent implements OnInit {
 
@@ -52,6 +53,8 @@ export class ReportSailComponent implements OnInit {
     this.reportSailService.getSails().subscribe((response : Sail[])=>{
       this.sails = Object.values(response);
       this.groupOrderByIdOrder(response);
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
     })
   }
 

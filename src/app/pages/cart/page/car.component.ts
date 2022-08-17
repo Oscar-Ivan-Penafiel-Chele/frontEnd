@@ -32,6 +32,7 @@ export class CarComponent implements OnInit {
   manageIva : IManageIVA = {} as IManageIVA;
   emptyImage: string = "assets/img/image_empty.svg";
   isErrorStock = false;
+  rowSelected: number | undefined ; 
 
   constructor(
     private _primengConfig : PrimeNGConfig, 
@@ -147,7 +148,9 @@ export class CarComponent implements OnInit {
     return 0;
   }
 
-  getTotalPriceForUnit($event : any, product : Product){
+  getTotalPriceForUnit($event : any, product : Product, rowIndex: number){
+    this.rowSelected = rowIndex;
+
     if($event.value > product.product_stock!){ 
       this.isErrorStock = true;
       return ; 
@@ -198,7 +201,6 @@ export class CarComponent implements OnInit {
       if(i.product_price_total == undefined){
         i.product_price_total = parseFloat(i.product_price!.toString())
       } 
-      console.log(i);
       return i.product_price_total;
     })
 
@@ -326,8 +328,32 @@ export class CarComponent implements OnInit {
     });
   }
 
-  onBlurInput($event: any): void{
-    this.isErrorStock = false;
+  onBlurInput($event: any, product: Product): void{
+    if(this.isErrorStock){
+      this.isErrorStock = false;
+  
+      if(product.product_offered){ 
+        product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
+        product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
+      }else{
+        product.product_price_amount =  product.product_price_aux! * product.product_amount_sail!;
+      }
+  
+      if(product.product_iva == 0){
+        product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
+        product.product_price_total! = product.product_price! * product.product_amount_sail!;
+  
+        this.getTotalPriceForAmount();
+        return;
+      }
+      
+      product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
+      product.product_price_total! = product.product_price! * product.product_amount_sail!;
+      
+      this.getTotalPriceForAmount();
+  
+      return;
+    }
   }
 
   @HostListener('window:beforeunload', ['$event'])
