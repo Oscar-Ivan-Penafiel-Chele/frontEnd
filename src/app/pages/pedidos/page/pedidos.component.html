@@ -72,7 +72,7 @@
 
     <main>
         <div class="table__pedidos">
-            <p-table #dt [value]="dataAux" [loading]="isLoading" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'status']"  responsiveLayout="scroll"
+            <p-table #dt [value]="dataAux" [loading]="isLoading" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'products_name']"  responsiveLayout="scroll"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
@@ -89,14 +89,6 @@
                             </span>
                         </div>
                     </div>
-
-                    <!-- <div class="flex align-items-center justify-content-between">
-                        Listado de Pedidos
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o estado..." />
-                        </span>
-                    </div> -->
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>

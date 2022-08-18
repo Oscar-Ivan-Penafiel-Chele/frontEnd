@@ -133,13 +133,16 @@ export class CarComponent implements OnInit {
       if(i.product_iva == 0){
         i.product__price__iva = (i.product_price_amount! * 0).toFixed(2);
         i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+        i.product_price = parseFloat(i.product_price!.toFixed(2).toString());
 
         return;
       }
 
       i.product__price__iva = (i.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
       i.product_price = parseFloat(i.product_price!.toString()) + parseFloat(i.product__price__iva)
+      i.product_price = parseFloat(i.product_price!.toFixed(2).toString());
     });
+
   }
 
   sortProduct(x : any ,y : any){
@@ -157,6 +160,7 @@ export class CarComponent implements OnInit {
     }
     
     this.isErrorStock = false;
+    
     if(product.product_offered){ 
       product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
       product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
@@ -166,14 +170,14 @@ export class CarComponent implements OnInit {
 
     if(product.product_iva == 0){
       product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
-      product.product_price_total! = product.product_price! * $event.value;
+      product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);;
 
       this.getTotalPriceForAmount();
       return;
     }
     
     product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-    product.product_price_total! = product.product_price! * $event.value;
+    product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);
     
     this.getTotalPriceForAmount();
   }
@@ -186,7 +190,8 @@ export class CarComponent implements OnInit {
       if(i.product_price_total == undefined){
         i.product_amount_sail = 1;
         totalIva += parseFloat(i.product__price__iva); 
-        totalPrecioSinIva += parseFloat(i.product_price!.toString());
+        totalPrecioSinIva += i.product_price!;
+        totalPrecioSinIva = parseFloat(totalPrecioSinIva.toFixed(2));
       }
     })
     this.order.price_order_total = totalPrecioSinIva;
@@ -199,12 +204,13 @@ export class CarComponent implements OnInit {
 
     price = this.products.map((i)=>{
       if(i.product_price_total == undefined){
-        i.product_price_total = parseFloat(i.product_price!.toString())
+        i.product_price_total = i.product_price;
       } 
-      return i.product_price_total;
-    })
 
+      return parseFloat(i.product_price_total);
+    })
     this.order.price_order_total = price.reduce(reduce);
+    this.order.price_order_total = parseFloat(this.order.price_order_total).toFixed(2);
   }
 
   displayOptions(){
@@ -341,17 +347,16 @@ export class CarComponent implements OnInit {
   
       if(product.product_iva == 0){
         product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
-        product.product_price_total! = product.product_price! * product.product_amount_sail!;
+        product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);;
   
         this.getTotalPriceForAmount();
         return;
       }
       
       product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
-      product.product_price_total! = product.product_price! * product.product_amount_sail!;
+      product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);
       
       this.getTotalPriceForAmount();
-  
       return;
     }
   }

@@ -81,7 +81,7 @@
 
 <p-overlayPanel #actions [showCloseIcon]="true">
     <ng-template pTemplate>
-        <p-multiSelect [ngModel]="selectedActions" [options]="optionsActions" placeholder="Seleccionar Acción" (onChange)="filterAction($event.value)" optionLabel="audit_action" optionValue="audit_action">
+        <p-multiSelect [ngModel]="selectedActions" [options]="optionsActions" placeholder="Seleccionar Acción" (onChange)="filterAction($event)" optionLabel="audit_action" optionValue="audit_action">
             <ng-template let-option pTemplate="item">
                 <div class="p-multiselect-representative-option">
                     <span class="ml-1">{{option.audit_action}}</span>

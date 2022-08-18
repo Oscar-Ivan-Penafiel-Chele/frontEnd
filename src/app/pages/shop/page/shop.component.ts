@@ -117,7 +117,8 @@ export class ShopComponent implements OnInit {
       this.products.sort(this.sortProducts)
       this.completeProduct = true;
     }, err=>{
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      if(err.error == "abort") return;
+      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
@@ -129,7 +130,8 @@ export class ShopComponent implements OnInit {
         this.handlePromotions(product);
       })
     }, err=>{
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      if(err.error == "abort") return;
+      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     })
   }
 
@@ -170,7 +172,8 @@ export class ShopComponent implements OnInit {
       this.banners = Object.values(response).filter((i)=> i.banner_status != 0);
       this.bannerComplete = false;
     }, err =>{
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      if(err.error == "abort") return;
+      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
@@ -228,7 +231,8 @@ export class ShopComponent implements OnInit {
           window.location.href = '/shop';
       }
     }, err =>{
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      if(err.error == "abort") return;
+      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 
@@ -239,7 +243,8 @@ export class ShopComponent implements OnInit {
       this.categories = this.categories.filter((i)=> i.category_status == 1 && i.category_name != 'NO DEFINIDO');
       this.hide = false;
     }, err =>{
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      if(err.error == "abort") return;
+      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     });
   }
 

@@ -89,11 +89,9 @@ export class PaymentComponent implements OnInit {
 
     this.products = JSON.parse(data!);
 
-    console.log(this.products)
     this.products.forEach((i)=>{
       if(i.product_offered || i.product_offered! > 0 ){
         this.discount += ((i.product_offered! / 100) * i.product_price_aux!);
-        console.log(`${this.discount} ${i.product_offered} ${i.product_price_aux}`)
       }
 
       if(i.product_iva == 0) {
@@ -137,7 +135,6 @@ export class PaymentComponent implements OnInit {
       
       this.validationService.validateStockProduct(dataStock).subscribe((response : any)=>{
         if(response.status >= 400 || response.status === 0){
-          console.log(response);
           return;
         }
 

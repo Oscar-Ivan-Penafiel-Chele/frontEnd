@@ -15,7 +15,7 @@ export interface IPedido{
   create_date : string,
   total : number,
   status : string,
-  pedido : any
+  pedido : any,
 }
 
 @Component({
@@ -99,22 +99,42 @@ export class PedidosComponent implements OnInit {
   }
 
   createInterfaceTable(pedidos : any[]){
+    let pn : string[] = [];
+    this.dataAux = [];
+
     pedidos.forEach((pedido : any) =>{
+      // if (!pn.includes(pedido.orders[0].i.order_detail.producto.product_name)) {
+      // }
+      //this.getProductByOrders(pedido)
+      //console.log(pedido)
+      //pn.push(pedido.orders[0].i.order_detail.producto.product_name);
+
+      //console.log(pedido.orders[0].i.order_detail.producto.product_name)
+
       this.dataAux.push(
         {
           id_order : pedido.orders[0].i.order.id_order,
           create_date : pedido.orders[0].i.create_date,
           total : pedido.orders[0].i.order.order_price_total,
           status : pedido.orders[0].i.order.order_status.order_status_description,
-          pedido : pedido.orders
+          pedido : pedido.orders,
         }
       );
     });
     this.isLoading = false;
     this.dataAux = Object.values(this.dataAux);
     this.dataFilter = this.dataAux;
+    //console.log(this.dataAux)
   }
 
+  getProductByOrders(pedido: any){
+    // let arr = pedido;
+
+    // console.log(arr)
+    // arr.forEach((element: any) => {
+     
+    // });
+  }
 
   goCart(){
     this._navigate.navigate(["/checkout/cart"]);

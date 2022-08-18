@@ -30,7 +30,6 @@ export class GeneratePdfFacturaService {
 
   async generateFacturePDF(pedido : any){
     await this.extractData(pedido);
-    await this.getDetailsSailTotal();
     await this.getPDF();
   }
 
@@ -38,7 +37,6 @@ export class GeneratePdfFacturaService {
     this.products = [];
     this.subtotal = 0;
     this.pedidosAux = pedido.orders.map((item : any)=>{
-      console.log(item)
       this.products.push({producto: item.i.order_detail.producto, order_detail_quantity: item.i.order_detail.order_detail_quantity, order_detail_total : item.i.order_detail.order_detail_total, order_detail_discount : item.i.order_detail.order_detail_discount})
       return {voucher : item.i.order.voucher_number, create_date: item.i.create_date, name_user: item.i.order.user.user_name, lastName_user: item.i.order.user.user_lastName, address: item.i.order_detail.address.user_address, address_reference : item.i.order_detail.address_reference , phone: item.i.order.user.user_phone, document: item.i.order.user.user_document, products : [], email : item.i.order.user.email}
     });
@@ -59,25 +57,27 @@ export class GeneratePdfFacturaService {
         product.producto.product_price_amount =  (product.producto.product_price_aux! * product.producto.product_amount_sail!).toFixed(2);
       }  
 
-      this.getSubtotal(product.producto.product_price_amount);
+      this.getSubtotal(product.producto.product_price_amount, product);
     })
   }
 
-  getSubtotal(price_amount : number){
+  getSubtotal(price_amount : number, product:any){
     this.subtotal += parseFloat(price_amount.toString());
-  }
-  
-  async getDetailsSailTotal(){
-    this.dataAux = [];
-    this.products.map((i : any)=>{
-      this.dataAux.push(i.order_detail_total);
-    })
-    
-    this.total = this.dataAux.reduce((i : any,j : any)=>{
-      return (parseFloat(i) + parseFloat(j)).toFixed(2);
-    })
 
-    this.iva = (this.subtotal * (this.percentIva/100));
+    if(product.producto.product_offered || product.product_offered! > 0){
+      this.discount += ((product.product_offered! / 100) * product.product_price_aux!);
+    }
+
+    if(product.producto.product_iva == 1){
+      this.subtotalIva += parseFloat(price_amount.toString());
+      this.iva = (this.subtotal * (this.percentIva/100));
+      return ;
+    }else{
+      this.subtotalSinIva += parseFloat(price_amount.toString());
+    }
+
+    this.total = this.subtotal + this.iva;
+    this.total = parseFloat(this.total).toFixed(2);
   }
 
   async getPDF(){
@@ -226,18 +226,18 @@ export class GeneratePdfFacturaService {
           ]).widths([240]).fontSize(8).end,
 
           new Table([
-            // [ 
-            //   new Txt(`SUBTOTAL ${this.percentIva}%`).fontSize(8).alignment('left').bold().end,
-            //   new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
-            // ],
-            // [ 
-            //   new Txt('SUBTOTAL 0%').fontSize(8).alignment('left').bold().end,
-            //   new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
-            // ],
-            // [ 
-            //   new Txt('DESCUENTO').fontSize(8).alignment('left').bold().end,
-            //   new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,
-            // ],
+            [ 
+              new Txt(`SUBTOTAL ${this.percentIva}%`).fontSize(8).alignment('left').bold().end,
+              new Txt(`$ ${this.subtotalIva.toFixed(2)}`).fontSize(8).alignment('right').end,
+            ],
+            [ 
+              new Txt('SUBTOTAL 0%').fontSize(8).alignment('left').bold().end,
+              new Txt(`$ ${this.subtotalSinIva.toFixed(2)}`).fontSize(8).alignment('right').end,
+            ],
+            [ 
+              new Txt('DESCUENTO').fontSize(8).alignment('left').bold().end,
+              new Txt(`$ ${this.discount.toFixed(2)}`).fontSize(8).alignment('right').end,
+            ],
             [
               new Txt('SUBTOTAL').fontSize(8).alignment('left').bold().end,
               new Txt(`$ ${this.subtotal.toFixed(2)}`).fontSize(8).alignment('right').end,

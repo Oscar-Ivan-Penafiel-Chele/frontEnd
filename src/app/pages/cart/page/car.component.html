@@ -87,7 +87,7 @@
 
         <ng-template #showTableProducts>
             <div class="table__item__cart">
-                <p-table #dt [value]="products" styleClass="p-datatable-sm" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="products.length > 0 ? true : false" [globalFilterFields]="['product_name']"
+                <p-table #dt [value]="products" [alwaysShowPaginator]="false" styleClass="p-datatable-sm" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['product_name']"
                 currentPageReportTemplate="" [showCurrentPageReport]="true" responsiveLayout="stack">
                     <ng-template pTemplate="caption">
                         <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
@@ -157,13 +157,13 @@
                             <td><span class="p-column-title">Descuento %: </span>{{product.product_offered == null || !product.product_offered || product.product_offered == '0.00' ? 0 : product.product_offered}}%</td>
                             <td><span class="p-column-title">IVA 12%: </span>${{product.product__price__iva}}</td>
                             <td><span class="p-column-title">Total: </span>
-                                ${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total.toFixed(2)}}
+                                ${{product.product_price_total == null ? product.product_price : product.product_price_total}}
                             </td>      
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
                         <div class="flex align-items-end justify-content-end" *ngIf="products.length > 0">
-                            Total a pagar: ${{(order.price_order_total).toFixed(2)}}
+                            Total a pagar: ${{(order.price_order_total)}}
                         </div>
                     </ng-template>
                 </p-table>

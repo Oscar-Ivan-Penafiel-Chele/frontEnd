@@ -9,7 +9,6 @@ import { GeneratePdfFacturaService } from 'src/app/shared/services/pdfs/generate
 import { GenerateReportSailService } from 'src/app/shared/services/pdfs/generate-report-sail.service';
 
 PdfMakeWrapper.setFonts(pdfFonts);
-type TableRow = [];
 
 @Component({
   selector: 'app-report-sail',
@@ -38,10 +37,18 @@ export class ReportSailComponent implements OnInit {
   constructor(
     private reportSailService : ReportSailService,
     private _token : TokenService,
+    private config: PrimeNGConfig,
     private messageService: MessageService,
     private generatePDFService : GeneratePdfFacturaService,
     private generateReportService : GenerateReportSailService
-  ) { }
+  ) { 
+    this.config.setTranslation({
+      "clear" : "Vaciar",
+      "today" : "Hoy",
+      "dayNamesMin": ["D","L","M","X","J","V","S"],
+      "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    });
+  }
 
   ngOnInit(): void {
     this.getSails();
@@ -51,6 +58,7 @@ export class ReportSailComponent implements OnInit {
   getSails(){
     this.loading = true;
     this.reportSailService.getSails().subscribe((response : Sail[])=>{
+      console.log(response)
       this.sails = Object.values(response);
       this.groupOrderByIdOrder(response);
     }, err=>{
@@ -73,6 +81,7 @@ export class ReportSailComponent implements OnInit {
 
     this.sails = Object.values(data);
     this.loading = false;
+    console.log(this.sails)
     this.createInterfaceTable(this.sails)
   }
 

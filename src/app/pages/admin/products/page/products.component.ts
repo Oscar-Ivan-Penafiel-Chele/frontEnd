@@ -84,7 +84,7 @@ export class ProductsComponent implements OnInit {
 
     imageExcel = "assets/img/IconExcel.svg";
     overImage : string = "assets/img/not_image.jpg";
-    invalidFileTypeMessageSummary : string = `Tipo de archivo inválido:`;
+    invalidFileTypeMessageSummary : string = `Tipo de archivo no válido:`;
     invalidFileTypeMessageDetail : string = `Tipo de archivo permitido .xlsx`;
     optionsIVA : any[] = [];
 

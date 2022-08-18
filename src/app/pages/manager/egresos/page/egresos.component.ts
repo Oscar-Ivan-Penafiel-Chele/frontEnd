@@ -79,8 +79,6 @@ export class EgresosComponent implements OnInit {
       this.dataExtract = this.egresos.map(({order_detail, inventory_description, inventory_movement_type, inventory_stock_amount, create_date})=>{
         return {product_code : order_detail.producto.product_code, product_name : order_detail.producto.product_name, inventory_description, inventory_movement_type, inventory_stock_amount, create_date};
       })
-
-      console.log(response);
     })
   }
 

@@ -33,6 +33,7 @@ export class ConfirmationComponent implements OnInit {
   url : string = "";
   iconButton: string ="";
   textButton: string = "";
+  typePay: string= "";
 
   constructor(
     private _router : Router,
@@ -116,8 +117,8 @@ export class ConfirmationComponent implements OnInit {
       
       //console.log('OnError', err);
     },
-    onClick: (data, actions) => {
-      //console.log('onClick', data, actions);
+    onClick: (data) => {
+      this.typePay = data.fundingSource;
     }
   };
   }
@@ -127,6 +128,7 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async addSail(){
+    // agregar campo de tipo de pago
     const data = {
       id_user : this.user.id_user,
       order_price_total : this.order.price_order_total,

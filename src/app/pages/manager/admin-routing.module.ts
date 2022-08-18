@@ -13,6 +13,7 @@ const routes : Routes = [
       {path: 'ingresos', loadChildren : ()=> import('./ingresos/ingresos.module').then( m => m.IngresosModule)},
       {path: 'egresos', loadChildren : ()=> import('./egresos/egresos.module').then( m => m.EgresosModule)},
       {path: 'report-venta', loadChildren : ()=> import('./report-sail/report-sail.module').then( m => m.ReportSailModule)},
+      {path: 'estadistica-venta', loadChildren : ()=> import('./statistics-sail/statistics-sail.module').then( m => m.StatisticsSailModule)},
     ]
   },
   { path:'**' , redirectTo:''}

@@ -1,0 +1,45 @@
+<p-toast></p-toast>
+<div class="card">
+    <p class="tittle__statistics"> <i class="pi pi-chart-line"></i> Estadística de Ventas</p>
+
+    <div class="date__report grid mt-4">
+        <div class="col-12 md:col-6">
+            <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
+            <p-calendar inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+        </div>
+        <div class="col-12 md:col-6">
+            <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
+            <p-calendar class="mr-2" inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+        </div>
+    </div>
+    
+    <div class="filter__report grid mt-4 mb-5">
+        <div class="col-12 md:col-6">
+            <label class="mr-2">3. Categorías: </label>
+            <p-multiSelect [options]="categories" (onChange)="filterAction($event.value)" [style]="{width:'100%'}" [(ngModel)]="selectedCategory" defaultLabel="Seleccione Categoría" optionLabel="category_name" class="multiselect-custom">
+                <ng-template let-value pTemplate="selectedItems">
+                    <div class="country-item country-item-value" *ngFor="let option of selectedCategory">
+                        <img [src]="host+option.category_thumbnail" [alt]="option.category_thumbnail" class="image__category shadow-4" />
+                        <div>{{option.category_name}}</div>
+                    </div>
+                    <div *ngIf="!selectedCategory || selectedCategory.length === 0" class="country-placeholder">
+                        Seleccione Categoría
+                    </div>
+                </ng-template>
+                <ng-template let-category pTemplate="item">
+                    <div class="country-item flex justify-content-center align-items-center">
+                        <img [src]="host+category.category_thumbnail" [alt]="category.category_thumbnail" class="image__category shadow-4" />
+                        <div>{{category.category_name}}</div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+        </div>
+        <div class="col-12 md:col-6">
+            <label class="mr-2">4. Productos: </label>
+            <p-dropdown [options]="productsAux" [disabled]="selectedCategory.length == 0" [style]="{width:'100%'}" emptyFilterMessage="No se encontraron resultados" [(ngModel)]="selectedProduct" optionLabel="product_name" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
+        </div>
+    </div>
+    
+    
+    <button type="button" [disabled]="!validateData()" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="generateReport()" class="p-button-info"></button>
+</div>

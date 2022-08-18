@@ -114,8 +114,8 @@ export class ChartsComponent implements OnInit {
     this.chartService.getOrders().subscribe((response)=>{
       dataCard.class = "card__option__item stock";
       dataCard.action = "sailman"
-      dataCard.title = "Pedidos";
-      dataCard.icon = "pi pi-user"
+      dataCard.title = "Tipo de Pago";
+      dataCard.icon = "pi pi-credit-card"
       dataCard.amount = response.data.length;
 
       this.options.push(dataCard);
@@ -141,7 +141,7 @@ export class ChartsComponent implements OnInit {
       datasets: [
         {
             label: 'Ventas',
-            data: [28, 35, 40, 30, 56, 67, 50,79, 88, 99, 119, 40],
+            data: [28, 35, 40, 43, 46, 40, 50,58],
             fill: false,
             borderColor: '#FFA726',
             tension: .4
@@ -152,19 +152,17 @@ export class ChartsComponent implements OnInit {
 
   getGraphycDataStock(){
     this.dataStock = {
-      labels: ['A','B','C'],
+      labels: ['PayPal','Tarjeta de crédito o débito'],
             datasets: [
                 {
-                    data: [300, 50, 100],
+                    data: [20, 5],
                     backgroundColor: [
                         "#FF6384",
                         "#36A2EB",
-                        "#FFCE56"
                     ],
                     hoverBackgroundColor: [
                         "#FF6384",
                         "#36A2EB",
-                        "#FFCE56"
                     ]
                 }
             ]
