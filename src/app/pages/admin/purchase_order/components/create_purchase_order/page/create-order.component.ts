@@ -5,6 +5,7 @@ import { ProductService } from 'src/app/pages/admin/products/service/product.ser
 import { ProviderService } from 'src/app/pages/admin/provider/service/provider.service';
 import { PurchaseOrderComponent } from '../../../page/purchase-order.component';
 import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
+import { TokenService } from 'src/app/auth/service/token.service';
 
 @Component({
   selector: 'app-create-order',
@@ -42,6 +43,7 @@ export class CreateOrderComponent implements OnInit {
   constructor(
     private providerService: ProviderService,
     private productService : ProductService,
+    private _token : TokenService,
     @Host() private purchaseComponent: PurchaseOrderComponent,
     private confirmationService: ConfirmationService, 
     private messageService: MessageService
@@ -56,9 +58,8 @@ export class CreateOrderComponent implements OnInit {
   }
 
   getUser(){
-    const data = localStorage.getItem('user');
-
-    this.user = JSON.parse(data!);
+    const data = this._token.getTokenDataUser();
+    this.user = data;
   }
 
   getProviders(){

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { EncriptedCredentialService } from './encripted-credential.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,11 @@ export class TokenService {
     register: 'http://127.0.0.1:8000/api/auth/register'
   }
 
-  constructor() { }
+  constructor(private encriptedService: EncriptedCredentialService) { }
 
   handleData(token : any){
     localStorage.setItem('auth_token',token);
+
   }
 
   getToken(){
@@ -20,7 +22,10 @@ export class TokenService {
   }
 
   getTokenDataUser(){
-    return localStorage.getItem('user');
+    let user = localStorage.getItem('user');
+    let data = this.encriptedService.decrypt(user!);
+
+    return data;
   }
 
   removeToken(){

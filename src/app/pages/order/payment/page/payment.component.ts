@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Address, User, Product, Order } from '@models/interfaces';
+import { TokenService } from 'src/app/auth/service/token.service';
 import { AddressUserService } from 'src/app/pages/admin/other/address/service/address-user.service';
 import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 import { environment } from 'src/environments/environment.prod';
@@ -53,7 +54,8 @@ export class PaymentComponent implements OnInit {
   constructor(
     private _router : Router,
     private addressService : AddressUserService,
-    private validationService : ValidationsService
+    private validationService : ValidationsService,
+    private _token : TokenService,
   ) { }
 
   ngOnInit(): void {
@@ -64,8 +66,7 @@ export class PaymentComponent implements OnInit {
   }
 
   getDataClient(){
-    const data = localStorage.getItem('user');
-    this.user = JSON.parse(data!);
+    this.user = this._token.getTokenDataUser();
 
     this.getTypeDocument(this.user.id_identification_type!);
   }

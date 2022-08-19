@@ -41,8 +41,8 @@ export class OtherComponent implements OnInit {
   }
 
   getDataProfile(){
-    const data = this._token.getTokenDataUser() as string;
-    this.user = JSON.parse(data);
+    const data = this._token.getTokenDataUser();
+    this.user = data;
     this.getRoleUser(this.user.id_role!);
   }
 
@@ -91,10 +91,10 @@ export class OtherComponent implements OnInit {
     const opciones = ['perfil','direcciones','change-password'];
     const route = window.location.pathname.split('/').pop();
 
-
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
         const posc = opciones.indexOf(route!);
         links[posc].classList.add('item__active');
+        
         if(route != opciones[0]){
           links[0].classList.remove('item__active');
         }

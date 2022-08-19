@@ -103,8 +103,8 @@ export class ReportSailComponent implements OnInit {
   }
 
   getDataProfile(){
-    const data = this._token.getTokenDataUser() as string;
-    this.user = JSON.parse(data);
+    const data = this._token.getTokenDataUser();
+    this.user = data;
     this.getRoleUser(this.user.id_role!);
   }
 

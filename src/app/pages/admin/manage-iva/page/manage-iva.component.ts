@@ -41,8 +41,8 @@ export class ManageIvaComponent implements OnInit {
   }
 
   getUser(){
-    const data = localStorage.getItem('user');
-    this.user = JSON.parse(data!);
+    const data = this._token.getTokenDataUser();
+    this.user = data;
   }
 
   getIva(){

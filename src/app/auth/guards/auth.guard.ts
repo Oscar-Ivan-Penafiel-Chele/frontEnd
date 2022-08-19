@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
       this._router.navigate(['login']);
       return false;
     }else{
-      const  rol = (JSON.parse(this._rest.getTokenDataUser()!)).id_role;
+      const  rol = this._rest.getTokenDataUser()!.id_role;
       if(rol != 5){
         this._router.navigate([this.data[rol]]);
         return false;

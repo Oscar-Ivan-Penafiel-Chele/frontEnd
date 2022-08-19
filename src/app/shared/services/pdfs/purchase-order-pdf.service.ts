@@ -10,7 +10,6 @@ export class PurchaseOrderPdfService {
   constructor() { }
 
   async generatePDF(purchase_order: any){
-    console.log(purchase_order)
     const pdf = new PdfMakeWrapper();
 
     pdf.info({

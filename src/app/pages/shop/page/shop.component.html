@@ -123,7 +123,7 @@
             </p-fieldset>
             <br>
             <div class="card">
-                <p-dataView #dv [alwaysShowPaginator]="false" [loading]="!completeProduct" [value]="products" [emptyMessage]="'Sin Registros'" [rows]="12" filterBy="product_name" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                <p-dataView #dv [loading]="!completeProduct" [value]="products" [paginator]="true" [emptyMessage]="'Sin Registros'" [rows]="12" filterBy="product_name" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                     <ng-template pTemplate="header">
                         <div class="flex flex-column md:flex-row md:justify-content-between">
                             <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Ordenar por precio" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>

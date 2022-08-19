@@ -162,7 +162,7 @@ export class ShopComponent implements OnInit {
       return ;
     }
 
-    this.user = JSON.parse(this._token.getTokenDataUser()!);
+    this.user = this._token.getTokenDataUser()!;
     this.isLogged = true;
   }
 

@@ -4,8 +4,11 @@ import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { TokenService } from 'src/app/auth/service/token.service';
 import { User } from '@models/interfaces';
+import * as crypto from 'crypto-js';
+
 
 import { environment } from 'src/environments/environment.prod';
+import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +37,7 @@ export class LoginComponent implements OnInit {
     private _authService:AuthService,
     private _router : Router,
     private _token : TokenService,
+    private encriptedCredentials : EncriptedCredentialService
     ) { 
         this.data = {};
         this.isVisibleText = true;
@@ -116,19 +120,22 @@ export class LoginComponent implements OnInit {
   }
 
   async setProfileUser(){
-    this._authService.profileUser(this._token.getToken())
-    .subscribe((response) =>{
-      localStorage.setItem('user', JSON.stringify(response));
+    this._authService.profileUser(this._token.getToken()).subscribe((response) =>{
+      let encrypt = this.encriptedCredentials.encrypt(response);
+
+      localStorage.setItem('user', JSON.stringify(encrypt));
       localStorage.setItem('keepSession', JSON.stringify(this.keepSession));
+
        this.getProfileUser().then((r)=>{
-          this.user = JSON.parse(r);
+          this.user = r;
+          console.log(this.user)
           this.getRoute(this.user.id_role!);
        });
     });
   }
 
   async getProfileUser(){
-    return this._token.getTokenDataUser() as string;
+    return this._token.getTokenDataUser();
   }
 
   getRoute(rol : number){

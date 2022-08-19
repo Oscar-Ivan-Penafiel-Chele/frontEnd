@@ -5,6 +5,7 @@ import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from 'src/environments/environment.prod';
 import { User, Order, Product } from '@models/interfaces';
 import { ConfirmationOrderService } from '../service/confirmation.service';
+import { TokenService } from 'src/app/auth/service/token.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -39,6 +40,7 @@ export class ConfirmationComponent implements OnInit {
     private _router : Router,
     private messageService: MessageService,
     private confirmationOrderService : ConfirmationOrderService,
+    private _token : TokenService,
   ) { }
 
   ngOnInit(): void {
@@ -170,11 +172,8 @@ export class ConfirmationComponent implements OnInit {
   }
 
   async getDataProfile(){
-    let data = localStorage.getItem('user');
-
     this.idAddress = parseInt(localStorage.getItem('information_address')!);
-
-    this.user = JSON.parse(data!);
+    this.user = this._token.getTokenDataUser();
   }
 
   redirection(){

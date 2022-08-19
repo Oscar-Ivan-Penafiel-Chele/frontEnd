@@ -36,7 +36,7 @@ export class PersonalComponent implements OnInit {
   }
 
   getDataProfile(){
-    this.user = JSON.parse(this._token.getTokenDataUser()!);
+    this.user = this._token.getTokenDataUser();
     this.phoneUser = this.user.user_phone!.split(")")[1];
     this.phoneAux = this.phoneUser;
   }

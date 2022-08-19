@@ -10,6 +10,9 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { GeneratePdfStatisticsSailService } from 'src/app/shared/services/pdfs/generate-pdf-statistics-sail.service';
 import { TokenService } from 'src/app/auth/service/token.service';
 
+import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
+
 PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
@@ -62,8 +65,8 @@ export class StatisticsSailComponent implements OnInit {
   }
 
   getDataProfile(){
-    const data = this._token.getTokenDataUser() as string;
-    this.user = JSON.parse(data);
+    const data = this._token.getTokenDataUser();
+    this.user = data;
   }
 
   getCategories(){
@@ -149,7 +152,7 @@ export class StatisticsSailComponent implements OnInit {
     let arrayCategory: number[] = [];
     let arrayProduct: string[] = [];
 
-    if(this.selectedProduct.product_name != undefined){
+    if(!this.isObjEmpty(this.selectedProduct)){
       arrayProduct.push(this.selectedProduct.product_name!);
     }
 
@@ -177,5 +180,29 @@ export class StatisticsSailComponent implements OnInit {
 
     return true;
   }
+
+  isObjEmpty(obj : any) {
+    for (var prop in obj) {
+      if (obj.hasOwnProperty(prop)) return false;
+    }
+    return true;
+}
+
+exportHtmlToPDF(){
+  let data = document.getElementById('prueba-pdf');
+    
+    html2canvas(data!).then(canvas => {
+        
+        let docWidth = 208;
+        let docHeight = canvas.height * docWidth / canvas.width;
+        
+        const contentDataURL = canvas.toDataURL("../../../assets/img/not_image.jpg")
+        let doc = new jsPDF('p', 'mm', 'a4');
+        let position = 0;
+        doc.addImage(contentDataURL, 'PNG', 0, position, docWidth, docHeight)
+        
+        doc.save('exportedPdf.pdf');
+    });
+}
 
 }
