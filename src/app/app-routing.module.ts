@@ -17,6 +17,8 @@ const routes: Routes = [
   {path: 'vendedor', loadChildren : () => import('./pages/salesman/salesman.module').then( m => m.SalesmanModule)},
   {path: 'configuración', loadChildren : () => import('./pages/admin/other/other.module').then( m => m.OtherModule)},
   {path: 'my-orders', loadChildren : () => import('./pages/pedidos/pedidos.module').then( m => m.PedidosModule)},
+  {path: 'forget-password', loadChildren : () => import('./pages/forget-password/forget-password.module').then( m => m.ForgetPasswordModule)},
+  {path: 'recovery-password', loadChildren : () => import('./pages/recovery-password/recovery-password.module').then( m => m.RecoveryPasswordModule)},
   {path: '**', redirectTo: 'home', pathMatch : 'full'}, 
 ];
 

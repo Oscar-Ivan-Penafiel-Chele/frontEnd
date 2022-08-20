@@ -29,6 +29,7 @@ export class OverlayRequestComponent implements OnInit {
   @Input() isStockError?: boolean = false;
   @Input() textHeaderModal?: string = "";
   @Input() isPurchaseOrder?: boolean = false;
+  @Input() changePassword?: boolean = false;
 
   display : boolean = false;
   iconDetail: string = "";
@@ -61,6 +62,10 @@ export class OverlayRequestComponent implements OnInit {
     let data: any = {}
 
     if(this.productsError!.length == 0) {
+      if(this.changePassword){
+        localStorage.clear();
+      }
+
       this.router.navigate([this.url]);
       return;
     }
@@ -95,5 +100,9 @@ export class OverlayRequestComponent implements OnInit {
   closeOverlay(){
     this.showOverlay = false;
     this.purchaseComponent!.showOverlay = false;
+  }
+
+  goLogin(){
+    this.router.navigate(['/login']);
   }
 }

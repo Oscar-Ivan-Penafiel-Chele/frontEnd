@@ -88,7 +88,6 @@ export class ChangePasswordComponent implements OnInit {
     this.isShow = true;
 
     this.validationsService.validatePassword(opc).subscribe((response)=>{
-      console.log(response);
       if(response.message == "Coincide"){
         this.changePasswordUser();
       }else  if(response.message == "No Coincide"){
