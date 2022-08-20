@@ -131,7 +131,6 @@
     position: absolute;
     right: 25px;
     top: 60px;
-    border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -162,54 +161,75 @@
     gap: 0.5em;
  }
  
-.profile__options > a:last-of-type{
-margin-bottom: 10px;
+    .profile__options > a:last-of-type{
+    margin-bottom: 10px;
+    }
+
+    .profile__options > a:hover{
+    background-color: rgb(238, 238, 238);
+    }
+
+    .isActiveNavOption{
+        display: none !important;
+    }
+
+    .main__content{
+        width: 100%;
+        padding-top: 30px;
+    }
+
+    .optionsConfiguration{
+        height: min-content;
+        margin-top: 10px;
+        color: #414141;
+        background-color: #F8F9FA;
+        border: 1px solid #DEE2E6;
+        border-radius: 5px;
+    }
+
+    .item__option{
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+
+    .item__option a{
+        text-decoration: none;
+        color: #414141;
+    }
+
+    .item__option:hover{
+        cursor: pointer;
+    }
+
+    .item__active{
+        background-color: #4F46E5;
+        color: white;
+    }
+
+@media screen and (max-width: 768px) {   
+    .main__content{
+        justify-content: center;
+        padding: 0px 15px;
+    }
+    :host ::ng-deep .grid{
+        margin: 0px;
+    }
+
+    :host ::ng-deep .col-12{
+        padding: 0px;
+    }
+
+    .optionsConfiguration{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .content__option__selected{
+        margin-bottom: 30px;
+    }
+
+    .header__time{
+        display: none;
+    }
 }
 
-.profile__options > a:hover{
-background-color: rgb(238, 238, 238);
-}
-
-.isActiveNavOption{
-    display: none !important;
-}
-
-.main__content{
-    width: 100%;
-    margin-top: 30px;
-}
-
-.content__option__selected{
-    padding: 15px;
-    position: absolute;
-    left: 35%;
-    width: 800px;
-}
-
-.optionsConfiguration{
-    height: min-content;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    padding: 15px 0px;
-    color: #414141;
-    position: absolute;
-    left: 10%;
-}
-
-.item__option{
-    padding: 10px 15px;
-    font-size: 16px;
-}
-
-.item__option a{
-    text-decoration: none;
-    color: #414141;
-}
-
-.item__option:hover{
-    cursor: pointer;
-}
-
-.item__active{
-    background-color: #4F46E5;
-    color: white;
-}

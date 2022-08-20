@@ -11,7 +11,7 @@
             </div>
             <div class="header__profile__content" >
                 <div class="header_profile_time">
-                    <div>
+                    <div class="header__time">
                         <p>{{fechaYHora}}</p>
                     </div>
                     <div class="header__profile" pRipple (click)="displayOptions()">
@@ -28,32 +28,30 @@
             </div>
     
         </div>
-        <div class="main__content">
-            <div class="flex justify-content-evenly flex-wrap">
-                <div class="optionsConfiguration flex flex-column">
-                    <div class="item__option flex justify-content-between align-items-center" (click)="activeLink()" [routerLink]="'perfil'">
-                        <div>
-                            <i class="pi pi-user"></i> Perfil 
-                        </div>
-                        <i class="pi pi-chevron-right ml-3"></i> 
+        <div class="main__content grid justify-content-around">
+            <div class="col-12 md:col-3 optionsConfiguration flex flex-column">
+                <div class="item__option flex justify-content-between align-items-center" (click)="activeLink()" [routerLink]="'perfil'">
+                    <div>
+                        <i class="pi pi-user"></i> Perfil 
                     </div>
-                    <div class="item__option flex justify-content-between align-items-center" *ngIf="user.id_role == 5" (click)="activeLink()" [routerLink]="'direcciones'">
-                        <div>
-                            <i class="pi pi-map-marker"></i> Direcciones
-                        </div>
-                        <i class="pi pi-chevron-right ml-3"></i> 
-                    </div>
-                    <div class="item__option flex justify-content-between align-items-center" (click)="activeLink()" [routerLink]="'change-password'">
-                        <div>
-                            <i class="pi pi-key"></i> Cambiar Contraseña 
-                        </div>
-                        <i class="pi pi-chevron-right ml-3"></i> 
-                    </div>
+                    <i class="pi pi-chevron-right ml-3"></i> 
                 </div>
-    
-                <div class="content__option__selected">
-                    <router-outlet></router-outlet>
+                <div class="item__option flex justify-content-between align-items-center" *ngIf="user.id_role == 5" (click)="activeLink()" [routerLink]="'direcciones'">
+                    <div>
+                        <i class="pi pi-map-marker"></i> Direcciones
+                    </div>
+                    <i class="pi pi-chevron-right ml-3"></i> 
                 </div>
+                <div class="item__option flex justify-content-between align-items-center" (click)="activeLink()" [routerLink]="'change-password'">
+                    <div>
+                        <i class="pi pi-key"></i> Cambiar Contraseña 
+                    </div>
+                    <i class="pi pi-chevron-right ml-3"></i> 
+                </div>
+            </div>
+
+            <div class="col-12 md:col-8 content__option__selected">
+                <router-outlet></router-outlet>
             </div>
         </div>
     </div>

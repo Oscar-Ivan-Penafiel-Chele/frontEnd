@@ -5,7 +5,6 @@ import { User } from '@models/interfaces';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { TokenService } from 'src/app/auth/service/token.service';
 
-
 @Component({
   selector: 'app-dashboard-employee',
   templateUrl: './dashboard-employee.component.html',
@@ -29,6 +28,8 @@ export class DashboardEmployeeComponent implements OnInit {
     private _routerNavigation : Router,
     private _authService : AuthService,
     private _token : TokenService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService, 
     ) { 
      this.cont = 0;
     }
@@ -133,6 +134,8 @@ export class DashboardEmployeeComponent implements OnInit {
           this._token.removeToken();
           this._routerNavigation.navigate(['login']);
       }
+    }, err=>{
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
     });
   }
 

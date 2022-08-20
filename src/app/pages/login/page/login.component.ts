@@ -122,20 +122,12 @@ export class LoginComponent implements OnInit {
   async setProfileUser(){
     this._authService.profileUser(this._token.getToken()).subscribe((response) =>{
       let encrypt = this.encriptedCredentials.encrypt(response);
+      this._token.setTokenUser(encrypt);
+      this._token.setKeepSession(this.keepSession);
 
-      localStorage.setItem('user', JSON.stringify(encrypt));
-      localStorage.setItem('keepSession', JSON.stringify(this.keepSession));
-
-       this.getProfileUser().then((r)=>{
-          this.user = r;
-          console.log(this.user)
-          this.getRoute(this.user.id_role!);
-       });
+      this.user = this._token.getTokenDataUser();
+      this.getRoute(this.user.id_role!);
     });
-  }
-
-  async getProfileUser(){
-    return this._token.getTokenDataUser();
   }
 
   getRoute(rol : number){

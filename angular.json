@@ -22,7 +22,8 @@
           "options": {
             "allowedCommonJsDependencies": [
               "pdfmake",
-              "pdfmake-wrapper"
+              "pdfmake-wrapper",
+              "crypto-js"
             ],
             "outputPath": "dist/frontEnd",
             "index": "src/index.html",
@@ -43,7 +44,8 @@
               "./node_modules/chart.js/dist/chart.js"
             ],
             "scripts": [
-              "./node_modules/aos/dist/aos.js"
+              "./node_modules/aos/dist/aos.js",
+              "./node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
             ]
           },
           "configurations": {

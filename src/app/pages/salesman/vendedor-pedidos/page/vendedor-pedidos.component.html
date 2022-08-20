@@ -84,12 +84,12 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
                     </div>
                     <div>
                         <span><i class="pi pi-calendar mr-1"></i> Fecha de Despacho</span>
-                        <p>{{dataModal.update_date}}</p>
+                        <p>{{dataModal.information[0].i.order.updated_at}}</p>
                     </div>
                 </div>
                 <div>
                     <span><i class="pi pi-clock mr-1"></i> Tiempo Total del Proceso</span>
-                    <p>Días: {{timeResponse.dias}} Horas: {{timeResponse.horas}} Minutos: {{timeResponse.minutos}}</p>
+                    <p>Días: {{dataModal.information[0].i.order.delivery_day}} Horas: {{dataModal.information[0].i.order.delivery_hour}} Minutos: {{dataModal.information[0].i.order.delivery_minute}}</p>
                 </div>
             </article>
     

@@ -73,6 +73,7 @@ export class GeneratePdfProductService {
             ]).widths([ 50,190,100,70,80,70,70,60 ]).fontSize(9).end
         );
     })
+    
     pdf.footer((currentPage : any, pageCount : any)=>{
         return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
       });

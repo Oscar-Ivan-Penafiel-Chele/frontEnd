@@ -64,6 +64,7 @@ export class GenerateReportSailService {
         ]).end
       ]).end
     );
+    
     pdf.add(
       '\n'
     )

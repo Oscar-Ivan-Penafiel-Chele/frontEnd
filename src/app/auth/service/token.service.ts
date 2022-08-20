@@ -4,6 +4,7 @@ import { EncriptedCredentialService } from './encripted-credential.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TokenService {
   private issuer = {
     login: 'http://127.0.0.1:8000/api/auth/login',
@@ -21,6 +22,14 @@ export class TokenService {
     return localStorage.getItem('auth_token');
   }
 
+  setTokenUser(encrypt: string): void{
+    localStorage.setItem('user', encrypt);
+  }
+
+  setKeepSession(data: boolean): void{
+    localStorage.setItem('keepSession', JSON.stringify(data));
+  }
+
   getTokenDataUser(){
     let user = localStorage.getItem('user');
     let data = this.encriptedService.decrypt(user!);
@@ -31,6 +40,7 @@ export class TokenService {
   removeToken(){
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('keepSession');
   }
   
 

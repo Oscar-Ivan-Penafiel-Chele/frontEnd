@@ -2,3 +2,9 @@
     font-size: 15px;
     font-weight: 600;
 }
+
+:host ::ng-deep .p-card{
+   background-color: #F8F9FA;
+   border: 1px solid #DEE2E6;
+   box-shadow: none;
+}

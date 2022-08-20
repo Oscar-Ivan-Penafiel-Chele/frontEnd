@@ -10,8 +10,8 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { GeneratePdfStatisticsSailService } from 'src/app/shared/services/pdfs/generate-pdf-statistics-sail.service';
 import { TokenService } from 'src/app/auth/service/token.service';
 
-import { jsPDF } from "jspdf";
-import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -187,22 +187,4 @@ export class StatisticsSailComponent implements OnInit {
     }
     return true;
 }
-
-exportHtmlToPDF(){
-  let data = document.getElementById('prueba-pdf');
-    
-    html2canvas(data!).then(canvas => {
-        
-        let docWidth = 208;
-        let docHeight = canvas.height * docWidth / canvas.width;
-        
-        const contentDataURL = canvas.toDataURL("../../../assets/img/not_image.jpg")
-        let doc = new jsPDF('p', 'mm', 'a4');
-        let position = 0;
-        doc.addImage(contentDataURL, 'PNG', 0, position, docWidth, docHeight)
-        
-        doc.save('exportedPdf.pdf');
-    });
-}
-
 }

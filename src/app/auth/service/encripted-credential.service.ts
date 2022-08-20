@@ -11,13 +11,15 @@ export class EncriptedCredentialService {
   constructor() { }
 
   encrypt(data: User) : string{
-    return CryptoJS.AES.encrypt(JSON.stringify(data), this.secretKey).toString();
+    let text = CryptoJS.AES.encrypt(JSON.stringify(data), this.secretKey).toString();
+    let encrypt = text.replaceAll('"', '');
+
+    return encrypt;
   }
 
   decrypt(data : string){
     if(data){
-      let textToDecrypt = data.replaceAll('"', '');
-      let bytes  = CryptoJS.AES.decrypt(textToDecrypt, this.secretKey);
+      let bytes  = CryptoJS.AES.decrypt(data, this.secretKey);
       return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-prueba-pdf',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./prueba-pdf.component.css']
 })
 export class PruebaPdfComponent implements OnInit {
-
+  @Input()  dataSails: any[] = [];;
   constructor() { }
 
   ngOnInit(): void {
