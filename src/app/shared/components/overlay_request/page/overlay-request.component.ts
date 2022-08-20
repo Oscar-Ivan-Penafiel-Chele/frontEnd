@@ -1,6 +1,7 @@
 import { Component, Host, Input, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@models/interfaces';
+import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 import { PurchaseOrderComponent } from 'src/app/pages/admin/purchase_order/page/purchase-order.component';
 import { CartServiceService } from 'src/app/pages/cart/service/cart-service.service';
 import { environment } from 'src/environments/environment.prod';
@@ -41,6 +42,7 @@ export class OverlayRequestComponent implements OnInit {
   constructor(
     private router : Router, private cartService : CartServiceService,
     @Host() @Optional() private purchaseComponent: PurchaseOrderComponent,
+    private encriptedService: EncriptedCredentialService
     ) { }
 
   ngOnInit(): void {
@@ -55,7 +57,7 @@ export class OverlayRequestComponent implements OnInit {
   getData(){
     const data = localStorage.getItem('user');
 
-    this.user = JSON.parse(data!);
+    this.user = this.encriptedService.decrypt(data!);
   }
 
   redirection(){

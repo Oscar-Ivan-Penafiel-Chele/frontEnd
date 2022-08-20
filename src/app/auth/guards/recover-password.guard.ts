@@ -13,7 +13,7 @@ export class RecoverPasswordGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    if(!localStorage.getItem('recover-password') && !localStorage.getItem('response')){
+    if(!localStorage.getItem('recover-password') || !localStorage.getItem('response')){
       this.router.navigate(['login']);
       return false;
     } 

@@ -530,3 +530,7 @@ main{
     color: #256029;
     border-radius: 5px;
 }
+
+.p-column-title{
+    font-weight: 600;
+}

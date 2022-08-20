@@ -72,7 +72,7 @@
 
     <main>
         <div class="table__pedidos">
-            <p-table #dt [value]="dataAux" [loading]="isLoading" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'products_name']"  responsiveLayout="scroll"
+            <p-table #dt [value]="dataAux" [loading]="isLoading" responsiveLayout="scroll" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [globalFilterFields]="['id_order', 'products_name','type_pay']"  responsiveLayout="stack"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
@@ -85,7 +85,7 @@
                         <div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por n° orden" />
+                                <input style="width: 330px;"  pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por n° orden o tipo de pago" />
                             </span>
                         </div>
                     </div>
@@ -96,22 +96,44 @@
                         <th pSortableColumn="id_order"><i class="pi pi-qrcode"></i> N° Orden <p-sortIcon field="id_order"></p-sortIcon></th>
                         <th pSortableColumn="create_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="create_date"></p-sortIcon></th>
                         <th pSortableColumn="total"><i class="pi pi-dollar"></i> Total <p-sortIcon field="total"></p-sortIcon></th>
+                        <th pSortableColumn="type_pay"><i class="pi pi-wallet"></i> Tipo de Pago <p-sortIcon field="type_pay"></p-sortIcon></th>
                         <th pSortableColumn="status"><i class="pi pi-clock"></i> Estado <p-sortIcon field="status"></p-sortIcon></th>
                         <th><i class="pi pi-th-large"></i> Ver Factura</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-pedido let-rowIndex="rowIndex">
                     <tr>
-                        <td>{{rowIndex + 1 }}</td>
-                        <td>{{pedido.id_order}}</td>
-                        <td>{{pedido.create_date}}</td>
-                        <td>${{pedido.total}}</td>
                         <td>
+                            <span class="p-column-title"><i class="pi pi-info-circl"></i> Índice: </span>
+                            {{rowIndex + 1 }}
+                        </td>
+                        <td>
+                            <span class="p-column-title"><i class="pi pi-qrcode"></i> N° Orden: </span>
+                            {{pedido.id_order}}
+                        </td>
+                        <td>
+                            <span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Pedido: </span>
+                            {{pedido.create_date}}
+                        </td>
+                        <td>
+                            <span class="p-column-title"><i class="pi pi-dollar"></i> Total: </span>
+                            ${{pedido.total}}
+                        </td>
+                        <td>
+                            <span class="p-column-title"><i class="pi pi-wallet"></i> Tipo de Pagp: </span>
+                            <div>
+                                <i [class]="pedido.type_pay == 'PayPal' ? 'pi pi-paypal' : 'pi-credit-card'"></i>
+                                {{pedido.type_pay}}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="p-column-title"><i class="pi pi-clock"></i> Estado: </span>
                             <p [class]="'status__order__'+(pedido.status).toLowerCase()"> 
                                 {{pedido.status}}
                             </p>
                         </td>
                         <td>
+                            <span class="p-column-title"><i class="pi pi-th-large"></i> Factura: </span>
                             <button pButton pRipple type="button" icon="pi pi-file-pdf" (click)="viewPDF(pedido.pedido)" class="p-button-info"></button>
                         </td>
                     </tr>

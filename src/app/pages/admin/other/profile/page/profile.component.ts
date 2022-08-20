@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { User } from '@models/interfaces';
 import {MessageService} from 'primeng/api';
+import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 import { TokenService } from 'src/app/auth/service/token.service';
 import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 import { EmployeeService } from '../../../employee/service/employee.service';
@@ -30,7 +31,8 @@ export class ProfileComponent implements OnInit {
     private _token : TokenService,
     private messageService: MessageService,
     private validateServices : ValidationsService,
-    private employeeService : EmployeeService
+    private employeeService : EmployeeService,
+    private encriptedCredentials: EncriptedCredentialService
   ) { 
     this.isVisibleText = true;
   }
@@ -88,7 +90,9 @@ export class ProfileComponent implements OnInit {
     this.employeeService.updateEmployee(this.user).subscribe((response)=>{
       if(response.status == 200 || response.message === "Usuario actualizado exitosamente"){
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Datos actualizado con éxito', life:3000});
-        localStorage.setItem('user', JSON.stringify(this.user));
+        let encrypt = this.encriptedCredentials.encrypt(this.user);
+        this._token.setTokenUser(encrypt);
+        
         setTimeout(() => {
           window.location.reload();
           this.loading = false;

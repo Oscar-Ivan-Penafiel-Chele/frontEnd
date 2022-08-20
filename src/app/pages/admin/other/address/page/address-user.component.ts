@@ -44,8 +44,7 @@ export class AddressUserComponent implements OnInit {
   }
 
   getDataProfile(){
-    const data = this._token.getTokenDataUser() as string;
-    this.user = JSON.parse(data);
+    this.user = this._token.getTokenDataUser();
   }
 
   getAddress(){

@@ -4,6 +4,7 @@ import { TokenService } from 'src/app/auth/service/token.service';
 import { Address, User } from '@models/interfaces';
 import { EmployeeService } from 'src/app/pages/admin/employee/service/employee.service';
 import { AddressUserService } from 'src/app/pages/admin/other/address/service/address-user.service';
+import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 
 @Component({
   selector: 'app-personal',
@@ -27,7 +28,8 @@ export class PersonalComponent implements OnInit {
     private _navigator : Router,
     private _token : TokenService,
     private addressService : AddressUserService,
-    private employeeService : EmployeeService
+    private employeeService : EmployeeService,
+    private encriptedCredentials : EncriptedCredentialService
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +55,10 @@ export class PersonalComponent implements OnInit {
 
     if (this.user.user_name && this.user.user_lastName && this.user.user_document && this.idAddressSelected && this.user.user_address_reference && this.user.user_address_reference.length > 5 && this.phoneUser.length == 11) {
       localStorage.setItem('information_address',JSON.stringify(this.idAddressSelected));
-      localStorage.setItem('user', JSON.stringify(this.user))
+
+      let encrypt = this.encriptedCredentials.encrypt(this.user);
+      this._token.setTokenUser(encrypt);
+
       this.nextPage();
       return ;
     }

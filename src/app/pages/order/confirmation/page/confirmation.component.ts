@@ -34,7 +34,7 @@ export class ConfirmationComponent implements OnInit {
   url : string = "";
   iconButton: string ="";
   textButton: string = "";
-  typePay: string= "";
+  typePay: number | undefined;
 
   constructor(
     private _router : Router,
@@ -120,7 +120,8 @@ export class ConfirmationComponent implements OnInit {
       //console.log('OnError', err);
     },
     onClick: (data) => {
-      this.typePay = data.fundingSource;
+      if(data.fundingSource == 'paypal') this.typePay = 1;
+      else this.typePay = 2;
     }
   };
   }
@@ -136,7 +137,8 @@ export class ConfirmationComponent implements OnInit {
       order_price_total : this.order.price_order_total,
       products : this.products,
       id_address : this.idAddress,
-      address_reference : this.user.user_address_reference
+      address_reference : this.user.user_address_reference,
+      type_of_pay: this.typePay,
     }
 
     this.confirmationOrderService.createOrder(data).subscribe((response : any)=>{

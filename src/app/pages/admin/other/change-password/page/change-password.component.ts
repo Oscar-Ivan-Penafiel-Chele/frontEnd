@@ -49,8 +49,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   getDataProfile(){
-    const data = this._token.getTokenDataUser();
-    this.user = data;
+    this.user = this._token.getTokenDataUser();
     this.getRoleUser(this.user.id_role!);
   }
 

@@ -4,20 +4,20 @@
             Información Personal
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Ingresa tu información personal
+           <i class="pi pi-hashtag"></i> Ingresa tu información personal
         </ng-template>
         <ng-template pTemplate="content">
             <div class="formgrid grid">
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="firstname">Nombres</label>
+                        <label for="firstname"><i class="pi pi-user"></i> Nombres</label>
                         <input #firstname="ngModel" [disabled]="true" id="firstname" type="text" required pInputText [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" autofocus> 
                         <small *ngIf="submitted && !user.user_name" class="p-error">Nombre es requerido</small>
                     </div>
                 </div>
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="lastname">Apellidos</label>
+                        <label for="lastname"><i class="pi pi-user"></i> Apellidos</label>
                         <input #lastname="ngModel" [disabled]="true" id="lastname" type="text" required pInputText [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace"> 
                         <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellido es requerido</small>
                     </div>
@@ -25,17 +25,17 @@
 
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="document">Cédula de Identidad</label>
+                        <label for="document"><i class="pi pi-id-card"></i> Identificación</label>
                         <input #age="ngModel" [disabled]="true" id="document" type="text" required pInputText [(ngModel)]="user.user_document"> 
                     </div>
                 </div>
             </div>
 
-            <p class="title__description">Datos de Envío</p>
+            <p class="title__description"><i class="pi pi-hashtag"></i> Datos de Envío</p>
             <div class="formgrid grid">
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="address">Dirección</label>
+                        <label for="address"><i class="pi pi-map-marker"></i> Dirección</label>
                         <p-dropdown [options]="optionsAddress" [(ngModel)]="idAddressSelected" placeholder="Seleccione una dirección" optionLabel="user_address" optionValue="id_address" [showClear]="true">
                             <ng-template let-optionAddress pTemplate="item">
                                 <div class="item-option-address">
@@ -52,14 +52,14 @@
                 </div>
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="reference">Lugar de Referencia</label>
+                        <label for="reference"><i class="pi pi-building"></i> Lugar de Referencia</label>
                         <input #age="ngModel" id="reference" type="text" required pInputText [(ngModel)]="user.user_address_reference"> 
                         <small class="p-error" *ngIf="submitted">{{!user.user_address_reference ? 'Referencia es requerida' : user.user_address_reference && user.user_address_reference.length < 5 ? 'Referencia es muy corta' : ''}}</small>
                     </div>
                 </div>
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="age">Celular</label>
+                        <label for="age"><i class="pi pi-phone"></i> Celular</label>
                         <div class="p-inputgroup">
                             <span class="p-inputgroup-addon">
                                 <img class="mr-2" [src]="urlImage" width="30"> <p>(+593)</p>  
