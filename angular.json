@@ -44,8 +44,7 @@
               "./node_modules/chart.js/dist/chart.js"
             ],
             "scripts": [
-              "./node_modules/aos/dist/aos.js",
-              "./node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+              "./node_modules/aos/dist/aos.js"
             ]
           },
           "configurations": {
