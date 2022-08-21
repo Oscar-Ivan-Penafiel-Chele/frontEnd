@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {MessageService, Message} from 'primeng/api';
+import {MessageService, Message, PrimeNGConfig} from 'primeng/api';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from 'src/environments/environment.prod';
 import { User, Order, Product } from '@models/interfaces';
@@ -41,11 +41,12 @@ export class ConfirmationComponent implements OnInit {
     private messageService: MessageService,
     private confirmationOrderService : ConfirmationOrderService,
     private _token : TokenService,
+    private primengConfig : PrimeNGConfig,
   ) { }
 
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
     this.orderFunctions();
-    this.showOverlay = false;
   }
 
   async orderFunctions(){

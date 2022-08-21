@@ -1,135 +1,131 @@
 <p-toast [baseZIndex]="5000"></p-toast>
+
 <section>
-    <div class="content-signup">
-        <div class="content-signup-header">
+    <main>
+        <div class="header__signup">
             <a class="img__link__home" href="/home"><img src="assets/img/logo_app.svg" alt="Logo de la Ferreteria"></a> 
             <p>Ferretería | El Descanso</p>
-        </div>   
+        </div>
+        <div class="form__signup">
+            <p class="mb-5 tittle__form__signup">Formulario de Registro</p>
+            <div class="card-signup-contain">
+                <div class="grid p-fluid">
+                    <div class="col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input required [(ngModel)]="user.user_name" id="name-input" type="text" pInputText autofocus [pKeyFilter]="regexLetterSpace" style="width: 100%; padding-bottom: 23px;"> 
+                            <label for="name-input"><i class="pi pi-user"></i> Nombres</label>
+                        </span>
+                        <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requeridos</small>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input required [(ngModel)]="user.user_lastName" id="lastName-input" type="text" pInputText [pKeyFilter]="regexLetterSpace" style="width: 100%; padding-bottom: 23px;"> 
+                            <label for="lastName-input"><i class="pi pi-user"></i> Apellidos</label>
+                        </span>
+                        <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requeridos</small>
+                    </div>
 
-        <div class="content-signup-main">
-            <div class="card-signup">
-                <p>Formulario de Registro</p>
-                <p-messages [(value)]="msgs1" [enableService]="false" ></p-messages>
-                <br>
-                <div class="card-signup-contain">
-                    <div class="grid p-fluid">
-                        <div class="col-12 md:col-6">
-                            <span class="p-float-label">
-                                <input required [(ngModel)]="user.user_name" id="float-input" type="text" pInputText autofocus [pKeyFilter]="regexLetterSpace" style="width: 100%; padding-bottom: 23px;"> 
-                                <label for="float-input"><i class="pi pi-user"></i> Nombres</label>
+                    <div class="col-12 md:col-6">
+                        <span class="p-float-label ">
+                            <input required [(ngModel)]="user.email" id="email-input" (input)="changeEmail($event)" type="email" pInputText style="width: 100%; padding-bottom: 23px;"> 
+                            <label for="email-input"><i class="pi pi-envelope"></i> Correo Electrónico</label>
+                        </span>
+                        <small class="p-error" *ngIf="(submitted && !user.email) || (stateEmail && user.email)">{{!user.email ? 'Correo Electrónico es requerido' : messageEmail}}</small>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon">
+                                <img class="mr-2" [src]="urlImage" width="30"> <p>(+593)</p>  
                             </span>
-                            <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requeridos</small>
+                            <input type="text" [(ngModel)]="phoneUser"  [imask]="{mask: '00 000 0000'}" pInputText placeholder="99 999 9999">      
                         </div>
-                        <div class="col-12 md:col-6">
-                            <span class="p-float-label">
-                                <input required [(ngModel)]="user.user_lastName" id="float-input" type="text" pInputText [pKeyFilter]="regexLetterSpace" style="width: 100%; padding-bottom: 23px;"> 
-                                <label for="float-input"><i class="pi pi-user"></i> Apellidos</label>
-                            </span>
-                            <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requeridos</small>
-                        </div>
+                        <small class="p-error" *ngIf="submitted && !phoneUser">Celular es requerido</small>
+                    </div>
 
-                        <div class="col-12 md:col-6">
-                            <span class="p-float-label ">
-                                <input required [(ngModel)]="user.email" id="float-input" (input)="changeEmail($event)" type="email" pInputText style="width: 100%; padding-bottom: 23px;"> 
-                                <label for="float-input"><i class="pi pi-envelope"></i> Correo Electrónico</label>
-                            </span>
-                            <small class="p-error" *ngIf="(submitted && !user.email) || (stateEmail && user.email)">{{!user.email ? 'Correo Electrónico es requerido' : messageEmail}}</small>
-                        </div>
+                    <div class="col-12 md:col-12">
+                        <span class="p-float-label">
+                            <input required [(ngModel)]="user.user_address" id="address-input" type="text" pInputText style="width: 100%; padding-bottom: 23px;"> 
+                            <label for="address-input"><i class="pi pi-map-marker"></i> Dirección</label>
+                        </span>
+                        <small class="p-error" *ngIf="(submitted && !user.user_address)">Dirección es requerida</small>
+                        <small class="p-error" *ngIf="submitted && user.user_address?.length! < 8 && user.user_address">Colocar una dirección válida</small>
+                    </div>
 
-                        <div class="col-12 md:col-6">
-                            <div class="p-inputgroup">
-                                <span class="p-inputgroup-addon">
-                                    <img class="mr-2" [src]="urlImage" width="30"> <p>(+593)</p>  
-                                </span>
-                                <input type="text" [(ngModel)]="phoneUser"  [imask]="{mask: '00 000 0000'}" pInputText placeholder="99 999 9999">      
-                            </div>
-                            <small class="p-error" *ngIf="submitted && !phoneUser">Celular es requerido</small>
-                        </div>
+                    <div class="col-12 md:col-6">
+                        <p-dropdown [style]="{'width':'250px', 'max-width':'100%', 'padding':'5px'}" [showClear]="true" [(ngModel)]="user.id_identification_type" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" [options]="typeIdentification" placeholder="Tipo de identificación">
+                            <ng-template let-option pTemplate="item">
+                                <div class="flex flex-row justify-content-start align-items-center">
+                                    <i class="{{option.icon}} mr-2"></i>
+                                    <span>{{option.name}}</span>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                        <small class="p-error" *ngIf="submitted && !user.id_identification_type">Tipo de identificación es requerido</small>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input required type="text" [disabled]="!user.id_identification_type" [(ngModel)]="user.user_document" pInputText (input)="regexCedula($event)" id="cedula-input" [maxlength]="maxLength"  style="width: 100%; padding-bottom: 23px;"> 
+                            <label for="cedula-input"><i class="pi pi-id-card"></i> Identificación</label>
+                        </span>
+                        <small class="p-error" *ngIf="(submitted && !user.user_document) || (submitted && stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación es requerida' : messageIdentification}}</small>
+                    </div>
 
-                        <div class="col-12 md:col-12">
-                            <span class="p-float-label">
-                                <input required [(ngModel)]="user.user_address" id="float-input" type="text" pInputText style="width: 100%; padding-bottom: 23px;"> 
-                                <label for="float-input"><i class="pi pi-map-marker"></i> Dirección</label>
-                            </span>
-                            <small class="p-error" *ngIf="(submitted && !user.user_address)">Dirección es requerida</small>
-                            <small class="p-error" *ngIf="submitted && user.user_address?.length! < 8 && user.user_address">Colocar una dirección válida</small>
-                        </div>
-
-                        <div class="col-12 md:col-6">
-                            <p-dropdown [style]="{'width':'250px', 'max-width':'100%', 'padding':'5px'}" [showClear]="true" [(ngModel)]="user.id_identification_type" (onChange)="changeIdentification($event)" optionLabel="name" optionValue="id" [options]="typeIdentification" placeholder="Tipo de identificación">
-                                <ng-template let-option pTemplate="item">
-                                    <div class="flex flex-row justify-content-start align-items-center">
-                                        <i class="{{option.icon}} mr-2"></i>
-                                        <span>{{option.name}}</span>
-                                    </div>
+                    <div class="col-12 md:col-6">
+                        <span class="p-float-label">
+                            <p-password required [(ngModel)]="user.password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
+                                <ng-template pTemplate="header">
+                                    <p class="title-sugerencias">Ingresa tu contraseña</p>
                                 </ng-template>
-                            </p-dropdown>
-                            <small class="p-error" *ngIf="submitted && !user.id_identification_type">Tipo de identificación es requerido</small>
-                        </div>
-                        <div class="col-12 md:col-6">
-                            <span class="p-float-label">
-                                <input required type="text" [disabled]="!user.id_identification_type" [(ngModel)]="user.user_document" pInputText (input)="regexCedula($event)" id="float-input" [maxlength]="maxLength"  style="width: 100%; padding-bottom: 23px;"> 
-                                <label for="float-input"><i class="pi pi-id-card"></i> Identificación</label>
-                            </span>
-                            <small class="p-error" *ngIf="(submitted && !user.user_document) || (submitted && stateIdentification && user.user_document)">{{!user.user_document ? 'Identificación es requerida' : messageIdentification}}</small>
-                        </div>
+                                <ng-template pTemplate="footer">
+                                    <p-divider></p-divider>
+                                    <p class="sugerencias-content">Sugerencias :</p>
+                                    <ul class="sugerencias-list">
+                                        <li>Al menos una minúscula</li>
+                                        <li>Al menos una mayúscula</li>
+                                        <li>Al menos un número</li>
+                                        <li>Mínimo 8 caracteres</li>
+                                    </ul>
+                                </ng-template>
+                            </p-password>
+                            <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
+                        </span>
+                        <small class="p-error" *ngIf="(submitted && !user.password)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="user.password!.length < 8 && submitted && user.password">Contraseña muy corta</small>
+                    </div>
 
-                        <div class="col-12 md:col-6">
-                            <span class="p-float-label">
-                                <p-password required [(ngModel)]="user.password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
-                                    <ng-template pTemplate="header">
-                                        <p class="title-sugerencias">Ingresa tu contraseña</p>
-                                    </ng-template>
-                                    <ng-template pTemplate="footer">
-                                        <p-divider></p-divider>
-                                        <p class="sugerencias-content">Sugerencias :</p>
-                                        <ul class="sugerencias-list">
-                                            <li>Al menos una minúscula</li>
-                                            <li>Al menos una mayúscula</li>
-                                            <li>Al menos un número</li>
-                                            <li>Mínimo 8 caracteres</li>
-                                        </ul>
-                                    </ng-template>
-                                </p-password>
-                                <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
-                            </span>
-                            <small class="p-error" *ngIf="(submitted && !user.password)">Contraseña es requerida</small>
-                            <small class="p-error" *ngIf="user.password!.length < 8 && submitted && user.password">Contraseña muy corta</small>
-                        </div>
+                    <div class="col-12 md:col-6">
+                        <span  class="p-float-label">
+                            <p-password required [(ngModel)]="passwordConfirm" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
+                                <ng-template pTemplate="header">
+                                    <p class="title-sugerencias">Ingresa tu contraseña</p>
+                                </ng-template>
+                            </p-password>
+                            <label for="float-input"><i class="pi pi-lock"></i> Confirmar Contraseña</label>
+                        </span>
+                        <small class="p-error" *ngIf="(submitted && !passwordConfirm)">Contraseña es requerida</small>
+                        <small class="p-error" *ngIf="passwordConfirm!.length < 8 && submitted && passwordConfirm">Contraseña muy corta</small>
+                    </div>
 
-                        <div class="col-12 md:col-6">
-                            <span  class="p-float-label">
-                                <p-password required [(ngModel)]="passwordConfirm" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
-                                    <ng-template pTemplate="header">
-                                        <p class="title-sugerencias">Ingresa tu contraseña</p>
-                                    </ng-template>
-                                </p-password>
-                                <label for="float-input"><i class="pi pi-lock"></i> Confirmar Contraseña</label>
-                            </span>
-                            <small class="p-error" *ngIf="(submitted && !passwordConfirm)">Contraseña es requerida</small>
-                            <small class="p-error" *ngIf="passwordConfirm!.length < 8 && submitted && passwordConfirm">Contraseña muy corta</small>
+                    <div class="col-12 md:col-12">
+                        <div class="terms-and-condicions">
+                            <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="terms"></p-checkbox>
+                            <a href="/terminos-y-condiciones" target="_blank">Aceptar términos y condiciones</a>    
                         </div>
+                        <small class="p-error" *ngIf="submitted && !checked">Campo es requerido</small>
+                    </div>
+                </div> 
 
-                        <div class="col-12 md:col-12">
-                            <div class="terms-and-condicions">
-                                <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="terms"></p-checkbox>
-                                <a href="/terminos-y-condiciones" target="_blank">Aceptar términos y condiciones</a>    
-                            </div>
-                            <small class="p-error" *ngIf="submitted && !checked">Campo es requerido</small>
-                        </div>
-                    </div> 
-                </div>
-
-                <br>
-                <div class="btn-signup">
+                <div class="btn-signup mt-4">
                     <button class="button-login" [loading]="loading" (click)="registerUser()" pButton pRipple type="button">
                         <p [hidden]="!isVisibleText" style="width: 100%;">REGISTRAR</p>
                         <p [hidden]="isVisibleText" style="width: 48%;"></p>
                     </button>  
                 </div>
-            </div>
+            </div> 
         </div>
-    </div>
+    </main>
 
     <app-background-animate></app-background-animate>
+
 </section>

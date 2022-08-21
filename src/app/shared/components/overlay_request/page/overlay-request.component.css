@@ -83,10 +83,10 @@
 }
 
 .button__home{
-    border: 2px solid #0b00e2;
-    background-color: rgba(255, 255, 255, 0.5);
-    color: #0b00e2;
-    opacity: 0.6;
+    border: none;
+    background-color: #FFC439;
+    color: black;
+    opacity: 0.8;
 }
 
 .button__home, .button__response{

@@ -1,6 +1,7 @@
 import { Component, Host, Input, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@models/interfaces';
+import { PrimeNGConfig } from 'primeng/api';
 import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 import { PurchaseOrderComponent } from 'src/app/pages/admin/purchase_order/page/purchase-order.component';
 import { CartServiceService } from 'src/app/pages/cart/service/cart-service.service';
@@ -42,11 +43,13 @@ export class OverlayRequestComponent implements OnInit {
   constructor(
     private router : Router, private cartService : CartServiceService,
     @Host() @Optional() private purchaseComponent: PurchaseOrderComponent,
-    private encriptedService: EncriptedCredentialService
+    private encriptedService: EncriptedCredentialService,
+    private primengConfig : PrimeNGConfig,
     ) { }
 
   ngOnInit(): void {
     this.iconDetail = "pi pi-angle-down";
+    this.primengConfig.ripple = true;
     this.getData();
   }
 

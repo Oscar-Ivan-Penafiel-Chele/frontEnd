@@ -18,7 +18,7 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
     ReactiveFormsModule,
     IMaskModule,
     BackgroundAnimateModule,
-    PrimengComponentsModule
+    PrimengComponentsModule,
   ]
 })
 export class SignupModule { }
