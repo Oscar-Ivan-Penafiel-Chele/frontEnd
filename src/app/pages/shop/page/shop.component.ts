@@ -372,6 +372,8 @@ export class ShopComponent implements OnInit {
   }
 
   getKeepSession(){
+    if(!localStorage.getItem('keepSession')) return;
+
     const data = localStorage.getItem('keepSession');
 
     if(data){
@@ -381,7 +383,6 @@ export class ShopComponent implements OnInit {
           return false;
       }
     }
-
     return false;
   }
 }

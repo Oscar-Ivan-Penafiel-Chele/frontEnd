@@ -10,9 +10,6 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { GeneratePdfStatisticsSailService } from 'src/app/shared/services/pdfs/generate-pdf-statistics-sail.service';
 import { TokenService } from 'src/app/auth/service/token.service';
 
-import jsPDF from "jspdf";
-import autoTable from 'jspdf-autotable';
-
 PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
