@@ -1,23 +1,29 @@
-<p-toast></p-toast>
+<p-toast [autoZIndex]="false" [style]="{'z-index': 2}"></p-toast>
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <div class="flex flex-wrap align-items-center">
-            <label class="mr-2" for="fechaInicio">Fecha Inicio:</label>
-            <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
-            <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
-            <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+            <div>
+                <label class="mr-2" for="fechaInicio">Fecha Inicio:</label>
+                <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" (onSelect)="onSelectDateInit($event)" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                <small class="p-error" *ngIf="isShowMessageDateInit">{{!messageErrorDateInit ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateInit}}</small>
+            </div>
+            <div>
+                <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
+                <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" (onSelect)="onSelectDateExpiry($event)" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                <small class="p-error" *ngIf="isShowMessageDateExpiry">{{!messageErrorDateExpiry ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateExpiry}}</small>
+            </div>
             <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="exportPdf()" class="p-button" pTooltip="PDF" tooltipPosition="right"></button>
         </div>
     </p-toolbar>
 
-    <p-table #dt [value]="ingresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="ingresos" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['producto.product_code']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Ingresos</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código..." />
+                    <input pInputText type="text" style="width: 330px;" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por código del producto" />
                 </span>
             </div>
         </ng-template>
@@ -32,11 +38,11 @@
         </ng-template>
         <ng-template pTemplate="body" let-ingreso let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td>{{ingreso.producto.product_code}}</td>
-                <td>{{ingreso.inventory_movement_type}}</td>
-                <td>{{ingreso.inventory_stock_amount}}</td>
-                <td>{{ingreso.producto.product_stock }}</td>
-                <td>{{ingreso.create_date}}</td>
+                <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Código del Producto: </span>{{ingreso.producto.product_code}}</td>
+                <td><span class="p-column-title"><i class="pi pi-history"></i> Movimiento: </span>{{ingreso.inventory_movement_type}}</td>
+                <td><span class="p-column-title"><i class="pi pi-download"></i> Cantidad Ingresada: </span>{{ingreso.inventory_stock_amount}}</td>
+                <td><span class="p-column-title"><i class="pi pi-box"></i> Stock: </span>{{ingreso.producto.product_stock }}</td>
+                <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{ingreso.create_date}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">

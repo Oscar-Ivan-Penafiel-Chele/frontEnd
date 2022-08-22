@@ -175,7 +175,7 @@ export class StatisticsSailComponent implements OnInit {
     }
 
     if(this.sailsAux.length == 0){
-      this.messageService.add({severity:'info', summary: 'Info', detail: 'No se encontraron resultados', life: 3000});
+      this.messageService.add({severity:'info', summary: 'Info', detail: 'No se encontraron resultados en el rango de fechas elegidas', life: 3000});
       return;
     }
 
@@ -197,65 +197,37 @@ export class StatisticsSailComponent implements OnInit {
     return true;
   }
 
-  getDateNow(){
-    let dateNow = new Date();
-
-    let day = (dateNow.getDate()) < 10 ? '0'+(dateNow.getDate()) : dateNow.getDate();;
-    let month = (dateNow.getMonth() + 1) < 10 ? '0'+ (dateNow.getMonth() + 1) : dateNow.getMonth() + 1;
-    let year = dateNow.getFullYear();
-    let date = `${year}-${month}-${day}`;
-
-    return date;
-  }
-
   onSelectDateExpiry($event : any){
-    const dateNow = this.getDateNow();
-    this.handleDate($event , dateNow, false );
+    this.handleDate($event);
   }
 
   onSelectDateInit($event : any){
-    const dateNow = this.getDateNow();
-    this.handleDate($event , dateNow, true );
+    this.handleDate($event);
   }
 
-  handleDate($event : any , dateNow : string , isDateInit : boolean){
-    let date = new Date($event);
-    let day= (date.getDate()) < 10 ? '0'+(date.getDate()) : date.getDate();
-    let month = (date.getMonth() + 1) < 10 ? '0'+ (date.getMonth() + 1) : date.getMonth() + 1;
-    let year = date.getFullYear();
-    
-    let dateSelected = `${year}-${month}-${day}`
-
-    if(dateSelected < dateNow){
-      if(isDateInit) this.isShowMessageDateInit = true;
-      else this.isShowMessageDateExpiry = true;
-      
-      this.disableButton = true;
-      return ; 
-    }else{
-      if(isDateInit) {this.isShowMessageDateInit = false; this.fechaInicio = dateSelected;}
-      else{ this.isShowMessageDateExpiry = false; this.fechaFin = dateSelected;}
-
-      this.disableButton = false;
-      
-      this.validateDatesSelected();
-    }
+  handleDate($event : any){
+    this.validateDatesSelected();
   }
 
   validateDatesSelected(){
     if(this.fechaFin < this.fechaInicio) {
-      this.messageErrorDateExpiry = "Fecha de expiración es menor a la fecha de inico" ; 
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
       this.isShowMessageDateExpiry = true ; 
       this.isShowMessageDateInit = false
       return ;
     }
 
     if(this.fechaInicio > this.fechaFin) {
-      this.messageErrorDateInit = "Fecha de inicio es mayor a la fecha de expiración" ; 
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
       this.isShowMessageDateInit = true ; 
       this.isShowMessageDateExpiry = false
       return ;
     }
+
+    this.messageErrorDateExpiry = "" ; 
+    this.isShowMessageDateExpiry = false ; 
+    this.isShowMessageDateInit = false;
+    return;
   }
 
 }

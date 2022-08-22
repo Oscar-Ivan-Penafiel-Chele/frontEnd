@@ -5,6 +5,7 @@ import { Canvas, Columns, Img, ITable, Line, PdfMakeWrapper, Stack, Table, Txt  
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { TokenService } from 'src/app/auth/service/token.service';
 import { IngresosService } from '../service/ingresos.service';
+import { GeneratePdfReportIngresosService } from 'src/app/shared/services/pdfs/generate-pdf-report-ingresos.service';
 
 PdfMakeWrapper.setFonts(pdfFonts);
 type TableRow = [];
@@ -25,11 +26,19 @@ export class IngresosComponent implements OnInit {
   fechaInicio : any;
   fechaFin : any;
 
+  
+  isShowMessageDateInit : boolean = false;
+  isShowMessageDateExpiry: boolean = false;
+  messageErrorDateInit: string = "";
+  messageErrorDateExpiry : string = "";
+  disableButton: boolean = false;
+
   constructor(
     private ingresoService : IngresosService,
     private config: PrimeNGConfig,
     private _token : TokenService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private reportIngresoPDFService: GeneratePdfReportIngresosService
   ) {
     this.config.setTranslation({
       "clear" : "Vaciar",
@@ -70,101 +79,47 @@ export class IngresosComponent implements OnInit {
 
   async exportPdf(){
     this.ingresosAux = [];
-
     this.ingresosAux = this.ingresos.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
-      
+    
     if(this.ingresosAux.length == 0) {
       this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
       return ;
     };
 
-
-    const fecha = new Date();
-    const pdf = new PdfMakeWrapper();
-    pdf.info({
-        title: 'Reporte de Ingresos',
-        author: '@Yebba',
-        subject: 'Mostrar los productos de la ferretería',
-    });
-    pdf.pageSize('A4');
-    pdf.pageOrientation('portrait'); // 'portrait'
-    pdf.add(
-      new Stack([
-        new Columns([
-          await new Img('assets/img/log_app_pdf.svg').width(100).build(),
-          new Columns([
-            new Stack([
-              new Columns([ 
-                new Txt('Reporte de Ingresos').fontSize(14).bold().end,
-              ]).color('#3f3f3f').end,
-              new Columns([ 
-                new Txt('Módulo de Ingresos  \n\n').fontSize(11).end,
-              ]).color('#3f3f3f').end,
-              new Columns([ 
-                new Txt('').alignment('right').width('*').bold().end,
-                new Txt('Usuario: ').alignment('right').width('*').bold().end,
-                new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
-                new Txt('Fecha: ').alignment('right').width(40).bold().end,
-                new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
-                new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
-              ]).end,
-            ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
-          ]).end
-        ]).end
-      ]).end
-    );
-    pdf.add(
-      '\n'
-    )
-    pdf.add(
-      new Columns([
-        new Canvas([
-            new Line([0,0], [515,0]).lineColor('#ccc').end
-        ]).end,
-      ]).width('*').end
-    );
-    pdf.add(
-      '\n\n'
-    )
-    pdf.add(
-      this.createDetailsPDF()
-    );
-    pdf.add(
-      new Txt(`\n ${this.ingresosAux.length} ${this.ingresosAux.length < 2 ? 'Ingreso' : 'Ingresos'}`).alignment('right').bold().fontSize(10).margin(10).end
-    );  
-    pdf.add(this.createTable(this.ingresosAux));
-    pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
-    });
-    pdf.create().open();
+    this.reportIngresoPDFService.generatePDF(this.ingresosAux, this.user, this.fechaInicio, this.fechaFin);
   }
 
-
-  createTable(data : any): ITable{
-    return new Table([
-      [ 'Código Producto','Movimiento','Cantidad Ingresada', 'Descripción','Fecha de Ingreso'],
-      ...this.extractData(data),
-    ]).widths([ 70,80,70,100,'*']).color('#3f3f3f').layout('lightHorizontalLines').fontSize(10).end;
+  onSelectDateExpiry($event : any){
+    this.handleDate($event);
   }
 
-  createDetailsPDF(){
-    return new Stack([
-      new Columns([ 
-        new Txt('').bold().width('*').alignment('center').end,
-        new Txt('Inicio: ').bold().width(30).alignment('center').end,
-        new Txt(`${this.fechaInicio.getFullYear()}/${(this.fechaInicio.getMonth()+1) < 10 ? '0'+(this.fechaInicio.getMonth()+1) : (this.fechaInicio.getMonth()+1)}/${this.fechaInicio.getDate() < 10 ? '0'+this.fechaInicio.getDate() : this.fechaInicio.getDate()} `).width(65).alignment('center').end,
-        new Txt('Fin: ').bold().width(20).alignment('center').end,
-        new Txt(`${this.fechaFin.getFullYear()}/${(this.fechaFin.getMonth()+1) < 10 ? '0'+(this.fechaFin.getMonth()+1) : (this.fechaFin.getMonth()+1)}/${this.fechaFin.getDate() < 10 ? '0'+this.fechaFin.getDate() : this.fechaFin.getDate()} `).width(65).alignment('center').end,
-        new Txt('Movimiento: ').width(55).bold().alignment('center').end,
-        new Txt('Ingresos').width(55).alignment('center').end,
-        new Txt('').bold().width('*').alignment('center').end,
-      ]).alignment('center').end,
-    ]).color('#3f3f3f').alignment('center').fontSize(10).end
+  onSelectDateInit($event : any){
+    this.handleDate($event);
   }
 
-  extractData(data : any) : TableRow{
-    return data.map((row : any) => [row.producto.product_code, row.inventory_movement_type , (row.inventory_stock_amount).split('.')[0] , row.inventory_description, row.create_date])
+  handleDate($event : any){
+    this.validateDatesSelected();
+  }
+
+  validateDatesSelected(){
+    if(this.fechaFin < this.fechaInicio) {
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
+      this.isShowMessageDateExpiry = true ; 
+      this.isShowMessageDateInit = false
+      return ;
+    }
+
+    if(this.fechaInicio > this.fechaFin) {
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
+      this.isShowMessageDateInit = true ; 
+      this.isShowMessageDateExpiry = false
+      return ;
+    }
+
+    this.messageErrorDateExpiry = "" ; 
+    this.isShowMessageDateExpiry = false ; 
+    this.isShowMessageDateInit = false;
+    return;
   }
 
 }

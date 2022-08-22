@@ -1,22 +1,29 @@
-<p-toast></p-toast>
+<p-toast [autoZIndex]="false" [style]="{'z-index': 2}"></p-toast>
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <div class="flex flex-wrap align-items-center">
-            <label class="mr-2" for="fechaInicio">Fecha Inicio:</label>
-            <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
-            <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
-            <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+            <div>
+                <label class="mr-2" for="fechaInicio">Fecha Inicio:</label>
+                <p-calendar inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaInicio" [showIcon]="true" (onSelect)="onSelectDateInit($event)" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                <small class="p-error" *ngIf="isShowMessageDateInit">{{!messageErrorDateInit ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateInit}}</small>
+            </div>
+            <div>
+                <label class="ml-2 mr-2" for="fechaFin">Fecha Fin:</label>
+                <p-calendar class="mr-2" inputId="basic" dateFormat="yy/mm/dd" [(ngModel)]="fechaFin" [showIcon]="true" (onSelect)="onSelectDateExpiry($event)"  [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                <small class="p-error" *ngIf="isShowMessageDateExpiry">{{!messageErrorDateExpiry ? 'Fecha no válida, debe ser mayor o igual a la fecha actual' : messageErrorDateExpiry}}</small>
+            </div>
             <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="generateReport()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
         </div>
     </p-toolbar>
-    <p-table #dt [value]="prueba" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['voucher_sail']" responsiveLayout="scroll" [rowHover]="true" dataKey="id"
+    
+    <p-table #dt [value]="prueba" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['voucher_sail', 'name_sail', 'lastName_sail']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex flex-wrap align-items-center justify-content-between">
                 <h5 class="m-0">Gestión de Ventas</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por comprobante..." />
+                    <input pInputText type="text" style="width: 330px;" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por comprobante o cliente" />
                 </span>
             </div>
         </ng-template>
@@ -31,11 +38,15 @@
         </ng-template>
         <ng-template pTemplate="body" let-sail let-columns="columns" let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td style="width: 250px;">{{sail.name_sail}} {{sail.lastName_sail}}</td>
-                <td>{{sail.description_sail}}</td>
-                <td>{{sail.voucher_sail}}</td>
-                <td>{{sail.date_creation}}</td>
+                <td style="width: 250px;"><span class="p-column-title"><i class="pi pi-user"></i> Cliente: </span>{{sail.name_sail}} {{sail.lastName_sail}}</td>
                 <td>
+                    <span class="p-column-title"><i class="pi pi-book"></i> Descripción: </span>{{sail.description_sail}}</td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-qrcode"></i> Comprobante: </span>{{sail.voucher_sail}}</td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{sail.date_creation}}</td>
+                <td>
+                    <span class="p-column-title"><i class="pi pi-file-pdf"></i> Factura: </span>
                     <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="generatePDF(sail.sail)" class="p-button-success"></button>
                 </td>
             </tr>

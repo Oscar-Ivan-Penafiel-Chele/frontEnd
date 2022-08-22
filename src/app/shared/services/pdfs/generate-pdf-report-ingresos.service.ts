@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Sail, User } from '@models/interfaces';
+import { User } from '@models/interfaces';
 import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
 
 type TableRow = [];
@@ -7,39 +7,25 @@ type TableRow = [];
 @Injectable({
   providedIn: 'root'
 })
-export class GenerateReportSailService {
-
+export class GeneratePdfReportIngresosService {
   fechaInicio : any;
   fechaFin : any;
-  sailAux : any = [];
-  user : User = {};
-  arrayAux : any[] = [];
-  total: number = 0;
 
-  constructor(
-  ) { }
+  constructor() { }
 
-  async generateReport(sails : Sail[], fechaInicio : any , fechaFin : any, user : User){
+  async generatePDF(ingresos: any, user: User, fechaInicio: any, fechaFin: any){
     this.fechaInicio = fechaInicio;
     this.fechaFin = fechaFin;
-    this.user = user;
-    
-    this.sailAux = [];
-    
-    this.sailAux = sails.filter((i : any)=> new Date(i.orders[0].i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.orders[0].i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
-    this.getTotal(this.sailAux);
 
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
-    
     pdf.info({
-        title: 'Reporte de Ventas',
+        title: 'Reporte de Ingresos',
         author: '@Yebba',
-        subject: 'Mostrar las Ventas',
+        subject: 'Mostrar los productos de la ferretería',
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('portrait'); // 'portrait'
-    
     pdf.add(
       new Stack([
         new Columns([
@@ -47,26 +33,25 @@ export class GenerateReportSailService {
           new Columns([
             new Stack([
               new Columns([ 
-                new Txt('Reporte de Ventas').fontSize(14).bold().end,
+                new Txt('Reporte de Ingresos').fontSize(14).bold().end,
               ]).color('#3f3f3f').end,
               new Columns([ 
-                new Txt('Módulo de Ventas  \n\n').fontSize(11).end,
+                new Txt('Módulo de Ingresos  \n\n').fontSize(11).end,
               ]).color('#3f3f3f').end,
               new Columns([ 
                 new Txt('').alignment('right').width('*').bold().end,
                 new Txt('Usuario: ').alignment('right').width('*').bold().end,
-                new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
+                new Txt(`${user.user_name} ${user.user_lastName}`).width(60).alignment('right').end,
                 new Txt('Fecha: ').alignment('right').width(40).bold().end,
                 new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
                 new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(23).alignment('right').end,
+                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(30).alignment('right').end,
               ]).end,
             ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
           ]).end
         ]).end
       ]).end
     );
-    
     pdf.add(
       '\n'
     )
@@ -77,22 +62,19 @@ export class GenerateReportSailService {
         ]).end,
       ]).width('*').end
     );
-
     pdf.add(
       '\n'
     )
     pdf.add(
       this.createDetailsPDF()
     );
-
     pdf.add(
-      new Txt(`${this.sailAux.length} ${this.sailAux.length < 2 ? 'Egreso' : 'Egresos'}`).alignment('right').bold().fontSize(10).margin(10).end
+      new Txt(`${ingresos.length} ${ingresos.length < 2 ? 'Ingreso' : 'Ingresos'}`).alignment('right').bold().fontSize(10).margin(10).end
     );  
-
-    pdf.add(this.createTable(this.sailAux));
+    pdf.add(this.createTable(ingresos));
 
     pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();
   }
@@ -106,7 +88,7 @@ export class GenerateReportSailService {
         new Txt('Fin: ').bold().width(20).alignment('center').end,
         new Txt(`${this.fechaFin.getFullYear()}/${(this.fechaFin.getMonth()+1) < 10 ? '0'+(this.fechaFin.getMonth()+1) : (this.fechaFin.getMonth()+1)}/${this.fechaFin.getDate() < 10 ? '0'+this.fechaFin.getDate() : this.fechaFin.getDate()} `).width(65).alignment('center').end,
         new Txt('Movimiento: ').width(55).bold().alignment('center').end,
-        new Txt('Egresos').width(55).alignment('center').end,
+        new Txt('Ingresos').width(55).alignment('center').end,
         new Txt('').bold().width('*').alignment('center').end,
       ]).alignment('center').end,
     ]).color('#3f3f3f').alignment('center').fontSize(10).end
@@ -115,31 +97,18 @@ export class GenerateReportSailService {
   createTable(data : any): ITable{
     return new Table([
       [ 
-        new Txt('Fecha de Creación').bold().end,
-        new Txt('N° Orden').bold().end,
-        new Txt('Cliente').bold().end,
-        new Txt('Descripción').bold().end,
-        new Txt('Factura').bold().end,
-        new Txt('Total').bold().end,
+        new Txt('Fecha de Ingreso').bold().end,
+        new Txt('Código').bold().end,
+        new Txt('Producto').bold().end,
+        new Txt('Movimiento').bold().end,
+        new Txt('Cantidad').bold().end,
       ],
       ...this.extractData(data),
-      [new Cell(new Txt('').end).colSpan(4).end, 
-        null, null, null, 
-        new Txt('TOTAL DE VENTAS').bold().end,
-        new Txt(`$ ${this.total.toFixed(2)}`).end,
-      ]
-    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([90,40,100,80,100,50]).fontSize(9).end;
+    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([ 90,40,'*',60,40]).fontSize(9).end;
   }
 
   extractData(data : any) : TableRow{
-    return data.map((row : any) => [
-      row.orders[0].i.create_date, row.orders[0].i.id_order, `${row.orders[0].i.order.user.user_name+" "+row.orders[0].i.order.user.user_lastName}` ,row.orders[0].i.inventory_description , row.orders[0].i.order.voucher_number, `$ ${row.orders[0].i.order.order_price_total}`
-    ])
+    return data.map((row : any) => [row.create_date, row.producto.product_code, row.producto.product_name, row.inventory_movement_type , (row.inventory_stock_amount).split('.')[0]])
   }
   
-  getTotal(sails: any){
-    sails.forEach((item: any) => {
-      this.total += parseFloat(item.orders[0].i.order.order_price_total);
-    });
-  }
 }
