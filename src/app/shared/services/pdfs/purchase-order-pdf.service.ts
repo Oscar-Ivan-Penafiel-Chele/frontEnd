@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IPurchaseOrder } from '@models/interfaces';
-import { Canvas, Columns, Img, PdfMakeWrapper, Rect, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Rect, Stack, Table, Txt  } from 'pdfmake-wrapper';
+
+type TableRow = [];
 
 @Injectable({
   providedIn: 'root'
@@ -73,24 +75,24 @@ export class PurchaseOrderPdfService {
           new Txt('ENVIE A').absolutePosition(50,225).fontSize(9).bold().end,
         ]).end,
         new Columns([
-          new Txt('Razón Social:').absolutePosition(40,260).bold().fontSize(9).end,
-          new Txt(`${purchase_order.provider.provider_name}`).absolutePosition(125,260).fontSize(9).end,
+          new Txt('Razón Social:').absolutePosition(40,250).bold().fontSize(9).end,
+          new Txt(`${purchase_order.provider.provider_name}`).absolutePosition(125,250).fontSize(9).end,
         ]).end,
         new Columns([
-          new Txt('Dírección:').absolutePosition(40,275).bold().fontSize(9).end,
-          new Txt(`${purchase_order.provider.provider_address}`).absolutePosition(125,275).fontSize(9).end,
+          new Txt('Dírección:').absolutePosition(40,265).bold().fontSize(9).end,
+          new Txt(`${purchase_order.provider.provider_address}`).absolutePosition(125,265).fontSize(9).end,
         ]).end,
         new Columns([
-          new Txt('Teléfono:').absolutePosition(40,290).bold().fontSize(9).end,
-          new Txt(`${purchase_order.provider.provider_landline}`).absolutePosition(125,290).fontSize(9).end,
+          new Txt('Teléfono:').absolutePosition(40,280).bold().fontSize(9).end,
+          new Txt(`${purchase_order.provider.provider_landline}`).absolutePosition(125,280).fontSize(9).end,
         ]).end,
         new Columns([
-          new Txt('Celular:').absolutePosition(40,305).bold().fontSize(9).end,
-          new Txt(`${purchase_order.provider.provider_phone}`).absolutePosition(125,305).fontSize(9).end,
+          new Txt('Celular:').absolutePosition(40,295).bold().fontSize(9).end,
+          new Txt(`${purchase_order.provider.provider_phone}`).absolutePosition(125,295).fontSize(9).end,
         ]).end,
         new Columns([
-          new Txt('Correo electrónico:').absolutePosition(40,320).bold().fontSize(9).end,
-          new Txt(`${purchase_order.provider.provider_email}`).absolutePosition(125,320).fontSize(9).end,
+          new Txt('Correo electrónico:').absolutePosition(40,310).bold().fontSize(9).end,
+          new Txt(`${purchase_order.provider.provider_email}`).absolutePosition(125,310).fontSize(9).end,
         ]).end,
       ]).end  
     );
@@ -102,34 +104,29 @@ export class PurchaseOrderPdfService {
     pdf.add('\n');
     pdf.add('\n');
     pdf.add('\n');
-    pdf.add('\n');
-    pdf.add('\n');
 
-    pdf.add(
-      new Table([
-        [
-            new Txt('Cód. Principal').alignment('center').bold().end,
-            new Txt('Descripción').alignment('center').bold().end,
-            new Txt('Cantidad').alignment('center').bold().end,
-        ],
-      ]).widths([50,350,'*']).bold().fontSize(9).end
-    );
-
-    purchase_order.purchase_order_productos.forEach((item : any)=>{
-      pdf.add(
-          new Table([
-              [
-                new Txt(`${item.id_product}`).alignment('center').end,
-                new Txt(`${(item.producto.product_name)}`).alignment('center').end,
-                new Txt(`${item.purchase_order_products_amount.toString().split('.')[0]}`).alignment('center').end,
-              ],
-          ]).widths([50,350,'*']).fontSize(9).end
-      );
-   })
+    pdf.add(this.createTable(purchase_order));
 
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();  
+  }
+
+  createTable(data : any): ITable{
+    return new Table([
+      [ 
+        new Txt('Código').alignment('center').bold().end,
+        new Txt('Nombre del Producto').alignment('center').bold().end,
+        new Txt('Cantidad').alignment('center').bold().end,
+      ],
+      ...this.extractData(data),
+    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').alignment('center').widths([50,'*',60]).fontSize(9).end;
+  }
+
+  extractData(data : any) : TableRow{
+    return data.purchase_order_productos.map((row : any) => [
+      row.id_product, row.producto.product_name, row.purchase_order_products_amount.toString().split('.')[0]
+    ]);
   }
 }

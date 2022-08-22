@@ -17,14 +17,14 @@
     </ng-template>
 </p-toolbar>
 
-<p-table #dt [value]="dataAux" [paginator]="true" [loading]="loading" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['id_order','status']"
+<p-table #dt [value]="dataAux" [paginator]="true" [rowHover]="true" [loading]="loading" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['id_order','name']"
 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]" responsiveLayout="stack">
     <ng-template pTemplate="caption">
         <div class="flex flex-wrap align-items-center justify-content-between">
             Listado de Pedidos
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o estatus..." />
+                <input pInputText style="width: 300px;" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o cliente" />
             </span>
         </div>
     </ng-template>

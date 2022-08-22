@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IProvider, User } from '@models/interfaces';
-import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+
+type TableRow = [];
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,8 @@ export class GeneratePdfProviderService {
   constructor() { }
 
   async generatePDF(provider: IProvider[], user: User){
+    provider.sort(this.sortProvider)
+
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
@@ -58,45 +62,16 @@ export class GeneratePdfProviderService {
       '\n\n'
     )
     pdf.add(
-      new Txt(`Total Proveedores: ${provider.length}`).alignment('right').bold().fontSize(10).margin(10).end
+      new Txt(`${provider.length} ${provider.length < 2 ? 'Proveedor' : 'Peoveedores'}`).alignment('right').bold().fontSize(10).margin(10).end
   ); 
     pdf.add(
         new Txt('Nómina de Proveedores').alignment('center').bold().fontSize(11).margin(10).end
     );   
-    pdf.add(
-      new Table([
-        [
-            new Txt('Código').bold().end,
-            new Txt('Nombre').bold().end,
-            new Txt('Correo Electrónico').bold().end,
-            new Txt('Dirección').bold().end,
-            new Txt('Teléfono').bold().end,
-            new Txt('Celular').bold().end,
-            new Txt('Tiempo de Respuesta').bold().end,
-            new Txt('Estado').bold().end,
-        ],
-    ]).widths([40,120,120,80,60,100,80,60]).fontSize(9).end
-    );
 
-    provider.sort(this.sortProvider)
-    provider.forEach((item)=>{
-        pdf.add(
-            new Table([
-                [
-                  new Txt(String(item.id_provider!)).end,
-                  new Txt(item.provider_name!).end,
-                  new Txt(item.provider_email!).end,
-                  new Txt(item.provider_address!).end,
-                  new Txt(item.provider_landline!).end,
-                  new Txt(item.provider_phone!).end,
-                  new Txt(String(item.provider_response_time_day)+ ' Días y ' + String(item.provider_response_time_hour) + ' Horas').end,
-                  new Txt(item.provider_status == 1 ? 'Activo' : 'Inactivo').end,
-                ]
-            ]).widths([40,120,120,80,60,100,80,60]).fontSize(9).end
-        );
-    })
+    pdf.add(this.createTable(provider));
+   
     pdf.footer((currentPage : any, pageCount : any)=>{
-      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+      return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();    
   }
@@ -105,5 +80,27 @@ export class GeneratePdfProviderService {
     if(x.provider_name < y.provider_name) return -1;
     if(x.provider_name > y.provider_name) return 1;
     return 0;
+  }
+
+  createTable(data : any): ITable{
+    return new Table([
+      [ 
+        new Txt('Código').bold().end,
+        new Txt('Nombre').bold().end,
+        new Txt('Correo Electrónico').bold().end,
+        new Txt('Dirección').bold().end,
+        new Txt('Teléfono').bold().end,
+        new Txt('Celular').bold().end,
+        new Txt('Tiempo de Respuesta').bold().end,
+        new Txt('Estado').bold().end,
+      ],
+      ...this.extractData(data),
+    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([40,120,120,130,60,80,100,40]).fontSize(9).end;
+  }
+
+  extractData(data : any) : TableRow{
+    return data.map((row : any) => [
+      row.id_provider, row.provider_name, row.provider_email, row.provider_address , row.provider_landline, row.provider_phone, `${row.provider_response_time_day} Días ${row.provider_response_time_hour} Horas`, `${row.provider_status == 1 ? 'Activo' : 'Inactivo'}`
+    ])
   }
 }

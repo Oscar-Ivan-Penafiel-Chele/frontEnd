@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Auditory } from '@models/interfaces';
+import { Auditory, User } from '@models/interfaces';
 import { Table } from 'primeng/table';
 import { AuditoryService } from '../service/auditory.service';
 import { PrimeNGConfig ,ConfirmationService, MessageService } from 'primeng/api';
+import { GeneratePdfAuditoryService } from 'src/app/shared/services/pdfs/generate-pdf-auditory.service';
+import { PdfMakeWrapper } from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import { TokenService } from 'src/app/auth/service/token.service';
+
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @Component({
   selector: 'app-auditory',
@@ -21,14 +27,22 @@ export class AuditoryComponent implements OnInit {
   loading : boolean = false;
   selectedModules: string[] = [];
   selectedActions: string[] = [];
+  user: User = {};
 
   constructor(
     private auditoryService : AuditoryService, 
+    private tokenService: TokenService,
+    private reportAuditoryPDFService: GeneratePdfAuditoryService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService, ) { }
 
   ngOnInit(): void {
     this.getAuditories();
+    this.getUser();
+  }
+
+  getUser(){
+    this.user = this.tokenService.getTokenDataUser();
   }
 
   getAuditories(): void{
@@ -93,9 +107,14 @@ export class AuditoryComponent implements OnInit {
     }
   }
 
-  clear(table: Table) {
+  clear(table: Table): void{
     this.selectedModules = [];
     this.selectedActions = [];
     this.auditories = this.auditoriesAux;  
+  }
+
+  generatePDFAuditory(): void{
+    console.log(this.auditories)
+    this.reportAuditoryPDFService.generatePDF(this.auditories, this.user);
   }
 }

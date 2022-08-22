@@ -8,11 +8,11 @@
         </ng-template>
 
         <ng-template pTemplate="right">
-            <button pButton class="p-button-info" [disabled]="loading" pTooltip="PDF" tooltipPosition="top" icon="pi pi-file-pdf"></button>
+            <button pButton class="p-button-info" [disabled]="loading" pTooltip="PDF" tooltipPosition="top" icon="pi pi-file-pdf" (click)="generatePDFAuditory()"></button>
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_action','audit_module','audit_description']" 
+    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_module','audit_description']" 
     responsiveLayout="stack" [rowHover]="true"  [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas">
         <ng-template pTemplate="caption">
@@ -81,7 +81,7 @@
 
 <p-overlayPanel #actions [showCloseIcon]="true">
     <ng-template pTemplate>
-        <p-multiSelect [ngModel]="selectedActions" [options]="optionsActions" placeholder="Seleccionar Acción" (onChange)="filterAction($event)" optionLabel="audit_action" optionValue="audit_action">
+        <p-multiSelect [ngModel]="selectedActions" [options]="optionsActions" placeholder="Seleccionar Acción" (onChange)="filterAction($event.value)" optionLabel="audit_action" optionValue="audit_action">
             <ng-template let-option pTemplate="item">
                 <div class="p-multiselect-representative-option">
                     <span class="ml-1">{{option.audit_action}}</span>

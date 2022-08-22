@@ -66,12 +66,14 @@ export class TablePurchaseOrderComponent implements OnInit {
 
   requestPurchaseOrder(purchase_order: IPurchaseOrder){
     this.purchaseOrderService.completePurchaseOrder(purchase_order).subscribe((response: any)=>{
-      if(response.status == 200 || response.message == ""){
+      if(response.status == 200 || response.message == "Orden de compra creada con exito"){
         this.messageService.add({severity:'success', summary:'Completado', detail:'La orde de compra fue completada con éxito'});
-        this.purchaseOrderComponent.getPurchaseOrder();
+        this.getData();
       }else if(response.status >= 400){
         this.messageService.add({severity:'error', summary:'Error', detail:'Ha ocurrido un error en el servidor'});
       }
+    }, err =>{
+      this.messageService.add({severity:'error', summary:'Error', detail:'Ha ocurrido un error en el servidor'});
     });
   }
 

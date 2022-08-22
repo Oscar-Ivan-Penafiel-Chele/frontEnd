@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Canvas, Columns, Img, PdfMakeWrapper, Rect, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Rect, Stack, Table, Txt  } from 'pdfmake-wrapper';
 import { ManageIvaService } from 'src/app/pages/admin/manage-iva/service/manage-iva.service';
+
+type TableRow = [];
 
 @Injectable({
   providedIn: 'root'
@@ -174,37 +176,9 @@ export class GeneratePdfFacturaService {
     pdf.add(
       '\n'
     )
-    pdf.add(
-      new Table([
-        [
-            new Txt('Cód. Principal').alignment('center').bold().end,
-            new Txt('Cant.').alignment('center').bold().end,
-            new Txt('Descripción').alignment('center').bold().end,
-            new Txt('Precio Unitario').alignment('center').bold().end,
-            new Txt('Descuento %').alignment('center').bold().end,
-            new Txt('Valor Descuento').alignment('center').bold().end,
-            new Txt('Parcial').alignment('center').bold().end,
-            new Txt('Subtotal').alignment('center').bold().end,
-        ],
-    ]).widths([40,20,130,50,50,50,40,55]).bold().fontSize(8).end
-    );
 
-    this.products.forEach((item : any)=>{
-        pdf.add(
-            new Table([
-                [
-                  new Txt(`${item.producto.product_code}`).alignment('center').end,
-                  new Txt(`${(item.order_detail_quantity).toString().split('.')[0]}`).alignment('center').end,
-                  new Txt(`${item.producto.product_name}`).alignment('center').end,
-                  new Txt(`$ ${item.producto.product_price}`).alignment('center').end,
-                  new Txt(`${(item.order_detail_discount)}%`).alignment('center').end,
-                  new Txt(`$ ${(item.order_detail_discount).toString().split('.')[0] > 0 ? (item.producto.product_price_aux * (item.order_detail_discount / 100)).toFixed(2) : item.order_detail_discount}`).alignment('center').end,
-                  new Txt(`$ ${item.producto.productWithDiscount}`).alignment('center').end,
-                  new Txt(`$ ${item.producto.product_price_amount}`).alignment('center').end,
-                ],
-            ]).widths([40,20,130,50,50,50,40,55]).fontSize(8).end
-        );
-     })
+    pdf.add(this.createTable(this.products));
+    
     pdf.add(
       '\n'
     )
@@ -280,5 +254,27 @@ export class GeneratePdfFacturaService {
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();  
+  }
+
+  createTable(data : any): ITable{
+    return new Table([
+      [ 
+          new Txt('Cód. Principal').bold().end,
+          new Txt('Cant.').bold().end,
+          new Txt('Descripción').bold().end,
+          new Txt('Precio Unitario').bold().end,
+          new Txt('Descuento %').bold().end,
+          new Txt('Valor Descuento').bold().end,
+          new Txt('Parcial').bold().end,
+          new Txt('Subtotal').bold().end,
+      ],
+      ...this.extractDataTable(data),
+    ]).keepWithHeaderRows(1).headerRows(1).alignment('center').widths([40,22,130,50,50,50,40,53]).fontSize(9).end;
+  }
+
+  extractDataTable(data : any) : TableRow{
+    return data.map((row : any) => [
+      row.producto.product_code, `${(row.order_detail_quantity).toString().split('.')[0]}`, row.producto.product_name, row.producto.product_price , `${(row.order_detail_discount)}%`, `$ ${(row.order_detail_discount).toString().split('.')[0] > 0 ? (row.producto.product_price_aux * (row.order_detail_discount / 100)).toFixed(2) : row.order_detail_discount}`, row.producto.productWithDiscount, row.producto.product_price_amount
+    ])
   }
 }

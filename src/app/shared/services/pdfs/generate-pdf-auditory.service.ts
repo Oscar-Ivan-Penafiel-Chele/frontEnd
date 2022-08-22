@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '@models/interfaces';
+import { Auditory, User } from '@models/interfaces';
 import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
 
 type TableRow = [];
@@ -7,19 +7,17 @@ type TableRow = [];
 @Injectable({
   providedIn: 'root'
 })
-export class GeneratePdfEmployeeService {
+export class GeneratePdfAuditoryService {
 
   constructor() { }
 
-  async generatePDF(user: User, users: User[]){
-    users.sort(this.sortEmployee);
-
+  async generatePDF(auditories: Auditory[], user: User){
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
     pdf.info({
-        title: 'PDF Empleados',
+        title: 'PDF Auditoría',
         author: '@Yebba',
-        subject: 'Mostrar los empleados de la ferretería',
+        subject: 'Auditoría',
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('landscape'); // 'portrait'
@@ -30,10 +28,10 @@ export class GeneratePdfEmployeeService {
           new Columns([
             new Stack([
               new Columns([ 
-                new Txt('Nómina de Empleados').fontSize(14).bold().end,
+                new Txt('Registros de Auditoría').fontSize(14).bold().end,
               ]).color('#3f3f3f').end,
               new Columns([ 
-                new Txt('Módulo de Empleados  \n\n').fontSize(11).end,
+                new Txt('Módulo de Auditoría  \n\n').fontSize(11).end,
               ]).color('#3f3f3f').end,
               new Columns([ 
                 new Txt(`Usuario: ${user.user_name} ${user.user_lastName}`).alignment('right').bold().end,
@@ -62,16 +60,14 @@ export class GeneratePdfEmployeeService {
     )
     
     pdf.add(
-      new Txt(`${users.length} ${users.length < 2 ? 'Empleado' : 'Empleados'}`).alignment('right').bold().fontSize(10).margin(10).end
+      new Txt(`${auditories.length} ${auditories.length < 2 ? 'Registro' : 'Registros'}`).alignment('right').bold().fontSize(10).margin(10).end
     ); 
 
     pdf.add(
-        new Txt('Nómina de Empleados').alignment('center').bold().fontSize(11).margin(10).end
+        new Txt('Auditoría de la Aplciación Web E-commerce B2C de la ferretería "El Descanso"').alignment('center').bold().fontSize(11).margin(10).end
     );   
 
-    pdf.add(this.createTable(users));
-
-
+    pdf.add(this.createTable(auditories));
 
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
@@ -79,28 +75,24 @@ export class GeneratePdfEmployeeService {
     pdf.create().open();    
   }
 
-  sortEmployee(x:any , y:any){
-    if(x.user_lastName < y.user_lastName) return -1;
-    if(x.user_lastName > y.user_lastName) return 1;
-    return 0;
-  }
-
   createTable(data : any): ITable{
     return new Table([
       [ 
-        new Txt('Identificación').bold().end,
-        new Txt('Apellidos').bold().end,
-        new Txt('Nombres').bold().end,
-        new Txt('Rol').bold().end,
-        new Txt('Teléfono').bold().end,
-        new Txt('Correo Electrónico').bold().end,
-        new Txt('Estado').bold().end,
+        new Txt('Fecha de creación').bold().end,
+        new Txt('Usuario').bold().end,
+        new Txt('Acción').bold().end,
+        new Txt('Módulo').bold().end,
+        new Txt('Descripción').bold().end,
+        new Txt('Query').bold().end,
       ],
       ...this.extractData(data),
-    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([80,100,100,80,100,'*',50]).fontSize(9).end;
+    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([90,90,75,75,100,270]).fontSize(9).end;
   }
 
   extractData(data : any) : TableRow{
-    return data.map((row : any) => [row.user_document, row.user_lastName, row.user_name, row.role_user.role_description , row.user_phone, row.email, `${row.user_status == 1 ? 'Activo' : 'Inactivo'}`])
+    return data.map((row : any) => [
+      row.create_date, `${row.user.user_name} ${row.user.user_lastName}`, row.audit_action, row.audit_module, row.audit_description , row.audit_query
+    ])
   }
+
 }

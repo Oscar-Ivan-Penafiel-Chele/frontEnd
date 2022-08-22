@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Product, User } from '@models/interfaces';
-import { Canvas, Columns, Img, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
+
+type TableRow = [];
 
 @Injectable({
   providedIn: 'root'
@@ -58,25 +60,34 @@ export class GeneratePdfProductService {
         '\n'
       )
     pdf.add(
-        new Txt('Gestión de Productos').alignment('center').bold().fontSize(11).margin(10).end
+        new Txt('Reporte de Productos').alignment('center').bold().fontSize(11).margin(10).end
     );   
-    pdf.add(
-        new Table([
-            [ 'Código','Nombre','Proveedor', 'Marca','Categoría','Medida','Stock','Estado',],
-        ]).widths([ 50,190,100,70,80,70,70,60 ]).fontSize(10).bold().end
-    );
 
-    products.forEach((item)=>{
-        pdf.add(
-            new Table([
-                [ item.product_code , item.product_name , item.provider.provider_name , item.brand.brand_name, item.category.category_name, item.product_unit.name_product_unit, item.product_stock , item.product_status == 1 ? 'Activo' : 'Inactivo' ],
-            ]).widths([ 50,190,100,70,80,70,70,60 ]).fontSize(9).end
-        );
-    })
-    
+    pdf.add(this.createTable(products));
+
     pdf.footer((currentPage : any, pageCount : any)=>{
-        return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
+        return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
       });
     pdf.create().open(); 
+  }
+
+  createTable(data : any): ITable{
+    return new Table([
+      [ 
+        new Txt('Código').bold().end,
+        new Txt('Nombre').bold().end,
+        new Txt('Proveedor').bold().end,
+        new Txt('Marca').bold().end,
+        new Txt('Categoría').bold().end,
+        new Txt('Medida').bold().end,
+        new Txt('Stock').bold().end,
+        new Txt('Estado').bold().end,
+      ],
+      ...this.extractData(data),
+    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([50,200,120,70,70,70,50,50 ]).fontSize(9).end;
+  }
+
+  extractData(data : any) : TableRow{
+    return data.map((row : any) => [row.product_code, row.product_name, row.provider.provider_name, row.brand.brand_name , row.category.category_name, row.product_unit.name_product_unit, row.product_stock, `${row.product_status == 1 ? 'Activo' : 'Inactivo'}`])
   }
 }

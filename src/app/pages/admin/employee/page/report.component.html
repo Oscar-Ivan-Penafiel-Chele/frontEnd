@@ -21,7 +21,7 @@
         </ng-template>
 
         <ng-template pTemplate="right">
-            <button [disabled]="loading" type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
+            <button [disabled]="loading || users.length == 0" type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-info mr-2" pTooltip="PDF" tooltipPosition="left"></button>
         </ng-template>
     </p-toolbar>
 
