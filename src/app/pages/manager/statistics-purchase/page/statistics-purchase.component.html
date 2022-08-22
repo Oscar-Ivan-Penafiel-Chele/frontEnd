@@ -1,6 +1,6 @@
 <p-toast [autoZIndex]="false" [style]="{'z-index': 2}"></p-toast>
 <div class="card">
-    <p class="tittle__statistics"> <i class="pi pi-chart-line"></i> Estadística de Ventas</p>
+    <p class="tittle__statistics"> <i class="pi pi-chart-line"></i> Estadística de Compras</p>
 
     <div class="date__report grid mt-4">
         <div class="col-12 md:col-6">
@@ -17,28 +17,26 @@
     
     <div class="filter__report grid mt-4 mb-5">
         <div class="col-12 md:col-6">
-            <label class="mr-2">3. Categorías: </label>
-            <p-multiSelect [options]="categories" (onChange)="filterAction($event.value)" [style]="{width:'100%'}" [(ngModel)]="selectedCategory" defaultLabel="Seleccione Categoría" optionLabel="category_name" class="multiselect-custom">
+            <label class="mr-2">3. Proveedor: </label>
+            <p-multiSelect [options]="providers" [style]="{width:'100%'}" [(ngModel)]="selectedProvider" defaultLabel="Seleccione Proveedor" optionLabel="provider_name" class="multiselect-custom">
                 <ng-template let-value pTemplate="selectedItems">
-                    <div class="country-item country-item-value" *ngFor="let option of selectedCategory">
-                        <img [src]="host+option.category_thumbnail" [alt]="option.category_thumbnail" class="image__category shadow-4" />
-                        <div>{{option.category_name}}</div>
+                    <div class="country-item country-item-value" *ngFor="let option of selectedProvider">
+                        <div>{{option.provider_name}}</div>
                     </div>
-                    <div *ngIf="!selectedCategory || selectedCategory.length === 0" class="country-placeholder">
-                        Seleccione Categoría
+                    <div *ngIf="!selectedProvider || selectedProvider.length === 0" class="country-placeholder">
+                        Seleccione Proveedor
                     </div>
                 </ng-template>
                 <ng-template let-category pTemplate="item">
                     <div class="country-item flex justify-content-center align-items-center">
-                        <img [src]="host+category.category_thumbnail" [alt]="category.category_thumbnail" class="image__category shadow-4" />
-                        <div>{{category.category_name}}</div>
+                        <div>{{category.provider_name}}</div>
                     </div>
                 </ng-template>
             </p-multiSelect>
         </div>
         <div class="col-12 md:col-6">
-            <label class="mr-2">4. Productos: </label>
-            <p-dropdown [options]="productsAux" [disabled]="selectedCategory.length == 0" [style]="{width:'100%'}" emptyFilterMessage="No se encontraron resultados" [(ngModel)]="selectedProduct" optionLabel="product_name" placeholder="Seleccione un producto" [virtualScroll]="true" [itemSize]="31" [filter]="true" filterBy="product_name,product_code" filterPlaceholder="Buscar por nombre o código" [showClear]="true"></p-dropdown>
+            <label class="mr-2">4. Estado: </label>
+            <p-dropdown [options]="options" [style]="{width:'100%'}" emptyFilterMessage="No se encontraron resultados" optionValue="id" [(ngModel)]="selectedState" optionLabel="name" placeholder="Seleccione un producto" [itemSize]="3" [virtualScroll]="true" [showClear]="true"></p-dropdown>
         </div>
     </div>
     

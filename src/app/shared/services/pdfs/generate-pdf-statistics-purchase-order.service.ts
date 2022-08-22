@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Category, Product, User } from '@models/interfaces';
+import { IPurchaseOrder, User } from '@models/interfaces';
 import { Canvas, Cell, Columns, Img, ITable, Line, PdfMakeWrapper, Stack, Table, Txt  } from 'pdfmake-wrapper';
 
 type TableRow = [];
@@ -7,17 +7,15 @@ type TableRow = [];
 @Injectable({
   providedIn: 'root'
 })
-
-export class GeneratePdfStatisticsSailService {
+export class GeneratePdfStatisticsPurchaseOrderService {
   fechaInicio: any;
   fechaFin: any;
-  total: number = 0;
+  total: number = 0.00;
 
   constructor() { }
 
-  async generatePDFStatistic(sails: any, user: User, fechaIncio: any, fechaFin: any, selectedCategory: Category[], selectedProduct: Product){
-    this.getTotal(sails);
-
+  async generatePDF(purchase_order: IPurchaseOrder[], user: User, fechaIncio: any, fechaFin: any){
+    this.getTotal(purchase_order);
     this.fechaInicio = fechaIncio;
     this.fechaFin = fechaFin;
 
@@ -25,12 +23,12 @@ export class GeneratePdfStatisticsSailService {
     const pdf = new PdfMakeWrapper();
     
     pdf.info({
-        title: 'Estadística de Ventas',
+        title: 'Estadística de Compras',
         author: '@Yebba',
-        subject: 'Mostrar los Egresos',
+        subject: 'Mostrar las Ordenes de Compra',
     });
     pdf.pageSize('A4');
-    pdf.pageOrientation('landscape'); // 'portrait'
+    pdf.pageOrientation('portrait'); // 'portrait'
     
     pdf.add(
       new Stack([
@@ -39,10 +37,10 @@ export class GeneratePdfStatisticsSailService {
           new Columns([
             new Stack([
               new Columns([ 
-                new Txt('Estadística de Ventas').fontSize(14).bold().end,
+                new Txt('Estadística de Compras').fontSize(14).bold().end,
               ]).color('#3f3f3f').end,
               new Columns([ 
-                new Txt('Módulo de Ventas  \n\n').fontSize(11).end,
+                new Txt('Módulo de Órdenes de Compras  \n\n').fontSize(11).end,
               ]).color('#3f3f3f').end,
               new Columns([ 
                 new Txt('').alignment('right').width('*').bold().end,
@@ -65,7 +63,7 @@ export class GeneratePdfStatisticsSailService {
     pdf.add(
       new Columns([
         new Canvas([
-            new Line([0,0], [770,0]).lineColor('#ccc').end
+            new Line([0,0], [520,0]).lineColor('#ccc').end
         ]).end,
       ]).width('*').end
     );
@@ -77,17 +75,17 @@ export class GeneratePdfStatisticsSailService {
     );
 
     pdf.add(
-      new Txt(`${sails.length} ${sails.length < 2 ? 'Venta' : 'Ventas'}`).alignment('right').bold().fontSize(10).margin(10).end
+      new Txt(`${purchase_order.length} ${purchase_order.length < 2 ? 'Orden de Compra' : 'Órdenes de Compras'}`).alignment('right').bold().fontSize(10).margin(10).end
     );  
 
-    pdf.add(this.createTable(sails));
+    pdf.add(this.createTable(purchase_order));
 
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
     pdf.create().open();
-  }
 
+  }
 
   createDetailsPDF(){
     return new Stack([
@@ -98,7 +96,7 @@ export class GeneratePdfStatisticsSailService {
         new Txt('Fin: ').bold().width(23).alignment('center').end,
         new Txt(`${this.fechaFin.getFullYear()}/${(this.fechaFin.getMonth()+1) < 10 ? '0'+(this.fechaFin.getMonth()+1) : (this.fechaFin.getMonth()+1)}/${this.fechaFin.getDate() < 10 ? '0'+this.fechaFin.getDate() : this.fechaFin.getDate()} `).width(65).alignment('center').end,
         new Txt('Movimiento: ').width(55).bold().alignment('center').end,
-        new Txt('Ventas').width(45).alignment('center').end,
+        new Txt('Orden de Compra').width(90).alignment('center').end,
         new Txt('').bold().width('*').alignment('center').end,
       ]).alignment('center').end,
     ]).color('#3f3f3f').alignment('center').fontSize(10).end
@@ -107,33 +105,33 @@ export class GeneratePdfStatisticsSailService {
   createTable(data : any): ITable{
     return new Table([
       [ 
-        new Txt('Fecha').fontSize(10).bold().end,
+        new Txt('Fecha Creación').fontSize(10).bold().end,
         new Txt('Factura').fontSize(10).bold().end,
-        new Txt('Identificación').fontSize(10).bold().end,
-        new Txt('Cliente').fontSize(10).bold().end,
-        new Txt('Categoría').fontSize(10).bold().end,
-        new Txt('Producto').fontSize(10).bold().end,
+        new Txt('Proveedor').fontSize(10).bold().end,
+        new Txt('Estado').fontSize(10).bold().end,
         new Txt('Forma de Pago').fontSize(10).bold().end,
         new Txt('Total').fontSize(10).bold().end,
       ],
       ...this.extractData(data),
-      [new Cell(new Txt('').end).colSpan(6).end, 
-        null, null, null, null, null, 
-        new Txt('TOTAL DE VENTAS').bold().end,
-        new Txt(`$ ${this.total}`).end,
+      [new Cell(new Txt('').end).colSpan(4).end, 
+        null, null, null, 
+        new Txt('TOTAL DE PAGOS').bold().end,
+        new Txt(`$ ${this.total.toFixed(2)}`).end,
       ]
-    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([90,90,70,100,60,140, 80, 60]).fontSize(9).end;
+    ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([90,90,90,60,70,60]).fontSize(9).end;
   }
 
   extractData(data : any) : TableRow{
     return data.map((row : any) => [
-      row.create_date, row.voucher, row.identification ,row.name , row.category, row.product, row.type_pay, `$ ${row.total}`
+      row.create_date, row.facture, row.provider.provider_name , row.purchase_order_status == 1 ? 'Completado' : 'Pendiente' , row.tipe_of_pay, `$ ${row.purchase_order_total}`
     ])
   }
   
   getTotal(sails: any){
     sails.forEach((item: any) => {
-      this.total += parseFloat(item.total);
+      let totalByProduct = parseFloat(item.purchase_order_total)
+      this.total! += totalByProduct;
     });
   }
+
 }

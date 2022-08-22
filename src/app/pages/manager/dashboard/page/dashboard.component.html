@@ -20,7 +20,7 @@
                             <p [hidden]="isHidden">Gráficas</p>
                         </div>
                         <div class="nav__aside__item" tabindex="2" (click)="activeLink()" [routerLink]="'ingresos'" pRipple pTooltip="Ingresos" tooltipPosition="right">
-                            <i class="pi pi-inbox"></i>
+                            <i class="pi pi-window-minimize"></i>
                             <p [hidden]="isHidden">Ingresos</p>
                         </div>
                         <div class="nav__aside__item" tabindex="3" (click)="activeLink()" [routerLink]="'egresos'" pRipple pTooltip="Egresos" tooltipPosition="right">
@@ -34,6 +34,10 @@
                         <div class="nav__aside__item" tabindex="5" (click)="activeLink()" [routerLink]="'estadistica-venta'" pRipple pTooltip="Estadística de Ventas" tooltipPosition="right">
                             <i class="pi pi-chart-line"></i>
                             <p [hidden]="isHidden">Estadística de Ventas</p>
+                        </div>
+                        <div class="nav__aside__item" tabindex="6" (click)="activeLink()" [routerLink]="'estadistica-compra'" pRipple pTooltip="Estadística de Compras" tooltipPosition="right">
+                            <i class="pi pi-chart-line"></i>
+                            <p [hidden]="isHidden">Estadística de Compras</p>
                         </div>
                     </div>
                 </p-scrollPanel>

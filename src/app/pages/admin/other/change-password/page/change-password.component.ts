@@ -72,8 +72,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   validateInput(){
-    if(!this.passwordCurrent || !this.password || this.password.length < 8 || !this.passwordConfirm || this.passwordConfirm.length < 8) return false;
-  
+    if(!this.passwordCurrent || !this.password || !this.passwordConfirm) return false;
     return true;
   }
 
@@ -115,6 +114,16 @@ export class ChangePasswordComponent implements OnInit {
     }, err =>{
       this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     });
+  }
+
+  validateLengthPassword(): boolean{
+    if(this.password.length < 9 || this.passwordConfirm.length < 9) return false;
+    return true;
+  }
+
+  validateMatchPassword(): boolean{
+    if(this.password != this.passwordConfirm) return false;
+    return true;
   }
 
   @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){

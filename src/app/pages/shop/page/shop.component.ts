@@ -372,7 +372,7 @@ export class ShopComponent implements OnInit {
   }
 
   getKeepSession(){
-    if(!localStorage.getItem('keepSession')) return;
+    if(!localStorage.getItem('keepSession')) return false;
 
     const data = localStorage.getItem('keepSession');
 

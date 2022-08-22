@@ -36,6 +36,12 @@ export class StatisticsSailComponent implements OnInit {
   host : string = environment.URL;
   
   user: User = {};
+    
+  isShowMessageDateInit : boolean = false;
+  isShowMessageDateExpiry: boolean = false;
+  messageErrorDateInit: string = "";
+  messageErrorDateExpiry : string = "";
+  disableButton: boolean = false;
 
   constructor( 
     private config: PrimeNGConfig, 
@@ -114,14 +120,15 @@ export class StatisticsSailComponent implements OnInit {
   createInterfaceTable(sails: any){
     sails.forEach((item: any)=>{
       item.orders.forEach((x: any) => {
-        console.log(x);
         this.dataSails.push({
           create_date: x.i.create_date,
           voucher: x.i.order.voucher_number,
-          category: x.i.order_detail.producto.id_category,
+          category: x.i.order_detail.producto.category.category_name,
           product: x.i.order_detail.producto.product_name,
           identification: x.i.order.user.user_document,
           name: x.i.order.user.user_name + " " + x.i.order.user.user_lastName,
+          type_pay: x.i.order_detail.type_pay.pay_description,
+          total: x.i.order.order_price_total,
           advanced_details: x.i
         });
       });
@@ -133,20 +140,20 @@ export class StatisticsSailComponent implements OnInit {
     let arrayAux: any[] = [];
 
     array.forEach((item: any) => {
-      if(!arrayAux.includes(item.id_category)){
-        arrayAux.push(item.id_category)
+      if(!arrayAux.includes(item.category_name)){
+        arrayAux.push(item.category_name)
       }
     });
 
     if(arrayAux.length > 0){
-      this.productsAux = this.products.filter(i=> arrayAux?.includes(i.id_category));
+      this.productsAux = this.products.filter(i=> arrayAux?.includes(i.category.category_name));
     }else{
       this.productsAux = this.products;
     }
   }
 
   async generateReport(){
-    let arrayCategory: number[] = [];
+    let arrayCategory: string[] = [];
     let arrayProduct: string[] = [];
 
     if(!this.isObjEmpty(this.selectedProduct)){
@@ -154,7 +161,7 @@ export class StatisticsSailComponent implements OnInit {
     }
 
     this.selectedCategory.forEach((response: Category)=>{
-      arrayCategory.push(response.id_category);
+      arrayCategory.push(response.category_name);
     });
 
     this.sailsAux = this.dataSails.filter((i : any) => new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf()); 
@@ -167,7 +174,12 @@ export class StatisticsSailComponent implements OnInit {
       this.sailsAux = this.sailsAux.filter((i: any)=> arrayProduct.includes(i.product));
     }
 
-    this.generatePDFStatisticSail.generatePDFStatistic(this.sailsAux, this.user, this.fechaInicio, this.fechaFin, this.selectedCategory, this.selectedProduct);
+    if(this.sailsAux.length == 0){
+      this.messageService.add({severity:'info', summary: 'Info', detail: 'No se encontraron resultados', life: 3000});
+      return;
+    }
+
+    this.generatePDFStatisticSail.generatePDFStatistic(Object.values(this.sailsAux), this.user, this.fechaInicio, this.fechaFin, this.selectedCategory, this.selectedProduct);
   }
 
   validateData(){
@@ -183,5 +195,67 @@ export class StatisticsSailComponent implements OnInit {
       if (obj.hasOwnProperty(prop)) return false;
     }
     return true;
-}
+  }
+
+  getDateNow(){
+    let dateNow = new Date();
+
+    let day = (dateNow.getDate()) < 10 ? '0'+(dateNow.getDate()) : dateNow.getDate();;
+    let month = (dateNow.getMonth() + 1) < 10 ? '0'+ (dateNow.getMonth() + 1) : dateNow.getMonth() + 1;
+    let year = dateNow.getFullYear();
+    let date = `${year}-${month}-${day}`;
+
+    return date;
+  }
+
+  onSelectDateExpiry($event : any){
+    const dateNow = this.getDateNow();
+    this.handleDate($event , dateNow, false );
+  }
+
+  onSelectDateInit($event : any){
+    const dateNow = this.getDateNow();
+    this.handleDate($event , dateNow, true );
+  }
+
+  handleDate($event : any , dateNow : string , isDateInit : boolean){
+    let date = new Date($event);
+    let day= (date.getDate()) < 10 ? '0'+(date.getDate()) : date.getDate();
+    let month = (date.getMonth() + 1) < 10 ? '0'+ (date.getMonth() + 1) : date.getMonth() + 1;
+    let year = date.getFullYear();
+    
+    let dateSelected = `${year}-${month}-${day}`
+
+    if(dateSelected < dateNow){
+      if(isDateInit) this.isShowMessageDateInit = true;
+      else this.isShowMessageDateExpiry = true;
+      
+      this.disableButton = true;
+      return ; 
+    }else{
+      if(isDateInit) {this.isShowMessageDateInit = false; this.fechaInicio = dateSelected;}
+      else{ this.isShowMessageDateExpiry = false; this.fechaFin = dateSelected;}
+
+      this.disableButton = false;
+      
+      this.validateDatesSelected();
+    }
+  }
+
+  validateDatesSelected(){
+    if(this.fechaFin < this.fechaInicio) {
+      this.messageErrorDateExpiry = "Fecha de expiración es menor a la fecha de inico" ; 
+      this.isShowMessageDateExpiry = true ; 
+      this.isShowMessageDateInit = false
+      return ;
+    }
+
+    if(this.fechaInicio > this.fechaFin) {
+      this.messageErrorDateInit = "Fecha de inicio es mayor a la fecha de expiración" ; 
+      this.isShowMessageDateInit = true ; 
+      this.isShowMessageDateExpiry = false
+      return ;
+    }
+  }
+
 }

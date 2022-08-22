@@ -14,6 +14,7 @@ const routes : Routes = [
       {path: 'egresos', loadChildren : ()=> import('./egresos/egresos.module').then( m => m.EgresosModule)},
       {path: 'report-venta', loadChildren : ()=> import('./report-sail/report-sail.module').then( m => m.ReportSailModule)},
       {path: 'estadistica-venta', loadChildren : ()=> import('./statistics-sail/statistics-sail.module').then( m => m.StatisticsSailModule)},
+      {path: 'estadistica-compra', loadChildren : ()=> import('./statistics-purchase/statistics-purchase.module').then( m => m.StatisticsPurchaseModule)},
     ]
   },
   { path:'**' , redirectTo:''}

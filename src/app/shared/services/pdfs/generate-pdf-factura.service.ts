@@ -29,6 +29,10 @@ export class GeneratePdfFacturaService {
    }
 
   async generateFacturePDF(pedido : any){
+    this.subtotal = 0;
+    this.subtotalIva = 0;
+    this.subtotalSinIva = 0;
+    this.discount = 0;
     await this.extractData(pedido);
     await this.getPDF();
   }
@@ -71,7 +75,6 @@ export class GeneratePdfFacturaService {
     if(product.producto.product_iva == 1){
       this.subtotalIva += parseFloat(price_amount.toString());
       this.iva = (this.subtotal * (this.percentIva/100));
-      return ;
     }else{
       this.subtotalSinIva += parseFloat(price_amount.toString());
     }

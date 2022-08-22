@@ -33,6 +33,8 @@ export class AboutComponent implements OnInit {
   }
 
   getKeepSession(){
+    if(!localStorage.getItem('keepSession')) return false;
+    
     const data = localStorage.getItem('keepSession');
 
     if(data!.toString() == "true"){

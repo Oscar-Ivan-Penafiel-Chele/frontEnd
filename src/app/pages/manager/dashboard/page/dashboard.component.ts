@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
   activeLink(){
     const links = document.querySelectorAll('.nav__aside__item');
 
-    const opciones = ['chart','ingresos','egresos','report-venta','estadistica-venta'];
+    const opciones = ['chart','ingresos','egresos','report-venta','estadistica-venta', 'estadistica-compra'];
     const route = window.location.pathname.split('/').pop();
 
 
@@ -146,6 +146,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getKeepSession(){
+    if(!localStorage.getItem('keepSession')) return false;
+    
     const data = localStorage.getItem('keepSession');
 
     if(data!.toString() == "true"){
