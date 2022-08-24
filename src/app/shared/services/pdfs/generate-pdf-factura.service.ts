@@ -273,8 +273,15 @@ export class GeneratePdfFacturaService {
   }
 
   extractDataTable(data : any) : TableRow{
+    data = data.sort(this.sortProducts);
     return data.map((row : any) => [
       row.producto.product_code, `${(row.order_detail_quantity).toString().split('.')[0]}`, row.producto.product_name, row.producto.product_price , `${(row.order_detail_discount)}%`, `$ ${(row.order_detail_discount).toString().split('.')[0] > 0 ? (row.producto.product_price_aux * (row.order_detail_discount / 100)).toFixed(2) : row.order_detail_discount}`, row.producto.productWithDiscount, row.producto.product_price_amount
     ])
+  }
+
+  sortProducts(x: any, y: any){
+    if(x.producto.product_name < y.producto.product_name) return -1;
+    if(x.producto.product_name > y.producto.product_name) return 1;
+    return 0;
   }
 }

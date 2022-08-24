@@ -22,6 +22,7 @@ export class PersonalComponent implements OnInit {
   phoneAux : string = "";
   messageError : string = "";
   messageErrorPhone : string = "";
+  typeDocument : string = "";
   idAddressSelected : number| undefined;
 
   constructor(
@@ -41,7 +42,23 @@ export class PersonalComponent implements OnInit {
     this.user = this._token.getTokenDataUser();
     this.phoneUser = this.user.user_phone!.split(")")[1];
     this.phoneAux = this.phoneUser;
+
+    this.getTypeDocument(this.user.id_identification_type!);
   }
+
+  getTypeDocument(idTypeDocument : number){
+    switch (idTypeDocument) {
+      case 1: this.typeDocument = "Cédula"
+        break;
+      case 2: this.typeDocument = "Pasaporte"
+        break;
+      case 3: this.typeDocument = "RUC"
+        break;
+      default:
+        break;
+    }
+  }
+
 
   validateData(){
     this.submitted = true;

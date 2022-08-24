@@ -115,7 +115,7 @@ export class GeneratePdfStatisticsPurchaseOrderService {
       ...this.extractData(data),
       [new Cell(new Txt('').end).colSpan(4).end, 
         null, null, null, 
-        new Txt('TOTAL DE PAGOS').bold().end,
+        new Txt('TOTAL').bold().end,
         new Txt(`$ ${this.total.toFixed(2)}`).end,
       ]
     ]).keepWithHeaderRows(1).headerRows(1).color('#3f3f3f').widths([90,90,90,60,70,60]).fontSize(9).end;

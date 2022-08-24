@@ -46,7 +46,7 @@
                         <div class="col-12 md:col-12 lg:col-5 sm:col-12">
                             <div class="flex flex-column">
                                 <label class="label__product__input" for="minmax-buttons">Cantidad del Producto <span class="inputs__required">*</span></label>
-                                <p-inputNumber [(ngModel)]="product.amount" [disabled]="!product.product || product.product == null" [style]="{'width':'100%'}" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1"></p-inputNumber>
+                                <p-inputNumber [(ngModel)]="product.amount" [disabled]="!product.product || product.product == null" [style]="{'width':'100%'}" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="9999999"></p-inputNumber>
                             </div>
                             <small class="p-error" *ngIf="submitted && (!product.amount || product.amount == null)">Cantidad es requerida</small>
                         </div>

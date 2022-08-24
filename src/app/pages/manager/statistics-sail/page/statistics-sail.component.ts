@@ -76,6 +76,7 @@ export class StatisticsSailComponent implements OnInit {
     this.categoriesService.getCategories().subscribe((response: Category[])=>{
       this.categories = Object.values(response);
       this.categories = this.categories.filter(i=> i.category_status == 1 && i.category_name != 'NO DEFINIDO');
+      this.categories = this.categories.sort(this.sortCategories);
     },err=>{
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
     })
@@ -229,5 +230,12 @@ export class StatisticsSailComponent implements OnInit {
     this.isShowMessageDateInit = false;
     return;
   }
+
+  sortCategories(x : any ,y : any){
+    if(x.category_name < y.category_name) return -1;
+    if(x.category_name > y.category_name) return 1;
+    return 0;
+}
+
 
 }

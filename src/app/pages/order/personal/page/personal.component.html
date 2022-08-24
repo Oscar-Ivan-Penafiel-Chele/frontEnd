@@ -25,7 +25,7 @@
 
                 <div class="field col">
                     <div class="flex flex-column">
-                        <label for="document"><i class="pi pi-id-card"></i> Identificación</label>
+                        <label for="document"><i class="pi pi-id-card"></i> {{typeDocument}}: </label>
                         <input #age="ngModel" [disabled]="true" id="document" type="text" required pInputText [(ngModel)]="user.user_document"> 
                     </div>
                 </div>

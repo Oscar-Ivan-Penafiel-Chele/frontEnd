@@ -123,6 +123,7 @@ export class CreateOrderComponent implements OnInit {
     }
     
     this.selectedProducts = Object.values(this.selectedProducts);
+    this.selectedProducts = this.selectedProducts.sort(this.sortData);
     this.sendData();
   }
 
@@ -146,6 +147,7 @@ export class CreateOrderComponent implements OnInit {
     } catch (error) {
     }
 
+    this.arrayAux = this.arrayAux.sort(this.sortData);
     this.purchase_order.products = Object.values(this.arrayAux);
     this.totalRecords = this.selectedProducts.length;
     this.product = {} as IPurchaseOrderProducts;
@@ -157,6 +159,14 @@ export class CreateOrderComponent implements OnInit {
 
     if(index != -1) this.selectedProducts.splice(index,1);
     this.totalRecords = this.selectedProducts.length;
+  }
+
+  sortData(x : any ,y : any){
+    console.log(x)
+    console.log(y)
+    if(x.product_name < y.product_name) return -1;
+    if(x.product_name > y.product_name) return 1;
+    return 0;
   }
 
 
