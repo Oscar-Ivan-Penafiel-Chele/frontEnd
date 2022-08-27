@@ -26,6 +26,7 @@
     "angular-csv-ext": "^1.0.5",
     "angular-imask": "^6.4.2",
     "aos": "^2.3.4",
+    "bn-ng-idle": "^2.0.4",
     "chart.js": "^3.7.1",
     "crypto-js": "^4.1.1",
     "ngx-paypal": "^9.0.0",

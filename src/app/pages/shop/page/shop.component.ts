@@ -67,7 +67,7 @@ export class ShopComponent implements OnInit {
     private productService : ProductService,
     private promotionService : PromotionService,
     private bannerService : BannerService,
-    private categoriesService : CategoryService
+    private categoriesService : CategoryService,
   ) { 
     this.iconButton = "pi pi-shopping-cart"
     this.overlayLogout = false;

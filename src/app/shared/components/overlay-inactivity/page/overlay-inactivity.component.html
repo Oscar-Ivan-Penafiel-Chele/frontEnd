@@ -1,0 +1,9 @@
+<section *ngIf="isShowModal">
+    <div class="overlay__inactivity">
+        <figure>
+            <img [src]="iconExclamation" alt="iconExclamation">
+        </figure>
+        <p class="text__overlay">Su sesión ha expirado por inactividad</p>
+        <button pRipple class="button__login" (click)="redirect()">VOLVER A INGRESAR</button>
+    </div>
+</section>

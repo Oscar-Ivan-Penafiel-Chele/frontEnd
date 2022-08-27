@@ -46,9 +46,9 @@
                             <th><i class="pi pi-image"></i> Imagen</th>
                             <th><i class="pi pi-tag"></i> Nombre</th>
                             <th><i class="pi pi-dollar"></i> Precio Unitario</th>
+                            <th><i class="pi pi-box"></i> Cantidad</th>
                             <th><i class="pi pi-percentage"></i> Valor Descuento</th>
                             <th><i class="pi pi-dollar"></i> Parcial</th>
-                            <th><i class="pi pi-box"></i> Cantidad</th>
                             <th><i class="pi pi-percentage"></i> IVA {{iva}}%</th>
                             <th><i class="pi pi-dollar"></i> Subtotal</th>
                         </tr>
@@ -67,9 +67,9 @@
                                 </ng-template>
                             </td>
                             <td>${{product.product_price_aux}}</td>
+                            <td>{{product.product_amount_sail}}</td>
                             <td>${{product.product_offered == null || !product.product_offered ? '0.00' : ( product.product_price_aux * (product.product_offered / 100)).toFixed(2)}}</td>
                             <td>${{!product.productWithDiscount ? product.product_price_aux : product.productWithDiscount}}</td>
-                            <td>{{product.product_amount_sail}}</td>
                             <td>${{product.product__price__iva}}</td>
                             <td>${{product.product_price_amount.toFixed(2)}}</td>
                         </tr>

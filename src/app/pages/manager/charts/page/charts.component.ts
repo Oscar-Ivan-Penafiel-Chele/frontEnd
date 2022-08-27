@@ -114,7 +114,7 @@ export class ChartsComponent implements OnInit {
     this.chartService.getOrders().subscribe((response)=>{
       dataCard.class = "card__option__item stock";
       dataCard.action = "sailman"
-      dataCard.title = "Tipo de Pago";
+      dataCard.title = "Tipos de Pagos";
       dataCard.icon = "pi pi-credit-card"
       dataCard.amount = response.data.length;
 

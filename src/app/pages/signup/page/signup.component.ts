@@ -67,10 +67,10 @@ export class SignupComponent implements OnInit {
 
     !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico no válido' : this.messageEmail = "";
     if(!this.regexData(this.user.email!)) return ;
-
+    
     !this.validateIdentification() ? this.messageIdentification = 'Identificación no válida' : this.messageIdentification = '';
     if(!this.validateIdentification()) return ;
-
+    
     if(!this.validatePassword()){
       this.msgs1 = [{severity:'error', summary:'Info', detail:'Contraseñas no coinciden'}];
       setTimeout(() => {
@@ -78,7 +78,8 @@ export class SignupComponent implements OnInit {
       }, 3000);
       return;
     }
-
+    
+    if(!this.validatePasswordRegex(this.user.password!)) return;
     if(!this.validateData()) return ;
 
     this.loading = true;
@@ -92,12 +93,6 @@ export class SignupComponent implements OnInit {
     if($event.value == 2) this.maxLength = 20 ;
     if($event.value == 3) this.maxLength = 13 ;
     this.user.user_document = ""; 
-  }
-
-  changeEmail($event : any){
-    if($event.data == null){
-      this.messageEmail = "";
-    }
   }
 
   validateIdentification(){
@@ -248,5 +243,12 @@ export class SignupComponent implements OnInit {
   @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
     if(event.key != "Enter") return;
     this.registerUser();
+  }
+
+
+  validatePasswordRegex(password: string): boolean{
+    let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+
+     return regexPassword.test(password);
   }
 }

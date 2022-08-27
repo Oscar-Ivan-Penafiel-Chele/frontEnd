@@ -23,7 +23,8 @@
             "allowedCommonJsDependencies": [
               "pdfmake",
               "pdfmake-wrapper",
-              "crypto-js"
+              "crypto-js",
+              "bn-ng-idle"
             ],
             "outputPath": "dist/frontEnd",
             "index": "src/index.html",
