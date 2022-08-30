@@ -33,12 +33,12 @@ export class LoginComponent implements OnInit {
   displayMessage : boolean = false;
 
   constructor(
-    private primengConfig: PrimeNGConfig, 
+    private primengConfig: PrimeNGConfig,
     private _authService:AuthService,
     private _router : Router,
     private _token : TokenService,
     private encriptedCredentials : EncriptedCredentialService
-    ) { 
+    ) {
         this.data = {};
         this.isVisibleText = true;
         this.optionsMessageStatus = {
@@ -85,11 +85,11 @@ export class LoginComponent implements OnInit {
           this.selectedMessageStatus = this.optionsMessageStatus['invalido'];
           this.closeMessage();
           return ;
-        }else if(response.status == 500 || response.message == "Ocurrio un error interno en el servidor"){
+        }else if(response.status == 500 && response.message == "Ocurrio un error interno en el servidor"){
           this.selectedMessageStatus = this.optionsMessageStatus['error'];
           this.closeMessage();
-          return ; 
-        }else if(response.status == 500 || response.message == "Demasiados intentos, intentar en 1 minuto"){
+          return ;
+        }else if(response.status == 500 && response.message == "Demasiados intentos, intentar en 1 minuto"){
           this.selectedMessageStatus = this.optionsMessageStatus['bloqueado'];
           this.closeMessage();
           return ;
@@ -132,7 +132,7 @@ export class LoginComponent implements OnInit {
 
   getRoute(rol : number){
     const roles : any = environment.dataRol;
-    
+
     let route = roles[rol];
     this._router.navigate([`${route}`]);
   }
