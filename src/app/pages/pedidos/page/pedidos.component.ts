@@ -39,10 +39,10 @@ export class PedidosComponent implements OnInit {
   constructor(
     private _navigate : Router,
     private _authService : AuthService,
-    private _token : TokenService, 
+    private _token : TokenService,
     private pedidoService : PedidosService,
     private generatePDF : GeneratePdfFacturaService
-  ) { 
+  ) {
     this.overlayLogout = false;
     this.options = [
       {id: '1', name : 'Completada'},
@@ -77,7 +77,6 @@ export class PedidosComponent implements OnInit {
     }
 
     this.pedidoService.getOrdersCLient(data).subscribe((response) =>{
-      console.log(response)
       this.groupOrderByIdOrder(response);
     });
   }
@@ -93,7 +92,7 @@ export class PedidosComponent implements OnInit {
       }
 
       data[i.id_order].orders.push({i});
-    }); 
+    });
 
     this.pedidos = Object.values(data)
 
@@ -111,7 +110,7 @@ export class PedidosComponent implements OnInit {
           create_date : pedido.orders[0].i.create_date,
           total : pedido.orders[0].i.order.order_price_total,
           status : pedido.orders[0].i.order.order_status.order_status_description,
-          type_pay: pedido.orders[0].i.order_detail.type_pay.pay_description,
+          type_pay: pedido.orders[0].i.order.type_pay.pay_description,
           pedido : pedido.orders,
         }
       );
@@ -137,7 +136,7 @@ export class PedidosComponent implements OnInit {
       menuOptions?.classList.add('isActiveNavOption');
     }
   }
-  
+
   isActive(){
     const hamburger =  document.querySelector('.hamburger');
     const menu = document.querySelector('.nav__menu');
@@ -171,7 +170,7 @@ export class PedidosComponent implements OnInit {
 
   getKeepSession(){
     if(!localStorage.getItem('keepSession')) return false;
-    
+
     const data = localStorage.getItem('keepSession');
 
     if(data!.toString() == "true"){
@@ -181,7 +180,7 @@ export class PedidosComponent implements OnInit {
     }
   }
 
-  
+
   change($event : any){
     let filter = 0;
 
