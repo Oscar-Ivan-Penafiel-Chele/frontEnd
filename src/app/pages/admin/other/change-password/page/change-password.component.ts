@@ -67,6 +67,8 @@ export class ChangePasswordComponent implements OnInit {
   changePassword(){
     this.submitted = true;
     if(!this.validateInput()) return ;
+    if(!this.validatePasswordRegex(this.password)) return ;
+    if(!this.validatePasswordRegex(this.passwordConfirm)) return ;
     
     this.validatePassword();
   }
@@ -129,5 +131,11 @@ export class ChangePasswordComponent implements OnInit {
   @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
     if(event.key != "Enter") return;
     this.changePassword();
+  }
+
+  validatePasswordRegex(password: string): boolean{
+    let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+
+     return regexPassword.test(password);
   }
 }

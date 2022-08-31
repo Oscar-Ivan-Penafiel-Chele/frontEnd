@@ -129,4 +129,6 @@ export class PurchaseOrderPdfService {
       row.id_product, row.producto.product_name, row.purchase_order_products_amount.toString().split('.')[0]
     ]);
   }
+
+  
 }

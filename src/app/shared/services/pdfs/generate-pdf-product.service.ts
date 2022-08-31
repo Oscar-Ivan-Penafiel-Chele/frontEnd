@@ -13,6 +13,7 @@ export class GeneratePdfProductService {
 
   async generatePDF(user: User, products: Product[]){
     const fecha = new Date();
+    let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
     const pdf = new PdfMakeWrapper();
     pdf.info({
         title: 'PDF Productos',
@@ -68,7 +69,7 @@ export class GeneratePdfProductService {
     pdf.footer((currentPage : any, pageCount : any)=>{
         return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
       });
-    pdf.create().open(); 
+    pdf.create().download(`${dataNow} Productos`)  
   }
 
   createTable(data : any): ITable{

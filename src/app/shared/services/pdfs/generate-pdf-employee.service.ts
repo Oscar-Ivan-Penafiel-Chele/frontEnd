@@ -16,6 +16,9 @@ export class GeneratePdfEmployeeService {
 
     const fecha = new Date();
     const pdf = new PdfMakeWrapper();
+    let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
+
+
     pdf.info({
         title: 'PDF Empleados',
         author: '@Yebba',
@@ -76,7 +79,7 @@ export class GeneratePdfEmployeeService {
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
-    pdf.create().open();    
+    pdf.create().download(`${dataNow} Empleados`)   
   }
 
   sortEmployee(x:any , y:any){

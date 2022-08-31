@@ -30,7 +30,7 @@ export class GenerateCsvProviderService {
         return i;
     })
 
-    new AngularCsv(this.dataCVS, `PROV ${dataNow}`, options);
+    new AngularCsv(this.dataCVS, `${dataNow} Proveedores`, options);
   }
 }
 

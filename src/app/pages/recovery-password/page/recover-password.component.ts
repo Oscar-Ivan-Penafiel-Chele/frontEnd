@@ -56,6 +56,8 @@ export class RecoverPasswordComponent implements OnInit {
     if(!this.validateData()) return;
     if(!this.validateLengthPassword()) return;
     if(!this.validateMatchPassword()) return;
+    if(!this.validatePasswordRegex(this.password)) return;
+    if(!this.validatePasswordRegex(this.confirmatePassword)) return;
 
     this.createRequest();
   }
@@ -102,5 +104,11 @@ export class RecoverPasswordComponent implements OnInit {
   validateMatchPassword(): boolean{
     if(this.password != this.confirmatePassword) return false;
     return true;
+  }
+
+  validatePasswordRegex(password: string): boolean{
+    let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+
+     return regexPassword.test(password);
   }
 }
