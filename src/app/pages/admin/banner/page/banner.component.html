@@ -138,7 +138,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Nuevo" icon="pi pi-check" class="p-button-text" (click)="saveBanner()"></button>
+        <button pButton pRipple [label]="actionSelected == 'new' ? 'Nuevo' : 'Actualizar'" icon="pi pi-check" class="p-button-text" (click)="saveBanner()"></button>
     </ng-template>
 </p-dialog>
 

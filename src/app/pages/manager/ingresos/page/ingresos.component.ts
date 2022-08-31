@@ -82,7 +82,7 @@ export class IngresosComponent implements OnInit {
     this.ingresosAux = this.ingresos.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
     
     if(this.ingresosAux.length == 0) {
-      this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
+      this.messageService.add({severity:'info', summary: 'Info', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
       return ;
     };
 

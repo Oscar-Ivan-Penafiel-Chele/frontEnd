@@ -12,7 +12,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_module','audit_description']" 
+    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','user.user_lastName','audit_module','audit_description']" 
     responsiveLayout="stack" [rowHover]="true"  [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas">
         <ng-template pTemplate="caption">

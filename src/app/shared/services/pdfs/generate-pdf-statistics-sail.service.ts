@@ -16,13 +16,14 @@ export class GeneratePdfStatisticsSailService {
   constructor() { }
 
   async generatePDFStatistic(sails: any, user: User, fechaIncio: any, fechaFin: any, selectedCategory: Category[], selectedProduct: Product){
+    const pdf = new PdfMakeWrapper();
+    
     this.getTotal(sails);
+    const fecha = this.getDate();
 
     this.fechaInicio = fechaIncio;
     this.fechaFin = fechaFin;
 
-    const fecha = new Date();
-    const pdf = new PdfMakeWrapper();
     
     pdf.info({
         title: 'Estadística de Ventas',
@@ -49,9 +50,9 @@ export class GeneratePdfStatisticsSailService {
                 new Txt('Usuario: ').alignment('right').width('*').bold().end,
                 new Txt(`${user.user_name} ${user.user_lastName}`).width(60).alignment('right').end,
                 new Txt('Fecha: ').alignment('right').width(40).bold().end,
-                new Txt(`${fecha.getFullYear()}/${(fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1)}/${fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate()} `).width(55).alignment('right').end,
+                new Txt(`${fecha.year}/${fecha.month}/${fecha.day}`).width(55).alignment('right').end,
                 new Txt('Hora:').alignment('right').width(30).bold().end,
-                new Txt(`${fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours()}:${fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()} \n\n`).width(23).alignment('right').end,
+                new Txt(`${fecha.hour}:${fecha.minutes} \n\n`).width(23).alignment('right').end,
               ]).end,
             ]).width('*').color('#3f3f3f').alignment('right').fontSize(10).end
           ]).end
@@ -85,7 +86,7 @@ export class GeneratePdfStatisticsSailService {
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
-    pdf.create().open();
+    pdf.create().download(`${fecha.year}-${fecha.month}-${fecha.day} ${fecha.hour}-${fecha.minutes} Estadística-de-Ventas.pdf`);
   }
 
 
@@ -135,5 +136,17 @@ export class GeneratePdfStatisticsSailService {
     sails.forEach((item: any) => {
       this.total += parseFloat(item.total);
     });
+  }
+
+  getDate(){
+    const fecha = new Date();
+
+    return {
+      year: fecha.getFullYear(), 
+      month: (fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1) , 
+      day: fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate(),
+      hour: fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours(),
+      minutes: fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes()
+    }
   }
 }

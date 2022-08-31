@@ -21,7 +21,7 @@ export class ForgetPasswordComponent implements OnInit {
   errorEmail: boolean = false;
   msgs1: Message[] = [];
   isCompleteRequest: boolean = false;
-  route: string = "http://localhost:4200";
+  route: string = "https://ferreteriaeldescanso.jomatelapps.com";
 
   constructor(
     private primengConfig: PrimeNGConfig,
