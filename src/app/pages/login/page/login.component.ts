@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
           this.selectedMessageStatus = this.optionsMessageStatus['error'];
           this.closeMessage();
           return ;
-        }else if(response.status == 500 && response.message == "Demasiados intentos, intentar en 1 minuto"){
+        }else if(response.status == 500 || response.message == "Demasiados intentos, intentar en 1 minuto"){
           this.selectedMessageStatus = this.optionsMessageStatus['bloqueado'];
           this.closeMessage();
           return ;
