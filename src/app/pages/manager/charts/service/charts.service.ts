@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class ChartsService {
   url : string = environment.API;
-  
+
   constructor(private _http : HttpClient) { }
 
   getCategoriesProducts(): Observable<Category[]>{
@@ -26,5 +26,9 @@ export class ChartsService {
 
   getOrders(): Observable<any>{
     return this._http.post<any>(`${this.url}/orders/by/status`,"")
+  }
+
+  getTypePayGraphic(data: any){
+    return this._http.post<any>(`${this.url}/type-pay/orders`,data);
   }
 }

@@ -13,7 +13,7 @@ export class ChartsComponent implements OnInit {
   dataSails : any;
   dataProducts : any;
   dataUsers : any;
-  dataStock : any;
+  dataTypePay : any;
   actionSelect : string = "";
   labelsDataProducts : any[] = [];
   dataProductsCount : any[] = [];
@@ -30,6 +30,10 @@ export class ChartsComponent implements OnInit {
   backgroundColors: any[] = [];
 
   categories : Category[] = [];
+
+
+  fechaInicioPay: string = "";
+  fechaFinPay: string = "";
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -52,10 +56,10 @@ export class ChartsComponent implements OnInit {
     this.actionSelect = "sails"
     this.primengConfig.ripple = true;
     this.getGraphycDataSails();
-    this.getGraphycDataStock();
     this.getSails();
     this.getProductsByCategory();
     this.getOrders();
+    this.getTypePayData();
   }
 
   getSails(){
@@ -63,7 +67,6 @@ export class ChartsComponent implements OnInit {
 
     this.isLoading = true;
     this.chartService.getSails().subscribe((response)=>{
-      console.log(response)
       dataCard.class = "card__option__item ventas";
       dataCard.action = "sails"
       dataCard.title = "Ventas";
@@ -86,7 +89,7 @@ export class ChartsComponent implements OnInit {
     dataCard.action = "products"
     dataCard.title = "Productos";
     dataCard.icon = "pi pi-tags"
-    
+
     this.chartService.getProductsByCategory().subscribe((response)=>{
       this.productsByCategory = Object.values(response.data)
       this.productsByCategory = this.productsByCategory.filter(i => i.category_name != 'NO DEFINIDO');
@@ -103,7 +106,7 @@ export class ChartsComponent implements OnInit {
 
   drawGraphyc(productsByCategory: any): void{
     productsByCategory.forEach((i: any) => {
-      this.labelsDataProducts.push(i.category_name); 
+      this.labelsDataProducts.push(i.category_name);
       this.dataProductsCount.push(i.products);
     });
   }
@@ -150,12 +153,35 @@ export class ChartsComponent implements OnInit {
     };
   }
 
-  getGraphycDataStock(){
-    this.dataStock = {
-      labels: ['PayPal','Tarjeta de crédito o débito'],
+  getTypePayData(){
+    let arrayData: number[] = [];
+    let labelsTypePay: string[] = [];
+    let data: any = {};
+
+    data = {
+      "fecha_inicio": this.fechaInicioPay,
+      "fecha_fin": this.fechaFinPay
+    };
+
+    if(!this.fechaInicioPay  || !this.fechaFinPay){
+      data = {};
+    }
+
+    this.chartService.getTypePayGraphic(data).subscribe((response: any)=>{
+      arrayData = Object.values(response.data);
+      labelsTypePay = Object.keys(response.data);
+
+      this.getGraphycDataTypePay(arrayData, labelsTypePay);
+
+    })
+  }
+
+  getGraphycDataTypePay(data: number[], labels: string[]){
+    this.dataTypePay = {
+      labels: labels,
             datasets: [
                 {
-                    data: [20, 5],
+                    data: data,
                     backgroundColor: [
                         "#FF6384",
                         "#36A2EB",

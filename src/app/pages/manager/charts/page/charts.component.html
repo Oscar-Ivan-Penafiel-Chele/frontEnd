@@ -46,9 +46,9 @@
 
     <ng-template [ngIf]="actionSelect == 'sailman'">
         <div style="width: 40%;" class="flex flex-column justify-content-center">
-            <p class="parrafo">Vendedores</p>
+            <p class="parrafo">Tipos de Pagos</p>
             <p-skeleton *ngIf="completeLoadingSailsman" height="25rem"></p-skeleton>
-            <p-chart *ngIf="!completeLoadingSailsman" type="doughnut" [data]="dataStock"></p-chart>
+            <p-chart *ngIf="!completeLoadingSailsman" type="doughnut" [data]="dataTypePay"></p-chart>
         </div>
     </ng-template>
 </div>
