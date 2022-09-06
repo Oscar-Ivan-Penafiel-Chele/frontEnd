@@ -100,7 +100,6 @@ export class ChartsComponent implements OnInit {
 
     this.isLoading = true;
     this.chartService.getOrders({}).subscribe((response)=>{
-      console.log(response)
       dataCard.class = "card__option__item ventas";
       dataCard.action = "orders"
       dataCard.title = "Compras";
@@ -130,9 +129,7 @@ export class ChartsComponent implements OnInit {
     this.chartService.getTypePayGraphic(data).subscribe((response: any)=>{
       this.fechaInicioOrder = "";
       this.fechaFinOrder = "";
-
-      console.log(response);
-    }) 
+    })
   }
 
   getGraphycsOrder(){
@@ -193,21 +190,25 @@ export class ChartsComponent implements OnInit {
 
   getSails(){
     const dataCard: ICardAmin = {} as ICardAmin;
+    let arrayData: number[] = [];
+    let labelsSails: string[] = [];
 
     this.isLoading = true;
     this.chartService.getSails({}).subscribe((response)=>{
+
       dataCard.class = "card__option__item ventas";
       dataCard.action = "sails"
       dataCard.title = "Ventas";
       dataCard.icon = "pi pi-shopping-cart"
-      dataCard.amount = response.data.Ventas;
+      dataCard.amount = response.count.Ventas;
 
+      arrayData = Object.values(response.data);
+      labelsSails = Object.keys(response.data);
 
       this.options.push(dataCard);
       this.isLoading = false;
 
-      this.getGraphycDataSails();
-
+      this.getGraphycDataSails(arrayData, labelsSails);
     }, err =>{
       console.log(err)
     })
@@ -216,28 +217,59 @@ export class ChartsComponent implements OnInit {
   getSailsDataFilter(){
     let fechaI = new Date(this.fechaInicioSail);
     let fechaF = new Date(this.fechaFinSail)
+    let arrayDates: string[] = [];
+    let anioI;
+    let anioF;
+    let monthI;
+    let monthF;
+    let arrayData: number[] = [];
+    let labelsSails: string[] = [];
+
+    if(this.fechaInicioSail  && !this.fechaFinSail){
+      let date = fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
+      arrayDates.push(date);
+    }else if(this.fechaInicioSail  && this.fechaFinSail){
+      anioI = fechaI.getFullYear();
+      monthI = ((fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
+      anioF = fechaF.getFullYear();
+      monthF = ((fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1));
+
+      let prueba3 = '2022-06'
+      let prueba1 = '2022-07';
+      let prueba2 = '2022-08';
+      let prueba4 = '2022-09';
+
+      arrayDates.push(prueba3, prueba1, prueba2, prueba4);
+    }
 
     let data = {
-      "fecha_inicio": fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1)) + '-' + (fechaI.getDate() < 10 ? '0'+fechaI.getDate() : fechaI.getDate()),
-      "fecha_fin": fechaF.getFullYear() + '-' + ( (fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1)) + '-' + (fechaF.getDate() < 10 ? '0'+fechaF.getDate() : fechaF.getDate()),
-    };
+      fechas: arrayDates
+    }
 
-    this.chartService.getTypePayGraphic(data).subscribe((response: any)=>{
+    // let data = {
+    //   "fecha_inicio": fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1)) + '-' + (fechaI.getDate() < 10 ? '0'+fechaI.getDate() : fechaI.getDate()),
+    //   "fecha_fin": fechaF.getFullYear() + '-' + ( (fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1)) + '-' + (fechaF.getDate() < 10 ? '0'+fechaF.getDate() : fechaF.getDate()),
+    // };
+
+    this.chartService.getSails(data).subscribe((response: any)=>{
+      console.log(response)
+      arrayData = Object.values(response.data)
+      labelsSails = Object.keys(response.data)
       this.fechaInicioSail = "";
       this.fechaFinSail = "";
 
-      console.log(response);
-    }) 
+      this.getGraphycDataSails(arrayData, labelsSails);
+    })
   }
 
 
-  getGraphycDataSails(){
+  getGraphycDataSails(arrayData: number[], labelsSails: string[]){
     this.dataSails = {
-      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+      labels: labelsSails,
       datasets: [
         {
             label: 'Ventas',
-            data: [28, 35, 40, 43, 46, 40, 50,58],
+            data: arrayData,
             fill: false,
             borderColor: '#FFA726',
             tension: .4
@@ -329,23 +361,23 @@ export class ChartsComponent implements OnInit {
     if(!this.fechaFinPay || !this.fechaInicioPay) return ;
 
     if(this.fechaFinPay < this.fechaInicioPay) {
-      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiry = true ; 
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpiry = true ;
       this.isShowMessageDateInit = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateExpiry}`});
       return ;
     }
 
     if(this.fechaInicioPay > this.fechaFinPay) {
-      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInit = true ; 
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInit = true ;
       this.isShowMessageDateExpiry = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateInit}`});
       return ;
     }
 
-    this.messageErrorDateExpiry = "" ; 
-    this.isShowMessageDateExpiry = false ; 
+    this.messageErrorDateExpiry = "" ;
+    this.isShowMessageDateExpiry = false ;
     this.isShowMessageDateInit = false;
     this.messageService.clear();
     return;
@@ -370,23 +402,23 @@ export class ChartsComponent implements OnInit {
     if(!this.fechaInicioSail || !this.fechaFinSail) return ;
 
     if(this.fechaInicioSail < this.fechaFinSail) {
-      this.messageErrorDateExpirySail = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpirySail = true ; 
+      this.messageErrorDateExpirySail = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpirySail = true ;
       this.isShowMessageDateInitSail = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateExpirySail}`});
       return ;
     }
 
     if(this.fechaInicioSail > this.fechaFinSail) {
-      this.messageErrorDateInitSail = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInitSail = true ; 
+      this.messageErrorDateInitSail = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInitSail = true ;
       this.isShowMessageDateExpirySail = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateInitSail}`});
       return ;
     }
 
-    this.messageErrorDateExpirySail = "" ; 
-    this.isShowMessageDateExpirySail = false ; 
+    this.messageErrorDateExpirySail = "" ;
+    this.isShowMessageDateExpirySail = false ;
     this.isShowMessageDateInitSail = false;
     this.messageService.clear();
     return;
@@ -407,23 +439,23 @@ export class ChartsComponent implements OnInit {
     if(!this.fechaInicioOrder || !this.fechaFinOrder) return ;
 
     if(this.fechaFinOrder < this.fechaInicioOrder) {
-      this.messageErrorDateExpiryOrder = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiryOrder = true ; 
+      this.messageErrorDateExpiryOrder = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpiryOrder = true ;
       this.isShowMessageDateInitOrder = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateExpiryOrder}`});
       return ;
     }
 
     if(this.fechaInicioOrder > this.fechaFinOrder) {
-      this.messageErrorDateInitOrder = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInitOrder = true ; 
+      this.messageErrorDateInitOrder = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInitOrder = true ;
       this.isShowMessageDateExpiryOrder = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateInitOrder}`});
       return ;
     }
 
-    this.messageErrorDateExpiryOrder = "" ; 
-    this.isShowMessageDateExpiryOrder = false ; 
+    this.messageErrorDateExpiryOrder = "" ;
+    this.isShowMessageDateExpiryOrder = false ;
     this.isShowMessageDateInitOrder = false;
     this.messageService.clear();
     return;

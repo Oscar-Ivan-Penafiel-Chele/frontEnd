@@ -59,14 +59,14 @@
             <div class="grid mb-5">
                 <div class="col-12 md:col-5">
                     <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
-                    <p-calendar inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioSail" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                    <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioSail" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpicker"></p-calendar>
                 </div>
                 <div class="col-12 md:col-5">
                     <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
-                    <p-calendar class="mr-2" inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateExpirySail($event)" [(ngModel)]="fechaFinSail" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                    <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateExpirySail($event)" [(ngModel)]="fechaFinSail" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpickerSail"></p-calendar>
                 </div>
                 <div class="col-12 md:col-2 flex justify-content-center align-items-center">
-                    <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInitSail, isShowMessageDateExpirySail, fechaInicioSail, fechaFinSail) ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInitSail, isShowMessageDateExpirySail, fechaInicioSail, fechaFinSail)" pRipple>FILTRAR</button>
+                    <button [class]="'button__chart__typePay ' + ((!fechaInicioSail && !fechaFinSail) || !fechaInicioSail ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="(!fechaInicioSail && !fechaFinSail) || !fechaInicioSail" pRipple>FILTRAR</button>
                 </div>
             </div>
 
