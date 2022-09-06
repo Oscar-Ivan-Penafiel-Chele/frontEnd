@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChartsRoutingModule } from './charts-routing.module';
 import { ChartsComponent } from './page/charts.component';
 import { PrimengComponentsModule } from 'src/app/shared/components/primeng-components/primeng-components.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { PrimengComponentsModule } from 'src/app/shared/components/primeng-compo
   imports: [
     CommonModule,
     ChartsRoutingModule,
-    PrimengComponentsModule
+    PrimengComponentsModule,
+    FormsModule
   ]
 })
 export class ChartsModule { }

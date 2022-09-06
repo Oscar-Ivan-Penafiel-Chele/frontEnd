@@ -1,3 +1,4 @@
+<p-toast [autoZIndex]="false" [style]="{'z-index': 2}"></p-toast>
 <section>
     <div class="cards__options">
         <ng-template [ngIf]="isLoading" [ngIfElse]="showCards">
@@ -27,9 +28,48 @@
 </section>
 
 <div class="content__graphycs flex justify-content-center">
+
+    <ng-template [ngIf]="actionSelect == 'orders'">
+        <div class="titleGraphyc">
+            <p class="titleGraphyc">Compras</p>
+
+            <div class="grid mb-5">
+                <div class="col-12 md:col-5">
+                    <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
+                    <p-calendar inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateInitOrder($event)" [(ngModel)]="fechaInicioOrder" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                </div>
+                <div class="col-12 md:col-5">
+                    <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
+                    <p-calendar class="mr-2" inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateExpiryOrder($event)" [(ngModel)]="fechaFinOrder" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                </div>
+                <div class="col-12 md:col-2 flex justify-content-center align-items-center">
+                    <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInitOrder, isShowMessageDateExpiryOrder, fechaInicioOrder, fechaFinOrder) ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInitOrder, isShowMessageDateExpiryOrder, fechaInicioOrder, fechaFinOrder)" pRipple>FILTRAR</button>
+                </div>
+            </div>
+
+            <p-skeleton *ngIf="completeLoadingSails" width="60vw" height="25rem"></p-skeleton>
+            <p-chart *ngIf="!completeLoadingSails" type="line" [data]="dataOrders" width="60vw" [options]="basicOptions"></p-chart>
+        </div>
+    </ng-template>
+
     <ng-template [ngIf]="actionSelect == 'sails'">
         <div class="titleGraphyc">
             <p class="titleGraphyc">Ventas</p>
+
+            <div class="grid mb-5">
+                <div class="col-12 md:col-5">
+                    <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
+                    <p-calendar inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioSail" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                </div>
+                <div class="col-12 md:col-5">
+                    <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
+                    <p-calendar class="mr-2" inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateExpirySail($event)" [(ngModel)]="fechaFinSail" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                </div>
+                <div class="col-12 md:col-2 flex justify-content-center align-items-center">
+                    <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInitSail, isShowMessageDateExpirySail, fechaInicioSail, fechaFinSail) ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInitSail, isShowMessageDateExpirySail, fechaInicioSail, fechaFinSail)" pRipple>FILTRAR</button>
+                </div>
+            </div>
+
             <p-skeleton *ngIf="completeLoadingSails" width="60vw" height="25rem"></p-skeleton>
             <p-chart *ngIf="!completeLoadingSails" type="line" [data]="dataSails" width="60vw" [options]="basicOptions"></p-chart>
         </div>
@@ -45,10 +85,25 @@
     </ng-template>
 
     <ng-template [ngIf]="actionSelect == 'sailman'">
-        <div style="width: 40%;" class="flex flex-column justify-content-center">
+        <div>
             <p class="parrafo">Tipos de Pagos</p>
-            <p-skeleton *ngIf="completeLoadingSailsman" height="25rem"></p-skeleton>
-            <p-chart *ngIf="!completeLoadingSailsman" type="doughnut" [data]="dataTypePay"></p-chart>
+            <div class="grid">
+                <div class="col-12 md:col-5">
+                    <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
+                    <p-calendar inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateInit($event)" [(ngModel)]="fechaInicioPay" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                </div>
+                <div class="col-12 md:col-5">
+                    <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
+                    <p-calendar class="mr-2" inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateExpiry($event)" [(ngModel)]="fechaFinPay" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
+                </div>
+                <div class="col-12 md:col-2 flex justify-content-center align-items-center">
+                    <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInit, isShowMessageDateExpiry, fechaInicioPay, fechaFinPay) ? 'isDisableButton' : 'isAvalible')" (click)="getTypePayDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInit, isShowMessageDateExpiry, fechaInicioPay, fechaFinPay)" pRipple>FILTRAR</button>
+                </div>
+            </div>
+            <div style="width: 40%; margin: auto;" class="mt-5">
+                <p-skeleton *ngIf="completeLoadingSailsman" height="25rem"></p-skeleton>
+                <p-chart *ngIf="!completeLoadingSailsman" type="doughnut" [data]="dataTypePay"></p-chart>
+            </div>
         </div>
     </ng-template>
 </div>

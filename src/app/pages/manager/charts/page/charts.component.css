@@ -114,3 +114,22 @@ section{
     align-items: center;
     gap: 1em;
 }
+
+.button__chart__typePay{
+    width: 100%;
+    padding: 14px 0px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 25px;
+}
+
+.isDisableButton{
+    background-color: #8f94fb;
+}
+
+.isAvalible{
+    background-color: #6366F1;
+}

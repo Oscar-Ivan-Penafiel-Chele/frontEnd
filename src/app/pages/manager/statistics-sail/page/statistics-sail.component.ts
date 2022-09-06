@@ -121,6 +121,7 @@ export class StatisticsSailComponent implements OnInit {
   createInterfaceTable(sails: any){
     sails.forEach((item: any)=>{
       item.orders.forEach((x: any) => {
+        console.log(x)
         this.dataSails.push({
           create_date: x.i.create_date,
           voucher: x.i.order.voucher_number,
@@ -128,7 +129,7 @@ export class StatisticsSailComponent implements OnInit {
           product: x.i.order_detail.producto.product_name,
           identification: x.i.order.user.user_document,
           name: x.i.order.user.user_name + " " + x.i.order.user.user_lastName,
-          type_pay: x.i.order_detail.type_pay.pay_description,
+          type_pay: x.i.order.type_pay.pay_description,
           total: x.i.order.order_price_total,
           advanced_details: x.i
         });

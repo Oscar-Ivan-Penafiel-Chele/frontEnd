@@ -12,20 +12,16 @@ export class ChartsService {
 
   constructor(private _http : HttpClient) { }
 
-  getCategoriesProducts(): Observable<Category[]>{
-    return this._http.get<Category[]>(`${this.url}/categories/products`)
-  }
-
-  getSails(): Observable<any>{
-    return this._http.post<any>(`${this.url}/sales/all`,'')
+  getSails(data: any): Observable<any>{
+    return this._http.post<any>(`${this.url}/sales/by/date`,data)
   }
 
   getProductsByCategory(): Observable<any>{
     return this._http.get<any>(`${this.url}/products/by/category`)
   }
 
-  getOrders(): Observable<any>{
-    return this._http.post<any>(`${this.url}/orders/by/status`,"")
+  getOrders(data: any): Observable<any>{
+    return this._http.post<any>(`${this.url}/orders/by/status`, data)
   }
 
   getTypePayGraphic(data: any){
