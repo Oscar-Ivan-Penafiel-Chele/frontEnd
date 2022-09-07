@@ -194,7 +194,7 @@ export class GeneratePdfFacturaService {
               new Stack([
                 new Columns([
                   new Txt('Correo de Empresa: ').width(80).end,
-                  new Txt('el-descanso@gmail.com').width('*').end,
+                  new Txt('ferreteriaeldescanso@gmail.com').width('*').end,
                 ]).end,
                 new Columns([
                   new Txt('Correo de Cliente: ').width(80).end,

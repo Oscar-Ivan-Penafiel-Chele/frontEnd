@@ -57,6 +57,7 @@ export class VendedorPedidosComponent implements OnInit {
     this.selectedOptionFilter = 3;
     this.loading = true;
     this.vendedorService.getPendingOrders().subscribe((response) =>{
+      console.log(response)
       this.groupOrderByIdOrder(response);
     })
   }

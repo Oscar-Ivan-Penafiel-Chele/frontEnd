@@ -1,3 +1,7 @@
+:host ::ng-deep .p-datepicker-year{
+    pointer-events: none;
+}
+
 section{
      display: flex;
      flex-flow: row wrap;
@@ -87,6 +91,12 @@ section{
     background: linear-gradient(to left, #f8b500, #f7da92); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.compras{
+    background: #A770EF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #CF8BF3, #A770EF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #CF8BF3, #A770EF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .content__graphycs{
     margin-top: 30px;
     width: 100%;
@@ -132,4 +142,19 @@ section{
 
 .isAvalible{
     background-color: #6366F1;
+}
+
+.btn__clear__filter{
+    border: 1px solid #6366F1;
+    color: #6366F1;
+    padding: 14px 16px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn__clear__filter:hover{
+    cursor: pointer;
 }

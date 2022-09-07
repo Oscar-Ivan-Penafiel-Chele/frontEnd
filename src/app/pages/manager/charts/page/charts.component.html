@@ -55,18 +55,19 @@
     <ng-template [ngIf]="actionSelect == 'sails'">
         <div class="titleGraphyc">
             <p class="titleGraphyc">Ventas</p>
-
             <div class="grid mb-5">
                 <div class="col-12 md:col-5">
                     <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
-                    <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioSail" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpicker"></p-calendar>
+                    <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioSail" view="month" dateFormat="yy/mm" [readonlyInput]="true" [yearNavigator]="false" [showButtonBar]="true"  inputId="monthpicker"></p-calendar>
+                    <small class="p-error" *ngIf="fechaFinSail && !fechaInicioSail">Fecha de inicio es requerido</small>
                 </div>
                 <div class="col-12 md:col-5">
                     <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
                     <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateExpirySail($event)" [(ngModel)]="fechaFinSail" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpickerSail"></p-calendar>
                 </div>
                 <div class="col-12 md:col-2 flex justify-content-center align-items-center">
-                    <button [class]="'button__chart__typePay ' + ((!fechaInicioSail && !fechaFinSail) || !fechaInicioSail ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="(!fechaInicioSail && !fechaFinSail) || !fechaInicioSail" pRipple>FILTRAR</button>
+                    <button [style]="fechaFinSail && !fechaInicioSail ? 'margin-top : 0px' : 'margin-top : 25px'" [class]="'button__chart__typePay ' + ((!fechaInicioSail && !fechaFinSail) || !fechaInicioSail || isShowMessageDateExpirySail ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="(!fechaInicioSail && !fechaFinSail) || !fechaInicioSail || isShowMessageDateExpirySail" pRipple>FILTRAR</button>
+                    <button [style]="fechaFinSail && !fechaInicioSail ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestFilterSail({})" pRipple> <i class="pi pi-filter-slash"></i></button>
                 </div>
             </div>
 
@@ -98,6 +99,7 @@
                 </div>
                 <div class="col-12 md:col-2 flex justify-content-center align-items-center">
                     <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInit, isShowMessageDateExpiry, fechaInicioPay, fechaFinPay) ? 'isDisableButton' : 'isAvalible')" (click)="getTypePayDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInit, isShowMessageDateExpiry, fechaInicioPay, fechaFinPay)" pRipple>FILTRAR</button>
+                    <button [style]="fechaFinPay && !fechaInicioPay ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestFilterPay({})" pRipple> <i class="pi pi-filter-slash"></i></button>
                 </div>
             </div>
             <div style="width: 40%; margin: auto;" class="mt-5">

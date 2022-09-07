@@ -11,6 +11,7 @@ import {MessageService} from 'primeng/api';
   providers: [MessageService]
 })
 export class ChartsComponent implements OnInit {
+
   basicOptions: any;
   dataSails : any;
   dataOrders : any;
@@ -83,6 +84,7 @@ export class ChartsComponent implements OnInit {
         "today" : "Hoy",
         "dayNamesMin": ["D","L","M","X","J","V","S"],
         "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+        "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
       });
      }
 
@@ -100,10 +102,10 @@ export class ChartsComponent implements OnInit {
 
     this.isLoading = true;
     this.chartService.getOrders({}).subscribe((response)=>{
-      dataCard.class = "card__option__item ventas";
+      dataCard.class = "card__option__item compras";
       dataCard.action = "orders"
       dataCard.title = "Compras";
-      dataCard.icon = "pi pi-shopping-cart"
+      dataCard.icon = "pi pi-sign-in"
       //dataCard.amount = response.data.Ventas;
 
 
@@ -222,37 +224,38 @@ export class ChartsComponent implements OnInit {
     let anioF;
     let monthI;
     let monthF;
+    let data = {}
+
+    anioI = fechaI.getFullYear();
+    anioF = fechaF.getFullYear();
+    monthI = ((fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
+    monthF = ((fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1));
+
+    if((this.fechaInicioSail  && !this.fechaFinSail) || (monthI == monthF)){
+      let date = fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
+      arrayDates.push(date);
+      
+      data = {fechas: arrayDates}
+      this.requestFilterSail(data);
+      return;
+    }
+
+    if(this.fechaInicioSail  && this.fechaFinSail){
+      for (let index = parseInt(monthI.toString()); index <= parseInt(monthF.toString()); index++) {
+        arrayDates.push(`2022-${index < 10 ? '0'+index : index}`);
+      }
+
+      data = {fechas: arrayDates}
+      this.requestFilterSail(data);
+      return;
+    }
+  }
+
+  requestFilterSail(data: any){
     let arrayData: number[] = [];
     let labelsSails: string[] = [];
 
-    if(this.fechaInicioSail  && !this.fechaFinSail){
-      let date = fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
-      arrayDates.push(date);
-    }else if(this.fechaInicioSail  && this.fechaFinSail){
-      anioI = fechaI.getFullYear();
-      monthI = ((fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
-      anioF = fechaF.getFullYear();
-      monthF = ((fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1));
-
-      let prueba3 = '2022-06'
-      let prueba1 = '2022-07';
-      let prueba2 = '2022-08';
-      let prueba4 = '2022-09';
-
-      arrayDates.push(prueba3, prueba1, prueba2, prueba4);
-    }
-
-    let data = {
-      fechas: arrayDates
-    }
-
-    // let data = {
-    //   "fecha_inicio": fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1)) + '-' + (fechaI.getDate() < 10 ? '0'+fechaI.getDate() : fechaI.getDate()),
-    //   "fecha_fin": fechaF.getFullYear() + '-' + ( (fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1)) + '-' + (fechaF.getDate() < 10 ? '0'+fechaF.getDate() : fechaF.getDate()),
-    // };
-
     this.chartService.getSails(data).subscribe((response: any)=>{
-      console.log(response)
       arrayData = Object.values(response.data)
       labelsSails = Object.keys(response.data)
       this.fechaInicioSail = "";
@@ -304,9 +307,6 @@ export class ChartsComponent implements OnInit {
   }
 
   getTypePayDataFilter(){
-    let arrayData: number[] = [];
-    let labelsTypePay: string[] = [];
-
     let fechaI = new Date(this.fechaInicioPay);
     let fechaF = new Date(this.fechaFinPay)
 
@@ -314,6 +314,13 @@ export class ChartsComponent implements OnInit {
       "fecha_inicio": fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1)) + '-' + (fechaI.getDate() < 10 ? '0'+fechaI.getDate() : fechaI.getDate()),
       "fecha_fin": fechaF.getFullYear() + '-' + ( (fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1)) + '-' + (fechaF.getDate() < 10 ? '0'+fechaF.getDate() : fechaF.getDate()),
     };
+
+   this.requestFilterPay(data);
+  }
+
+  requestFilterPay(data: any){
+    let arrayData: number[] = [];
+    let labelsTypePay: string[] = [];
 
     this.chartService.getTypePayGraphic(data).subscribe((response: any)=>{
       arrayData = Object.values(response.data);
@@ -399,21 +406,18 @@ export class ChartsComponent implements OnInit {
   }
 
   validateDatesSelectedSail(){
+    let anioI = new Date(this.fechaInicioSail).getFullYear();
+    let monthI = ((new Date(this.fechaInicioSail).getMonth() + 1) < 10 ? '0'+(new Date(this.fechaInicioSail).getMonth() + 1) : (new Date(this.fechaInicioSail).getMonth() + 1));
+    let anioF = new Date(this.fechaFinSail).getFullYear();
+    let monthF = ((new Date(this.fechaFinSail).getMonth() + 1) < 10 ? '0'+(new Date(this.fechaFinSail).getMonth() + 1) : (new Date(this.fechaFinSail).getMonth() + 1));
+
     if(!this.fechaInicioSail || !this.fechaFinSail) return ;
 
-    if(this.fechaInicioSail < this.fechaFinSail) {
+    if((anioI > anioF) || (monthI > monthF)){
       this.messageErrorDateExpirySail = "Fecha fin no puede se menor a la fecha de inico" ;
       this.isShowMessageDateExpirySail = true ;
       this.isShowMessageDateInitSail = false
       this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateExpirySail}`});
-      return ;
-    }
-
-    if(this.fechaInicioSail > this.fechaFinSail) {
-      this.messageErrorDateInitSail = "Fecha de inicio no puede se mayor a la fecha fin" ;
-      this.isShowMessageDateInitSail = true ;
-      this.isShowMessageDateExpirySail = false
-      this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateInitSail}`});
       return ;
     }
 
