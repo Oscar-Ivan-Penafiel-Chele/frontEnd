@@ -34,21 +34,23 @@
             <p class="titleGraphyc">Compras</p>
 
             <div class="grid mb-5">
-                <div class="col-12 md:col-5">
-                    <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
-                    <p-calendar inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateInitOrder($event)" [(ngModel)]="fechaInicioOrder" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
-                </div>
-                <div class="col-12 md:col-5">
-                    <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
-                    <p-calendar class="mr-2" inputId="basic" [style]="{width:'100%'}" dateFormat="yy/mm/dd" (onSelect)="onSelectDateExpiryOrder($event)" [(ngModel)]="fechaFinOrder" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" [showButtonBar]="true" ></p-calendar>
-                </div>
-                <div class="col-12 md:col-2 flex justify-content-center align-items-center">
-                    <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInitOrder, isShowMessageDateExpiryOrder, fechaInicioOrder, fechaFinOrder) ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInitOrder, isShowMessageDateExpiryOrder, fechaInicioOrder, fechaFinOrder)" pRipple>FILTRAR</button>
-                </div>
-            </div>
+              <div class="col-12 md:col-5">
+                  <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
+                  <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioOrder" view="month" dateFormat="yy/mm" [readonlyInput]="true" [yearNavigator]="false" [showButtonBar]="true"  inputId="monthpicker"></p-calendar>
+                  <small class="p-error" *ngIf="fechaFinOrder && !fechaInicioOrder">Fecha de inicio es requerido</small>
+              </div>
+              <div class="col-12 md:col-5">
+                  <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
+                  <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateExpirySail($event)" [(ngModel)]="fechaFinOrder" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpickerSail"></p-calendar>
+              </div>
+              <div class="col-12 md:col-2 flex justify-content-center align-items-center">
+                  <button [style]="fechaFinOrder && !fechaInicioOrder ? 'margin-top : 0px' : 'margin-top : 25px'" [class]="'button__chart__typePay ' + ((!fechaInicioOrder && !fechaFinOrder) || !fechaInicioOrder || isShowMessageDateExpirySail ? 'isDisableButton' : 'isAvalible')" (click)="getOrdersFilter()" [disabled]="(!fechaInicioOrder && !fechaFinOrder) || !fechaInicioOrder || isShowMessageDateExpirySail" pRipple>FILTRAR</button>
+                  <button [style]="fechaFinOrder && !fechaInicioOrder ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestOrdersFilter({}, true, true, nameMonthCurrent)" pRipple> <i class="pi pi-filter-slash"></i></button>
+              </div>
+          </div>
 
             <p-skeleton *ngIf="completeLoadingSails" width="60vw" height="25rem"></p-skeleton>
-            <p-chart *ngIf="!completeLoadingSails" type="line" [data]="dataOrders" width="60vw" [options]="basicOptions"></p-chart>
+            <p-chart *ngIf="!completeLoadingSails" type="bar" [data]="dataOrders" width="60vw" [options]="basicOptions"></p-chart>
         </div>
     </ng-template>
 
@@ -67,7 +69,7 @@
                 </div>
                 <div class="col-12 md:col-2 flex justify-content-center align-items-center">
                     <button [style]="fechaFinSail && !fechaInicioSail ? 'margin-top : 0px' : 'margin-top : 25px'" [class]="'button__chart__typePay ' + ((!fechaInicioSail && !fechaFinSail) || !fechaInicioSail || isShowMessageDateExpirySail ? 'isDisableButton' : 'isAvalible')" (click)="getSailsDataFilter()" [disabled]="(!fechaInicioSail && !fechaFinSail) || !fechaInicioSail || isShowMessageDateExpirySail" pRipple>FILTRAR</button>
-                    <button [style]="fechaFinSail && !fechaInicioSail ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestFilterSail({})" pRipple> <i class="pi pi-filter-slash"></i></button>
+                    <button [style]="fechaFinSail && !fechaInicioSail ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestFilterSail({}, true, true, nameMonthCurrent)" pRipple> <i class="pi pi-filter-slash"></i></button>
                 </div>
             </div>
 
@@ -99,7 +101,7 @@
                 </div>
                 <div class="col-12 md:col-2 flex justify-content-center align-items-center">
                     <button [class]="'button__chart__typePay ' + (!validateDataEmpty(isShowMessageDateInit, isShowMessageDateExpiry, fechaInicioPay, fechaFinPay) ? 'isDisableButton' : 'isAvalible')" (click)="getTypePayDataFilter()" [disabled]="!validateDataEmpty(isShowMessageDateInit, isShowMessageDateExpiry, fechaInicioPay, fechaFinPay)" pRipple>FILTRAR</button>
-                    <button [style]="fechaFinPay && !fechaInicioPay ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestFilterPay({})" pRipple> <i class="pi pi-filter-slash"></i></button>
+                    <button [style]="fechaFinPay && !fechaInicioPay ? 'margin-top : 0px' : 'margin-top : 25px'" class="btn__clear__filter ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top"  (click)="requestFilterPay({}, true)" pRipple> <i class="pi pi-filter-slash"></i></button>
                 </div>
             </div>
             <div style="width: 40%; margin: auto;" class="mt-5">
