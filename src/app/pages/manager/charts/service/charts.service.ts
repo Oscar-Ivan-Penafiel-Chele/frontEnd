@@ -21,7 +21,7 @@ export class ChartsService {
   }
 
   getOrders(data: any): Observable<any>{
-    return this._http.post<any>(`${this.url}/orders/by/status`, data)
+    return this._http.post<any>(`${this.url}/purchases/by/date`, data)
   }
 
   getTypePayGraphic(data: any){

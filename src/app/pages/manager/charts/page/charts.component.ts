@@ -3,6 +3,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { Category, ICardAmin } from '@models/interfaces';
 import { ChartsService } from '../service/charts.service';
 import {MessageService} from 'primeng/api';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-charts',
@@ -11,6 +12,10 @@ import {MessageService} from 'primeng/api';
   providers: [MessageService]
 })
 export class ChartsComponent implements OnInit {
+
+  dateCurrent: Date = new Date();
+  monthCurrent: string = this.dateCurrent.toLocaleString('es-ES', {month: 'long'});
+  nameMonthCurrent: string = this.monthCurrent.charAt(0).toUpperCase() + this.monthCurrent.slice(1);
 
   basicOptions: any;
   dataSails : any;
@@ -99,20 +104,24 @@ export class ChartsComponent implements OnInit {
 
   getOrders(){
     const dataCard: ICardAmin = {} as ICardAmin;
-
+    let arrayData: number[] = [];
+    let labelsPurchase: string[] = [];
     this.isLoading = true;
     this.chartService.getOrders({}).subscribe((response)=>{
+
       dataCard.class = "card__option__item compras";
       dataCard.action = "orders"
       dataCard.title = "Compras";
       dataCard.icon = "pi pi-sign-in"
-      //dataCard.amount = response.data.Ventas;
+      dataCard.amount = response.count.Compras;
 
+      arrayData = Object.values(response.data);
+      labelsPurchase = Object.keys(response.data);
 
       this.options.push(dataCard);
       this.isLoading = false;
 
-      this.getGraphycsOrder();
+      this.getGraphycsOrder(arrayData, labelsPurchase, true, this.nameMonthCurrent);
 
     }, err =>{
       console.log(err)
@@ -122,28 +131,65 @@ export class ChartsComponent implements OnInit {
   getOrdersFilter(){
     let fechaI = new Date(this.fechaInicioOrder);
     let fechaF = new Date(this.fechaFinOrder)
+    let arrayDates: string[] = [];
+    let anioI;
+    let anioF;
+    let monthI;
+    let monthF;
+    let data = {}
 
-    let data = {
-      "fecha_inicio": fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1)) + '-' + (fechaI.getDate() < 10 ? '0'+fechaI.getDate() : fechaI.getDate()),
-      "fecha_fin": fechaF.getFullYear() + '-' + ( (fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1)) + '-' + (fechaF.getDate() < 10 ? '0'+fechaF.getDate() : fechaF.getDate()),
-    };
+    let monthCurrent = fechaI.toLocaleString('es-ES', {month: 'long'});
 
-    this.chartService.getTypePayGraphic(data).subscribe((response: any)=>{
-      this.fechaInicioOrder = "";
-      this.fechaFinOrder = "";
+    anioI = fechaI.getFullYear();
+    anioF = fechaF.getFullYear();
+    monthI = ((fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
+    monthF = ((fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1));
+
+    if((this.fechaInicioOrder  && !this.fechaFinOrder) || (monthI == monthF)){
+      let date = fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
+      arrayDates.push(date);
+
+      data = {fechas: arrayDates}
+      this.requestOrdersFilter(data, false, true, monthCurrent.charAt(0).toUpperCase() + monthCurrent.slice(1));
+      return;
+    }
+
+    if(this.fechaInicioOrder  && this.fechaFinOrder){
+      for (let index = parseInt(monthI.toString()); index <= parseInt(monthF.toString()); index++) {
+        arrayDates.push(`2022-${index < 10 ? '0'+index : index}`);
+      }
+
+      data = {fechas: arrayDates}
+      this.requestOrdersFilter(data, false, false, "");
+      return;
+    }
+  }
+
+  requestOrdersFilter(data: any, clearInputs: boolean, isOnlyDate: boolean , nameMonth: string){
+    let arrayData: number[] = [];
+    let labelsPurchase: string[] = [];
+
+    this.chartService.getOrders(data).subscribe((response: any)=>{
+      arrayData = Object.values(response.data);
+      labelsPurchase = Object.keys(response.data);
+
+      this.getGraphycsOrder(arrayData, labelsPurchase, isOnlyDate, nameMonth);
+      if(clearInputs) {
+        this.fechaFinOrder = "";
+        this.fechaInicioOrder = "";
+      }
     })
   }
 
-  getGraphycsOrder(){
+
+  getGraphycsOrder(arrayData: number[], labelsPurchase: string[], isOnlyDate: boolean , nameMonth: string){
     this.dataOrders = {
-      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+      labels: labelsPurchase,
       datasets: [
         {
-            label: 'Ventas',
-            data: [28, 35, 40, 43, 46, 40, 50,58],
-            fill: false,
-            borderColor: '#FFA726',
-            tension: .4
+            label: `${isOnlyDate ? `Compras (${nameMonth})` : 'Compras'}`,
+            backgroundColor: '#66BB6A',
+            data: arrayData,
         }
       ]
     };
@@ -210,7 +256,7 @@ export class ChartsComponent implements OnInit {
       this.options.push(dataCard);
       this.isLoading = false;
 
-      this.getGraphycDataSails(arrayData, labelsSails);
+      this.getGraphycDataSails(arrayData, labelsSails, true, this.monthCurrent);
     }, err =>{
       console.log(err)
     })
@@ -231,12 +277,14 @@ export class ChartsComponent implements OnInit {
     monthI = ((fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
     monthF = ((fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1));
 
+    let montCurrent = fechaI.toLocaleString('es-ES', {month: 'long'})
+
     if((this.fechaInicioSail  && !this.fechaFinSail) || (monthI == monthF)){
       let date = fechaI.getFullYear() + '-' + ( (fechaI.getMonth() + 1) < 10 ? '0'+(fechaI.getMonth() + 1) : (fechaI.getMonth() + 1));
       arrayDates.push(date);
-      
+
       data = {fechas: arrayDates}
-      this.requestFilterSail(data);
+      this.requestFilterSail(data, false, true, montCurrent.charAt(0).toUpperCase() + montCurrent.slice(1));
       return;
     }
 
@@ -246,32 +294,34 @@ export class ChartsComponent implements OnInit {
       }
 
       data = {fechas: arrayDates}
-      this.requestFilterSail(data);
+      this.requestFilterSail(data, false, false, "");
       return;
     }
   }
 
-  requestFilterSail(data: any){
+  requestFilterSail(data: any, clearInputs: boolean, isOnlyDate: boolean , nameMonth: string){
     let arrayData: number[] = [];
     let labelsSails: string[] = [];
 
     this.chartService.getSails(data).subscribe((response: any)=>{
       arrayData = Object.values(response.data)
       labelsSails = Object.keys(response.data)
-      this.fechaInicioSail = "";
-      this.fechaFinSail = "";
 
-      this.getGraphycDataSails(arrayData, labelsSails);
+      this.getGraphycDataSails(arrayData, labelsSails, isOnlyDate, nameMonth);
+      if(clearInputs) {
+        this.fechaFinSail = "";
+        this.fechaInicioSail = "";
+      }
     })
   }
 
 
-  getGraphycDataSails(arrayData: number[], labelsSails: string[]){
+  getGraphycDataSails(arrayData: number[], labelsSails: string[], isOnlyDate: boolean , nameMonth: string){
     this.dataSails = {
       labels: labelsSails,
       datasets: [
         {
-            label: 'Ventas',
+            label: `${isOnlyDate ? `Ventas (${nameMonth})` : 'Ventas'}`,
             data: arrayData,
             fill: false,
             borderColor: '#FFA726',
@@ -315,10 +365,10 @@ export class ChartsComponent implements OnInit {
       "fecha_fin": fechaF.getFullYear() + '-' + ( (fechaF.getMonth() + 1) < 10 ? '0'+(fechaF.getMonth() + 1) : (fechaF.getMonth() + 1)) + '-' + (fechaF.getDate() < 10 ? '0'+fechaF.getDate() : fechaF.getDate()),
     };
 
-   this.requestFilterPay(data);
+   this.requestFilterPay(data, false);
   }
 
-  requestFilterPay(data: any){
+  requestFilterPay(data: any, clearInputs: boolean){
     let arrayData: number[] = [];
     let labelsTypePay: string[] = [];
 
@@ -331,9 +381,12 @@ export class ChartsComponent implements OnInit {
         return;
       }
 
-      this.fechaInicioPay = "";
-      this.fechaFinPay = "";
       this.getGraphycDataTypePay(arrayData, labelsTypePay);
+
+      if(clearInputs){
+        this.fechaFinPay = "";
+        this.fechaInicioPay = "";
+      }
     })
   }
 
