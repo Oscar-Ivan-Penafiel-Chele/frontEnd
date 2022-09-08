@@ -36,12 +36,12 @@
             <div class="grid mb-5">
               <div class="col-12 md:col-5">
                   <label class="mr-2" for="fechaInicio">1. Fecha Inicio:</label>
-                  <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateInitSail($event)" [(ngModel)]="fechaInicioOrder" view="month" dateFormat="yy/mm" [readonlyInput]="true" [yearNavigator]="false" [showButtonBar]="true"  inputId="monthpicker"></p-calendar>
+                  <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateInitOrder($event)" [(ngModel)]="fechaInicioOrder" view="month" dateFormat="yy/mm" [readonlyInput]="true" [yearNavigator]="false" [showButtonBar]="true"  inputId="monthpicker"></p-calendar>
                   <small class="p-error" *ngIf="fechaFinOrder && !fechaInicioOrder">Fecha de inicio es requerido</small>
               </div>
               <div class="col-12 md:col-5">
                   <label class="mr-2" for="fechaFin">2. Fecha Fin:</label>
-                  <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateExpirySail($event)" [(ngModel)]="fechaFinOrder" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpickerSail"></p-calendar>
+                  <p-calendar [style]="{width:'100%'}"  [showIcon]="true" [touchUI]="true"  (onSelect)="onSelectDateExpiryOrder($event)" [(ngModel)]="fechaFinOrder" view="month" dateFormat="yy/mm" [readonlyInput]="true" [showButtonBar]="true"  inputId="monthpickerSail"></p-calendar>
               </div>
               <div class="col-12 md:col-2 flex justify-content-center align-items-center">
                   <button [style]="fechaFinOrder && !fechaInicioOrder ? 'margin-top : 0px' : 'margin-top : 25px'" [class]="'button__chart__typePay ' + ((!fechaInicioOrder && !fechaFinOrder) || !fechaInicioOrder || isShowMessageDateExpirySail ? 'isDisableButton' : 'isAvalible')" (click)="getOrdersFilter()" [disabled]="(!fechaInicioOrder && !fechaFinOrder) || !fechaInicioOrder || isShowMessageDateExpirySail" pRipple>FILTRAR</button>

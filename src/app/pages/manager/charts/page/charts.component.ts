@@ -482,8 +482,6 @@ export class ChartsComponent implements OnInit {
   }
 
 
-
-
   onSelectDateExpiryOrder($event : any){
     this.validateDatesSelectedOrder();
   }
@@ -493,36 +491,25 @@ export class ChartsComponent implements OnInit {
   }
 
   validateDatesSelectedOrder(){
+    let anioI = new Date(this.fechaInicioOrder).getFullYear();
+    let monthI = ((new Date(this.fechaInicioOrder).getMonth() + 1) < 10 ? '0'+(new Date(this.fechaInicioOrder).getMonth() + 1) : (new Date(this.fechaInicioOrder).getMonth() + 1));
+    let anioF = new Date(this.fechaFinOrder).getFullYear();
+    let monthF = ((new Date(this.fechaFinOrder).getMonth() + 1) < 10 ? '0'+(new Date(this.fechaFinOrder).getMonth() + 1) : (new Date(this.fechaFinOrder).getMonth() + 1));
+
     if(!this.fechaInicioOrder || !this.fechaFinOrder) return ;
 
-    if(this.fechaFinOrder < this.fechaInicioOrder) {
-      this.messageErrorDateExpiryOrder = "Fecha fin no puede se menor a la fecha de inico" ;
-      this.isShowMessageDateExpiryOrder = true ;
-      this.isShowMessageDateInitOrder = false
-      this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateExpiryOrder}`});
+    if((anioI > anioF) || (monthI > monthF)){
+      this.messageErrorDateExpirySail = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpirySail = true ;
+      this.isShowMessageDateInitSail = false
+      this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateExpirySail}`});
       return ;
     }
 
-    if(this.fechaInicioOrder > this.fechaFinOrder) {
-      this.messageErrorDateInitOrder = "Fecha de inicio no puede se mayor a la fecha fin" ;
-      this.isShowMessageDateInitOrder = true ;
-      this.isShowMessageDateExpiryOrder = false
-      this.messageService.add({severity:'error', summary: 'Error', detail: `${this.messageErrorDateInitOrder}`});
-      return ;
-    }
-
-    this.messageErrorDateExpiryOrder = "" ;
-    this.isShowMessageDateExpiryOrder = false ;
-    this.isShowMessageDateInitOrder = false;
+    this.messageErrorDateExpirySail = "" ;
+    this.isShowMessageDateExpirySail = false ;
+    this.isShowMessageDateInitSail = false;
     this.messageService.clear();
     return;
   }
 }
-
-
-// var año = 2022;
-// var mes = 9;
-
-// var diasMes = new Date(año, mes, 0).getDate();
-// console.log(diasMes)
-
