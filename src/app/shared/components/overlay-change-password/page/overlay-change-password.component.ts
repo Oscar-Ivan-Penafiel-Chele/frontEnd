@@ -19,8 +19,6 @@ export class OverlayChangePasswordComponent implements OnInit {
   }
 
   redirectLogin(){
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 }

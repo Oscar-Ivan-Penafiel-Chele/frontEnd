@@ -42,6 +42,7 @@
                             <input type="text" [(ngModel)]="phoneUser"  [imask]="{mask: '00 000 0000'}" pInputText placeholder="99 999 9999">      
                         </div>
                         <small class="p-error" *ngIf="submitted && !phoneUser">Celular es requerido</small>
+                        <small class="p-error" *ngIf="submitted && phoneUser && phoneUser.length < 11">Celular no es válido</small>
                     </div>
 
                     <div class="col-12 md:col-12">
@@ -92,7 +93,7 @@
                             <label for="float-input"><i class="pi pi-lock"></i> Contraseña</label>
                         </span>
                         <small class="p-error" *ngIf="(submitted && !user.password)">Contraseña es requerida</small>
-                        <small class="p-error" *ngIf="!validatePasswordRegex(user.password!) && submitted && validatePassword()">Contraseña no es segura</small>
+                        <small class="p-error" *ngIf="!validatePasswordRegex(user.password!) && user.password && validatePassword()">Contraseña no es segura</small>
                         <small class="p-error" *ngIf="!validatePassword() && submitted && user.password!">Contraseñas no coinciden</small>
                     </div>
 
@@ -115,7 +116,7 @@
                             <label for="float-input"><i class="pi pi-lock"></i> Confirmar Contraseña</label>
                         </span>
                         <small class="p-error" *ngIf="(submitted && !passwordConfirm)">Contraseña es requerida</small>
-                        <small class="p-error" *ngIf="!validatePasswordRegex(passwordConfirm) && submitted && validatePassword()">Contraseña no es segura</small>
+                        <small class="p-error" *ngIf="!validatePasswordRegex(passwordConfirm) && passwordConfirm && validatePassword()">Contraseña no es segura</small>
                         <small class="p-error" *ngIf="!validatePassword() && submitted && passwordConfirm">Contraseñas no coinciden</small>
                     </div>
 

@@ -15,7 +15,6 @@ export class OtherComponent implements OnInit {
   fechaYHora : any ;
   user : User = {};
   roleUser : string = "";
-  events1: any[] = [];
   overlayLogout : boolean = false;
 
   constructor(
@@ -26,12 +25,6 @@ export class OtherComponent implements OnInit {
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    this.events1 = [
-      {status: 'Ordered', date: '15/10/2020 10:30', icon: PrimeIcons.SHOPPING_CART, color: '#9C27B0', image: 'game-controller.jpg'},
-      {status: 'Processing', date: '15/10/2020 14:00', icon: PrimeIcons.COG, color: '#673AB7'},
-      {status: 'Shipped', date: '15/10/2020 16:15', icon: PrimeIcons.ENVELOPE, color: '#FF9800'},
-      {status: 'Delivered', date: '16/10/2020 10:00', icon: PrimeIcons.CHECK, color: '#607D8B'}
-  ];
     this.getDataProfile();
     setInterval(()=>{
       this.getDateToday();
@@ -91,20 +84,24 @@ export class OtherComponent implements OnInit {
     const opciones = ['perfil','direcciones','change-password'];
     const route = window.location.pathname.split('/').pop();
 
-    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-        const posc = opciones.indexOf(route!);
-        links[posc].classList.add('item__active');
-        
-        if(route != opciones[0]){
-          links[0].classList.remove('item__active');
-        }
-    } 
+    try {
+      if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+          const posc = opciones.indexOf(route!);
+          links[posc].classList.add('item__active');
+          
+          if(route != opciones[0]){
+            links[0].classList.remove('item__active');
+          }
+      } 
 
-    links.forEach( l => l.addEventListener('click', () =>{
-        links.forEach(j => j.classList.remove('item__active'));
-        l.classList.add('item__active');
-      }),
-    );
+      links.forEach( l => l.addEventListener('click', () =>{
+          links.forEach(j => j.classList.remove('item__active'));
+          l.classList.add('item__active');
+        }),
+      );
+    } catch (error) {
+      
+    }
   }
 
   goHome(){

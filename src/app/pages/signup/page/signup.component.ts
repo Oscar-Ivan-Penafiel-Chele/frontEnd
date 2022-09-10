@@ -59,12 +59,7 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser(){
-    this.user.user_phone = `(+593) ${this.phoneUser}`
     this.submitted = true;
-    this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
-    this.user.id_role = 5;
-    this.user.user_status = 1;
-
     !this.regexData(this.user.email!) ? this.messageEmail = 'Correo Electrónico no válido' : this.messageEmail = "";
     if(!this.regexData(this.user.email!)) return ;
     
@@ -82,6 +77,10 @@ export class SignupComponent implements OnInit {
     if(!this.validatePasswordRegex(this.user.password!)) return;
     if(!this.validateData()) return ;
 
+    this.user.user_phone = `(+593) ${this.phoneUser}`
+    this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
+    this.user.id_role = 5;
+    this.user.user_status = 1;
     this.loading = true;
     this.isVisibleText = false;
 
@@ -162,7 +161,7 @@ export class SignupComponent implements OnInit {
       !this.user.user_name || 
       !this.user.user_lastName || 
       !this.user.email || 
-      !this.phoneUser || this.phoneUser.length < 10 ||
+      !this.phoneUser || this.phoneUser.length < 11 ||
       !this.user.user_address || this.user.user_address.length < 8 ||
       !this.user.id_identification_type || 
       !this.user.user_document || 

@@ -69,7 +69,7 @@ export class ChangePasswordComponent implements OnInit {
     if(!this.validateInput()) return ;
     if(!this.validatePasswordRegex(this.password)) return ;
     if(!this.validatePasswordRegex(this.passwordConfirm)) return ;
-    
+
     this.validatePassword();
   }
 
@@ -108,6 +108,8 @@ export class ChangePasswordComponent implements OnInit {
     this.changePasswordService.changePasswordProfileEmployee(opc, this.user.id_user!).subscribe((response)=>{
       if(response.message == "Contraseña actualizado exitosamente"){
         this.isLoading = false;
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user');
       }else if(response.message == "Ocurrio un error interno en el servidor"){
         this.isShow = false;
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al actualizar contraseña', life:3000});
