@@ -13,13 +13,13 @@ export class GenerateCsvProviderService {
   generateCSV(providers: IProvider[]){
     const fecha = new Date();
     const headers = Object.keys(providers[0]);
-    let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
+    let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate());
 
-    const options = { 
+    const options = {
         fieldSeparator: ',',
         quoteStrings: '"',
         decimalseparator: '.',
-        showLabels: true, 
+        showLabels: true,
         useBom: true,
         headers: headers,
         useHeader: false,

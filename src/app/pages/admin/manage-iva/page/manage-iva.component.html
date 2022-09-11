@@ -3,9 +3,9 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button mr-2" (click)="openModal()"></button>
-
-            <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+            <button [disabled]="isLoading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getIva()"></button>
+            <button [disabled]="isLoading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button mr-2" (click)="openModal()"></button>
+            <button [disabled]="isLoading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
             <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
                 <ng-template pTemplate>
@@ -21,7 +21,7 @@
     </p-toolbar>
 
     <p-table #dt [value]="data" [rows]="5" [loading]="isLoading" [rows]="5" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
-        responsiveLayout="stack" [rowHover]="true"  
+        responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true"
     >
         <ng-template pTemplate="caption">

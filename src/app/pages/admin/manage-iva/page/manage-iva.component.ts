@@ -23,7 +23,7 @@ export class ManageIvaComponent implements OnInit {
   dataAuxFilter : IManageIVA[] = [];
 
   constructor(
-    private manageIvaService : ManageIvaService, 
+    private manageIvaService : ManageIvaService,
     private messageService: MessageService,
     private _token : TokenService
     ) {
@@ -46,6 +46,7 @@ export class ManageIvaComponent implements OnInit {
   }
 
   getIva(){
+    this.isLoading = true;
     this.selectedOptionFilter = 3;
     this.manageIvaService.getManageIva().subscribe((response : IManageIVA[])=>{
       this.data = Object.values(response);

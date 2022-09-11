@@ -3,6 +3,7 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
+            <button [disabled]="loading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getPromotions()"></button>
             <button pButton pRipple label="Nuevo" [disabled]="loading" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button pButton pRipple label="Estado" [disabled]="loading" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
@@ -53,7 +54,7 @@
                 <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de Fin: </span> {{promotion.promotion_date_of_expiry.slice(0,10)}}</td>
                 <td>
                     <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
-                    <div class="flex justify-content-end align-items-end">       
+                    <div class="flex justify-content-end align-items-end">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editPromotion(promotion)"></button>
                         <button [disabled]="promotion.promotion_status == 0" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePromotion(promotion)"></button>
                     </div>

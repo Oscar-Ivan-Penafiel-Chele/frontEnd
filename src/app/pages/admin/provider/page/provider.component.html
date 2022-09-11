@@ -3,6 +3,7 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
+          <button [disabled]="loading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getProviders()"></button>
             <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button [disabled]="loading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
@@ -89,7 +90,7 @@
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_name" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_name">Nombre es requerido</small>
             </div>
-            <div class="field col">    
+            <div class="field col">
                 <label for="productStatus">Tipo de Proveedor <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="provider.id_type_provider" optionLabel="type_provider_name" optionValue="id_type_provider" inputId="productStatus" [options]="types_provider" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
@@ -187,7 +188,7 @@
                 <label for="web">Página Web del Proveedor</label>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon">www.</span>
-                    <input id="web" [(ngModel)]="provider.provider_web_page" type="text" pInputText placeholder="Website">      
+                    <input id="web" [(ngModel)]="provider.provider_web_page" type="text" pInputText placeholder="Website">
                 </div>
             </div>
         </div>
@@ -204,7 +205,7 @@
             </div>
         </div>
         <div class="flex flex-column" style="border: 2px solid #e9ecee; margin: 0px 1px; border-radius: 5px; padding: 10px;">
-            <p style="color: #495057; font-weight: bold; text-align: center;">Detalles del Tiempo de Entrega del Proveedor</p>   
+            <p style="color: #495057; font-weight: bold; text-align: center;">Detalles del Tiempo de Entrega del Proveedor</p>
             <div class="formgrid grid" style="padding: 15px;">
                 <div class="field col">
                     <label for="minmax-buttons">Tiempo en Días <span class="inputs__required">*</span></label>

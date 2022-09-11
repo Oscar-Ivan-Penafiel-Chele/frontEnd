@@ -3,6 +3,7 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
+          <button [disabled]="loading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getBrands()"></button>
             <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button [disabled]="loading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
@@ -53,7 +54,7 @@
                 <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{brand.create_date}}</td>
                 <td>
                     <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
-                    <div class="flex justify-content-end align-items-end"> 
+                    <div class="flex justify-content-end align-items-end">
                         <button [disabled]="brand.brand_name ==='NO_DEFINIDO'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editBrand(brand)"></button>
                         <button [disabled]="brand.brand_status == 0 || brand.brand_name ==='NO_DEFINIDO'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteBrand(brand)"></button>
                     </div>
@@ -98,8 +99,8 @@
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p *ngIf="isPhotoEdit">{{!brand.brand_thumbnail || brand.brand_thumbnail == 'null' ? 'No Imagen' : brand.brand_thumbnail}}</p> 
-                        <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
+                        <p *ngIf="isPhotoEdit">{{!brand.brand_thumbnail || brand.brand_thumbnail == 'null' ? 'No Imagen' : brand.brand_thumbnail}}</p>
+                        <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>
                     </div>
                 </div>
                 <div class="infoButtonImage">
@@ -107,7 +108,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="formgrid grid">
             <div class="field col">
                 <label for="name">Nombre de la Marca <span class="inputs__required">*</span></label>
@@ -127,7 +128,7 @@
                 <small class="p-error" *ngIf="submitted && brand.brand_status == null">Estado es requerido</small>
             </div>
         </div>
-        <br><br><br> 
+        <br><br><br>
     </ng-template>
 
     <ng-template pTemplate="footer">

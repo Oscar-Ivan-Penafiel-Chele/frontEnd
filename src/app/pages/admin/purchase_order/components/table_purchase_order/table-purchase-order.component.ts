@@ -19,7 +19,7 @@ export class TablePurchaseOrderComponent implements OnInit {
 
   options : any [] = [];
   selectedOptionFilter : any;
-  
+
   displayModal: boolean = false;
   selectedProducts: string[] = [];
   productsPurchaseOrder: any;

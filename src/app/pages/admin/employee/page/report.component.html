@@ -3,6 +3,7 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
+            <button [disabled]="loading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getEmployees()"></button>
             <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button [disabled]="loading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
 
@@ -25,7 +26,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="users" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user_name','user_lastName']" responsiveLayout="stack" [rowHover]="true" 
+    <p-table #dt [value]="users" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user_name','user_lastName']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between">
@@ -42,7 +43,7 @@
                 <th pSortableColumn="user_lastName"><i class="pi pi-user"></i> Apellidos <p-sortIcon field="user_lastName"></p-sortIcon></th>
                 <th pSortableColumn="id_role"><i class="pi pi-globe"></i> Rol <p-sortIcon field="id_role"></p-sortIcon></th>
                 <th pSortableColumn="email"><i class="pi pi-envelope"></i> Correo Electrónico <p-sortIcon field="email"></p-sortIcon></th>
-                <th pSortableColumn="user_phone"><i class="pi pi-phone"></i> Celular <p-sortIcon field="user_phone"></p-sortIcon></th>          
+                <th pSortableColumn="user_phone"><i class="pi pi-phone"></i> Celular <p-sortIcon field="user_phone"></p-sortIcon></th>
                 <th pSortableColumn="acciones"><i class="pi pi-inbox"></i> Acciones</th>
             </tr>
         </ng-template>
@@ -75,19 +76,19 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="name">Nombre del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" required pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" required />
+                <input type="text" required maxlength="40" pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" required />
                 <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requerido</small>
             </div>
             <div class="field col">
                 <label for="lastname">Apellidos del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" required pInputText id="lastname" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" required  />
+                <input type="text" required maxlength="40" pInputText id="lastname" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" required  />
                 <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requerido</small>
             </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
                 <label for="email">Correo Electrónico del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" placeholder="example@xyz.com" required pInputText id="email" [(ngModel)]="user.email" required  />
+                <input type="text" maxlength="100" placeholder="example@xyz.com" required pInputText id="email" [(ngModel)]="user.email" required  />
                 <small class="p-error" *ngIf="submitted && !user.email">Correo Electrónico es requerido</small>
                 <small class="p-error" *ngIf="user.email && !regexData(user.email!)">Correo Electrónico no es válido</small>
             </div>
@@ -98,7 +99,7 @@
             </div>
         </div>
         <div class="formgrid grid">
-            <div class="field col">    
+            <div class="field col">
                 <label for="typeEmployee">Tipo de Empleado <span class="inputs__required">*</span></label>
                 <p-dropdown [showClear]="true" [(ngModel)]="user.id_role" optionLabel="name" optionValue="id" inputId="typeEmployee" [options]="types_employees" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
@@ -146,11 +147,11 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="address">Dirección del Empleado <span class="inputs__required">*</span></label>
-                <input type="text" required pInputText id="address" [(ngModel)]="user.user_address" placeholder="Ejemplo: Av. 9 De Octubre" required />
+                <input type="text" required maxlength="100" pInputText id="address" [(ngModel)]="user.user_address" placeholder="Ejemplo: Av. 9 De Octubre" required />
                 <small class="p-error" *ngIf="submitted && !user.user_address">Dirección es requerida</small>
             </div>
             <div class="field col">
-                <label for="pass">{{actionSelected == 'new' ? 'Crear Contraseña' : 'Cambiar Contraseña'}} <p-checkbox *ngIf="isVisible" [(ngModel)]="changePassword"  [binary]="true" inputId="binary"></p-checkbox></label> 
+                <label for="pass">{{actionSelected == 'new' ? 'Crear Contraseña' : 'Cambiar Contraseña'}} <p-checkbox *ngIf="isVisible" [(ngModel)]="changePassword"  [binary]="true" inputId="binary"></p-checkbox></label>
                 <p-password required [disabled]="!changePassword" [(ngModel)]="user.password" [toggleMask]="true" [feedback]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
                     <ng-template pTemplate="header">
                         <p class="title-sugerencias">Ingresa tu contraseña</p>
@@ -166,6 +167,8 @@
                         </ul>
                     </ng-template>
                 </p-password>
+                <small class="p-error" *ngIf="submitted && !user.password && actionSelected == 'new'">Contraseña es requerida</small>
+                <small class="p-error" *ngIf="!regexPassword(user.password!) && user.password">Contraseña no es segura</small>
             </div>
         </div>
     </ng-template>

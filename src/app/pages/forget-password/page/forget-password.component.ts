@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ConfirmationService, PrimeNGConfig, MessageService, Message } from 'primeng/api';
 import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 import { environment } from 'src/environments/environment.prod';
@@ -26,7 +26,7 @@ export class ForgetPasswordComponent implements OnInit {
   constructor(
     private primengConfig: PrimeNGConfig,
     private validateService: ValidationsService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private forgetService: ForgetPasswordService
   ) { }
 
@@ -40,8 +40,8 @@ export class ForgetPasswordComponent implements OnInit {
     if(!this.validateInput() || !this.validateEmail()){
       this.isLoading = false;
       return;
-    } 
-    
+    }
+
     if(this.isExistRequest()){
       this.isLoading = false;
       this.messageService.clear();
@@ -110,5 +110,11 @@ export class ForgetPasswordComponent implements OnInit {
   isExistRequest(): boolean{
     if(localStorage.getItem('recover-password')) return true;
     return false;
+  }
+
+
+  @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
+    if(event.key != "Enter") return;
+    this.createRequest();
   }
 }

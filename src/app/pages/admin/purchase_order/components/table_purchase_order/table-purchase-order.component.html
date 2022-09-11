@@ -6,6 +6,7 @@
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
                 <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
+                    <button pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" [style]="{width : '42px', height : '42px'}" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getData()"></button>
                     <button pButton pRipple icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" [style]="{width : '42px', height : '42px'}" pTooltip="Filtrar estado" tooltipPosition="top" (click)="op.toggle($event)"></button>
                     <p>Gestión de Ordenes de Compra</p>
                 </div>
@@ -47,7 +48,7 @@
                 <td><span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de recepción: </span>{{purchase_order.updated_at}}</td>
                 <td>
                     <span class="p-column-title"><i class="pi pi-inbox"></i> Acciones: </span>
-                    <div class="flex justify-content-start align-items-end"> 
+                    <div class="flex justify-content-start align-items-end">
                         <button pButton pRipple pTooltip="PDF" tooltipPosition="top" icon="pi pi-file-pdf" class="p-button-info mr-2" (click)="viewPurchaseOrderPDF(purchase_order)"></button>
                         <button pButton pRipple pTooltip="Completar" [disabled]="purchase_order.purchase_order_status == 1" tooltipPosition="top" icon="pi pi-check-circle" class="p-button-success mr-2" (click)="openModal(purchase_order)"></button>
                     </div>

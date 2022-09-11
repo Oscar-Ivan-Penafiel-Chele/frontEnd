@@ -3,6 +3,7 @@
 <div class="card">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
+            <button [disabled]="loading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getAllProducts()"></button>
             <button [disabled]="loading" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-primary mr-2" (click)="openNew()"></button>
             <button [disabled]="loading" pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
             <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
@@ -110,8 +111,8 @@
                 <div class="imgInfoPhoto">
                     <i class="pi pi-image"></i>
                     <div class="infoDescriptionImage">
-                        <p *ngIf="isPhotoEdit">{{!product.product_image || product.product_image =='null' ? 'No Imagen' : product.product_image}}</p> 
-                        <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>  
+                        <p *ngIf="isPhotoEdit">{{!product.product_image || product.product_image =='null' ? 'No Imagen' : product.product_image}}</p>
+                        <p *ngIf="!isPhotoEdit">{{fileTmp.fileName}} {{"("+fileSize}} {{descriptionSize+")"}}</p>
                     </div>
                 </div>
                 <div class="infoButtonImage">
@@ -214,12 +215,12 @@
                 <label for="rating">Rating del Producto <span class="inputs__required">*</span></label>
                 <div class="field flex align-items-center justify-content-center flex-nowrap flex-column">
                     <p-rating [iconCancelClass]="'pi pi-trash'" [(ngModel)]="product.product_rating" [cancel]="true" [style]="{'padding-top':'10px'}"></p-rating>
-                </div> 
+                </div>
                 <small class="p-error" *ngIf="submitted && !product.product_rating">Rating es requerido</small>
             </div>
         </div>
 
-        <div class="field col">    
+        <div class="field col">
             <label for="inventoryStatus">Categoría del Producto <span class="inputs__required">*</span></label>
             <div class="flex flex-row justify-content-center align-items-center flex-wrap mt-3">
                 <div class="field-checkbox mr-3" *ngFor="let category of categories">

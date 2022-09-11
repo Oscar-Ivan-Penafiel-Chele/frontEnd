@@ -34,12 +34,12 @@ export class ProductsComponent implements OnInit {
     providers : IProvider[] = [];
     measures : Measure[] = [];
     user : User = {};
-   
+
     dataCVS : any[] = [];
-    
+
     brand : Brand = {} as Brand;
     product : Product = {} as Product;
-   
+
     isPhoto : boolean = false;
     isPhotoEdit : boolean;
     isError : boolean ;
@@ -54,23 +54,23 @@ export class ProductsComponent implements OnInit {
     fileExtensionValid : boolean = false;
 
     selectedProducts: Product[] = [];
-    
+
     statuses: any[] = [];
     cols: any[] = [];
     exportColumns: any[] = [];
     fileTmp : any;
     states : any[] = [];
-    
+
     photoSelected? : string | ArrayBuffer | null;
     fileSize : string = "";
     descriptionSize : string = "";
     actionSelected  : string ="";
     host : string = environment.URL;
-    
+
     idCategory : string = "";
     i : number = 0;
     idProduct : number = 0;
-    
+
     msgs1: Message[] = [];
 
     stateCheckActive : boolean = true;
@@ -90,7 +90,7 @@ export class ProductsComponent implements OnInit {
 
     constructor(
         private productService : ProductService,
-        private messageService: MessageService, 
+        private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private _sortByOrder : UpperCasePipe,
         private categoriesService : CategoryService,
@@ -100,24 +100,23 @@ export class ProductsComponent implements OnInit {
         private providerService : ProviderService,
         private _token : TokenService,
         private generatePDFProductService: GeneratePdfProductService
-        ) { 
+        ) {
             this.isPhotoEdit = false;
             this.isError = false;
-
+            this.msgs1 = [
+              {severity:'warn', summary:'Warning', detail:'Message Content'}
+            ];
+            this.states = [
+                {name: 'Activo', id: 1, icon : 'pi pi-thumbs-up'},
+                {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
+            ]
+            this.optionsIVA = [
+                {label:'Si', icon : 'pi pi-check', value : 1},
+                {label:'No', icon : 'pi pi-times', value : 0}
+            ];
         }
 
     ngOnInit(): void {
-        this.msgs1 = [
-            {severity:'warn', summary:'Warning', detail:'Message Content'}
-          ];
-        this.states = [
-            {name: 'Activo', id: 1, icon : 'pi pi-thumbs-up'},
-            {name: 'Inactivo', id: 0, icon : 'pi pi-thumbs-down'},
-        ]
-        this.optionsIVA = [
-            {label:'Si', icon : 'pi pi-check', value : 1},
-            {label:'No', icon : 'pi pi-times', value : 0}
-        ];
         this.getAllProducts();
         this.getCodeProduct();
         this.getAllCategories();
@@ -127,8 +126,6 @@ export class ProductsComponent implements OnInit {
         this.getMeasures();
         this.fileTmp = {};;
     }
-
-    /* GET */
 
     getAllProducts() {
         this.loading = true;
@@ -145,7 +142,7 @@ export class ProductsComponent implements OnInit {
               this.loading = false;
         });
     }
-    
+
     getCodeProduct(){
         this.productService.getCodeProduct().subscribe((response)=>{
             if(response.status == 200){
@@ -156,7 +153,7 @@ export class ProductsComponent implements OnInit {
 
     change($event : any){
         if(this.stateCheckActive && this.stateCheckInactive){
-             this.products = this.productsAux; 
+             this.products = this.productsAux;
         }
 
         if(!this.stateCheckActive && !this.stateCheckInactive) this.products = [] ;
@@ -235,11 +232,11 @@ export class ProductsComponent implements OnInit {
             if(!this.validateSizeImage(this.fileTmp.fileSize)){
                 return;
             }
-                   
+
             if(!this.validateImageExtension(this.fileTmp.fileName)){
                 return;
             }
-            
+
             this.getSizeImage(this.fileTmp.fileSize);
 
             const reader = new FileReader;
@@ -277,7 +274,7 @@ export class ProductsComponent implements OnInit {
     validateImageExtension(nameImage : string) : boolean{
         let imageExtension = nameImage.split('.').pop();
         const ext = ['jpg','png','jpeg'];
-        
+
         if(!ext.includes(imageExtension!)){
             this.fileExtensionValid = true;
             this.fileTmp = {};
@@ -349,11 +346,11 @@ export class ProductsComponent implements OnInit {
     saveProduct() {
         if(this.actionSelected === "new"){
             this.submitted = true
-    
+
             if(!this.validateData()){
                 return ;
             }
-            
+
             this.validateNameProduct();
 
         }else if(this.actionSelected === "edit"){
@@ -373,7 +370,7 @@ export class ProductsComponent implements OnInit {
             }
 
             if(this.product.product_image != ''){
-                //Se envia la misma imagen 
+                //Se envia la misma imagen
                 this.fileTmp = {};
                 if(!this.validateDataNoImage()){
                     return ;
@@ -381,7 +378,7 @@ export class ProductsComponent implements OnInit {
                 if(!this.product.product_image){
                     this.submitted = true
                 }
-                
+
                 this.updateData(false);
                 return;
             }
@@ -422,7 +419,7 @@ export class ProductsComponent implements OnInit {
         Object.entries(this.product).forEach(([key , value]) => {
             data.append(`${key}`, value);
         });
-            
+
         this.productService.createProduct(data)
             .subscribe((response)=>{
                 if(response.status == 200 || response.message === "Producto creado con exito"){
@@ -466,39 +463,39 @@ export class ProductsComponent implements OnInit {
 
     validateData(){
         if(
-            this.isObjEmpty(this.fileTmp) || 
-            !this.product.product_name || 
-            !this.product.product_code || 
-            !this.product.product_price || 
-            this.product.product_stock == null || 
-            this.product.product_iva == null || 
-            !this.product.id_provider || 
-            !this.product.id_brand || 
-            this.product.product_status == null || 
-            !this.product.product_rating || 
+            this.isObjEmpty(this.fileTmp) ||
+            !this.product.product_name ||
+            !this.product.product_code ||
+            !this.product.product_price ||
+            this.product.product_stock == null ||
+            this.product.product_iva == null ||
+            !this.product.id_provider ||
+            !this.product.id_brand ||
+            this.product.product_status == null ||
+            !this.product.product_rating ||
             this.product.id_category == null){
             return false;
         }
-      
+
         return true;
     }
 
     validateDataNoImage(){
         if(
-            !this.product.product_name || 
-            !this.product.product_code || 
-            !this.product.product_price || 
-            this.product.product_stock == null || 
-            this.product.product_iva == null || 
-            !this.product.id_provider || 
-            !this.product.id_brand || 
-            !this.product.product_rating || 
-            !this.product.id_category || 
+            !this.product.product_name ||
+            !this.product.product_code ||
+            !this.product.product_price ||
+            this.product.product_stock == null ||
+            this.product.product_iva == null ||
+            !this.product.id_provider ||
+            !this.product.id_brand ||
+            !this.product.product_rating ||
+            !this.product.id_category ||
             this.product.product_status == null
             ){
             return false;
         }
-      
+
         return true;
     }
 
@@ -521,13 +518,13 @@ export class ProductsComponent implements OnInit {
 
     exportCSV(){
         const fecha = new Date();
-        let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
+        let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate());
 
-        const options = { 
+        const options = {
             fieldSeparator: ',',
             quoteStrings: '"',
             decimalseparator: '.',
-            showLabels: true, 
+            showLabels: true,
             useBom: true,
             headers: ["codigo", "medida", "articulo","precio1","tbodega"],
             useHeader: false,
@@ -538,7 +535,7 @@ export class ProductsComponent implements OnInit {
             return {product_code,product_unit : product_unit.description_product_unit,product_name,product_price,product_stock : product_stock?.toString().split('.')[0]}
         })
 
-        new AngularCsv(this.dataCVS, `INV ${dataNow}`, options);
+        new AngularCsv(this.dataCVS, `${dataNow} Productos-CSV`, options);
     }
 
     deleteProduct(product: Product) {

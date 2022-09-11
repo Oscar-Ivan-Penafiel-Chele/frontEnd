@@ -41,13 +41,13 @@ export class ReportComponent implements OnInit {
   types_employees : any
   maxLength : number = 10;
   userAux : User[] = [];
-  
 
-  regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;  
-  
+
+  regexLetterSpace : RegExp = /[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/;
+
   constructor(
     private employeeService: EmployeeService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private _token: TokenService,
     private validationService: ValidationsService,
@@ -98,7 +98,7 @@ export class ReportComponent implements OnInit {
         this.users = this.userAux.filter(i => i.user_status == 0);
       }else if(this.stateCheckActive && this.stateCheckInactive){
         this.users = this.userAux;
-      }     
+      }
       this.loading = false;
     })
   }
@@ -125,7 +125,7 @@ export class ReportComponent implements OnInit {
   createEmployee(){
     this.user.user_phone = this.user.user_phone?.replace(/ /g, "");
     this.user.id_user_created = this.userLoged.id_user;
-   
+
     if(this.actionSelected === "new"){
       this.submitted = true;
       if(!this.regexData(this.user.email!)) return;
@@ -134,7 +134,10 @@ export class ReportComponent implements OnInit {
         return ;
       }else{
         this.messageIdentification = '';
-        
+        if(!this.validateInputs()) return;
+        if(!this.user.password || this.user.password.length < 8) return;
+        if(!this.regexPassword(this.user.password!)) return;
+
         this.isExistEmail(this.user.email!, this.user.user_document!);
       }
 
@@ -146,9 +149,27 @@ export class ReportComponent implements OnInit {
         return ;
       }else{
         this.messageIdentification = '';
+        if(!this.validateInputs()) return;
+        if(this.changePassword && !this.regexPassword(this.user.password!)) return;
         this.updateEmployee();
       }
     }
+  }
+
+  validateInputs(){
+    if(
+      !this.user.user_name ||
+      !this.user.user_lastName ||
+      !this.user.email ||
+      !this.user.user_phone ||  this.user.user_phone.length < 11 ||
+      !this.user.id_role || this.user.id_role == null ||
+      !this.user.user_status || this.user.user_status == null ||
+      !this.user.id_identification_type || this.user.id_identification_type == null ||
+      !this.user.user_document ||
+      !this.user.user_address || this.user.user_address.length < 5
+    ) return false;
+
+    return true;
   }
 
   requestSaveData(){
@@ -157,6 +178,9 @@ export class ReportComponent implements OnInit {
         this.getEmployees();
         this.hideDialog();
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'El empleado fue creado con éxito', life:3000});
+      }else{
+        console.log(response)
+        this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message[0]}`, life:3000});
       }
     }, err =>{
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
@@ -169,6 +193,9 @@ export class ReportComponent implements OnInit {
         this.getEmployees();
         this.hideDialog();
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Empleado actualizado con éxito', life:3000});
+      }else{
+        console.log(response)
+        this.messageService.add({severity:'error', summary: 'Error', detail: `${response.message[0]}`, life:3000});
       }
     }, err =>{
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life:3000});
@@ -182,7 +209,7 @@ export class ReportComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-        this.users = this.userAux; 
+        this.users = this.userAux;
     }
 
     if(!this.stateCheckActive && !this.stateCheckInactive) this.users = [] ;
@@ -207,7 +234,7 @@ export class ReportComponent implements OnInit {
     if(this.user.id_identification_type == 1) return this.validateCedula();
     if(this.user.id_identification_type == 2) return this.validatePasaporte();
     if(this.user.id_identification_type == 3) return verificarRuc(this.user.user_document!);
-    
+
     return false;
   }
 
@@ -253,7 +280,7 @@ export class ReportComponent implements OnInit {
     let pasaporte = parseInt(this.user.user_document!);
     if(pasaporte < 14 || pasaporte > 20){
       return false;
-    } 
+    }
 
     return true;
   }
@@ -266,6 +293,11 @@ export class ReportComponent implements OnInit {
     let regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
      return regexEmail.test(email);
+  }
+
+  regexPassword(password: string){
+    let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+    return regexPassword.test(password);
   }
 
   editUser(user : User){
@@ -316,7 +348,7 @@ export class ReportComponent implements OnInit {
         this.messageService.add({severity:'error', summary: 'Error', detail: 'La identificación ya existe', life: 3000});
         return;
       }
-      
+
       this.requestSaveData();
     }, err =>{
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PrimeNGConfig, MessageService } from 'primeng/api';
 import { RecoveryPasswordService } from '../service/recovery-password.service';
 
@@ -27,10 +27,10 @@ export class RecoverPasswordComponent implements OnInit {
   showButtons: boolean = true;
 
   constructor(
-    private primengConfig: PrimeNGConfig, 
+    private primengConfig: PrimeNGConfig,
     private changePasswordService: RecoveryPasswordService,
     private messageService: MessageService,
-  ) { 
+  ) {
     this.primengConfig.setTranslation({
       weak : 'Débil',
       medium : 'Bueno',
@@ -110,5 +110,11 @@ export class RecoverPasswordComponent implements OnInit {
     let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
      return regexPassword.test(password);
+  }
+
+
+  @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
+    if(event.key != "Enter") return;
+    this.validateInformation();
   }
 }

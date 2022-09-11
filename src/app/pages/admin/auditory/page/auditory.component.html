@@ -2,9 +2,10 @@
 
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton class="p-button-success" style="color:black;" label="Acción" icon="pi pi-filter" (click)="actions.toggle($event)"></button>
-            <button pButton class="p-button-warning ml-2" style="color:black;" label="Módulo" icon="pi pi-filter" (click)="modules.toggle($event)"></button>
-            <button pButton class="p-button-outlined ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+            <button [disabled]="loading" pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top" (click)="getAuditories()"></button>
+            <button [disabled]="loading" pButton class="p-button-success" style="color:black;" label="Acción" icon="pi pi-filter" (click)="actions.toggle($event)"></button>
+            <button [disabled]="loading" pButton class="p-button-warning ml-2" style="color:black;" label="Módulo" icon="pi pi-filter" (click)="modules.toggle($event)"></button>
+            <button [disabled]="loading" pButton class="p-button-outlined ml-2" pTooltip="Limpiar Filtros" tooltipPosition="top" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
         </ng-template>
 
         <ng-template pTemplate="right">
@@ -12,7 +13,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_module','audit_description']" 
+    <p-table #dt [value]="auditories" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['user.user_name','audit_module','audit_description']"
     responsiveLayout="stack" [rowHover]="true"  [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas">
         <ng-template pTemplate="caption">
@@ -30,10 +31,10 @@
                 <th pSortableColumn="user.user_name"><i class="pi pi-paperclip"></i> Acción<p-sortIcon field="user.user_name"></p-sortIcon></th>
                 <th pSortableColumn="audit_module">
                     <div class="flex justify-content-center align-items-center">
-                        <i class="pi pi-folder-open"></i> 
-                        Módulo 
+                        <i class="pi pi-folder-open"></i>
+                        Módulo
                         <p-sortIcon field="audit_module"></p-sortIcon>
-                        
+
                     </div>
                 </th>
                 <th pSortableColumn="audit_description" style="width: 400px;"><i class="pi pi-book"></i> Descripción <p-sortIcon field="audit_description"></p-sortIcon></th>

@@ -14,6 +14,23 @@
     font-weight: 600;
 }
 
+.title-sugerencias{
+  font-size: 13px;
+  padding-bottom: 7px;
+  font-weight: bold;
+}
+
+.sugerencias-content{
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 7px;
+}
+
+.sugerencias-list{
+  font-size: 13px;
+  padding-left: 25px;
+}
+
 @media screen and (max-width: 586px) {
     .input__search{
         margin-top: 10px;
