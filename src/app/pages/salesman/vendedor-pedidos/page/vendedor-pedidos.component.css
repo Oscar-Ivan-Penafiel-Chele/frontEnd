@@ -1,3 +1,11 @@
+*{
+  font-size: 15px;
+}
+
+.field > label{
+  font-weight: bold;
+}
+
 .status__order__pendiente, .status__order__completada{
     width: min-content;
     padding: 2px 8px;

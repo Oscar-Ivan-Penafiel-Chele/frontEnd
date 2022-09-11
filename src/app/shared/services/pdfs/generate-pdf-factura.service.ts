@@ -26,7 +26,7 @@ export class GeneratePdfFacturaService {
 
    getIva(){
     this.manageIvaService.getManageIva().subscribe((response : any)=>{
-      this.percentIva = response[0].porcent; 
+      this.percentIva = response[0].porcent;
     })
    }
 
@@ -55,13 +55,13 @@ export class GeneratePdfFacturaService {
       product.producto.product_price_aux =  product.producto.product_price;
       product.producto.product_amount_sail = product.order_detail_quantity;
 
-      if(parseInt(product.order_detail_discount) > 0){ 
+      if(parseInt(product.order_detail_discount) > 0){
         product.producto.productWithDiscount = (product.producto.product_price_aux! - (product.producto.product_price_aux! * (parseInt(product.order_detail_discount) / 100))).toFixed(2);
         product.producto.product_price_amount =  (product.producto.productWithDiscount * product.producto.product_amount_sail!).toFixed(2);
       }else{
         product.producto.productWithDiscount = product.producto.product_price_aux;
         product.producto.product_price_amount =  (product.producto.product_price_aux! * product.producto.product_amount_sail!).toFixed(2);
-      }  
+      }
 
       this.getSubtotal(product.producto.product_price_amount, product);
     })
@@ -76,9 +76,10 @@ export class GeneratePdfFacturaService {
 
     if(product.producto.product_iva == 1){
       this.subtotalIva += parseFloat(price_amount.toString());
-      this.iva = (this.subtotal * (this.percentIva/100));
+      this.iva = (this.subtotalIva * (this.percentIva/100));
     }else{
       this.subtotalSinIva += parseFloat(price_amount.toString());
+      this.iva = 0;
     }
 
     this.total = this.subtotal + this.iva;
@@ -89,7 +90,7 @@ export class GeneratePdfFacturaService {
     const fecha = new Date();
     let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
     const pdf = new PdfMakeWrapper();
-    
+
     pdf.info({
         title: 'Factura PDF',
         author: '@Yebba',
@@ -97,7 +98,7 @@ export class GeneratePdfFacturaService {
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('portrait'); // 'portrait'
-    
+
     pdf.add(
       new Stack([
         new Columns([
@@ -137,7 +138,7 @@ export class GeneratePdfFacturaService {
               new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(410,110).fontSize(8).end,
             ]).end,
           ]).end
-          
+
         ]).end
       ]).end
     );
@@ -145,7 +146,7 @@ export class GeneratePdfFacturaService {
     pdf.add(
       '\n'
     )
-    
+
     pdf.add(new Stack([
         new Canvas([
           new Rect([0, 0], [508, 80 ]).end,
@@ -172,7 +173,7 @@ export class GeneratePdfFacturaService {
         ]).end,
         new Txt('IDENTIFICACIÓN:').absolutePosition(50,240).fontSize(8).bold().end,
         new Txt(`${this.pedidosAux[0].document}`).absolutePosition(115,240).fontSize(8).end,
-      ]).end  
+      ]).end
     );
 
     pdf.add(
@@ -180,7 +181,7 @@ export class GeneratePdfFacturaService {
     )
 
     pdf.add(this.createTable(this.products));
-    
+
     pdf.add(
       '\n'
     )
@@ -205,15 +206,15 @@ export class GeneratePdfFacturaService {
           ]).widths([240]).fontSize(8).end,
 
           new Table([
-            [ 
+            [
               new Txt(`SUBTOTAL ${this.percentIva}%`).fontSize(8).alignment('left').bold().end,
               new Txt(`$ ${this.subtotalIva.toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
-            [ 
+            [
               new Txt('SUBTOTAL 0%').fontSize(8).alignment('left').bold().end,
               new Txt(`$ ${this.subtotalSinIva.toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
-            [ 
+            [
               new Txt('DESCUENTO').fontSize(8).alignment('left').bold().end,
               new Txt(`$ ${this.discount.toFixed(2)}`).fontSize(8).alignment('right').end,
             ],
@@ -233,15 +234,15 @@ export class GeneratePdfFacturaService {
           ]).widths([116,115]).fontSize(8).end,
         ]).end,
       ]).end,
-    ); 
-    
+    );
+
     pdf.add(
       '\n'
     )
 
     pdf.add(
       new Table([
-        [ 
+        [
           new Txt('Forma de Pago').fontSize(8).alignment('center').bold().end,
           new Txt('Valor (USD)').fontSize(8).alignment('center').bold().end,
         ],
@@ -251,16 +252,16 @@ export class GeneratePdfFacturaService {
         ]
       ]).widths([150,80]).end
     );
-    
+
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
-    pdf.create().download(`${dataNow} Factura`)  
+    pdf.create().download(`${dataNow} Factura`)
   }
 
   createTable(data : any): ITable{
     return new Table([
-      [ 
+      [
           new Txt('Cód. Principal').bold().end,
           new Txt('Cant.').bold().end,
           new Txt('Descripción').bold().end,

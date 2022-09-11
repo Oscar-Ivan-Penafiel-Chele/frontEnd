@@ -23,7 +23,7 @@ export class EgresosComponent implements OnInit {
   egresosAux : Egreso[] = [];
   user : User = {};
   products : Product[] = [];
-  
+
   egreso : Egreso = {} as Egreso;
   egresoAux : EgresoAux = {} as EgresoAux;
   loading : boolean = false;
@@ -44,25 +44,32 @@ export class EgresosComponent implements OnInit {
     private messageService: MessageService,
     private productService : ProductService,
     private reportEgresosPDFService: GeneratePdfReportEgresosService
-  ) { 
+  ) {
     this.descriptionOption = [
       {label : 'REGALO A EMPLEADO' , icon : 'pi pi-user'},
       {label : 'DONACIÓN A FUNDACIÓN O INSTITUCIÓN', icon : 'pi pi-building'},
       {label : 'MERCADERÍA REGALADA', icon : 'pi pi-box'},
       {label : 'OTRO', icon : 'pi pi-paperclip'},
-    ]
-  }
-
-  ngOnInit(): void {
+    ];
     this.config.setTranslation({
       "clear" : "Vaciar",
       "today" : "Hoy",
       "dayNamesMin": ["D","L","M","X","J","V","S"],
       "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
     });
+  }
+
+  ngOnInit(): void {
     this.getProducts();
-    this.getEgresos();
+    this.getEgresos(false);
     this.getDataProfile();
+    this.refreshData();
+  }
+
+  refreshData(){
+    setInterval(()=>{
+      this.getEgresos(true);
+    },100000);
   }
 
   getProducts(){
@@ -72,12 +79,13 @@ export class EgresosComponent implements OnInit {
     })
   }
 
-  getEgresos(){
-    this.loading = true;
+  getEgresos(isRefresh: boolean){
+    if(!isRefresh) this.loading = true;
+
     this.egresoService.getEgresos().subscribe((response : any)=>{
       this.egresos = Object.values(response);
-      this.loading = false;
-      
+      if(!isRefresh) this.loading = false;
+
       this.dataExtract = this.egresos.map(({order_detail, inventory_description, inventory_movement_type, inventory_stock_amount, create_date})=>{
         return {product_code : order_detail.producto.product_code, product_name : order_detail.producto.product_name, inventory_description, inventory_movement_type, inventory_stock_amount, create_date};
       })
@@ -120,7 +128,7 @@ export class EgresosComponent implements OnInit {
   saveData(){
     this.egresoService.createEgreso(this.egresoAux).subscribe((response)=>{
       if(response.status === 200 || response.message == "Guardado con exito"){
-        this.getEgresos();
+        this.getEgresos(false);
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'Registro creado exitosamente'});
         this.hideNewModal();
       }else if(response.status === 400 || response.message == "Ocurrio un error interno al crear la orden"){

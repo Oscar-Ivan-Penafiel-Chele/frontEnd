@@ -11,14 +11,14 @@
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="firstname"><i class="pi pi-user"></i> Nombres</label>
-                        <input #firstname="ngModel" [disabled]="true" id="firstname" type="text" required pInputText [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" autofocus> 
+                        <input #firstname="ngModel" [disabled]="true" id="firstname" type="text" required pInputText [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" autofocus>
                         <small *ngIf="submitted && !user.user_name" class="p-error">Nombre es requerido</small>
                     </div>
                 </div>
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="lastname"><i class="pi pi-user"></i> Apellidos</label>
-                        <input #lastname="ngModel" [disabled]="true" id="lastname" type="text" required pInputText [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace"> 
+                        <input #lastname="ngModel" [disabled]="true" id="lastname" type="text" required pInputText [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace">
                         <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellido es requerido</small>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="document"><i class="pi pi-id-card"></i> {{typeDocument}}: </label>
-                        <input #age="ngModel" [disabled]="true" id="document" type="text" required pInputText [(ngModel)]="user.user_document"> 
+                        <input #age="ngModel" [disabled]="true" id="document" type="text" required pInputText [(ngModel)]="user.user_document">
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 <div class="field col">
                     <div class="flex flex-column">
                         <label for="reference"><i class="pi pi-building"></i> Lugar de Referencia</label>
-                        <input #age="ngModel" id="reference" type="text" required pInputText [(ngModel)]="user.user_address_reference"> 
+                        <input #age="ngModel" maxlength="100" id="reference" type="text" required pInputText [(ngModel)]="user.user_address_reference">
                         <small class="p-error" *ngIf="submitted">{{!user.user_address_reference ? 'Referencia es requerida' : user.user_address_reference && user.user_address_reference.length < 5 ? 'Referencia es muy corta' : ''}}</small>
                     </div>
                 </div>
@@ -62,9 +62,9 @@
                         <label for="age"><i class="pi pi-phone"></i> Celular</label>
                         <div class="p-inputgroup">
                             <span class="p-inputgroup-addon">
-                                <img class="mr-2" [src]="urlImage" width="30"> <p>(+593)</p>  
+                                <img class="mr-2" [src]="urlImage" width="30"> <p>(+593)</p>
                             </span>
-                            <input type="text" [(ngModel)]="phoneUser"  [imask]="{mask: '00 000 0000'}" pInputText placeholder="99 999 9999">      
+                            <input type="text" [(ngModel)]="phoneUser"  [imask]="{mask: '00 000 0000'}" pInputText placeholder="99 999 9999">
                         </div>
                         <small class="p-error" *ngIf="submitted">{{!phoneUser ? 'Celular es requerido' : phoneUser && phoneUser.length < 11 ? 'Celular es requerido' : ''}}</small>
                     </div>
@@ -72,7 +72,7 @@
             </div>
         </ng-template>
 
-        
+
         <ng-template pTemplate="footer">
             <section class="flex flex-row flex-nowrap justify-content-between">
                 <p-button label="Regresar" [routerLink]="'/checkout/cart'" icon="pi pi-angle-left" iconPos="left"></p-button>

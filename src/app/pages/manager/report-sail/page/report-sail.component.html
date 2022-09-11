@@ -15,15 +15,18 @@
             <button [disabled]="!fechaInicio || !fechaFin || fechaFin < fechaInicio || loading" type="button" pButton pRipple icon="pi pi-file-pdf" label="Generar Reporte" (click)="generateReport()" class="p-button-info" pTooltip="PDF" tooltipPosition="right"></button>
         </div>
     </p-toolbar>
-    
+
     <p-table #dt [value]="prueba" [rows]="5" [loading]="loading" [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [globalFilterFields]="['voucher_sail', 'name_sail', 'lastName_sail']" responsiveLayout="stack" [rowHover]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex flex-wrap align-items-center justify-content-between">
+              <div class="flex flex-wrap align-items-center justify-content-between">
+                <button pButton pRipple icon="pi pi-refresh" style="height: 42px; width: 42px;" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top"  (click)="getSails(false)"></button>
                 <h5 class="m-0">Gestión de Ventas</h5>
+              </div>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" style="width: 330px;" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por comprobante o cliente" />
+                    <input pInputText type="text" maxlength="60" style="width: 330px;" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por comprobante o cliente" />
                 </span>
             </div>
         </ng-template>

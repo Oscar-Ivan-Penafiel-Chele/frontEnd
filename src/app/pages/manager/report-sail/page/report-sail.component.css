@@ -1,3 +1,11 @@
 .p-column-title{
     font-weight: 600;
 }
+
+*{
+  font-size: 15px;
+}
+
+.field > label{
+  font-weight: bold;
+}

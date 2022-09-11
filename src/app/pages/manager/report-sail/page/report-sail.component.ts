@@ -24,7 +24,7 @@ export class ReportSailComponent implements OnInit {
   sails : Sail[] = [];
 
   sailAux : any = [];
-  user : User = {}; 
+  user : User = {};
 
   products : any = [];
   subtotal : number = 0;
@@ -39,7 +39,7 @@ export class ReportSailComponent implements OnInit {
   messageErrorDateInit: string = "";
   messageErrorDateExpiry : string = "";
   disableButton: boolean = false;
-  
+
   constructor(
     private reportSailService : ReportSailService,
     private _token : TokenService,
@@ -47,7 +47,7 @@ export class ReportSailComponent implements OnInit {
     private messageService: MessageService,
     private generatePDFService : GeneratePdfFacturaService,
     private generateReportService : GenerateReportSailService
-  ) { 
+  ) {
     this.config.setTranslation({
       "clear" : "Vaciar",
       "today" : "Hoy",
@@ -57,21 +57,28 @@ export class ReportSailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSails();
+    this.getSails(false);
     this.getDataProfile();
   }
 
-  getSails(){
-    this.loading = true;
+  refreshData(){
+    setInterval(()=>{
+      this.getSails(true);
+    },100000);
+  }
+
+
+  getSails(isRefresh: boolean){
+    if(!isRefresh) this.loading = true;
     this.reportSailService.getSails().subscribe((response : Sail[])=>{
       this.sails = Object.values(response);
-      this.groupOrderByIdOrder(response);
+      this.groupOrderByIdOrder(response, isRefresh);
     }, err=>{
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor', life: 3000});
     })
   }
 
-  groupOrderByIdOrder(response : any){
+  groupOrderByIdOrder(response : any, isRefresh: boolean){
     let data : any = {};
 
     response.forEach((i : any)=>{
@@ -82,10 +89,10 @@ export class ReportSailComponent implements OnInit {
       }
 
       data[i.id_order].orders.push({i});
-    }); 
+    });
 
     this.sails = Object.values(data);
-    this.loading = false;
+    if(!isRefresh) this.loading = false;
     this.createInterfaceTable(this.sails)
   }
 
@@ -152,21 +159,21 @@ export class ReportSailComponent implements OnInit {
 
   validateDatesSelected(){
     if(this.fechaFin < this.fechaInicio) {
-      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiry = true ; 
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpiry = true ;
       this.isShowMessageDateInit = false
       return ;
     }
 
     if(this.fechaInicio > this.fechaFin) {
-      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInit = true ; 
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInit = true ;
       this.isShowMessageDateExpiry = false
       return ;
     }
 
-    this.messageErrorDateExpiry = "" ; 
-    this.isShowMessageDateExpiry = false ; 
+    this.messageErrorDateExpiry = "" ;
+    this.isShowMessageDateExpiry = false ;
     this.isShowMessageDateInit = false;
     return;
   }

@@ -26,7 +26,7 @@ export class IngresosComponent implements OnInit {
   fechaInicio : any;
   fechaFin : any;
 
-  
+
   isShowMessageDateInit : boolean = false;
   isShowMessageDateExpiry: boolean = false;
   messageErrorDateInit: string = "";
@@ -49,8 +49,9 @@ export class IngresosComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.getIngresos();
+    this.getIngresos(false);
     this.getDataProfile();
+    this.refreshData();
   }
 
   getDataProfile(){
@@ -68,19 +69,24 @@ export class IngresosComponent implements OnInit {
     }
   }
 
-  getIngresos(){
-    this.loading = true;
+  refreshData(){
+    setInterval(()=>{
+      this.getIngresos(true);
+    },100000);
+  }
+
+  getIngresos(isRefresh: boolean){
+    if(!isRefresh) this.loading = true;
     this.ingresoService.getIngresos().subscribe((response : Ingreso[])=>{
       this.ingresos = Object.values(response);
-      console.log(this.ingresos);
-      this.loading = false;
+      if(!isRefresh) this.loading = false;
     })
   }
 
   async exportPdf(){
     this.ingresosAux = [];
     this.ingresosAux = this.ingresos.filter((i)=> new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
-    
+
     if(this.ingresosAux.length == 0) {
       this.messageService.add({severity:'success', summary: 'Completado', detail: 'No se encontraron registros en el rango de fechas elegidas', life : 4000});
       return ;
@@ -103,21 +109,21 @@ export class IngresosComponent implements OnInit {
 
   validateDatesSelected(){
     if(this.fechaFin < this.fechaInicio) {
-      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiry = true ; 
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpiry = true ;
       this.isShowMessageDateInit = false
       return ;
     }
 
     if(this.fechaInicio > this.fechaFin) {
-      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInit = true ; 
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInit = true ;
       this.isShowMessageDateExpiry = false
       return ;
     }
 
-    this.messageErrorDateExpiry = "" ; 
-    this.isShowMessageDateExpiry = false ; 
+    this.messageErrorDateExpiry = "" ;
+    this.isShowMessageDateExpiry = false ;
     this.isShowMessageDateInit = false;
     return;
   }

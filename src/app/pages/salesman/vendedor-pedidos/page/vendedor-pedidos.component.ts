@@ -25,7 +25,7 @@ export interface ISailOrder{
 })
 export class VendedorPedidosComponent implements OnInit {
 
-  pedidos : any; 
+  pedidos : any;
   loading : boolean = false;
   products: any;
   pedidosAux : any;
@@ -39,13 +39,10 @@ export class VendedorPedidosComponent implements OnInit {
 
   constructor(
     private vendedorService : VendedorServiceService,
-    private confirmationService: ConfirmationService, 
+    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private generatePDF : GeneratePdfFacturaService
-  ) { }
-
-  ngOnInit(): void {
-    this.getPedidos();
+  ) {
     this.options = [
       {id: '1', name : 'Completado'},
       {id: '2', name : 'Pendiente'},
@@ -53,16 +50,26 @@ export class VendedorPedidosComponent implements OnInit {
     ]
   }
 
-  getPedidos(){
+  ngOnInit(): void {
+    this.getPedidos(false);
+    this.refreshData();
+  }
+
+  refreshData(){
+    setInterval(()=>{
+      this.getPedidos(true);
+    },100000);
+  }
+
+  getPedidos(isRefresh: boolean){
     this.selectedOptionFilter = 3;
-    this.loading = true;
+    if(!isRefresh) this.loading = true;
     this.vendedorService.getPendingOrders().subscribe((response) =>{
-      console.log(response)
-      this.groupOrderByIdOrder(response);
+      this.groupOrderByIdOrder(response, isRefresh);
     })
   }
 
-  groupOrderByIdOrder(response : any){
+  groupOrderByIdOrder(response : any, isRefresh: boolean){
     this.pedidos = {};
 
     let data : any = {};
@@ -75,13 +82,13 @@ export class VendedorPedidosComponent implements OnInit {
       }
 
       data[i.id_order].orders.push({i});
-    }); 
+    });
 
     this.pedidos = Object.values(data)
-    this.createInterfaceTable(this.pedidos);
+    this.createInterfaceTable(this.pedidos, isRefresh);
   }
 
-  createInterfaceTable(pedidos : any){
+  createInterfaceTable(pedidos : any, isRefresh: boolean){
     this.dataAux = [];
     this.dataAuxFilter = [];
     pedidos.forEach((pedido : any) =>{
@@ -97,7 +104,7 @@ export class VendedorPedidosComponent implements OnInit {
         }
       );
     });
-    this.loading = false;
+    if(!isRefresh) this.loading = false;
     this.dataAuxFilter = Object.values(this.dataAuxFilter);
     this.dataAux = this.dataAuxFilter;
   }
@@ -115,7 +122,7 @@ export class VendedorPedidosComponent implements OnInit {
       accept: () => {
           this.vendedorService.changeStateOrder(data).subscribe((response)=>{
             if(response.status == 200 || response.message == "Orden completada"){
-              this.getPedidos();
+              this.getPedidos(false);
               this.timeResponse = response.tiempo_despacho;
               this.messageService.add({severity:'success', summary:'Completado', detail:`El pedido de ${pedido.name} ha sido completado`, life: 3000});
             }else if( response.status >= 400 && response.status <= 500 || response.message == "Ocurrio un error interno en el servidor"){
@@ -150,5 +157,5 @@ export class VendedorPedidosComponent implements OnInit {
     this.isShowModalDetail = true
   }
 
-  
+
 }

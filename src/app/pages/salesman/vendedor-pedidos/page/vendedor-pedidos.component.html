@@ -1,30 +1,20 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text" ></p-confirmDialog>
 
-<p-toolbar styleClass="mb-4">
-    <ng-template pTemplate="left">
-        <button pButton pRipple label="Estado" icon="pi pi-filter" class="p-button-warning mr-2" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
-
-        <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
-            <ng-template pTemplate>
-                <div *ngFor="let option of options" class="field-checkbox">
-                    <p-radioButton [id]="option.id" id="option.id" [name]="option.id" name="option.name" [inputId]="option.id" [value]="option.id" (onClick)="change($event)" [(ngModel)]="selectedOptionFilter"></p-radioButton>
-                    <label [for]="option.id">{{option.name}}</label>
-                </div>
-            </ng-template>
-        </p-overlayPanel>
-
-    </ng-template>
-</p-toolbar>
-
 <p-table #dt [value]="dataAux" [paginator]="true" [rowHover]="true" [loading]="loading" [rows]="5" [showCurrentPageReport]="true"  [globalFilterFields]="['id_order','name']"
 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos" [rowsPerPageOptions]="[5,10,25,50]" responsiveLayout="stack">
     <ng-template pTemplate="caption">
         <div class="flex flex-wrap align-items-center justify-content-between">
-            Listado de Pedidos
+            <div class="flex flex-wrap align-items-center justify-content-between">
+              <button pButton pRipple icon="pi pi-refresh" class="p-button-info mr-2" pTooltip="Recargar Tabla" tooltipPosition="top"  (click)="getPedidos(false)"></button>
+              <button pButton pRipple icon="pi pi-filter" class="p-button-warning mr-2" pTooltip="Filtrar" tooltipPosition="top" style="color: rgb(65, 65, 65);" (click)="op.toggle($event)"></button>
+
+              Listado de Pedidos
+            </div>
+
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText style="width: 300px;" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o cliente" />
+                <input pInputText style="width: 300px;" maxlength="60" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar por orden o cliente" />
             </span>
         </div>
     </ng-template>
@@ -34,8 +24,8 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
             <th pSortableColumn="name"><i class="pi pi-user"></i> Cliente <p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="order_date"><i class="pi pi-calendar"></i> Fecha de Pedido <p-sortIcon field="order_date"></p-sortIcon></th>
             <th pSortableColumn="total"><i class="pi pi-dollar"></i> Precio Total <p-sortIcon field="total"></p-sortIcon></th>
-            <th pSortableColumn="status"><i class="pi pi-clock"></i> Estado <p-sortIcon field="status"></p-sortIcon></th> 
-            <th><i class="pi pi-share-alt"></i> Acciones</th> 
+            <th pSortableColumn="status"><i class="pi pi-clock"></i> Estado <p-sortIcon field="status"></p-sortIcon></th>
+            <th><i class="pi pi-share-alt"></i> Acciones</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
@@ -46,7 +36,7 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
             <td><span class="p-column-title"><i class="pi pi-dollar"></i> Precio Total: </span>$ {{pedido.total}}</td>
             <td>
                 <span class="p-column-title"><i class="pi pi-clock"></i> Estado: </span>
-                <p [class]="'status__order__'+(pedido.status).toLowerCase()"> 
+                <p [class]="'status__order__'+(pedido.status).toLowerCase()">
                     {{pedido.status}}
                 </p>
             </td>
@@ -61,7 +51,7 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
                         <button pButton pRipple type="button" style="color: rgb(65, 65, 65);" pTooltip="Detalles" tooltipPosition="top" icon="pi pi-info-circle" (click)="showModal(pedido)" class="p-button-warning"></button>
                     </ng-template>
                 </div>
-                
+
             </td>
         </tr>
     </ng-template>
@@ -75,7 +65,7 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
 <ng-template [ngIf]="isShowModalDetail">
     <p-dialog header="Detalles Avanzados del Pedido" [(visible)]="isShowModalDetail" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
         [draggable]="false" [resizable]="false">
-    
+
             <article>
                 <div class="dateOrder flex justify-content-center align-items-center">
                     <div class="mr-4">
@@ -92,8 +82,18 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
                     <p>Días: {{dataModal.information[0].i.order.delivery_day}} Horas: {{dataModal.information[0].i.order.delivery_hour}} Minutos: {{dataModal.information[0].i.order.delivery_minute}}</p>
                 </div>
             </article>
-    
+
             <ng-template pTemplate="footer">
             </ng-template>
     </p-dialog>
 </ng-template>
+
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '180px'}">
+  <ng-template pTemplate>
+      <div *ngFor="let option of options" class="field-checkbox">
+          <p-radioButton [id]="option.id" id="option.id" [name]="option.id" name="option.name" [inputId]="option.id" [value]="option.id" (onClick)="change($event)" [(ngModel)]="selectedOptionFilter"></p-radioButton>
+          <label [for]="option.id">{{option.name}}</label>
+      </div>
+  </ng-template>
+</p-overlayPanel>

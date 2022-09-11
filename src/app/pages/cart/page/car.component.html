@@ -1,11 +1,11 @@
-<p-toast [autoZIndex]="false" [style]="{'z-index': 9}"></p-toast> 
+<p-toast [autoZIndex]="false" [style]="{'z-index': 9}"></p-toast>
 <section>
     <nav>
         <div class="logout" *ngIf="overlayLogout">
             <p-progressSpinner strokeWidth="3"></p-progressSpinner>
             <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
         </div>
-        
+
         <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
            <div class="nav__container">
                 <div class="nav__logo">
@@ -15,7 +15,7 @@
                     <div class="nav__menu__content">
                         <a href="/login"><i class="pi pi-sign-in"> </i>Iniciar Sesión</a>
                         <a href="/signup"><i class="pi pi-user-plus"> </i>Registrar</a>
-    
+
                         <div class="nav__menu__content_social">
                             <div class="nav__menu__content_social__icons">
                                 <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
@@ -24,7 +24,7 @@
                                 <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
                 <button class="hamburger" (click)="isActive()">
@@ -33,9 +33,9 @@
                     <span></span>
                 </button>
            </div>
-    
+
         </ng-template>
-    
+
         <ng-template #logged>
             <div class="nav__container">
                 <div class="nav__logo">
@@ -58,13 +58,13 @@
                                 <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
                             </div>
                         </div>
-                        
+
                         <div class="nav__menu__content__date">
                             <div class="menu__social__date">
                                 <p>{{fechaYHora}}</p>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
                 <button class="hamburger" (click)="isActive()">
@@ -92,20 +92,20 @@
                     <ng-template pTemplate="caption">
                         <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
                             <div class="flex flex-wrap align-items-center justify-content-between pb-2 pt-2">
-                                <button pButton class="p-button-danger mr-2" [style]="{width : '42px', height : '42px'}" pTooltip="Vaciar Carrito" [loading]="loading" tooltipPosition="top" styleClass="p-button-sm" icon="pi pi-trash" (click)="cleanCart();"></button>
+                                <button pButton class="p-button-danger mr-2" [disabled]="products.length == 0" [style]="{width : '42px', height : '42px'}" pTooltip="Vaciar Carrito" [loading]="loading" tooltipPosition="top" styleClass="p-button-sm" icon="pi pi-trash" (click)="cleanCart();"></button>
                                 <button pButton [style]="{width : '42px', height : '42px'}" pTooltip="Recargar tabla" [loading]="loading" tooltipPosition="top" class="p-button-info mr-2" styleClass="p-button-sm" icon="pi pi-refresh" (click)="getData();"></button>
                                 <p>Total de Items : {{products.length}}</p>
                             </div>
-    
+
                             <div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-search"></i>
-                                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
+                                    <input pInputText type="text" maxlength="60" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar producto" />
                                 </span>
                             </div>
                         </div>
                     </ng-template>
-    
+
                     <ng-template pTemplate="header">
                         <tr>
                             <th></th>
@@ -128,7 +128,7 @@
                             </td>
                         </tr>
                     </ng-template>
-    
+
                     <ng-template pTemplate="body" let-product | async let-rowIndex="rowIndex">
                         <tr [pSelectableRow]="product" [pSelectableRowIndex]="rowIndex">
                             <td>
@@ -148,7 +148,7 @@
                                 </div>
                             </td>
                             <td><span class="p-column-title">Precio Unitario: </span>${{product.product_price_aux}}</td>
-                            <td><span class="p-column-title">Cantidad: </span> 
+                            <td><span class="p-column-title">Cantidad: </span>
                                 <div class="flex flex-column">
                                     <p-inputNumber [size]="1" [name]="rowIndex" [id]="rowIndex" (onInput)="getTotalPriceForUnit($event, product, rowIndex)" (onBlur)="onBlurInput($event, product)" [(ngModel)]="product.product_amount_sail" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="product.product_stock!"></p-inputNumber>
                                     <small class="p-error" *ngIf="rowSelected == rowIndex && isErrorStock">Stock no disponible</small>
@@ -158,7 +158,7 @@
                             <td><span class="p-column-title">IVA 12%: </span>${{product.product__price__iva}}</td>
                             <td><span class="p-column-title">Total: </span>
                                 ${{product.product_price_total == null ? product.product_price : product.product_price_total}}
-                            </td>      
+                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">

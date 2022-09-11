@@ -32,18 +32,18 @@ export class CarComponent implements OnInit {
   manageIva : IManageIVA = {} as IManageIVA;
   emptyImage: string = "assets/img/image_empty.svg";
   isErrorStock = false;
-  rowSelected: number | undefined ; 
+  rowSelected: number | undefined ;
 
   constructor(
-    private _primengConfig : PrimeNGConfig, 
+    private _primengConfig : PrimeNGConfig,
     private cartService : CartServiceService,
-    private _token : TokenService, 
+    private _token : TokenService,
     private _authService : AuthService,
     private _navigate : Router,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private manageIvaService : ManageIvaService, 
-  ) { 
+    private manageIvaService : ManageIvaService,
+  ) {
     this.overlayLogout = false;
     this.order.price_order_total = 0;
   }
@@ -51,8 +51,9 @@ export class CarComponent implements OnInit {
   ngOnInit(): void {
     this._primengConfig.ripple = true;
     this.getData();
+    this.refreshData();
   }
- 
+
   goCart(){
     this._navigate.navigate(["/checkout/cart"]);
   }
@@ -61,9 +62,15 @@ export class CarComponent implements OnInit {
     this._navigate.navigate(["/shop"]);
   }
 
+  refreshData(){
+    setInterval(()=>{
+      this.getIva(true);
+    }, 100000);
+  }
+
   async getData(){
     await this.isLog();
-    await this.getIva();
+    await this.getIva(false);
   }
 
   async isLog(){
@@ -75,17 +82,18 @@ export class CarComponent implements OnInit {
     this.isLogged = true;
   }
 
-  async getIva(){
+  async getIva(isRefresh: boolean){
     this.manageIvaService.getManageIva().subscribe((response : IManageIVA[]) =>{
       let data = response;
       this.manageIva = data.filter( i => i.iva_status === 1)[0];
 
-      this.getAllProductsCart(this.user.id_user!);
+      this.getAllProductsCart(this.user.id_user!, isRefresh);
     });
   }
-  
-  getAllProductsCart(id_user : number){
-    this.loading = true;
+
+  getAllProductsCart(id_user : number, isRefresh: boolean){
+    if(!isRefresh) this.loading = true;
+
     const data = {
       id_user : id_user
     };
@@ -94,11 +102,11 @@ export class CarComponent implements OnInit {
       response.forEach((i)=>{
         i.producto.product_price_aux = i.producto.product_price;
       })
-      this.extractData(response);
+      this.extractData(response, isRefresh);
     })
   }
 
-  async extractData(data : Cart[]){
+  async extractData(data : Cart[], isRefresh: boolean){
     this.products = data.map(({producto, product_offered, product_offered_price_total})=>{
       data.forEach((i)=>{
         i.producto.product_amount_sail = 1;
@@ -109,12 +117,12 @@ export class CarComponent implements OnInit {
       })
       return producto;
     })
-    
+
     this.products = this.products.sort(this.sortProduct);
 
     this.handleProduct(this.products);
 
-    this.loading = false;
+    if(!isRefresh) this.loading = false;
     await this.getTotalPriceToPay();
   }
 
@@ -123,7 +131,7 @@ export class CarComponent implements OnInit {
 
     let x = 0;
     products.forEach((i : Product)=>{
-      if(i.product_offered && i.product_offered != 0.00){ 
+      if(i.product_offered && i.product_offered != 0.00){
         i.productWithDiscount = (i.product_price_aux! - (i.product_price_aux! * (i.product_offered! / 100))).toFixed(2);
         i.product_price_amount =  i.productWithDiscount * i.product_amount_sail!;
       }else{
@@ -154,14 +162,14 @@ export class CarComponent implements OnInit {
   getTotalPriceForUnit($event : any, product : Product, rowIndex: number){
     this.rowSelected = rowIndex;
 
-    if($event.value > product.product_stock!){ 
+    if($event.value > product.product_stock!){
       this.isErrorStock = true;
-      return ; 
+      return ;
     }
-    
+
     this.isErrorStock = false;
-    
-    if(product.product_offered){ 
+
+    if(product.product_offered){
       product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
       product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
     }else{
@@ -175,10 +183,10 @@ export class CarComponent implements OnInit {
       this.getTotalPriceForAmount();
       return;
     }
-    
+
     product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
     product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);
-    
+
     this.getTotalPriceForAmount();
   }
 
@@ -189,7 +197,7 @@ export class CarComponent implements OnInit {
     this.products.forEach((i)=>{
       if(i.product_price_total == undefined){
         i.product_amount_sail = 1;
-        totalIva += parseFloat(i.product__price__iva); 
+        totalIva += parseFloat(i.product__price__iva);
         totalPrecioSinIva += i.product_price!;
         totalPrecioSinIva = parseFloat(totalPrecioSinIva.toFixed(2));
       }
@@ -205,7 +213,7 @@ export class CarComponent implements OnInit {
     price = this.products.map((i)=>{
       if(i.product_price_total == undefined){
         i.product_price_total = i.product_price;
-      } 
+      }
 
       return parseFloat(i.product_price_total);
     })
@@ -287,7 +295,7 @@ export class CarComponent implements OnInit {
   requestDelete(data : any){
     this.cartService.deleteProductCart(data).subscribe((response)=>{
       if(response.status == 200 || response.message === "Eliminado con exito"){
-        this.getAllProductsCart(this.user.id_user!);
+        this.getAllProductsCart(this.user.id_user!, false);
         this.messageService.add({severity:'success', summary: 'Completado', detail: 'El producto fue eliminado'});
       }else if(response.status == 500 || response.message === "Ocurrio un error interno en el servidor"){
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrio un error interno en el servidor'});
@@ -337,25 +345,25 @@ export class CarComponent implements OnInit {
   onBlurInput($event: any, product: Product): void{
     if(this.isErrorStock){
       this.isErrorStock = false;
-  
-      if(product.product_offered){ 
+
+      if(product.product_offered){
         product.productWithDiscount = (product.product_price_aux! - (product.product_price_aux! * (product.product_offered! / 100))).toFixed(2);
         product.product_price_amount =  product.productWithDiscount * product.product_amount_sail!;
       }else{
         product.product_price_amount =  product.product_price_aux! * product.product_amount_sail!;
       }
-  
+
       if(product.product_iva == 0){
         product.product__price__iva = (product.product_price_amount! * 0).toFixed(2);
         product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);;
-  
+
         this.getTotalPriceForAmount();
         return;
       }
-      
+
       product.product__price__iva = (product.product_price_amount! * (this.manageIva.porcent / 100)).toFixed(2);
       product.product_price_total! = (parseFloat(product.product_price_amount!) + parseFloat(product.product__price__iva)).toFixed(2);
-      
+
       this.getTotalPriceForAmount();
       return;
     }
@@ -370,7 +378,7 @@ export class CarComponent implements OnInit {
 
   getKeepSession(){
     if(!localStorage.getItem('keepSession')) return false;
-    
+
     const data = localStorage.getItem('keepSession');
 
     if(data!.toString() == "true"){

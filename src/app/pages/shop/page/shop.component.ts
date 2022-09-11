@@ -19,11 +19,11 @@ import { User, Product, Category, Banner, Promotion, Cart } from '@models/interf
   providers : [MessageService,ConfirmationService]
 })
 export class ShopComponent implements OnInit {
-  
+
   products : Product[] = [];
   productAux : Product[] = [];
   categories : Category[] = [];
-  
+
   searchValue : string = "";
   isHidden?: boolean;
   hide : boolean = true;
@@ -46,7 +46,7 @@ export class ShopComponent implements OnInit {
   arrayButtons : any = [];
   showPromotion : boolean = false;
   totalRecords: number= 0;
-  
+
   sortOptions: SelectItem[] = [];
   sortOrder: number = 0;
   sortField: string = "";
@@ -58,17 +58,17 @@ export class ShopComponent implements OnInit {
   ];
 
   constructor(
-    private _primengConfig : PrimeNGConfig, 
-    private _token : TokenService, 
+    private _primengConfig : PrimeNGConfig,
+    private _token : TokenService,
     private _authService : AuthService,
     private _navigate : Router,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private cartService : CartServiceService,
     private productService : ProductService,
     private promotionService : PromotionService,
     private bannerService : BannerService,
     private categoriesService : CategoryService,
-  ) { 
+  ) {
     this.iconButton = "pi pi-shopping-cart"
     this.overlayLogout = false;
     this.responsiveOptions = [
@@ -99,26 +99,35 @@ export class ShopComponent implements OnInit {
     this.isHidden= true;
     this.getKeepSession();
     this.isLog();
-    this.getBanners();
-    this.getData();
-    this.getCategories();
+    this.getData(false)
     this.isActiveCategory();
+    this.refreshData();
+    this.getBanners();
+    this.getCategories();
   }
 
-  async getData(){
-    await this.getProducts();
-    await this.getPromotions(); 
+  refreshData(){
+    setInterval(() => {
+      this.getData(true);
+    }, 100000);
   }
 
-  async getProducts(){
+  async getData(isRefresh: boolean){
+    await this.getProducts(isRefresh);
+    await this.getPromotions();
+  }
+
+  async getProducts(isRefresh: boolean){
+    if(!isRefresh) this.completeProduct = false;
+
     this.productService.getProducts().subscribe((response : Product[]) =>{
       this.productAux = Object.values(response);
       this.products = this.productAux.filter(i=> i.product_status == 1 && i.product_stock! > 0 && i.product_price! > 0)
       this.products.sort(this.sortProducts)
-      this.completeProduct = true;
+
+      if(!isRefresh) this.completeProduct = true;
     }, err=>{
-      if(err.error == "abort") return;
-      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      console.log(err);
     });
   }
 
@@ -130,8 +139,7 @@ export class ShopComponent implements OnInit {
         this.handlePromotions(product);
       })
     }, err=>{
-      if(err.error == "abort") return;
-      //this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+      console.log(err);
     })
   }
 
@@ -197,18 +205,6 @@ export class ShopComponent implements OnInit {
 
     hamburger?.classList.toggle('is-active');
     menu?.classList.toggle('display');
-    
-    // if(menu?.classList.contains("display")){
-    //  content?.addEventListener('click',function(e){
-    //      let isClickInside = menu.contains(e.target as Node);
-
-    //      if(!isClickInside){
-    //        console.log("Fuera");
-    //        hamburger?.classList.remove("is-active"); 
-    //        menu.classList.remove('display');  
-    //      }
-    //  })
-    // }
   }
 
   getDateNow(){
@@ -264,7 +260,7 @@ export class ShopComponent implements OnInit {
 
   isActiveCategory(){
     const opc = document.querySelectorAll('.chip__item');
-    
+
     opc.forEach( i => i.addEventListener('click',()=>{
         opc.forEach(j => j.classList.remove('chip__item__active'));
         i.classList.add('chip__item__active');
@@ -289,7 +285,7 @@ export class ShopComponent implements OnInit {
     if(x.category_name > y.category_name) return 1;
     return 0;
   }
-  
+
   isExistProduct($event : any, product : Product){
     const buttonSelected = $event.composedPath()[1].id;
     let spanClassList = $event.composedPath()[0].childNodes[1].classList;
@@ -362,8 +358,8 @@ export class ShopComponent implements OnInit {
     } catch (error) {
       console.log(`Error: ${error}`);
     }
-  } 
- 
+  }
+
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event : any) {
       if(!this.getKeepSession()){

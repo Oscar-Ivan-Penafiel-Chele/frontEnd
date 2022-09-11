@@ -4,15 +4,15 @@
             <button pButton [disabled]="addressUser.length >=3" pRipple label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="modalCreateAddress()" ></button>
         </ng-template>
     </p-toolbar>
-    
-    <p-table #dt [value]="addressUser" [loading]="isLoading"  [globalFilterFields]="['description']" responsiveLayout="stack"
+
+    <p-table #dt [value]="addressUser" [loading]="isLoading"  [globalFilterFields]="['address_description','user_address']" responsiveLayout="stack"
     [rowHover]="true" dataKey="id">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             <h4 class="m-0">Administración de Direcciones (Máx.3)</h4>
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                <input pInputText maxlength="100" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar dirección" />
             </span>
         </div>
     </ng-template>
@@ -43,7 +43,7 @@
 
 <p-dialog [header]="textModal" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
     [draggable]="false" [resizable]="false">
-        
+
     <div class="grid p-fluid">
         <div class="field col-12 md:col-12">
             <p class="tittle__descrp">Selecciona una descripción</p>

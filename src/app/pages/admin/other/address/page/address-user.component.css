@@ -7,3 +7,11 @@
 .dc{
     width: 100%;
 }
+
+*{
+  font-size: 15px;
+}
+
+.field > label{
+  font-weight: bold;
+}

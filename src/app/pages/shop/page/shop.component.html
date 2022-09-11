@@ -11,7 +11,7 @@
             <p-progressSpinner strokeWidth="3"></p-progressSpinner>
             <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
         </div>
-        
+
         <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
            <div class="nav__container">
                 <div class="nav__logo">
@@ -21,7 +21,7 @@
                     <div class="nav__menu__content">
                         <a href="/login"><i class="pi pi-sign-in"> </i>Iniciar Sesión</a>
                         <a href="/signup"><i class="pi pi-user-plus"> </i>Registrar</a>
-    
+
                         <div class="nav__menu__content_social">
                             <div class="nav__menu__content_social__icons">
                                 <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
@@ -30,7 +30,7 @@
                                 <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
                 <button class="hamburger" (click)="isActive()">
@@ -39,9 +39,9 @@
                     <span></span>
                 </button>
            </div>
-    
+
         </ng-template>
-    
+
         <ng-template #logged>
             <div class="nav__container">
                 <div class="nav__logo">
@@ -52,7 +52,7 @@
                         <div class="nav__menu__cart">
                             <button pRipple (click)="goCart()"><i class="pi pi-shopping-cart"></i></button>
                         </div>
-                        <div class="nav__menu__option"> 
+                        <div class="nav__menu__option">
                             <div class="nav__user" pRipple (click)="displayOptions()">
                                 <p><i class="pi pi-user mr-1"></i>{{user.user_name}} {{user.user_lastName}}<i class="pi pi-angle-down ml-3"> </i></p>
                             </div>
@@ -64,7 +64,7 @@
                                 <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
                 <button class="hamburger" (click)="isActive()">
@@ -75,11 +75,11 @@
            </div>
         </ng-template>
     </nav>
-    
+
 
     <!-- Boton Up -->
     <app-button-up></app-button-up>
-    
+
     <main>
         <div class="banner__shop">
            <!-- <p>Banner de Promociones</p> -->
@@ -93,7 +93,7 @@
             <p-galleria [value]="banners" [responsiveOptions]="responsiveOptions" [containerStyle]="{'width': '100%','height':'300px'}" [numVisible]="5"
             [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showItemNavigatorsOnHover]="true"
             [autoPlay]="true" [transitionInterval]="6000"
-            [showIndicatorsOnItem]="true"> 
+            [showIndicatorsOnItem]="true">
                 <ng-template pTemplate="item" let-item>
                     <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
                     <img class="image__carousel" [src]="!item.banner_thumbnail || item.banner_thumbnail == null ? overImage : host+item.banner_thumbnail" [alt]="item.banner_thumbnail" style="width: 100%; display: block;"/>
@@ -109,7 +109,7 @@
                     <p-skeleton class="mr-2" height="2rem" width="8rem" styleClass="mb-2" borderRadius="16px"></p-skeleton>
                     <p-skeleton class="mr-2" height="2rem" width="8rem" styleClass="mb-2" borderRadius="16px"></p-skeleton>
                 </div>
-                
+
                 <div class="chips__categories">
                     <div id="0" *ngIf="!hide" class="chip__item chip__item__active" pRipple (click)="isActiveCategory()">
                         <i class="pi pi-th-large mr-2"></i>
@@ -129,7 +129,7 @@
                             <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Ordenar por precio" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
                             <span class="p-input-icon-left mb-2 md:mb-0">
                                 <i class="pi pi-search"></i>
-                                <input type="search" class="input__Search" pInputText placeholder="Buscar Producto..." (input)="dv.filter($any($event.target).value)">
+                                <input type="search" maxlength="60" class="input__Search" pInputText placeholder="Buscar Producto..." (input)="dv.filter($any($event.target).value)">
                             </span>
                             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
                         </div>
@@ -141,7 +141,7 @@
                                 <div class="product-list-detail">
                                     <div class="product-name">{{product.product_name}}</div>
                                     <!-- <div class="product-description">{{product.product_description}}</div> -->
-                                    <p *ngIf="product.product_offered != null" style="width: min-content;" class="product-offered mb-3"> -{{product.product_offered}}%</p>   
+                                    <p *ngIf="product.product_offered != null" style="width: min-content;" class="product-offered mb-3"> -{{product.product_offered}}%</p>
                                     <p-rating [iconOnStyle]="{'color':'#f5af19'}" [ngModel]="product.product_rating" [readonly]="true" [cancel]="false"></p-rating>
                                     <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category.category_name}}</span>
                                 </div>
@@ -183,7 +183,7 @@
                                     <ng-template #notPromotion>
                                         <span class="product-price">${{product.product_price}}</span>
                                     </ng-template>
-                                    
+
                                     <p-button class="button__cart" id="{{product.id_product}}" styleClass="p-button-sm" icon="pi pi-shopping-cart" (onClick)="addProductoCart($event,product)"></p-button>
                                 </div>
                             </div>
