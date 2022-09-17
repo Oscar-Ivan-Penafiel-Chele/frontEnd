@@ -45,24 +45,9 @@ export class SalesmanComponent implements OnInit {
   }
 
   getNotifications(){
-    let prueba = {
-      id_user : 12,
-      date: new Date(),
-      order_price_total : 13.50,
-      type_of_pay: "Paypal",
-    }
-    this.newOrder = true;
-
-    this.arrayNotifications.push(prueba);
-    this.arrayNotifications.push(prueba);
-    this.arrayNotifications.push(prueba);
-    this.arrayNotifications.push(prueba);
-    this.arrayNotifications.push(prueba);
     this.notificationService.receivedNotification().subscribe((noti: any)=>{
-      let date = new Date();
       this.newOrder = true;
-      //this.arrayNotifications.push(noti);
-      this.arrayNotifications.push(prueba);
+      this.arrayNotifications.push(noti);
     })
   }
 
