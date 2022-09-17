@@ -32,7 +32,12 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
         <tr>
             <td><span class="p-column-title"><i class="pi pi-qrcode"></i> Orden: </span>{{pedido.id_order}}</td>
             <td style="width: 250px;"><span class="p-column-title mr-2"> <i class="pi pi-user"></i> Cliente: </span> {{pedido.name}}</td>
-            <td><span class="p-column-title"><i class="pi pi-calendar"></i>  Fecha de Pedido: </span>{{pedido.order_date}}</td>
+            <td><span class="p-column-title"><i class="pi pi-calendar"></i>  Fecha de Pedido: </span>
+              <div>
+                <p>{{pedido.order_date}}</p>
+                <p *ngIf="pedido.recent_order == 0" class="recent__order">Nuevo</p>
+              </div>
+            </td>
             <td><span class="p-column-title"><i class="pi pi-dollar"></i> Precio Total: </span>$ {{pedido.total}}</td>
             <td>
                 <span class="p-column-title"><i class="pi pi-clock"></i> Estado: </span>
@@ -45,7 +50,7 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
                 <div class="flex justify-content-end align-items-end">
                     <button pButton pRipple type="button" icon="pi pi-file-pdf" pTooltip="PDF" tooltipPosition="top" (click)="viewOrder(pedido.information)" class="p-button-info mr-2"></button>
                     <ng-template [ngIf]="pedido.status == 'Pendiente'" [ngIfElse]="completeOrder">
-                        <button pButton pRipple type="button" icon="pi pi-check" pTooltip="Completar" tooltipPosition="top" (click)="complete(pedido)" class="p-button-success"></button>
+                        <button pButton pRipple type="button" icon="pi pi-check" pTooltip="Completar" tooltipPosition="left" (click)="complete(pedido)" class="p-button-success"></button>
                     </ng-template>
                     <ng-template #completeOrder>
                         <button pButton pRipple type="button" style="color: rgb(65, 65, 65);" pTooltip="Detalles" tooltipPosition="top" icon="pi pi-info-circle" (click)="showModal(pedido)" class="p-button-warning"></button>
@@ -70,16 +75,16 @@ currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pedidos"
                 <div class="dateOrder flex justify-content-center align-items-center">
                     <div class="mr-4">
                         <span><i class="pi pi-calendar mr-1"></i> Fecha de Pedido</span>
-                        <p>{{dataModal.order_date}}</p>
+                        <p>{{dataModal.create_date}}</p>
                     </div>
                     <div>
                         <span><i class="pi pi-calendar mr-1"></i> Fecha de Despacho</span>
-                        <p>{{dataModal.information[0].i.order.updated_at}}</p>
+                        <p>{{dataModal.updated_at}}</p>
                     </div>
                 </div>
                 <div>
                     <span><i class="pi pi-clock mr-1"></i> Tiempo Total del Proceso</span>
-                    <p>Días: {{dataModal.information[0].i.order.delivery_day}} Horas: {{dataModal.information[0].i.order.delivery_hour}} Minutos: {{dataModal.information[0].i.order.delivery_minute}}</p>
+                    <p>Días: {{dataModal.delivery_day}} Horas: {{dataModal.delivery_hour}} Minutos: {{dataModal.delivery_minute}}</p>
                 </div>
             </article>
 

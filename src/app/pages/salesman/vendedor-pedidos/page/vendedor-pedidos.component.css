@@ -15,19 +15,28 @@
 .status__order__pendiente{
     background-color: #FEEDAF;
     color: #8A5340;
-    border-radius: 50px;
-    padding: 5px 10px;
+    border-radius: 8px;
+    padding: 3px 8px;
 }
 
 .status__order__completada{
     background-color: #C8E6C9;
     color: #256029;
-    border-radius: 50px;
-    padding: 5px 10px;
+    border-radius: 8px;
+    padding: 3px 8px;
 }
 
 .p-column-title{
     font-weight: 600;
+}
+
+.recent__order{
+  font-size: 12px;
+  background-color: rgb(223, 19, 19);
+  border-radius: 50px;
+  padding: 3px 10px;
+  color: whitesmoke;
+  width: min-content;
 }
 
 .dateOrder > div > span, article > div > span{

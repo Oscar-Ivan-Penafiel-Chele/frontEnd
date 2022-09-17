@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment.prod';
 import { User, Order, Product } from '@models/interfaces';
 import { ConfirmationOrderService } from '../service/confirmation.service';
 import { TokenService } from 'src/app/auth/service/token.service';
+import { NotificationService } from 'src/app/shared/services/notifications/notification.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -35,6 +36,7 @@ export class ConfirmationComponent implements OnInit {
   iconButton: string ="";
   textButton: string = "";
   typePay: number | undefined;
+  tipo_pago: string = "";
 
   constructor(
     private _router : Router,
@@ -42,6 +44,7 @@ export class ConfirmationComponent implements OnInit {
     private confirmationOrderService : ConfirmationOrderService,
     private _token : TokenService,
     private primengConfig : PrimeNGConfig,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -59,7 +62,7 @@ export class ConfirmationComponent implements OnInit {
   prevPage() {
     this._router.navigate(['checkout/order/payment']);
   }
-  
+
   async initConfig() {
     this.payPalConfig = {
     currency: 'USD',
@@ -117,10 +120,12 @@ export class ConfirmationComponent implements OnInit {
       this.textResponse = "No se pudo realizar el pago, verifique el estado de su cuenta";
       this.showButtons = true;
       this.showButtonDynamic = false;
-      
+
       //console.log('OnError', err);
     },
     onClick: (data) => {
+      this.tipo_pago = data.fundingSource;
+
       if(data.fundingSource == 'paypal') this.typePay = 1;
       else this.typePay = 2;
     }
@@ -159,6 +164,7 @@ export class ConfirmationComponent implements OnInit {
         this.textButton = "Ir a Pedidos";
         this.showButtonDynamic = true;
 
+        this.generateNotification();
 
         localStorage.removeItem('information_address');
         localStorage.removeItem('subtotal');
@@ -172,6 +178,21 @@ export class ConfirmationComponent implements OnInit {
         this.showButtonDynamic = false;
       }
     });
+  }
+
+  generateNotification(){
+    let date = new Date();
+    let fecha = date.getFullYear() + '-' + ( (date.getMonth() + 1) < 10 ? '0'+(date.getMonth() + 1) : (date.getMonth() + 1)) + '-' + (date.getDate() < 10 ? '0'+date.getDate() : date.getDate());
+    let hora = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':' + (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()) + ':' + (date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds());
+
+    let data = {
+      user: `${this.user.user_name} ${this.user.user_lastName}`,
+      total: this.order.price_order_total,
+      type_of_pay: this.tipo_pago,
+      date: `${fecha} ${hora}`
+    }
+
+    this.notificationService.sendNotification(data);
   }
 
   async getDataProfile(){

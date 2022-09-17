@@ -5,7 +5,7 @@
             <p-progressSpinner strokeWidth="3"></p-progressSpinner>
             <p> Cerrando Sesión <span class="one">. </span><span class="two">. </span><span class="three">. </span>​</p>
         </div>
-        
+
         <ng-template  [ngIf]="!isLogged" [ngIfElse]="logged">
            <div class="nav__container">
                 <div class="nav__logo">
@@ -15,7 +15,7 @@
                     <div class="nav__menu__content">
                         <a href="/login"><i class="pi pi-sign-in"> </i>Iniciar Sesión</a>
                         <a href="/signup"><i class="pi pi-user-plus"> </i>Registrar</a>
-    
+
                         <div class="nav__menu__content_social">
                             <div class="nav__menu__content_social__icons">
                                 <a href="https://twitter.com" target="_blank" class="twitter" pTooltip="Twitter" tooltipPosition="top"><i class="pi pi-twitter" ></i></a>
@@ -24,7 +24,7 @@
                                 <a href="https://whatsapp.com" target="_blank" class="whatsapp" pTooltip="Whatsapp" tooltipPosition="top"><i class="pi pi-whatsapp" ></i></a>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
                 <button class="hamburger" (click)="isActive()">
@@ -33,9 +33,9 @@
                     <span></span>
                 </button>
            </div>
-    
+
         </ng-template>
-    
+
         <ng-template #logged>
             <div class="nav__container">
                 <div class="nav__logo">
@@ -58,7 +58,7 @@
                                 <a style="cursor: pointer;" (click)="logOut()" id="logOut"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
                 <button class="hamburger" (click)="isActive()">
@@ -98,7 +98,7 @@
                         <th pSortableColumn="total"><i class="pi pi-dollar"></i> Total <p-sortIcon field="total"></p-sortIcon></th>
                         <th pSortableColumn="type_pay"><i class="pi pi-wallet"></i> Tipo de Pago <p-sortIcon field="type_pay"></p-sortIcon></th>
                         <th pSortableColumn="status"><i class="pi pi-clock"></i> Estado <p-sortIcon field="status"></p-sortIcon></th>
-                        <th><i class="pi pi-th-large"></i> Ver Factura</th>
+                        <th><i class="pi pi-th-large"></i> Pedido</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-pedido let-rowIndex="rowIndex">
@@ -128,7 +128,7 @@
                         </td>
                         <td>
                             <span class="p-column-title"><i class="pi pi-clock"></i> Estado: </span>
-                            <p [class]="'status__order__'+(pedido.status).toLowerCase()"> 
+                            <p [class]="'status__order__'+(pedido.status).toLowerCase()">
                                 {{pedido.status}}
                             </p>
                         </td>

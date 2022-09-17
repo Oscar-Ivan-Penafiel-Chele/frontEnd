@@ -15,8 +15,12 @@ export class VendedorServiceService {
   getPendingOrders() : Observable<any>{
     return this._http.get<any>(`${this.url}/order/seller`);
   }
-  
+
   changeStateOrder(data : any) : Observable<any>{
     return this._http.post<any>(`${this.url}/order/change`,data);
+  }
+
+  getDateOrderComplete(id: number): Observable<any>{
+    return this._http.post<any>(`${this.url}/order/id`, {id});
   }
 }

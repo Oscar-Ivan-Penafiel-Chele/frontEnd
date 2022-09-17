@@ -4,6 +4,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { User } from '@models/interfaces';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { TokenService } from 'src/app/auth/service/token.service';
+import { NotificationService } from 'src/app/shared/services/notifications/notification.service';
 
 
 @Component({
@@ -20,12 +21,15 @@ export class SalesmanComponent implements OnInit {
   user : User = {};
   roleUser : string = "";
   overlayLogout : boolean = false;
-  
+  newOrder: boolean = false;
+  arrayNotifications: any[] = [];
+
   constructor(
-    private primengConfig: PrimeNGConfig, 
-    private _routerNavigation : Router, 
+    private primengConfig: PrimeNGConfig,
+    private _routerNavigation : Router,
     private _token : TokenService,
     private _authService : AuthService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +40,35 @@ export class SalesmanComponent implements OnInit {
     this.msgButton = "Desplegar";
     setInterval(()=>{
       this.getDateToday();
-    },100); 
+    },100);
+    this.getNotifications();
+  }
+
+  getNotifications(){
+    let prueba = {
+      id_user : 12,
+      date: new Date(),
+      order_price_total : 13.50,
+      type_of_pay: "Paypal",
+    }
+    this.newOrder = true;
+
+    this.arrayNotifications.push(prueba);
+    this.arrayNotifications.push(prueba);
+    this.arrayNotifications.push(prueba);
+    this.arrayNotifications.push(prueba);
+    this.arrayNotifications.push(prueba);
+    this.notificationService.receivedNotification().subscribe((noti: any)=>{
+      let date = new Date();
+      this.newOrder = true;
+      //this.arrayNotifications.push(noti);
+      this.arrayNotifications.push(prueba);
+    })
+  }
+
+  clearNotifications(){
+    this.arrayNotifications = [];
+    this.newOrder = false;
   }
 
   getDataProfile(){
@@ -91,7 +123,7 @@ export class SalesmanComponent implements OnInit {
 
   activeFirstLink(){
     const links = document.querySelectorAll('.nav__aside__item');
-    
+
     links[0].classList.add('active');
   }
 
@@ -108,7 +140,7 @@ export class SalesmanComponent implements OnInit {
         if(route != opciones[0]){
           links[0].classList.remove('active');
         }
-    } 
+    }
 
     links.forEach( l => l.addEventListener('click', () =>{
         links.forEach(j => j.classList.remove('active'));
@@ -145,7 +177,7 @@ export class SalesmanComponent implements OnInit {
 
   getKeepSession(){
     if(!localStorage.getItem('keepSession')) return false;
-    
+
     const data = localStorage.getItem('keepSession');
 
     if(data!.toString() == "true"){

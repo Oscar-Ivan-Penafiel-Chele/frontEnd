@@ -33,11 +33,21 @@
                 <div class="header__icon" pRipple (click)="showNavbar()" pTooltip="{{msgButton}}" tooltipPosition="right">
                     <i class="pi pi-bars icon-toggle"></i>
                 </div>
-                
+
                 <div class="header__profile__content" >
                     <div class="header_profile_time">
-                        <div>
-                            <p>{{fechaYHora}}</p>
+                        <div class="flex justify-content-center align-items-center">
+                          <ng-template [ngIf]="!newOrder" [ngIfElse]="isExistNewOrder">
+                            <button class="button_notification" pRipple type="button" (click)="op.toggle($event)">
+                              <i class="pi pi-bell p-text-secondary"></i>
+                            </button>
+                          </ng-template>
+                          <ng-template #isExistNewOrder>
+                            <button class="button_notification" pRipple type="button" (click)="op.toggle($event)">
+                              <i class="pi pi-bell p-text-secondary" pBadge severity="danger"></i>
+                            </button>
+                          </ng-template>
+                            <p class="ml-2">{{fechaYHora}}</p>
                         </div>
                         <div class="header__profile" pRipple (click)="displayOptions()">
                             <p><i class="pi pi-user"></i> {{user.user_name}} {{user.user_lastName}} <i class="pi pi-angle-down"></i></p>
@@ -60,3 +70,32 @@
     </div>
 
 </section>
+
+
+<p-overlayPanel #op>
+  <ng-template pTemplate>
+      <ng-template [ngIf]="arrayNotifications.length > 0" [ngIfElse]="emptyNotifications">
+        <div class="main__notifications">
+          <p><i class="pi pi-clock"></i> Nuevos Pedidos</p>
+          <div *ngFor="let item of arrayNotifications">
+            <div class="notification__style">
+              <section>
+                <p>Fecha: {{item.date}}</p>
+                <p>Cliente: {{item.id_user}}</p>
+                <p>Método de Pago: {{item.type_of_pay}}</p>
+                <p>Total: ${{item.order_price_total}}</p>
+              </section>
+            </div>
+          </div>
+        </div>
+        <p class="clear__text" (click)="clearNotifications()">Limpiar Notificaciones</p>
+      </ng-template>
+
+      <ng-template #emptyNotifications>
+        <div class="notNotification">
+          <p>Sin notificaciones</p>
+        </div>
+      </ng-template>
+
+  </ng-template>
+</p-overlayPanel>

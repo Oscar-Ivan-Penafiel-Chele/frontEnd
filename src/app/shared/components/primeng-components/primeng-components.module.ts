@@ -40,6 +40,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {ListboxModule} from 'primeng/listbox';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {BadgeModule} from 'primeng/badge';
 
 @NgModule({
   declarations: [],
@@ -86,7 +87,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
     TabViewModule,
     DynamicDialogModule,
     ListboxModule,
-    MultiSelectModule
+    MultiSelectModule,
+    BadgeModule
   ]
 })
 export class PrimengComponentsModule { }

@@ -4,19 +4,9 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { PdfMakeWrapper} from 'pdfmake-wrapper';
 import { VendedorServiceService } from '../service/vendedor-service.service';
 import { GeneratePdfFacturaService } from 'src/app/shared/services/pdfs/generate-pdf-factura.service';
+import { ISailOrder } from '@models/interfaces';
 
 PdfMakeWrapper.setFonts(pdfFonts);
-
-export interface ISailOrder{
-  id_order : number,
-  name : string,
-  order_date : number,
-  update_date : string,
-  total : number,
-  status : string,
-  information : any
-}
-
 @Component({
   selector: 'app-vendedor-pedidos',
   templateUrl: './vendedor-pedidos.component.html',
@@ -36,6 +26,7 @@ export class VendedorPedidosComponent implements OnInit {
   isShowModalDetail : boolean = false;
   dataModal : any;
   timeResponse : any = {};
+  isComplete: boolean = false;
 
   constructor(
     private vendedorService : VendedorServiceService,
@@ -100,13 +91,16 @@ export class VendedorPedidosComponent implements OnInit {
           update_date : pedido.orders[0].i.updated_at,
           total : pedido.orders[0].i.order.order_price_total,
           status : pedido.orders[0].i.order.order_status.order_status_description,
+          recent_order: pedido.orders[0].i.order.recent_order,
           information : pedido.orders
         }
       );
     });
+
     if(!isRefresh) this.loading = false;
     this.dataAuxFilter = Object.values(this.dataAuxFilter);
-    this.dataAux = this.dataAuxFilter;
+    this.dataAux = this.dataAuxFilter.filter(i => i.status == 'Pendiente');
+    console.log(this.dataAux);
   }
 
   complete(pedido : any){
@@ -150,10 +144,11 @@ export class VendedorPedidosComponent implements OnInit {
     }
   }
 
-  showModal(pedido : any){
-    console.log(pedido)
-    this.dataModal = pedido;
-    this.isShowModalDetail = true
+  showModal(pedido : ISailOrder){
+    this.vendedorService.getDateOrderComplete(pedido.id_order).subscribe((response: any)=>{
+      this.dataModal = response;
+      this.isShowModalDetail = true
+    });
   }
 
 
