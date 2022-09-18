@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ConfirmationService, PrimeNGConfig, MessageService, Message } from 'primeng/api';
+import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 import { ValidationsService } from 'src/app/shared/services/validations/validations.service';
 import { environment } from 'src/environments/environment.prod';
 import { ForgetPasswordService } from '../service/forget-password.service';
@@ -21,13 +22,14 @@ export class ForgetPasswordComponent implements OnInit {
   errorEmail: boolean = false;
   msgs1: Message[] = [];
   isCompleteRequest: boolean = false;
-  route: string = "http://localhost:4200";
+  route: string = "https://ferreteriaeldescanso.jomatelapps.com";
 
   constructor(
     private primengConfig: PrimeNGConfig,
     private validateService: ValidationsService,
     private messageService: MessageService,
-    private forgetService: ForgetPasswordService
+    private forgetService: ForgetPasswordService,
+    private encriptedService: EncriptedCredentialService
   ) { }
 
   ngOnInit(): void {
@@ -41,13 +43,6 @@ export class ForgetPasswordComponent implements OnInit {
       this.isLoading = false;
       return;
     }
-
-    if(this.isExistRequest()){
-      this.isLoading = false;
-      this.messageService.clear();
-      this.messageService.add({severity:'info', summary: 'Info', detail: 'Ya existe una petición en curso, por favor revise su correo electrónico', life: 3000});
-      return;
-    };
 
     this.loadRequest = true;
     this.showOverlay = true;
@@ -74,7 +69,7 @@ export class ForgetPasswordComponent implements OnInit {
       }
       localStorage.setItem('recover-password',JSON.stringify(true));
       localStorage.setItem('response', JSON.stringify(response.id_user))
-      this.generateRequest(response.id_user);
+      this.validateUserRequest(response.id_user);
 
     }, err=>{
       this.showOverlay = false;
@@ -87,8 +82,35 @@ export class ForgetPasswordComponent implements OnInit {
     if(this.submitted) this.errorEmail = false;
   }
 
+  validateUserRequest(id_user: number){
+    this.validateService.validateRequestChangePassword(id_user).subscribe((response: any)=>{
+      if(response.status >= 400){
+        this.showOverlay = false;
+        this.isLoading = false;
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+        return;
+      }
+
+      if(response.message == "existe"){
+        this.showOverlay = false;;
+        this.isLoading = false;
+        this.messageService.clear();
+        this.messageService.add({severity:'info', summary: 'Info', detail: 'Ya existe una petición en curso, por favor revise su correo electrónico', life: 3000});
+        return;
+      }
+
+      this.generateRequest(id_user);
+    }, err =>{
+      this.showOverlay = false;
+      this.isLoading = false;
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
+    });
+  }
+
   generateRequest(id: number): void{
-    let url: string = `${this.route}/recovery-password`;
+     let id_encrypted = this.forgetService.encryptId(id);
+
+    let url: string = `${this.route}/recovery-password/${id_encrypted}`;
 
     this.forgetService.sendEmail({id_user: id, link: url}).subscribe((response: any)=>{
       this.showOverlay = false;
@@ -106,12 +128,6 @@ export class ForgetPasswordComponent implements OnInit {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error en el servidor, intentalo más tarde', life: 3000});
     })
   }
-
-  isExistRequest(): boolean{
-    if(localStorage.getItem('recover-password')) return true;
-    return false;
-  }
-
 
   @HostListener('document:keydown', ['$event']) onHover(event: KeyboardEvent){
     if(event.key != "Enter") return;

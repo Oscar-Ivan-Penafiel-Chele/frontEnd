@@ -1,5 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PrimeNGConfig, MessageService } from 'primeng/api';
+import { ForgetPasswordService } from '../../forget-password/service/forget-password.service';
 import { RecoveryPasswordService } from '../service/recovery-password.service';
 
 @Component({
@@ -25,11 +27,14 @@ export class RecoverPasswordComponent implements OnInit {
   showButtonDynamic: boolean = true;
   url: string = "/login";
   showButtons: boolean = true;
+  id_route: string = "";
 
   constructor(
     private primengConfig: PrimeNGConfig,
     private changePasswordService: RecoveryPasswordService,
     private messageService: MessageService,
+    private route: ActivatedRoute,
+    private forgetPasswordService: ForgetPasswordService
   ) {
     this.primengConfig.setTranslation({
       weak : 'Débil',
@@ -40,14 +45,13 @@ export class RecoverPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getIdUser();
+    this.getId();
   }
 
-  getIdUser(){
-    if(!localStorage.getItem('response')) return;
-
-    let data = localStorage.getItem('response');
-    this.id_user = parseInt(data!);
+  getId(){
+    this.route.params.subscribe(params=>{
+      this.id_route = params['id'];
+    })
   }
 
   validateInformation(){
@@ -64,14 +68,17 @@ export class RecoverPasswordComponent implements OnInit {
 
 
   createRequest(){
+    let id = this.forgetPasswordService.decryptedId(this.id_route);
+
     this.showOverlay = true;
     this.loadRequest = true;
 
     let data: any = {
-      password: this.password
+      password: this.password,
+      is_link: 1
     }
 
-    this.changePasswordService.changePassword(data, this.id_user!).subscribe((response: any)=>{
+    this.changePasswordService.changePassword(data, parseInt(id!)).subscribe((response: any)=>{
       this.loadRequest = false;
 
       if(response.message != "Contraseña actualizado exitosamente"){

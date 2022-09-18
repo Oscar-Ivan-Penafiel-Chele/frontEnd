@@ -48,4 +48,8 @@ export class ValidationsService {
   validateProviderIdentification(data: any){
     return this._http.post<any>(`${this.url}/validate/provider/identification`,data);
   }
+
+  validateRequestChangePassword(id_user: number): Observable<any>{
+    return this._http.post<any>(`${this.url}/validate/exists/change/password`,{id_user});
+  }
 }

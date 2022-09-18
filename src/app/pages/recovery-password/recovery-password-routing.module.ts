@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RecoverPasswordGuard } from 'src/app/auth/guards/recover-password.guard';
+import { RecoveryPasswordGuard } from 'src/app/auth/guards/recovery-password.guard';
 import { RecoverPasswordComponent } from './page/recover-password.component';
 
 const routes: Routes = [
-  { path:'', component: RecoverPasswordComponent, pathMatch : 'full', canActivate: [RecoverPasswordGuard]},
+  { path:'', component: RecoverPasswordComponent, pathMatch : 'full', canActivate: [RecoveryPasswordGuard]},
   { path:'**' , redirectTo:''}
 ];
 
