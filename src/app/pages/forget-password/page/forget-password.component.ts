@@ -29,7 +29,6 @@ export class ForgetPasswordComponent implements OnInit {
     private validateService: ValidationsService,
     private messageService: MessageService,
     private forgetService: ForgetPasswordService,
-    private encriptedService: EncriptedCredentialService
   ) { }
 
   ngOnInit(): void {

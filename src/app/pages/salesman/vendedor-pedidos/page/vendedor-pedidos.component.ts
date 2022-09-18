@@ -100,7 +100,6 @@ export class VendedorPedidosComponent implements OnInit {
     if(!isRefresh) this.loading = false;
     this.dataAuxFilter = Object.values(this.dataAuxFilter);
     this.dataAux = this.dataAuxFilter.filter(i => i.status == 'Pendiente');
-    console.log(this.dataAux);
   }
 
   complete(pedido : any){

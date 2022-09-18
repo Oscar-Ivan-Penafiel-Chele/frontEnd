@@ -23,9 +23,7 @@ export class RecoveryPasswordGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
       let url = state.url;
-      let index = url.lastIndexOf('/');
-      let idEncrypted = url.substring(index + 1)
-
+      let idEncrypted = url.split('recovery-password/')[1];
       let id = this.forgetPassword.decryptedId(idEncrypted);
 
       this.validationsService.validateRequestChangePassword(parseInt(id!)).subscribe((response: any)=>{

@@ -18,7 +18,7 @@ export class ForgetPasswordService {
   }
 
   encryptId(id: number){
-    let idEncrypted = CryptoJS.AES.encrypt(id.toString(), this.secretKey).toString();
+    let idEncrypted = encodeURIComponent(CryptoJS.AES.encrypt(id.toString(), this.secretKey).toString());
 
     return idEncrypted;
   }
@@ -26,7 +26,7 @@ export class ForgetPasswordService {
   decryptedId(id: string){
     if(!id) return;
 
-    let bytes  = CryptoJS.AES.decrypt(id, this.secretKey);
+    let bytes  = CryptoJS.AES.decrypt(decodeURIComponent(id), this.secretKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
 }
