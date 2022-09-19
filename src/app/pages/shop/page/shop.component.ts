@@ -90,7 +90,7 @@ export class ShopComponent implements OnInit {
   ];
     this.sortOptions = [
       {label: 'Precio alto a bajo', value: '!product_price'},
-      {label: 'Price bajo a alto', value: 'product_price'}
+      {label: 'Precio bajo a alto', value: 'product_price'}
     ];
   }
 
@@ -360,12 +360,14 @@ export class ShopComponent implements OnInit {
     }
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:onbeforeunload', ['$event'])
   beforeunloadHandler(event : any) {
       if(!this.getKeepSession()){
           localStorage.clear();
       }
   }
+
+
 
   getKeepSession(){
     if(!localStorage.getItem('keepSession')) return false;
