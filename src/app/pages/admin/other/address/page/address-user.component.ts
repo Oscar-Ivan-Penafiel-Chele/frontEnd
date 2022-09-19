@@ -26,7 +26,7 @@ export class AddressUserComponent implements OnInit {
   options : any[] = [];
 
   constructor(
-    private confirmationService: ConfirmationService, 
+    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private addressService : AddressUserService,
     private _token : TokenService,
@@ -60,12 +60,12 @@ export class AddressUserComponent implements OnInit {
 
   selectedAction(){
     this.submitted = true;
-    
-    if(!this.address.user_address && !this.address.address_description) return ;
+
+    if(!this.address.user_address || !this.address.address_description || this.address.address_description.length < 5) return ;
 
     if(this.textAction == "Crear"){
       this.createAddress();
-      return ; 
+      return ;
     }
 
     this.updateAddress();
@@ -99,7 +99,7 @@ export class AddressUserComponent implements OnInit {
     }, err =>{
       this.messageService.add({severity:'error', summary:'Error', detail:`Ha ocurrido un error en el servidor`});
     });
-   
+
   }
 
   updateAddress(){

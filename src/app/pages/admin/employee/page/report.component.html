@@ -78,11 +78,13 @@
                 <label for="name">Nombre del Empleado <span class="inputs__required">*</span></label>
                 <input type="text" required maxlength="40" pInputText id="name" [(ngModel)]="user.user_name" [pKeyFilter]="regexLetterSpace" required />
                 <small class="p-error" *ngIf="submitted && !user.user_name">Nombres son requerido</small>
+                <small class="p-error" *ngIf="submitted && user.user_name && user.user_name.length < 3">Nombres no es válido</small>
             </div>
             <div class="field col">
                 <label for="lastname">Apellidos del Empleado <span class="inputs__required">*</span></label>
                 <input type="text" required maxlength="40" pInputText id="lastname" [(ngModel)]="user.user_lastName" [pKeyFilter]="regexLetterSpace" required  />
                 <small class="p-error" *ngIf="submitted && !user.user_lastName">Apellidos son requerido</small>
+                <small class="p-error" *ngIf="submitted && user.user_lastName && user.user_lastName.length < 3">Apellidos no es válido</small>
             </div>
         </div>
         <div class="formgrid grid">

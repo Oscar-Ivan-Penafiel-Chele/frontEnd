@@ -9,13 +9,13 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class ProviderService {
   url : string = environment.API;
-  
+
   constructor(private _http : HttpClient) { }
 
   getTypeProviders() : Observable<Type_Provider[]>{
     return this._http.get<Type_Provider[]>(`${this.url}/type-providers`);
   }
-  
+
   getProviders() : Observable<IProvider[]>{
     return this._http.get<IProvider[]>(`${this.url}/providers`);
   }
@@ -26,7 +26,6 @@ export class ProviderService {
     return this._http.put(`${this.url}/providers/${id}`,provider);
   }
   deleteProvider(id : number, id_user : number) : Observable<any>{
-    // return this._http.delete(`${this.url}/providers/${id}`);
     return this._http.request('DELETE',`${this.url}/providers/${id}`,{
       body : {
         id_user : id_user

@@ -27,13 +27,13 @@ export class StatisticsPurchaseComponent implements OnInit {
   purchase_ordersAux: IPurchaseOrder[] = [];
   user: User = {};
   submitted: boolean = false;
-  
+
   isShowMessageDateInit : boolean = false;
   isShowMessageDateExpiry: boolean = false;
   messageErrorDateInit: string = "";
   messageErrorDateExpiry : string = "";
   disableButton: boolean = false;
-  
+
   constructor(
     private config: PrimeNGConfig,
     private providersService: ProviderService,
@@ -41,7 +41,7 @@ export class StatisticsPurchaseComponent implements OnInit {
     private messageService: MessageService,
     private orderPurchaseService: PurchaseOrderService,
     private generatePDFPurchaseOrder: GeneratePdfStatisticsPurchaseOrderService
-  ) { 
+  ) {
     this.options = [
       {id: '1', name : 'Completado'},
       {id: '0', name : 'Pendiente'},
@@ -52,6 +52,7 @@ export class StatisticsPurchaseComponent implements OnInit {
       "today" : "Hoy",
       "dayNamesMin": ["D","L","M","X","J","V","S"],
       "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+      "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
     });
   }
 
@@ -90,7 +91,7 @@ export class StatisticsPurchaseComponent implements OnInit {
 
   async generateReport(){
     this.submitted = true;
-    
+
     this.purchase_orders = this.purchase_ordersAux;
     let arrayProviders: string[] = [];
 
@@ -98,8 +99,8 @@ export class StatisticsPurchaseComponent implements OnInit {
       arrayProviders.push(response.provider_name!);
     });
 
-    this.purchase_orders = this.purchase_orders.filter((i : any) => new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf()); 
-    
+    this.purchase_orders = this.purchase_orders.filter((i : any) => new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf());
+
     if(this.selectedProvider.length > 0){
       this.purchase_orders = this.purchase_orders.filter((i: any) => arrayProviders.includes(i.provider.provider_name));
     };
@@ -139,21 +140,21 @@ export class StatisticsPurchaseComponent implements OnInit {
 
   validateDatesSelected(){
     if(this.fechaFin < this.fechaInicio) {
-      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiry = true ; 
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpiry = true ;
       this.isShowMessageDateInit = false
       return ;
     }
 
     if(this.fechaInicio > this.fechaFin) {
-      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInit = true ; 
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInit = true ;
       this.isShowMessageDateExpiry = false
       return ;
     }
 
-    this.messageErrorDateExpiry = "" ; 
-    this.isShowMessageDateExpiry = false ; 
+    this.messageErrorDateExpiry = "" ;
+    this.isShowMessageDateExpiry = false ;
     this.isShowMessageDateInit = false;
     return;
   }

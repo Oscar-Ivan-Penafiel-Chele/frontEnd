@@ -109,9 +109,7 @@ export class PaymentComponent implements OnInit {
   }
 
   getTotalPay(){
-    const data = localStorage.getItem('total');
-
-    this.priceTotalOrder = parseFloat(data!).toFixed(2);
+    this.priceTotalOrder = parseFloat(this.order.price_order_total) + parseFloat(this.priceIva);
   }
 
   nextPage() {
@@ -120,7 +118,7 @@ export class PaymentComponent implements OnInit {
     this.validateStockProduct();
   }
 
-  validateStockProduct(){  
+  validateStockProduct(){
     let simpleText = "";
     let compuestText = "";
     let dataStock: any = {};
@@ -133,7 +131,7 @@ export class PaymentComponent implements OnInit {
         id_product : product.id_product,
         quantity : product.product_amount_sail
       };
-      
+
       this.validationService.validateStockProduct(dataStock).subscribe((response : any)=>{
         if(response.status >= 400 || response.status === 0){
           return;
@@ -143,7 +141,7 @@ export class PaymentComponent implements OnInit {
           this.productsError.push({id: product.id_product, name: response.product_name, image: product.product_image, stock : response.product_stock, quantity : product.product_amount_sail });
           this.productsError = Object.values(this.productsError);
         }
-        
+
         if( index == (sizeProducts - 1)){
           this.textHeaderModal = "Productos sin stock disponible";
           simpleText = "Lo sentimos, un producto no cuenta con stock disponible!";

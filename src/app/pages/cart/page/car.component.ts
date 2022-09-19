@@ -65,7 +65,7 @@ export class CarComponent implements OnInit {
   refreshData(){
     setInterval(()=>{
       this.getIva(true);
-    }, 100000);
+    }, 300000);
   }
 
   async getData(){
@@ -193,32 +193,58 @@ export class CarComponent implements OnInit {
   async getTotalPriceToPay(){
     let totalIva = 0;
     let totalPrecioSinIva = 0;
+    let discount = 0;
+    let subtotal = 0;
+    let priceIvaTotal = 0;
 
     this.products.forEach((i)=>{
       if(i.product_price_total == undefined){
         i.product_amount_sail = 1;
-        totalIva += parseFloat(i.product__price__iva);
-        totalPrecioSinIva += i.product_price!;
-        totalPrecioSinIva = parseFloat(totalPrecioSinIva.toFixed(2));
+
+        if(i.product_offered){
+          discount = parseFloat((i.product_price_aux! * (parseFloat(i.product_offered.toString()) / 100)).toFixed(2));
+        }
+
+        if(i.product_iva == 1 ){
+          totalIva += parseFloat(i.product_price_aux!.toString());
+        }else{
+          totalPrecioSinIva += i.product_price!;
+          totalPrecioSinIva = parseFloat(totalPrecioSinIva.toFixed(2));
+        }
       }
     })
-    this.order.price_order_total = totalPrecioSinIva;
+
+    console.log(totalIva)
+    subtotal = parseFloat(((totalPrecioSinIva + totalIva) - discount).toFixed(2));
+    priceIvaTotal = (this.manageIva.porcent / 100) * totalIva;
+    this.order.price_order_total = subtotal + priceIvaTotal;
   }
 
   getTotalPriceForAmount(){
-    let price : any ;
+    let totalIva = 0;
+    let totalPrecioSinIva = 0;
+    let discount = 0;
+    let subtotal = 0;
+    let priceIvaTotal = 0;
+    let ca = 0;
+    let no= 0;
 
-    const reduce = (i : number,j : number) => i + j;
-
-    price = this.products.map((i)=>{
-      if(i.product_price_total == undefined){
-        i.product_price_total = i.product_price;
+    this.products.forEach((i)=>{
+      if(i.product_offered){
+        discount = (parseFloat((i.product_price_aux! * (parseFloat(i.product_offered.toString()) / 100)).toFixed(2))) * i.product_amount_sail!;
       }
 
-      return parseFloat(i.product_price_total);
-    })
-    this.order.price_order_total = price.reduce(reduce);
-    this.order.price_order_total = parseFloat(this.order.price_order_total).toFixed(2);
+       if(i.product_iva == 1){
+        totalIva += (i.product_price! * i.product_amount_sail!);
+       }else{
+        totalPrecioSinIva += (i.product_price! * i.product_amount_sail!);
+       }
+
+      priceIvaTotal += parseFloat(i.product__price__iva);
+    });
+
+    subtotal = parseFloat(((totalPrecioSinIva + totalIva) - discount).toFixed(2));
+    this.order.price_order_total = subtotal;
   }
 
   displayOptions(){

@@ -23,17 +23,18 @@ export class GenerateReportSailService {
     this.fechaInicio = fechaInicio;
     this.fechaFin = fechaFin;
     this.user = user;
-    
+
     this.sailAux = [];
-    
+
     this.sailAux = sails.filter((i : any)=> new Date(i.orders[0].i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.orders[0].i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf() );
+    this.total = 0;
     this.getTotal(this.sailAux);
 
     const fecha = new Date();
     let dataNow = (fecha.getFullYear() < 10 ? '0'+fecha.getFullYear() : fecha.getFullYear())+"-"+((fecha.getMonth()+1) < 10 ? '0'+(fecha.getMonth()+1) : (fecha.getMonth()+1))+"-"+ (fecha.getDate() < 10 ? '0'+fecha.getDate() : fecha.getDate())+" "+(fecha.getHours() < 10 ? '0'+fecha.getHours() : fecha.getHours())+":"+(fecha.getMinutes() < 10 ? '0'+fecha.getMinutes() : fecha.getMinutes())+":"+(fecha.getSeconds() < 10 ? '0'+fecha.getSeconds() : fecha.getSeconds());
 
     const pdf = new PdfMakeWrapper();
-    
+
     pdf.info({
         title: 'Reporte de Ventas',
         author: '@Yebba',
@@ -41,20 +42,20 @@ export class GenerateReportSailService {
     });
     pdf.pageSize('A4');
     pdf.pageOrientation('portrait'); // 'portrait'
-    
+
     pdf.add(
       new Stack([
         new Columns([
           await new Img('assets/img/log_app_pdf.svg').width(100).build(),
           new Columns([
             new Stack([
-              new Columns([ 
+              new Columns([
                 new Txt('Reporte de Ventas').fontSize(14).bold().end,
               ]).color('#3f3f3f').end,
-              new Columns([ 
+              new Columns([
                 new Txt('Módulo de Ventas  \n\n').fontSize(11).end,
               ]).color('#3f3f3f').end,
-              new Columns([ 
+              new Columns([
                 new Txt('').alignment('right').width('*').bold().end,
                 new Txt('Usuario: ').alignment('right').width('*').bold().end,
                 new Txt(`${this.user.user_name} ${this.user.user_lastName}`).width(60).alignment('right').end,
@@ -68,7 +69,7 @@ export class GenerateReportSailService {
         ]).end
       ]).end
     );
-    
+
     pdf.add(
       '\n'
     )
@@ -89,19 +90,19 @@ export class GenerateReportSailService {
 
     pdf.add(
       new Txt(`${this.sailAux.length} ${this.sailAux.length < 2 ? 'Egreso' : 'Egresos'}`).alignment('right').bold().fontSize(10).margin(10).end
-    );  
+    );
 
     pdf.add(this.createTable(this.sailAux));
 
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(10).end;
     });
-    pdf.create().download(`${dataNow} Reporte-de-Ventas`) 
+    pdf.create().download(`${dataNow} Reporte-de-Ventas`)
   }
 
   createDetailsPDF(){
     return new Stack([
-      new Columns([ 
+      new Columns([
         new Txt('').bold().width('*').alignment('center').end,
         new Txt('Inicio: ').bold().width(30).alignment('center').end,
         new Txt(`${this.fechaInicio.getFullYear()}/${(this.fechaInicio.getMonth()+1) < 10 ? '0'+(this.fechaInicio.getMonth()+1) : (this.fechaInicio.getMonth()+1)}/${this.fechaInicio.getDate() < 10 ? '0'+this.fechaInicio.getDate() : this.fechaInicio.getDate()} `).width(65).alignment('center').end,
@@ -116,7 +117,7 @@ export class GenerateReportSailService {
 
   createTable(data : any): ITable{
     return new Table([
-      [ 
+      [
         new Txt('Fecha de Creación').bold().end,
         new Txt('N° Orden').bold().end,
         new Txt('Cliente').bold().end,
@@ -125,8 +126,8 @@ export class GenerateReportSailService {
         new Txt('Total').bold().end,
       ],
       ...this.extractData(data),
-      [new Cell(new Txt('').end).colSpan(4).end, 
-        null, null, null, 
+      [new Cell(new Txt('').end).colSpan(4).end,
+        null, null, null,
         new Txt('TOTAL DE VENTAS').bold().end,
         new Txt(`$ ${this.total.toFixed(2)}`).end,
       ]
@@ -138,7 +139,7 @@ export class GenerateReportSailService {
       row.orders[0].i.create_date, row.orders[0].i.id_order, `${row.orders[0].i.order.user.user_name+" "+row.orders[0].i.order.user.user_lastName}` ,row.orders[0].i.inventory_description , row.orders[0].i.order.voucher_number, `$ ${row.orders[0].i.order.order_price_total}`
     ])
   }
-  
+
   getTotal(sails: any){
     sails.forEach((item: any) => {
       this.total += parseFloat(item.orders[0].i.order.order_price_total);

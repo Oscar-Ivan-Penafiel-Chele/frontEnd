@@ -53,6 +53,7 @@ export class ReportSailComponent implements OnInit {
       "today" : "Hoy",
       "dayNamesMin": ["D","L","M","X","J","V","S"],
       "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+      "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
     });
   }
 

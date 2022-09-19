@@ -146,8 +146,9 @@
             </div>
             <div class="field col">
                 <label for="code">Identificación del Proveedor <span class="inputs__required">*</span></label>
-                <input type="text" [disabled]="!provider.id_identification_type" [maxlength]="maxLength" required pInputText id="code" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
-                <small class="p-error" *ngIf="(submitted && !provider.provider_identification) || (stateIdentification && provider.provider_identification)">{{!provider.provider_identification ? 'Identificación requerida' : messageIdentification}}</small>
+                <input type="text" [disabled]="!provider.id_identification_type" [maxlength]="!provider.id_identification_type ? maxLength : provider.id_identification_type == 1 ? 10 : provider.id_identification_type == 2 ? 20 : provider.id_identification_type == 3 ? 13 : ''" required pInputText id="code" [(ngModel)]="provider.provider_identification" (input)="regexCode($event)" required/>
+                <small class="p-error" *ngIf="(submitted && !provider.provider_identification)">Identificación requerida</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_identification && !validateIdentification()">Identificación no válida</small>
             </div>
         </div>
 
@@ -160,8 +161,8 @@
             <div class="field col">
                 <label for="name">Correo Electrónico del Proveedor <span class="inputs__required">*</span></label>
                 <input type="text" placeholder="example@xyz.com" required pInputText id="name" [(ngModel)]="provider.provider_email" required autofocus />
-                <small class="p-error" *ngIf="submitted && !provider.provider_email">Nombre es requerido</small>
-                <small class="p-error" *ngIf="provider.provider_email && !regexData(provider.provider_email)">Correo electrónico no válido</small>
+                <small class="p-error" *ngIf="submitted && !provider.provider_email">Correo electrónico es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_email && !regexData(provider.provider_email)">Correo electrónico no válido</small>
             </div>
         </div>
         <div class="formgrid grid">
@@ -169,6 +170,7 @@
                 <label for="description">Productos Ofertados por el Proveedor <span class="inputs__required">*</span></label>
                 <textarea id="description" required pInputTextarea [(ngModel)]="provider.provider_products_offered" rows="5" cols="20" [autoResize]="true"></textarea>
                 <small class="p-error" *ngIf="submitted && !provider.provider_products_offered">Descripción es requerida</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_products_offered && provider.provider_products_offered.length < 5">Descripción es muy corta</small>
             </div>
         </div>
         <div class="formgrid grid">
@@ -197,11 +199,13 @@
                 <label for="name">Nombres del Encargado <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_person_name" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_person_name">Nombre es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_person_name && provider.provider_person_name!.length < 3">Nombre no es válido</small>
             </div>
             <div class="field col">
                 <label for="name">Apellidos del Encargado <span class="inputs__required">*</span></label>
                 <input type="text" required pInputText id="name" [(ngModel)]="provider.provider_person_lastName" required autofocus />
                 <small class="p-error" *ngIf="submitted && !provider.provider_person_lastName">Apellido es requerido</small>
+                <small class="p-error" *ngIf="submitted && provider.provider_person_lastName && provider.provider_person_lastName!.length < 3">Apellido no es válido</small>
             </div>
         </div>
         <div class="flex flex-column" style="border: 2px solid #e9ecee; margin: 0px 1px; border-radius: 5px; padding: 10px;">

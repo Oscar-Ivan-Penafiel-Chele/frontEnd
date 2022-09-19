@@ -9,7 +9,7 @@
     [rowHover]="true" dataKey="id">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-            <h4 class="m-0">Administración de Direcciones (Máx.3)</h4>
+            <h4 class="m-0">Direcciones (Máx.3)</h4>
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
                 <input pInputText maxlength="100" type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar dirección" />
@@ -63,6 +63,7 @@
                 <input type="text" [(ngModel)]="address.user_address" placeholder="Ingrese una dirección" pInputText />
             </span>
             <small class="p-error" *ngIf="submitted && !address.user_address">Dirección es requerida</small>
+            <small class="p-error" *ngIf="submitted && address.user_address && address.user_address.length < 5">Dirección es muy corta</small>
         </div>
     </div>
 

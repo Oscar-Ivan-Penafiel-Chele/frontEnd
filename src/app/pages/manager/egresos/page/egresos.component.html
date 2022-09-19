@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="formgrid grid">
-            <div class="field col">
+            <div class="field col md:col-12 lg:col-6">
                 <label for="option">Descripción del Egreso</label>
                 <p-dropdown [disabled]="!egresoAux.id_product" (onChange)="onChangeDescription($event)" [showClear]="true" [(ngModel)]="inventory_description" optionLabel="label" optionValue="label" inputId="option" [options]="descriptionOption" placeholder="Seleccionar Descripción">
                     <ng-template let-option pTemplate="item">
@@ -75,7 +75,7 @@
                 </p-dropdown>
                 <small class="p-error" *ngIf="submitted && !inventory_description">Descripción es requerido</small>
             </div>
-            <div class="field col">
+            <div class="field col md:col-12 lg:col-6">
                 <label for="minmax-buttons">Cantidad del Producto</label>
                 <p-inputNumber [disabled]="!egresoAux.id_product" [(ngModel)]="egresoAux.inventory_stock_amount" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="maxAmountProduct"></p-inputNumber>
                 <small class="p-error" *ngIf="submitted && egresoAux.inventory_stock_amount == null">Cantidad es requerido</small>

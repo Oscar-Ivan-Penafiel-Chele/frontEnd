@@ -124,6 +124,8 @@ main{
     border-radius: 5px;
     z-index: 2;
     background-color: white;
+    min-width: 180px;
+    max-width: 180px;
 }
 
 .nav__user__option > p{
@@ -175,7 +177,7 @@ main{
     display: block;
     position: relative;
     z-index: 3;
-    
+
     user-select: none;
 
     appearance: none;
@@ -191,7 +193,7 @@ main{
     height: 4px;
     margin-bottom: 5px;
     position: relative;
-    
+
     background-color: white;
     border-radius: 6px;
     z-index: 1;
@@ -227,10 +229,10 @@ main{
 @media (min-width: 1050px) {
     .hamburger, .nav__menu__content_logo, .nav__menu__content_social, .nav__menu__content__date{
         display: none;
-    }               
+    }
 }
 
-@media (max-width: 1050px) {    
+@media (max-width: 1050px) {
     .hamburger{
         position: absolute;
         right: 40px;
@@ -254,7 +256,7 @@ main{
         font-size: 25px;
         padding-right: 15px;
     }
-    
+
     .nav__menu{
         top: 0px;
         left: 0;
@@ -353,7 +355,7 @@ main{
         width: 100%;
     }
 
-    .nav__options__content span input{  
+    .nav__options__content span input{
         max-width: 600px;
         width: 400px;
     }
@@ -414,14 +416,14 @@ main{
 
     .nav__menu__cart > button{
         width: 100%;
-        border-radius: 0px; 
+        border-radius: 0px;
         background: none;
         display: flex;
         justify-content: center;
         align-items: flex-start;
         padding: 15px 30px;
     }
-    
+
     .nav__menu__cart > button::after{
         content: "Carrito";
         font-size: 15px;
@@ -520,7 +522,7 @@ main{
     align-items: center;
     border: 1px solid #ccc;
     padding: 5px 15px;
-    border-radius: 50px; 
+    border-radius: 50px;
     margin-right: 10px;
     margin-bottom: 8px;
     transition: all 0.2s;

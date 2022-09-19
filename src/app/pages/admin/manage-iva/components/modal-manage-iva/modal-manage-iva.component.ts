@@ -16,12 +16,12 @@ export class ModalManageIvaComponent implements OnInit {
   isShowMessageDateExpiry: boolean = false;
   messageErrorDateInit: string = "";
   messageErrorDateExpiry : string = "";
-  submitted : boolean = false;  
+  submitted : boolean = false;
   manageIva: IManageIVA = {} as IManageIVA;
   status: string = "Activo";
 
   constructor(
-    @Host() private manageIvaComponent : ManageIvaComponent, 
+    @Host() private manageIvaComponent : ManageIvaComponent,
     ) {
       this.optionsIVA = [
         {label:'Activo', icon : 'pi pi-check', value : 1},
@@ -38,6 +38,9 @@ export class ModalManageIvaComponent implements OnInit {
   }
 
   updateIva(){
+    this.submitted = true;
+    if(!this.manageIva.porcent || this.manageIva.porcent == null) return;
+
     this.manageIvaComponent.submitted = true;
     this.manageIvaComponent.createIva(this.manageIva);
   }

@@ -207,6 +207,7 @@ export class ChartsComponent implements OnInit {
     this.chartService.getProductsByCategory().subscribe((response)=>{
       this.productsByCategory = Object.values(response.data)
       this.productsByCategory = this.productsByCategory.filter(i => i.category_name != 'NO DEFINIDO');
+      this.productsByCategory = this.productsByCategory.sort(this.sortCategories);
       dataCard.amount = response.count;
       this.options.push(dataCard);
 
@@ -216,6 +217,12 @@ export class ChartsComponent implements OnInit {
     }, err =>{
       console.log(err)
     })
+  }
+
+  sortCategories(x : any ,y : any){
+    if(x.category_name < y.category_name) return -1;
+    if(x.category_name > y.category_name) return 1;
+    return 0;
   }
 
   drawGraphyc(productsByCategory: any): void{

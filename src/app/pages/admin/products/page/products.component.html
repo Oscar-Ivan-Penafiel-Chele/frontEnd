@@ -170,7 +170,7 @@
 
             <div class="field col">
                 <label for="productStatus">Estado del Producto <span class="inputs__required">*</span></label>
-                <p-dropdown [showClear]="true" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
+                <p-dropdown [showClear]="true" [disabled]="product.product_stock! > 0 || product.product_stock == null" [(ngModel)]="product.product_status" optionLabel="name" optionValue="id" inputId="productStatus" [options]="states" placeholder="Seleccionar">
                     <ng-template let-option pTemplate="item">
                         <div class="flex flex-row justify-content-start align-items-center">
                             <i class="{{option.icon}} mr-2"></i>

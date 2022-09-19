@@ -36,7 +36,7 @@
                 <th pSortableColumn="description_sail"><i class="pi pi-book"></i> Descripción<p-sortIcon field="description_sail"></p-sortIcon></th>
                 <th pSortableColumn="voucher_sail"><i class="pi pi-qrcode"></i> Número de comprobante <p-sortIcon field="voucher_sail"></p-sortIcon></th>
                 <th pSortableColumn="date_creation"><i class="pi pi-calendar"></i> Fecha de creación <p-sortIcon field="date_creation"></p-sortIcon></th>
-                <th><i class="pi pi-file-pdf"></i> Factura</th>
+                <th><i class="pi pi-file-pdf"></i> Ver Venta</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-sail let-columns="columns" let-index="rowIndex">
@@ -49,7 +49,7 @@
                 <td>
                     <span class="p-column-title"><i class="pi pi-calendar"></i> Fecha de creación: </span>{{sail.date_creation}}</td>
                 <td>
-                    <span class="p-column-title"><i class="pi pi-file-pdf"></i> Factura: </span>
+                    <span class="p-column-title"><i class="pi pi-file-pdf"></i> Ver Venta: </span>
                     <button pButton pRipple type="button" icon="pi pi-cloud-download" (click)="generatePDF(sail.sail)" class="p-button-success"></button>
                 </td>
             </tr>

@@ -154,15 +154,15 @@ export class GeneratePdfFacturaService {
         new Columns([
           new Txt('RAZÓN SOCIAL / NOMBRES Y APELLIDOS:').absolutePosition(50,190).fontSize(8).bold().end,
           new Txt(`${this.pedidosAux[0].name_user} ${ this.pedidosAux[0].lastName_user}`).absolutePosition(210,190).fontSize(8).end,
-        ]).end,
+        ]).height(100).end,
         new Columns([
           new Txt('DIRECCIÓN:').absolutePosition(50,200).fontSize(8).bold().end,
           new Txt(`${this.pedidosAux[0].address}`).absolutePosition(100,200).fontSize(8).end,
-        ]).end,
+        ]).height(100).end,
         new Columns([
           new Txt('LUGAR DE REFERENCIA:').absolutePosition(50,210).fontSize(8).bold().end,
           new Txt(`${!this.pedidosAux[0].address_reference ? this.pedidosAux[0].address : this.pedidosAux[0].address_reference}`).absolutePosition(140,210).fontSize(8).end,
-        ]).end,
+        ]).height(100).end,
         new Columns([
           new Txt('FECHA DE EMISIÓN:').absolutePosition(50,220).fontSize(8).bold().end,
           new Txt(`${this.pedidosAux[0].create_date}`).absolutePosition(130,220).fontSize(8).end,

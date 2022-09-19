@@ -155,9 +155,9 @@
                                 </div>
                             </td>
                             <td><span class="p-column-title">Descuento %: </span>{{product.product_offered == null || !product.product_offered || product.product_offered == '0.00' ? 0 : product.product_offered}}%</td>
-                            <td><span class="p-column-title">IVA 12%: </span>${{product.product__price__iva}}</td>
+                            <td><span class="p-column-title">IVA {{manageIva}}%: </span>${{product.product__price__iva}}</td>
                             <td><span class="p-column-title">Total: </span>
-                                ${{product.product_price_total == null ? product.product_price : product.product_price_total}}
+                                ${{product.product_price_total == null ? product.product_price.toFixed(2) : product.product_price_total}}
                             </td>
                         </tr>
                     </ng-template>

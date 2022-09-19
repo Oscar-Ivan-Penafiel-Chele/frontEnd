@@ -65,7 +65,6 @@ export class ReportComponent implements OnInit {
     ];
     this.types_employees=[
       {id:2, name:'Administrador'},
-      {id:3, name:'Contable'},
       {id:4, name:'Vendedor'},
     ];
 
@@ -158,8 +157,8 @@ export class ReportComponent implements OnInit {
 
   validateInputs(){
     if(
-      !this.user.user_name ||
-      !this.user.user_lastName ||
+      !this.user.user_name || this.user.user_name.length < 3 ||
+      !this.user.user_lastName || this.user.user_lastName.length < 3 ||
       !this.user.email ||
       !this.user.user_phone ||  this.user.user_phone.length < 11 ||
       !this.user.id_role || this.user.id_role == null ||

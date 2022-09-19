@@ -34,29 +34,30 @@ export class StatisticsSailComponent implements OnInit {
   selectedProduct: Product = {} as Product;
 
   host : string = environment.URL;
-  
+
   user: User = {};
-    
+
   isShowMessageDateInit : boolean = false;
   isShowMessageDateExpiry: boolean = false;
   messageErrorDateInit: string = "";
   messageErrorDateExpiry : string = "";
   disableButton: boolean = false;
 
-  constructor( 
-    private config: PrimeNGConfig, 
+  constructor(
+    private config: PrimeNGConfig,
     private statisticsSailService: StatisticsSailService,
     private messageService: MessageService,
     private categoriesService: CategoryService,
     private productService: ProductService,
     private generatePDFStatisticSail: GeneratePdfStatisticsSailService,
     private _token : TokenService,
-    ) { 
+    ) {
     this.config.setTranslation({
       "clear" : "Vaciar",
       "today" : "Hoy",
       "dayNamesMin": ["D","L","M","X","J","V","S"],
       "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+      "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
     });
   }
 
@@ -111,7 +112,7 @@ export class StatisticsSailComponent implements OnInit {
       }
 
       data[i.id_order].orders.push({i});
-    }); 
+    });
 
     this.sails = Object.values(data);
     this.loading = false;
@@ -121,7 +122,6 @@ export class StatisticsSailComponent implements OnInit {
   createInterfaceTable(sails: any){
     sails.forEach((item: any)=>{
       item.orders.forEach((x: any) => {
-        console.log(x)
         this.dataSails.push({
           create_date: x.i.create_date,
           voucher: x.i.order.voucher_number,
@@ -166,7 +166,7 @@ export class StatisticsSailComponent implements OnInit {
       arrayCategory.push(response.category_name);
     });
 
-    this.sailsAux = this.dataSails.filter((i : any) => new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf()); 
+    this.sailsAux = this.dataSails.filter((i : any) => new Date(i.create_date).setHours(0,0,0,0).valueOf() >= (this.fechaInicio).valueOf() && new Date(i.create_date).setHours(0,0,0,0).valueOf() <= (this.fechaFin).valueOf());
 
     if(this.selectedCategory.length > 0){
       this.sailsAux = this.sailsAux.filter((i: any)=> arrayCategory.includes(i.category));
@@ -213,21 +213,21 @@ export class StatisticsSailComponent implements OnInit {
 
   validateDatesSelected(){
     if(this.fechaFin < this.fechaInicio) {
-      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiry = true ; 
+      this.messageErrorDateExpiry = "Fecha fin no puede se menor a la fecha de inico" ;
+      this.isShowMessageDateExpiry = true ;
       this.isShowMessageDateInit = false
       return ;
     }
 
     if(this.fechaInicio > this.fechaFin) {
-      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ; 
-      this.isShowMessageDateInit = true ; 
+      this.messageErrorDateInit = "Fecha de inicio no puede se mayor a la fecha fin" ;
+      this.isShowMessageDateInit = true ;
       this.isShowMessageDateExpiry = false
       return ;
     }
 
-    this.messageErrorDateExpiry = "" ; 
-    this.isShowMessageDateExpiry = false ; 
+    this.messageErrorDateExpiry = "" ;
+    this.isShowMessageDateExpiry = false ;
     this.isShowMessageDateInit = false;
     return;
   }

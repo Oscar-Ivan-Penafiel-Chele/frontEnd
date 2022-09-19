@@ -41,16 +41,16 @@ export class PromoComponent implements OnInit {
   isShowMessageDateExpiry: boolean = false;
   messageErrorDateInit: string = "";
   messageErrorDateExpiry : string = "";
-  
+
   constructor(
     private promotionService : PromotionService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private _token : TokenService,
     private config: PrimeNGConfig,
     private validationService : ValidationsService,
     private productService : ProductService,
-  ) { 
+  ) {
     this.config.setTranslation({
       "clear" : "Vaciar",
       "today" : "Hoy",
@@ -95,9 +95,9 @@ export class PromoComponent implements OnInit {
   openNew(){
     this.actionSelected = "new"
     this.promotion = {} as Promotion;
-    this.submitted = false; 
-    this.dialogBanner = true; 
-    this.promotion.promotion_status = 1;  
+    this.submitted = false;
+    this.dialogBanner = true;
+    this.promotion.promotion_status = 1;
   }
 
   hideDialog(){
@@ -120,7 +120,7 @@ export class PromoComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-         this.promotions = this.promotionsAux; 
+         this.promotions = this.promotionsAux;
     }
 
     if(!this.stateCheckActive && !this.stateCheckInactive) this.promotions = [] ;
@@ -167,36 +167,36 @@ export class PromoComponent implements OnInit {
     let day= (date.getDate()) < 10 ? '0'+(date.getDate()) : date.getDate();
     let month = (date.getMonth() + 1) < 10 ? '0'+ (date.getMonth() + 1) : date.getMonth() + 1;
     let year = date.getFullYear();
-    
+
     let dateSelected = `${year}-${month}-${day}`
 
     if(dateSelected < dateNow){
       if(isDateInit) this.isShowMessageDateInit = true;
       else this.isShowMessageDateExpiry = true;
-      
+
       this.disableButton = true;
-      return ; 
+      return ;
     }else{
       if(isDateInit) {this.isShowMessageDateInit = false; this.promotion.promotion_date_start = dateSelected;}
       else{ this.isShowMessageDateExpiry = false; this.promotion.promotion_date_of_expiry = dateSelected;}
 
       this.disableButton = false;
-      
+
       this.validateDatesSelected();
     }
   }
 
   validateDatesSelected(){
     if(this.promotion.promotion_date_of_expiry < this.promotion.promotion_date_start) {
-      this.messageErrorDateExpiry = "Fecha de expiración es menor a la fecha de inico" ; 
-      this.isShowMessageDateExpiry = true ; 
+      this.messageErrorDateExpiry = "Fecha de expiración es menor a la fecha de inico" ;
+      this.isShowMessageDateExpiry = true ;
       this.isShowMessageDateInit = false
       return ;
     }
 
     if(this.promotion.promotion_date_start > this.promotion.promotion_date_of_expiry) {
-      this.messageErrorDateInit = "Fecha de inicio es mayor a la fecha de expiración" ; 
-      this.isShowMessageDateInit = true ; 
+      this.messageErrorDateInit = "Fecha de inicio es mayor a la fecha de expiración" ;
+      this.isShowMessageDateInit = true ;
       this.isShowMessageDateExpiry = false
       return ;
     }
@@ -217,7 +217,7 @@ export class PromoComponent implements OnInit {
     }
   }
 
-  validatePromotionProduct(){ 
+  validatePromotionProduct(){
     const data = {
       id_product : this.promotion.id_product,
     }
@@ -233,7 +233,7 @@ export class PromoComponent implements OnInit {
 
   saveData(){
     this.promotion.id_user = this.user.id_user!;
-        
+
     this.promotionService.createPromotion(this.promotion)
     .subscribe((response)=>{
         if(response.status == 200 && response.message === "Promocion creada con exito"){
@@ -251,16 +251,16 @@ export class PromoComponent implements OnInit {
 
   validateData(){
     if(
-      !this.promotion.id_product || 
+      !this.promotion.id_product ||
       !this.promotion.promotion_description ||
       !this.promotion.promotion_discount || this.promotion.promotion_discount < 1 ||
-      this.disableButton == true || 
+      this.disableButton == true ||
       !this.promotion.promotion_date_start || this.isShowMessageDateInit ||
       !this.promotion.promotion_date_of_expiry || this.isShowMessageDateExpiry ||
       this.promotion.promotion_status == null){
         return false;
     }
-  
+
     return true;
   }
 
@@ -282,7 +282,7 @@ export class PromoComponent implements OnInit {
   editPromotion(promotion : Promotion){
     this.actionSelected = "edit"
     this.promotion = {...promotion};
-    this.dialogBanner = true; 
+    this.dialogBanner = true;
     promotion.promotion_date_of_expiry = promotion.promotion_date_of_expiry.slice(0,10);
   }
 

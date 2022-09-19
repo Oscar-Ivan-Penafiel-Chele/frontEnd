@@ -3,6 +3,7 @@ import { PurchaseOrderService } from '../../service/purchase-order.service';
 import { TablePurchaseOrderComponent } from '../table_purchase_order/table-purchase-order.component';
 import { User } from '@models/interfaces';
 import { PrimeNGConfig, MessageService } from 'primeng/api';
+import { EncriptedCredentialService } from 'src/app/auth/service/encripted-credential.service';
 
 @Component({
   selector: 'app-detail-purchase-order',
@@ -27,11 +28,12 @@ export class DetailPurchaseOrderComponent implements OnInit {
   date_purchase: string = "";
 
   constructor(
-    @Host() private tablePurchase: TablePurchaseOrderComponent, 
+    @Host() private tablePurchase: TablePurchaseOrderComponent,
     private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
     private config: PrimeNGConfig,
-    ) { 
+    private encriptedService: EncriptedCredentialService
+    ) {
     this.opctionsPay = [
       {id: 1, value:'Efectivo'},
       {id: 2, value:'Cheque'},
@@ -52,15 +54,14 @@ export class DetailPurchaseOrderComponent implements OnInit {
 
   getUser(){
     const data = localStorage.getItem('user');
-
-    this.user = JSON.parse(data!);
+    this.user = this.encriptedService.decrypt(data!);
   }
 
   saveData(){
     this.submitted = true;
 
     if(!this.validateData()) return;
- 
+
     const data = {
       id_purchase_order: this.idPurchaseOrder!,
       id_user: this.user.id_user,
@@ -71,15 +72,14 @@ export class DetailPurchaseOrderComponent implements OnInit {
       date_purchase: this.date_purchase
     };
 
-    console.log(data)
-    // this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
-    //   this.tablePurchase.displayModal = false;
-    //   this.tablePurchase.getData();
-    //   this.tablePurchase.showMessage(response);
-    // }, err =>{
-    //   this.tablePurchase.showMessage({status: err.status});
-    // })
-  } 
+    this.purchaseOrderService.completePurchaseOrder(data).subscribe((response: any)=>{
+      this.tablePurchase.displayModal = false;
+      this.tablePurchase.getData();
+      this.tablePurchase.showMessage(response);
+    }, err =>{
+      this.tablePurchase.showMessage({status: err.status});
+    })
+  }
 
   validateData(){
     if(!this.selectedPay || this.selectedPay == null || !this.purchase_order_total || this.purchase_order_total == null){

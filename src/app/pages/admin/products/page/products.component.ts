@@ -354,6 +354,7 @@ export class ProductsComponent implements OnInit {
             this.validateNameProduct();
 
         }else if(this.actionSelected === "edit"){
+          this.submitted = true
             if(this.nameProd != this.product.product_name){
                 this.validateNameProduct();
                 return;

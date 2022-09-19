@@ -176,7 +176,7 @@
                                     <ng-template [ngIf]="product.product_offered != null && showPromotion" [ngIfElse]="notPromotion">
                                         <div class="flex flex-row-reverse align-items-center">
                                             <span class="product-price" style="text-decoration: line-through; font-size: 14px; margin-left: 5px; color: rgb(255, 78, 78);">${{product.product_price}}</span>
-                                            <span class="product-price" style="font-size: 19px;">${{product.product_offered_price_total}}</span>
+                                            <span class="product-price" style="font-size: 19px;">${{product.product_offered_price_total.toFixed(2)}}</span>
                                         </div>
                                     </ng-template>
 

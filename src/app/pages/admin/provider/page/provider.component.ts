@@ -23,7 +23,7 @@ PdfMakeWrapper.setFonts(pdfFonts);
 export class ProviderComponent implements OnInit {
 
   providers : IProvider[] = [];
-  types_provider : Type_Provider[] = []; 
+  types_provider : Type_Provider[] = [];
 
   provider : IProvider = {} as IProvider;
   user : User = {};
@@ -45,7 +45,7 @@ export class ProviderComponent implements OnInit {
 
   constructor(
     private providerService : ProviderService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private _sortByOrder : UpperCasePipe,
     private _token : TokenService,
@@ -120,7 +120,7 @@ export class ProviderComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-         this.providers = this.providersAux; 
+         this.providers = this.providersAux;
     }
 
     if(!this.stateCheckActive && !this.stateCheckInactive) this.providers = [] ;
@@ -173,12 +173,14 @@ export class ProviderComponent implements OnInit {
       }else{
         if(!this.validateData() || !this.regexData(this.provider.provider_email!)) return ;
         this.messageIdentification = '';
+
         this.updateData();
       }
     }
   }
 
   saveData(){
+    this.submitted = true;
     this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
     this.provider.id_user = this.user.id_user;
 
@@ -195,6 +197,7 @@ export class ProviderComponent implements OnInit {
   }
 
   updateData(){
+    this.submitted = true;
     this.provider.provider_phone = this.provider.provider_phone?.replace(/ /g, "");
     this.provider.id_user = this.user.id_user;
     this.providerService.updateProvider(this.provider, this.provider.id_provider!)
@@ -222,7 +225,7 @@ export class ProviderComponent implements OnInit {
     if(this.provider.id_identification_type == 1) return this.validateCedula();
     if(this.provider.id_identification_type == 2) return this.validatePasaporte();
     if(this.provider.id_identification_type == 3) return verificarRuc(this.provider.provider_identification!);
-    
+
     return false;
   }
 
@@ -268,7 +271,7 @@ export class ProviderComponent implements OnInit {
     let pasaporte = parseInt(this.provider.provider_identification!);
     if(pasaporte < 14 || pasaporte > 20){
       return false;
-    } 
+    }
 
     return true;
   }
@@ -298,7 +301,7 @@ export class ProviderComponent implements OnInit {
           });
       }
   });
-    
+
   }
 
   exportCSV(){
@@ -341,13 +344,13 @@ export class ProviderComponent implements OnInit {
       !this.provider.provider_identification ||
       !this.provider.provider_address || this.provider.provider_address!.length < 5 ||
       !this.provider.provider_email ||
-      !this.provider.provider_products_offered || 
+      !this.provider.provider_products_offered ||
       !this.provider.provider_phone || this.provider.provider_phone.length < 10 ||
-      !this.provider.provider_landline || 
-      !this.provider.provider_person_name || 
-      !this.provider.provider_person_lastName ||
+      !this.provider.provider_landline ||
+      !this.provider.provider_person_name || this.provider.provider_person_name.length < 3 ||
+      !this.provider.provider_person_lastName || this.provider.provider_person_lastName.length < 3 ||
       !this.provider.provider_response_time_day || this.provider.provider_response_time_day == null ||
-      !this.provider.provider_response_time_hour || this.provider.provider_response_time_hour == null 
+      !this.provider.provider_response_time_hour || this.provider.provider_response_time_hour == null
     )
     {return false}
 

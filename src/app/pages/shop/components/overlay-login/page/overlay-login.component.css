@@ -42,6 +42,13 @@ section{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-flow: column nowrap;
+}
+
+.header__overlay p{
+  font-weight: 600;
+  color: #495057;
+  font-size: 23px;
 }
 
 .buttons__overlay{

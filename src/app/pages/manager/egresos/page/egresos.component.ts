@@ -56,6 +56,7 @@ export class EgresosComponent implements OnInit {
       "today" : "Hoy",
       "dayNamesMin": ["D","L","M","X","J","V","S"],
       "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+      "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
     });
   }
 
@@ -121,7 +122,7 @@ export class EgresosComponent implements OnInit {
     this.egresoAux.inventory_description = this.inventory_description;
     this.egresoAux.inventory_description_aux = this.inventory_description_aux;
     this.inventory_description == "OTRO" ? this.egresoAux.inventory_description = null : this.egresoAux.inventory_description_aux = null;
-    this.egresoAux.inventory_stock_amount = this.egresoAux.inventory_stock_amount.toFixed(2);
+    this.egresoAux.inventory_stock_amount = this.egresoAux.inventory_stock_amount;
     this.saveData();
   }
 
@@ -144,7 +145,6 @@ export class EgresosComponent implements OnInit {
   }
 
   onChange($event : any){
-    console.log($event.value);
     this.products.forEach((i)=>{
       if(i.id_product === $event.value) this.maxAmountProduct = i.product_stock!;
     });

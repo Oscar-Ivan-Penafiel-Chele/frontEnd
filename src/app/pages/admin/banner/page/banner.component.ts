@@ -42,9 +42,9 @@ export class BannerComponent implements OnInit {
   constructor(
     private bannerService : BannerService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private _token : TokenService
-  ) { 
+  ) {
     this.isPhotoEdit = false;
     this.isError = false;
   }
@@ -62,11 +62,11 @@ export class BannerComponent implements OnInit {
     this.loading = true;
     this.bannerService.getBanners().subscribe((response : Banner[])=>{
       this.bannersAux = Object.values(response);
-      this.banners = this.bannersAux;
+      this.banners = this.bannersAux.filter(i=> i.banner_status == 1);
       this.loading = false;
     }, err =>{
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un problema en el servidor', life: 3000});
-    }); 
+    });
   }
 
   getDataProfile(){
@@ -77,13 +77,13 @@ export class BannerComponent implements OnInit {
   openNew(){
     this.actionSelected = "new"
     this.isPhoto = false;
-    this.inputFile = false; 
+    this.inputFile = false;
     this.banner = {};
-    this.fileTmp = {}; 
-    this.submitted = false; 
-    this.dialogBanner = true; 
-    this.isPhotoEdit = false; 
-    this.banner.banner_status = 1;  
+    this.fileTmp = {};
+    this.submitted = false;
+    this.dialogBanner = true;
+    this.isPhotoEdit = false;
+    this.banner.banner_status = 1;
   }
 
   hideDialog(){
@@ -102,11 +102,11 @@ export class BannerComponent implements OnInit {
       if(!this.validateSizeImage(this.fileTmp.fileSize)){
           return;
       }
-             
+
       if(!this.validateImageExtension(this.fileTmp.fileName)){
           return;
       }
-      
+
       this.getSizeImage(this.fileTmp.fileSize);
 
       const reader = new FileReader;
@@ -132,7 +132,7 @@ export class BannerComponent implements OnInit {
   validateImageExtension(nameImage : string) : boolean{
       let imageExtension = nameImage.split('.').pop();
       const ext = ['jpg','png','jpeg'];
-      
+
       if(!ext.includes(imageExtension!)){
           this.fileExtensionValid = true;
           this.fileTmp = {};
@@ -155,7 +155,7 @@ export class BannerComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-         this.banners = this.bannersAux; 
+         this.banners = this.bannersAux;
     }
 
     if(!this.stateCheckActive && !this.stateCheckInactive) this.banners = [] ;
@@ -183,12 +183,12 @@ export class BannerComponent implements OnInit {
       if(!this.validateData()){
           return ;
       }
-      
+
       this.saveData();
 
     }else if(this.actionSelected === "edit"){
       if(this.isObjEmpty(this.fileTmp)){
-          //Se envia la misma imagen 
+          //Se envia la misma imagen
           this.fileTmp = {};
           if(!this.validateDataNoImage()){
               return ;
@@ -216,7 +216,7 @@ export class BannerComponent implements OnInit {
         data.append(`${key}`, value);
     });
     data.append('id_user',String(this.user.id_user));
-        
+
     this.bannerService.createBanner(data)
         .subscribe((response)=>{
             if(response.status == 200 && response.message === "Banner creado con exito"){
@@ -236,7 +236,7 @@ export class BannerComponent implements OnInit {
     if(this.isObjEmpty(this.fileTmp) || !this.banner.banner_name || this.banner.banner_status == null){
         return false;
     }
-  
+
     return true;
   }
 
@@ -244,7 +244,7 @@ export class BannerComponent implements OnInit {
     if(!this.banner.banner_name || this.banner.banner_status == null){
         return false;
     }
-  
+
     return true;
   }
 
@@ -262,7 +262,7 @@ export class BannerComponent implements OnInit {
     this.inputFile = true; // LE decimos que bloquee el inputFile
     this.isPhotoEdit = true; // Le decimos que si hay foto para editar
     this.dialogBanner = true; // abrimos modal
-    this.fileTmp = {}; 
+    this.fileTmp = {};
   }
 
   updateData(existImage : boolean){
