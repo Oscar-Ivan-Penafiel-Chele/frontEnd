@@ -64,6 +64,7 @@ export class ReportComponent implements OnInit {
       {id:2, name:'Pasaporte', icon : 'pi pi-wallet'},
     ];
     this.types_employees=[
+      {id:1, name:'Gerente'},
       {id:2, name:'Administrador'},
       {id:4, name:'Vendedor'},
     ];
