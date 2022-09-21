@@ -340,7 +340,6 @@ export class ProviderComponent implements OnInit {
       !this.provider.id_identification_type || this.provider.id_identification_type == null ||
       !this.provider.provider_qualified || this.provider.provider_qualified == null ||
       !this.provider.provider_status || this.provider.provider_status == null ||
-      !this.provider.id_identification_type || this.provider.id_identification_type == null ||
       !this.provider.provider_identification ||
       !this.provider.provider_address || this.provider.provider_address!.length < 5 ||
       !this.provider.provider_email ||
@@ -349,8 +348,8 @@ export class ProviderComponent implements OnInit {
       !this.provider.provider_landline ||
       !this.provider.provider_person_name || this.provider.provider_person_name.length < 3 ||
       !this.provider.provider_person_lastName || this.provider.provider_person_lastName.length < 3 ||
-      !this.provider.provider_response_time_day || this.provider.provider_response_time_day == null ||
-      !this.provider.provider_response_time_hour || this.provider.provider_response_time_hour == null
+      this.provider.provider_response_time_day == null ||
+      this.provider.provider_response_time_hour == null
     )
     {return false}
 

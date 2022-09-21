@@ -44,10 +44,10 @@ export class BrandComponent implements OnInit {
 
   constructor(
     private brandService : BrandService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private _token : TokenService
-  ) { 
+  ) {
     this.isPhotoEdit = false;
     this.isError = false;
   }
@@ -74,11 +74,11 @@ export class BrandComponent implements OnInit {
     .subscribe((response : Brand[]) => {
       this.brandsAux = Object.values(response);
         if(this.stateCheckActive && !this.stateCheckInactive){
-          this.brands = this.brandsAux.filter(i => i.brand_status == 1)
+          this.brands = this.brandsAux.filter(i => i.brand_status == 1 && i.brand_name != 'NO_DEFINIDO');
         }else if(!this.stateCheckActive && this.stateCheckInactive){
-          this.brands = this.brandsAux.filter(i => i.brand_status == 0)
+          this.brands = this.brandsAux.filter(i => i.brand_status == 0 && i.brand_name != 'NO_DEFINIDO');
         }else if(this.stateCheckActive && this.stateCheckInactive){
-          this.brands = this.brandsAux;
+          this.brands = this.brandsAux.filter(i => i.brand_name != 'NO_DEFINIDO');
         }
         this.loading = false;
     }, err =>{
@@ -98,11 +98,11 @@ export class BrandComponent implements OnInit {
       if(!this.validateSizeImage(this.fileTmp.fileSize)){
           return;
       }
-             
+
       if(!this.validateImageExtension(this.fileTmp.fileName)){
           return;
       }
-      
+
       this.getSizeImage(this.fileTmp.fileSize);
 
       const reader = new FileReader;
@@ -116,7 +116,7 @@ export class BrandComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-         this.brands = this.brandsAux; 
+         this.brands = this.brandsAux;
     }
 
     if(!this.stateCheckActive && !this.stateCheckInactive) this.brands = [] ;
@@ -151,7 +151,7 @@ export class BrandComponent implements OnInit {
   validateImageExtension(nameImage : string) : boolean{
       let imageExtension = nameImage.split('.').pop();
       const ext = ['jpg','png','jpeg'];
-      
+
       if(!ext.includes(imageExtension!)){
           this.fileExtensionValid = true;
           this.fileTmp = {};
@@ -191,7 +191,7 @@ export class BrandComponent implements OnInit {
     this.isPhotoEdit = false;
     this.brand.brand_thumbnail = '';
   }
-  
+
   saveProduct(){
     if(this.actionSelected === "new"){
       this.submitted = true
@@ -199,12 +199,12 @@ export class BrandComponent implements OnInit {
       if(!this.validateData()){
           return ;
       }
-      
+
       this.saveData();
 
     }else if(this.actionSelected === "edit"){
       if(this.isObjEmpty(this.fileTmp)){
-          //Se envia la misma imagen 
+          //Se envia la misma imagen
           this.fileTmp = {};
           if(!this.validateDataNoImage()){
               return ;
@@ -232,7 +232,7 @@ export class BrandComponent implements OnInit {
         data.append(`${key}`, value);
     });
     data.append('id_user',String(this.user.id_user));
-        
+
     this.brandService.createBrand(data)
         .subscribe((response)=>{
             if(response.status == 200 && response.message === "Marca creada con exito"){
@@ -252,7 +252,7 @@ export class BrandComponent implements OnInit {
     if(this.isObjEmpty(this.fileTmp) || !this.brand.brand_name || this.brand.brand_status == null){
         return false;
     }
-  
+
     return true;
   }
 
@@ -260,7 +260,7 @@ export class BrandComponent implements OnInit {
       if(!this.brand.brand_name || this.brand.brand_status == null){
           return false;
       }
-    
+
       return true;
   }
 
@@ -308,7 +308,7 @@ export class BrandComponent implements OnInit {
     this.inputFile = true; // LE decimos que bloquee el inputFile
     this.isPhotoEdit = true; // Le decimos que si hay foto para editar
     this.productDialog = true; // abrimos modal
-    this.fileTmp = {}; 
+    this.fileTmp = {};
   }
 
   deleteBrand(brand: Brand) {

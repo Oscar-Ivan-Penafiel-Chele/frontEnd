@@ -110,6 +110,7 @@ export class PaymentComponent implements OnInit {
 
   getTotalPay(){
     this.priceTotalOrder = parseFloat(this.order.price_order_total) + parseFloat(this.priceIva);
+    this.priceTotalOrder = parseFloat(this.priceTotalOrder).toFixed(2);
   }
 
   nextPage() {

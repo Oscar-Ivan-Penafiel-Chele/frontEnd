@@ -44,11 +44,11 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     private categoryService : CategoryService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private _sortByOrder : UpperCasePipe,
     private _token : TokenService,
-    ) { 
+    ) {
 
         this.isPhotoEdit = false;
         this.isError = false;
@@ -75,11 +75,11 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getCategories().subscribe((response : Category[]) => {
       this.categoriesAux = Object.values(response);
       if(this.stateCheckActive && !this.stateCheckInactive){
-        this.categories = this.categoriesAux.filter(i => i.category_status == 1);
+        this.categories = this.categoriesAux.filter(i => i.category_status == 1 && i.category_name != 'NO DEFINIDO');
       }else if(!this.stateCheckActive && this.stateCheckInactive){
-        this.categories = this.categoriesAux.filter(i => i.category_status == 0);
+        this.categories = this.categoriesAux.filter(i => i.category_status == 0 && i.category_name != 'NO DEFINIDO');
       }else if(this.stateCheckActive && this.stateCheckInactive){
-        this.categories = this.categoriesAux;
+        this.categories = this.categoriesAux.filter(i => i.category_name != 'NO DEFINIDO');;
       }
       this.loading = false;
     }, err =>{
@@ -99,11 +99,11 @@ export class CategoryComponent implements OnInit {
         if(!this.validateSizeImage(this.fileTmp.fileSize)){
             return;
         }
-               
+
         if(!this.validateImageExtension(this.fileTmp.fileName)){
             return;
         }
-        
+
         this.getSizeImage(this.fileTmp.fileSize);
 
         const reader = new FileReader;
@@ -127,7 +127,7 @@ export class CategoryComponent implements OnInit {
 
   change($event : any){
     if(this.stateCheckActive && this.stateCheckInactive){
-         this.categories = this.categoriesAux; 
+         this.categories = this.categoriesAux;
     }
 
     if(!this.stateCheckActive && !this.stateCheckInactive) this.categories = [] ;
@@ -162,7 +162,7 @@ export class CategoryComponent implements OnInit {
   validateImageExtension(nameImage : string) : boolean{
       let imageExtension = nameImage.split('.').pop();
       const ext = ['jpg','png','jpeg'];
-      
+
       if(!ext.includes(imageExtension!)){
           this.fileExtensionValid = true;
           this.fileTmp = {};
@@ -172,7 +172,7 @@ export class CategoryComponent implements OnInit {
           return true;
       }
   }
-  
+
   clearImage(){
     this.isPhoto = false;
     this.inputFile = false;
@@ -193,7 +193,7 @@ export class CategoryComponent implements OnInit {
     this.isPhotoEdit = false; // LE decimos que no es una imagen a editar
     this.category.category_status = 1;  // asignamos el status por defecto a : Activo
   }
-  
+
   hideDialog() {
     this.productDialog = false;
   }
@@ -205,12 +205,12 @@ export class CategoryComponent implements OnInit {
       if(!this.validateData()){
           return ;
       }
-      
+
       this.saveData();
 
     }else if(this.actionSelected === "edit"){
         if(this.isObjEmpty(this.fileTmp)){
-            //Se envia la misma imagen 
+            //Se envia la misma imagen
             this.fileTmp = {};
             if(!this.validateDataNoImage()){
                 return ;
@@ -237,7 +237,7 @@ export class CategoryComponent implements OnInit {
     Object.entries(this.category).forEach(([key , value]) => {
         data.append(`${key}`, value);
     });
-    
+
     data.append('id_user',String(this.user.id_user));
     this.categoryService.createCategory(data)
         .subscribe((response)=>{
@@ -283,7 +283,7 @@ export class CategoryComponent implements OnInit {
     if(this.isObjEmpty(this.fileTmp) || !this.category.category_name || !this.category.category_descripcion || this.category.category_status == null){
         return false;
     }
-  
+
     return true;
   }
 
@@ -291,7 +291,7 @@ export class CategoryComponent implements OnInit {
       if(!this.category.category_name || !this.category.category_descripcion || this.category.category_status == null){
           return false;
       }
-    
+
       return true;
   }
 
@@ -309,7 +309,7 @@ export class CategoryComponent implements OnInit {
     this.inputFile = true; // LE decimos que bloquee el inputFile
     this.isPhotoEdit = true; // Le decimos que si hay foto para editar
     this.productDialog = true; // abrimos modal
-    this.fileTmp = {}; 
+    this.fileTmp = {};
   }
 
   deleteCategory(category : Category){

@@ -214,10 +214,10 @@ export class CarComponent implements OnInit {
       }
     })
 
-    console.log(totalIva)
     subtotal = parseFloat(((totalPrecioSinIva + totalIva) - discount).toFixed(2));
     priceIvaTotal = (this.manageIva.porcent / 100) * totalIva;
     this.order.price_order_total = subtotal + priceIvaTotal;
+    this.order.price_order_total = parseFloat(this.order.price_order_total).toFixed(2);
   }
 
   getTotalPriceForAmount(){
@@ -244,7 +244,7 @@ export class CarComponent implements OnInit {
     });
 
     subtotal = parseFloat(((totalPrecioSinIva + totalIva) - discount).toFixed(2));
-    this.order.price_order_total = subtotal;
+    this.order.price_order_total = parseFloat(subtotal.toString()).toFixed(2);
   }
 
   displayOptions(){
