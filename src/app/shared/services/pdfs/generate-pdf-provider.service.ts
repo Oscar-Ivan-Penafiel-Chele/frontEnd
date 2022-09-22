@@ -31,13 +31,13 @@ export class GeneratePdfProviderService {
           await new Img('assets/img/log_app_pdf.svg').width(100).build(),
           new Columns([
             new Stack([
-              new Columns([ 
+              new Columns([
                 new Txt('Nómina de Proveedores').fontSize(14).bold().end,
               ]).color('#3f3f3f').end,
-              new Columns([ 
+              new Columns([
                 new Txt('Módulo de Proveedores  \n\n').fontSize(11).end,
               ]).color('#3f3f3f').end,
-              new Columns([ 
+              new Columns([
                 new Txt('').alignment('right').width('*').bold().end,
                 new Txt(`Usuario: ${user.user_name} ${user.user_lastName}`).alignment('right').width('*').bold().end,
                 new Txt('Fecha: ').alignment('right').width(40).bold().end,
@@ -64,18 +64,18 @@ export class GeneratePdfProviderService {
       '\n\n'
     )
     pdf.add(
-      new Txt(`${provider.length} ${provider.length < 2 ? 'Proveedor' : 'Peoveedores'}`).alignment('right').bold().fontSize(10).margin(10).end
-  ); 
+      new Txt(`${provider.length} ${provider.length < 2 ? 'Proveedor' : 'Proveedores'}`).alignment('right').bold().fontSize(10).margin(10).end
+  );
     pdf.add(
         new Txt('Nómina de Proveedores').alignment('center').bold().fontSize(11).margin(10).end
-    );   
+    );
 
     pdf.add(this.createTable(provider));
-   
+
     pdf.footer((currentPage : any, pageCount : any)=>{
       return new Txt(`Pág. ${currentPage}/${pageCount}`).color('#3f3f3f').margin([20,5,40,20]).alignment('right').fontSize(7).end;
     });
-    pdf.create().download(`${dataNow} Proveedores`)    
+    pdf.create().download(`${dataNow} Proveedores`)
   }
 
   sortProvider(x:any , y:any){
@@ -86,7 +86,7 @@ export class GeneratePdfProviderService {
 
   createTable(data : any): ITable{
     return new Table([
-      [ 
+      [
         new Txt('Código').bold().end,
         new Txt('Nombre').bold().end,
         new Txt('Correo Electrónico').bold().end,
