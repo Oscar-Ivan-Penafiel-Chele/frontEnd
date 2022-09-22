@@ -130,13 +130,13 @@ export class GeneratePdfStatisticsSailService {
 
   extractData(data : any) : TableRow{
     return data.map((row : any) => [
-      row.create_date, row.voucher, row.identification ,row.name , row.category, row.product, row.type_pay, `$ ${row.total}`
+      row.create_date, row.voucher, row.identification ,row.name , row.category, row.product, row.type_pay, `$ ${row.advanced_details.order_detail.order_detail_total}`
     ])
   }
 
   getTotal(sails: any){
     sails.forEach((item: any) => {
-      this.total += parseFloat(item.total);
+      this.total += parseFloat(item.advanced_details.order_detail.order_detail_total);
     });
   }
 }
