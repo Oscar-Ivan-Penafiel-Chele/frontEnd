@@ -12,17 +12,5 @@ export class AppComponent implements OnInit{
   constructor(private bnIdle: BnNgIdleService){}
 
   ngOnInit(){
-    //this.isInactivity();
-  }
-
-  isInactivity(){
-    let cont = 0;
-    this.bnIdle.startWatching(5).subscribe((isTimedOut: boolean) => {
-      if (isTimedOut && cont == 0) {
-        console.log('session expired');
-        cont = 1;
-        return;
-      }
-    });
   }
 }

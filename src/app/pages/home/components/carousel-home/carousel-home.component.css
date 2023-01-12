@@ -1,0 +1,15 @@
+:host ::ng-deep .p-carousel {
+  width: 85%;
+  margin: auto;
+}
+
+.img-brands{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-brands img{
+  height: 200px;
+  cursor: pointer;
+}

@@ -1,0 +1,17 @@
+<nav>
+  <input type="checkbox" id="nav-toggle">
+  <div class="logo">
+      <a href="/home"><img loading="lazy" src="assets/img/logo_app.svg" alt="Logo" width="70px"><p>El Descanso</p></a>
+  </div>
+  <ul class="links">
+      <li *ngFor="let item of itemNavigation">
+          <a href="{{item.url}}"><i class="{{item.icon}}"></i> {{item.description}}</a>
+      </li>
+  </ul>
+
+  <label for="nav-toggle" class="icon-burger" pRipple (click)="isActive()">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+  </label>
+</nav>

@@ -1,0 +1,14 @@
+<div class="card-contact">
+  <figure data-aos="fade-up" data-aos-duration="2000">
+      <img loading="lazy" src="assets/img/contact_us.svg" alt="Foto-contact">
+  </figure>
+  <section>
+      <h3 class="title-card-contact">Servicios Qué Ofrecemos!</h3>
+     <div class="card-service-content">
+       <ul class="list-service" *ngFor="let service of list_service">
+         <li><i class="pi pi-check"></i> {{service}}</li>
+       </ul>
+     </div>
+      <button class="button-contact" [routerLink]="['/contact']" pRipple>Contáctanos <i class="pi pi-chevron-right"></i></button>
+  </section>
+</div>

@@ -23,8 +23,8 @@
     ],
     "paths": {
       "@models/interfaces":[
-          "src/app/models/index"  
-      ]
+          "src/app/models/index"
+      ],
     },
   },
   "angularCompilerOptions": {

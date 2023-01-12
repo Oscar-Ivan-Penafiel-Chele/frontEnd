@@ -1,563 +1,62 @@
 section{
-    overflow: hidden;
-    height: 100%;
-}
-
-/* Nav */
-nav{
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 60px;
-    padding: 0 5%;
-    background-color: #4F46E5;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-nav .logo{
-    display: flex;
-    float: left;
-    width: 40%;
-    height: 100%;
-    align-items: center;
-}
-
-nav .logo a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: white;
-}
-
-nav .logo a p {
-    padding-left: 10px;
-    font-size: 27px;
-    font-weight: bold;
-}
-
-nav .links{
-    float: right;
-    padding: 0;
-    margin: 0;
-    width: 60%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-nav .links li{
-    list-style: none;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all .3s;
-}
-
-nav .links li:hover{
-   background-color: #8f94fb;
-}
-
-nav .links li a{
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    margin: 15px;
-    height: 100%;
-    width: fit-content;
-    display: flex;
-    align-items: center;
-}
-
-nav .links li a i{
-    padding-right: 10px;
-}
-
-
-#nav-toggle{
-    position: absolute;
-    top: -100px;
-}
-
-nav .icon-burger{
-    display: none;
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: all .2s;
-    padding: 5px;
-}
-
-.active{
-    background: rgba( 255, 255, 255, 0.2 );
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 4px );
-    -webkit-backdrop-filter: blur( 4px );
-    border-radius: 15%;
-}
-
-nav .icon-burger:hover{
-    background: rgba( 255, 255, 255, 0.2 );
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 4px );
-    -webkit-backdrop-filter: blur( 4px );
-    border-radius: 15%;
-}
-
-nav .icon-burger .line{
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    margin: 5px;
-    border-radius: 3px;
-    transition: all .3s ease-in-out;
+  overflow: hidden;
+  height: 100%;
 }
 
 /* Contenido Principal*/
 main{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-}
-
-.shop-link{
-    height: 100vh;
-    min-height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    gap: 4em;
-}
-
-.content-shop{
-    width: 30%;
-    padding: 10px;
-}
-
-.content-shop > p:first-of-type{
-    font-weight: bold;
-    color: #3f3f3f;
-    font-size: 2em;
-}
-
-.content-shop > p:nth-child(2){
-    padding-top: 15px;
-    color: #3f3f3f;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .stock-products{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 80px 0px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .stock-products > h1{
-    font-size: 2em;
-    padding-bottom: 30px;
-    color: #3f3f3f;
+  font-size: 2em;
+  padding-bottom: 30px;
+  color: #3f3f3f;
 }
-
-.stock-content{
-    width: 80%;
-    height: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1em;
-    padding: 15px 0px;
-}
-
-.card-stock{
-    width: 250px;
-    height: 300px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    position: relative;
-}
-
-.card-stock > figure{
-    width: 100%;
-    height: 100%;
-}
-
-.card-stock > figure > img{
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    display: block;
-}
-
-.overlay{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    transition: opacity 0.25s;
-    gap: 1em
-}
-
-.overlay > p {
-    font-size: 30px;
-}
-
-.overlay-button{
-    padding: 10px;
-    background-color: #4F46E5;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all .3s;
-    color: white;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-}
-
-.overlay-button:hover{
-    background-color: #8f94fb;
-}
-
-.overlay:hover{
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-}
-
-
-.button-tienda{
-    margin-top: 20px;
-    padding: 15px 100px;
-    background-color: #4F46E5;
-    border-radius: 5px;
-    transition: all .3s;
-    border: none;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    width: 150px;
-    justify-content: center;
-    cursor: pointer;
-    gap: 1em;
-    font-size: 18px;
-}
-
-.pi-shopping-cart{
-     font-size: 18px;
-}
-
-.button-tienda:hover{
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    background-color: #3f3f3f;
-}
-
-.img-shop{
-    width: 30%;
-    padding: 10px;
-}
-
-.img-shop figure img{
-    width: 400px;
-}
-
 
 #services{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
-    background-color: #FDC830;
-}
-
-.card-contact{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-flow: row ;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-contact figure {
-    width: 50%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-contact figure img{
-    width: 500px;
-}
-
-.card-contact section {
-    width: 50%;
-    height: auto;
-}
-
-.card-contact section h3{
-    color: #4F46E5;
-    font-weight: bold;
-    font-size: 2.5em;
-    position: relative;
-}
-
-.card-contact section h3::after{
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 5px;
-    width: 100px;
-    background-color: #8f94fb;
-}
-
-.card-contact section p{
-    color: white;
-    font-size: 15px;
-}
-
-.button-contact{
-    margin-top: 20px;
-    padding: 13px;
-    background-color: white;
-    border-radius: 5px;
-    transition: all .3s;
-    border: none;
-    color: #4F46E5;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    width: 150px;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.button-contact:hover{
-    color: white;
-    background-color: #3f3f3f;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  background-color: #FDC830;
+  margin-top: 5rem;
 }
 
 .carousel{
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .carousel > p{
-    color: #3f3f3f;
-    text-align: center;
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 110px;
+  color: #3f3f3f;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 6.875rem;
 }
-
-.img-brands{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.img-brands img{
-    height: 200px;
-    cursor: pointer;
-}
-
-.list-service{
-    padding-top: 30px;
-}
-
-.list-service li{
-    padding: 3px 0px;
-}
-
 
 /* Querys */
 @media screen and (max-width: 1130px){
-    #services{
-        height: 100%;
-        padding: 40px 0px;
-    }
-
-    .card-contact{
-      flex-direction: column;
-    }
-
-    .card-contact figure{
-        width: 100%;
-    }
-
-    .card-contact > section{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    .card-contact > section > p{
-        text-align: center;
-    }
-
-    .card-contact > section > .button-contact{
-        margin: 25px auto;
-    }
-
-    .list-service li {
-        list-style: none;
-    }
-
-}
-
-
-@media screen and (max-width: 1050px){
-    nav .logo{
-        float: none;
-        width: auto;
-        justify-content: center;
-    }
-
-    nav .links{
-        float: none;
-        position: fixed;
-        z-index: 9;
-        left: 0;
-        right: 0;
-        top: 60px;
-        bottom: 100%;
-        overflow: hidden;
-        width: auto;
-        height: auto;
-        flex-direction: column;
-        background-color: rgba(0, 0, 0, 0.8);
-        justify-content: space-evenly;
-        align-items: center;
-        transition: all .5s ease-in-out;
-    }
-
-    nav .links li{
-        width: 100%;
-    }
-
-    nav .links li a{
-        font-size: 18px;
-        width: 100%;
-        color: white;
-        justify-content: center;
-        align-items: center;
-    }
-
-    nav .icon-burger{
-        display: block;
-    }
-
-    nav :checked ~ .icon-burger .line:nth-child(1){
-       transform: translateY(8px) rotate(225deg);
-    }
-    nav :checked ~ .icon-burger .line:nth-child(3){
-        transform: translateY(-8px) rotate(-225deg);
-     }
-     nav :checked ~ .icon-burger .line:nth-child(2){
-        opacity: 0;
-     }
-
-    nav :checked ~ .links{
-        bottom: 0;
-    }
-}
-
-
-@media screen and (max-width: 800px){
-
-    .shop-link{
-       flex-direction: column-reverse;
-       justify-content: center;
-       align-items: center;
-       width: 100%;
-       gap: 1em;
-       height: 100%;
-       margin-top: 70px;
-    }
-
-    .content-shop{
-        width: 80%;
-        padding: 10px;
-    }
-
-    .img-shop{
-        width: 100%;
-        display: flex;
-       justify-content: center;
-    }
-
-    .img-shop figure img{
-       width: 300px;
-       padding-top: 30px;
-    }
-
-    .list-service li {
-        list-style: none;
-    }
-
-    .button-contact{
-        width: 100%;
-    }
-
-    .card-contact > section{
-        align-items: center;
-        width: 80%;
-        margin: auto;
-    }
-
-    .card-contact > section > p{
-        text-align: justify;
-    }
-
-    .stock-products > h1 {
-        text-align: center;
-    }
-
-    .button-tienda{
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 600px){
-    .box-content-main>.box-content:not(:nth-child(2),:nth-child(3)){
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 80%;
-    }
+  #services{
+    height: 100%;
+    padding: 40px 0px;
+  }
 }

@@ -1,0 +1,29 @@
+<section class="content__stock">
+  <div class="stock-content">
+    <ng-template [ngIf]="loading" [ngIfElse]="complete">
+      <div *ngIf="loading" class="skeleton__loading">
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+        <p-skeleton width="230px" height="300px" borderRadius="10"></p-skeleton>
+    </div>
+    </ng-template>
+
+    <ng-template #complete>
+      <div class="card-stock" data-aos="fade-up" *ngFor="let category of categories">
+        <figure>
+            <img [src]="category.category_thumbnail ? host+category.category_thumbnail : overImage" [alt]="category.category_thumbnail" width="100px">
+        </figure>
+
+        <div class="overlay">
+            <p>{{category?.category_name}}</p>
+            <!-- <button [routerLink]="'/shop'" class="overlay-button" pRipple>Ver más<i class="pi pi-arrow-right"></i></button> -->
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</section>

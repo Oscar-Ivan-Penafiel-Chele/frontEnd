@@ -5,7 +5,6 @@ import { DashboardEmployeeComponent } from './dashboard-employee/page/dashboard-
 import { AuthenticationGuard } from 'src/app/auth/guards/authentication/authentication.guard';
 import { AuthorizationGuard } from 'src/app/auth/guards/authorization/authorization.guard';
 
-
 const routes : Routes = [
   { path:'', component: DashboardEmployeeComponent, canActivate : [AuthenticationGuard, AuthorizationGuard], data : { role : '2'},
     children : [
