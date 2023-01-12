@@ -1,5 +1,5 @@
 :host ::ng-deep .p-carousel {
-  width: 85%;
+  width: 100%;
   margin: auto;
 }
 
@@ -12,4 +12,10 @@
 .img-brands img{
   height: 200px;
   cursor: pointer;
+}
+
+@media screen and (max-width:400px){
+  .img-brands img{
+    width: 90%;
+  }
 }

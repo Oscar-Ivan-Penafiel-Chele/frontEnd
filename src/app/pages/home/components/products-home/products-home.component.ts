@@ -13,10 +13,13 @@ export class ProductsHomeComponent implements OnInit {
   loading : boolean = false;
   host: string = environment.URL;
   overImage: string = "assets/img/not_image.png";
+  sizeWidth: number = 250;
+  sizeHeight: number = 300;
 
   constructor( private categoriesService : CategoryService) { }
 
   ngOnInit(): void {
+    this.getResize();
     this.getAllCategories();
   }
 
@@ -35,5 +38,16 @@ export class ProductsHomeComponent implements OnInit {
     if(x.category_name < y.category_name) return -1;
     if(x.category_name > y.category_name) return 1;
     return 0;
+  }
+
+  getResize(){
+    window.addEventListener('resize', () => {
+      let width = document.documentElement.clientWidth;
+
+      if(width <= 700) {
+        this.sizeHeight = 200;
+        this.sizeWidth = 100;
+      }
+    })
   }
 }

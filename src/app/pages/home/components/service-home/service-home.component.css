@@ -69,6 +69,7 @@
 }
 
 .card-service-content{
+  width: 100%;
   margin: 1.875rem 0rem;
 }
 
@@ -80,7 +81,7 @@
   list-style: none;
 }
 
-@media screen and (max-width: 1130px){
+@media screen and (max-width: 1000px){
   .card-contact{
     flex-direction: column;
     height: 100%;
@@ -105,9 +106,18 @@
   .card-contact > section > .button-contact{
       margin: 25px auto;
   }
+
+  .button-contact{
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 800px){
+  .card-contact{
+    justify-content: center;
+    align-items: center;
+  }
+
   .card-contact > section{
       align-items: center;
       width: 80%;
@@ -117,10 +127,8 @@
   .card-contact > section > p{
       text-align: justify;
   }
-}
 
-@media screen and (max-width: 600px){
-  .button-contact{
-    width: 100%;
+  .card-contact figure{
+    display: none;
   }
 }

@@ -22,7 +22,6 @@
   border-radius: 10px;
   border: 1px solid #ccc;
   position: relative;
-
 }
 
 .card-stock > figure{
@@ -88,4 +87,21 @@
   align-items: center;
   flex-flow: row wrap;
   gap: 1rem;
+}
+
+@media screen and (max-width: 1050px){
+  .stock-content{
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 700px){
+  .card-stock{
+    width: 180px;
+    height: 200px;
+  }
+
+  .overlay > p {
+    font-size: 1em;
+  }
 }

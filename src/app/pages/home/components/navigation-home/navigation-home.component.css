@@ -117,8 +117,9 @@ nav .icon-burger .line{
 @media screen and (max-width: 1050px){
   nav .logo{
       float: none;
-      width: auto;
+      width: 100%;
       justify-content: center;
+      align-items: center;
   }
 
   nav .links{

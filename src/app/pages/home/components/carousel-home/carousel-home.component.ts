@@ -22,10 +22,10 @@ export class CarouselHomeComponent implements OnInit {
           numScroll: 2
       },
       {
-          breakpoint: '560px',
+          breakpoint: '800px',
           numVisible: 1,
           numScroll: 1
-      }
+      },
     ];
   }
 
